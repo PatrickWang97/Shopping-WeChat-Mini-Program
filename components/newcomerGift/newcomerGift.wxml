@@ -1,0 +1,229 @@
+
+<template name="newcomerTemplate">
+  <view id="newcomer" class="page-wrap newcomer" wx:if="{{showNewcomerModal}}" catchtouchmove="stopPropagation">
+    <view class="newcomer-mask" catchtouchmove="stopPropagation"></view>
+    <view class="newcomer-modal-content" catchtouchmove="stopPropagation">
+      <view class="newcomer-banner">
+        <image class="image-common" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-newcomer/newcomer-banner.png"></image>
+      </view>
+      <view class="newcomer-head">
+        <view class="newcomer-head-content">
+          <image class="image-common newcomer-head-image" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-newcomer/newcomer-left.png"></image>
+          <text class="newcomer-title">新人有礼</text>
+          <image class="image-common newcomer-head-image" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-newcomer/newcomer-right.png"></image>
+        </view>
+        <view class="newcomer-tips" wx:if="{{newcomer.get_limit == 1 && newcomer.rewards.length > 1}}">恭喜您成为新人用户，以下奖励选1个</view>
+        <view class="newcomer-tips" wx:else>恭喜您成为新人用户，获得以下奖励</view>
+      </view>
+      <view class="newcomer-gift-content">
+        <view class="newcomer-gift-item" wx:for="{{newcomer.rewards}}" wx:key="">
+          <view class="newcomer-gift">
+            <view class="newcomer-gift-pic">
+              <image class="image-common" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-newcomer/newcomer-{{imgs[item.type]}}.png" mode="scaleToFill"></image>
+            </view>
+            <view class="newcomer-gift-detail">
+              <block wx:if="{{item.type == 6 || item.type == 5 || item.type == 4 || item.type == 1}}">
+                <view class="newcomer-gift-title ellipsis">{{item.data.title}}</view>
+                <view class="newcomer-gift-tips ellipsis">{{item.data.useCondition}}</view>
+              </block>
+              <block wx:else>
+                <view class="newcomer-gift-title ellipsis">{{item.title}}</view>
+                <view class="newcomer-gift-tips ellipsis">{{item.useCondition}}</view>
+              </block>
+              <!-- 会员卡单独处理 -->
+              <view class="newcomer-gift-tips ellipsis" wx:if="{{item.type == 4 || item.type == 5}}">{{item.giveCouponStr}}{{item.giveBirCouponStr}}</view>
+            </view>
+          </view>
+          <!-- 按钮 -->
+          <!-- 已经领取，奖励只有一个，或多个不限制， 显示查看 -->
+          <view class="newcomer-button" bindtap="toCheckRewards" data-reward-type="newcomer" data-index="{{index}}" wx:if="{{item.chose || newcomer.rewards.length == 1 || newcomer.get_limit == 2}}">
+            <image class="image-common" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-newcomer/newcomer-active.png"></image>
+            <view class="newcomer-button-text">查看</view>
+          </view>
+          <view class="newcomer-button" bindtap="toGetRewards" data-index="{{index}}" wx:elif="{{!item.chose && !has_chose && newcomer.rewards.length > 1 && newcomer.get_limit == 1}}">
+            <image class="image-common" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-newcomer/newcomer-active.png"></image>
+            <view class="newcomer-button-text">领取</view>
+          </view>
+          <view class="newcomer-button" wx:else>
+            <image class="image-common" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-newcomer/newcomer-default.png"></image>
+            <view class="newcomer-button-text" style="color:#fff;">领取</view>
+          </view>
+        </view>
+      </view>
+      <view class="newcomer-gift-close" bindtap="closeNewcomerModal">
+        <text class="ico-moon icon-closes"></text>
+      </view>
+    </view>
+  </view>
+</template>
+<template is="newcomerTemplate" data="{{newcomer,showNewcomerModal,imgs,has_chose}}"></template>
+
+<template name="inviteNewTemplate">
+  <view id="inviter" class="page-wrap newcomer" wx:if="{{showInviterModal}}">
+    <view class="newcomer-mask" catchtouchmove="stopPropagation"></view>
+    <view class="newcomer-modal-content">
+      <view class="newcomer-banner">
+        <image class="image-common" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-newcomer/newcomer-banner.png"></image>
+      </view>
+      <view class="newcomer-head" catchtouchmove="stopPropagation">
+        <view class="newcomer-head-content">
+          <image class="image-common newcomer-head-image" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-newcomer/newcomer-left.png"></image>
+          <text class="newcomer-title">拉新有礼</text>
+          <image class="image-common newcomer-head-image" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-newcomer/newcomer-right.png"></image>
+        </view>
+        <view class="newcomer-tips" wx:if="{{inviter.rewardsList[inviterIndex].key  == 'new'}}">恭喜您获得拉新奖励</view>
+        <view class="newcomer-tips" wx:elif="{{inviter.rewardsList[inviterIndex].key  == 'second'}}">恭喜您获得次级拉新奖励</view>
+        <view class="newcomer-tips" wx:elif="{{inviter.rewardsList[inviterIndex].key  == 'consume'}}">恭喜您获得新用户消费带来的奖励</view>
+        <view class="newcomer-tips" wx:elif="{{inviter.rewardsList[inviterIndex].key == 'add_up'}}">恭喜您获得累计拉新奖励</view>
+          <view class="inviter-nums-tips" wx:if="{{(inviter.rewardsList[inviterIndex].key == 'add_up' && inviter[inviter.rewardsList[inviterIndex].key].type == 1 && inviter[inviter.rewardsList[inviterIndex].key].prize[0].get_limit != 2 && inviter[inviter.rewardsList[inviterIndex].key + '_chance_num'] > 1) || (inviter.rewardsList[inviterIndex].key != 'add_up' && inviter[inviter.rewardsList[inviterIndex].key].get_limit != 2 && inviter[inviter.rewardsList[inviterIndex].key].rewards.length > 1 && inviter.rewardsList[inviterIndex].value.get_limit != 2 && inviter[inviter.rewardsList[inviterIndex].key + '_chance_num'] > 1)}}">剩余{{inviter[inviter.rewardsList[inviterIndex].key + '_chance_num']}}次领取机会</view>
+      </view>
+      <block wx:for="{{inviter.rewardsList}}" wx:for-item="rewards" wx:for-index="rewards_index" wx:key="rewards_index" wx:if="{{rewards.key == 'add_up' && rewards.value.length}}">
+        <view class="bread-wrap" wx:if="{{inviter[inviter.rewardsList[inviterIndex].key].type == 2 && inviter[inviter.rewardsList[inviterIndex].key].prize.length > 1}}">
+          <block wx:for="{{rewards.value}}" wx:for-item="value" wx:for-index="value_index" wx:key="value_index">
+            <view wx:if="{{value.ladder == 1 && value.rewards.length}}" bindtap="changeLadderIndex" data-index="1" class="bread-type {{value.ladder == 1 && ladderIndex == 1 ? 'active':''}}">
+              一级
+              <label bindtap="changeLadderIndex" data-index="1" class="bread-border" hidden="{{value.ladder != 1 ||ladderIndex != 1}}"></label>
+            </view>
+            <view wx:if="{{value.ladder == 2 && value.rewards.length}}" bindtap="changeLadderIndex" data-index="2" class="bread-type {{value.ladder == 2 && ladderIndex == 2 ? 'active':''}}">
+              二级
+              <label class="bread-border" hidden="{{value.ladder != 2 || ladderIndex != 2}}"></label>
+            </view>
+            <view wx:if="{{value.ladder == 3 && value.rewards.length}}" bindtap="changeLadderIndex" data-index="3" class="bread-type {{value.ladder == 3 && ladderIndex == 3? 'active':''}}">
+              三级
+              <label class="bread-border" hidden="{{value.ladder != 3 || ladderIndex != 3}}"></label>
+            </view>
+            <view wx:if="{{value.ladder == 4 && value.rewards.length}}" bindtap="changeLadderIndex" data-index="4" class="bread-type {{value.ladder == 4 && ladderIndex == 4 ? 'active':''}}">
+              四级
+              <label class="bread-border" hidden="{{value.ladder != 4 || ladderIndex != 4}}"></label>
+            </view>
+          </block>
+        </view>
+      </block>
+      <view class="newcomer-gift-content" style="padding-bottom: {{ (inviter.rewardsList[inviterIndex].key == 'add_up' && inviter[inviter.rewardsList[inviterIndex].key].type == 1 && inviter[inviter.rewardsList[inviterIndex].key].prize[0].get_limit != 2 && inviter[inviter.rewardsList[inviterIndex].key + '_chance_num'] > 1) || (inviter.rewardsList[inviterIndex].key != 'add_up' && inviter[inviter.rewardsList[inviterIndex].key].get_limit != 2 && inviter[inviter.rewardsList[inviterIndex].key].rewards.length > 1 && inviter.rewardsList[inviterIndex].value.get_limit != 2 && inviter[inviter.rewardsList[inviterIndex].key + '_chance_num'] > 1) ? '94':'140'}}rpx;">
+        <view class="ico-moon icon-leftarrow arrowIcon leftArrow" bindtap="arrowSub" hidden="{{inviterIndex == 0}}"></view>
+        <view class="ico-moon icon-rightarrow arrowIcon rightArrow" bindtap="arrowAdd" hidden="{{inviterIndex == inviter.rewardsList.length - 1}}"></view>
+
+        <view class="inviter-rewards-wrap {{rewardsClassName}}" animation="{{animation}}">
+          <view class="inviter-scroll-wrap flex">
+            <view class="inviter-gift-box" wx:for="{{inviter.rewardsList}}" wx:for-item="rewards" wx:for-index="rewards_index" wx:key="rewards_index" wx:if="{{rewards.key != 'add_up'}}">
+              <block wx:for="{{rewards.value.rewards}}" wx:for-item="item" wx:for-index="index" wx:key="index">
+                <view class="newcomer-gift-item {{(rewards.key == 'add_up' && rewards.add_type == 1 && rewards.value[0].get_limit != 2 && rewards.value[0].rewards.length > 1) || (rewards.key != 'add_up' && rewards.value.get_limit != 2 && rewards.value.rewards.length > 1 && inviter[rewards.key+'_chance_num'] > 1) ? 'numType':'' }}">
+                  <view class="newcomer-gift">
+                    <view class="newcomer-gift-pic">
+                      <image class="image-common" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-newcomer/newcomer-{{imgs[item.type]}}.png" mode="scaleToFill"></image>
+                    </view>
+                    <view class="newcomer-gift-detail">
+                      <block wx:if="{{item.type == 5 || item.type == 4 || item.type == 1}}">
+                        <view class="newcomer-gift-title ellipsis">{{item.data.title}}</view>
+                        <view class="newcomer-gift-tips ellipsis">{{item.data.useCondition}}</view>
+                      </block>
+                      <block wx:else>
+                        <view class="newcomer-gift-title ellipsis">{{item.title}}</view>
+                        <view class="newcomer-gift-tips ellipsis">{{item.useCondition}}</view>
+                      </block>
+                      <view class="newcomer-gift-tips ellipsis" wx:if="{{item.type == 4 || item.type == 5}}">{{item.giveCouponStr}}{{item.giveBirCouponStr}}</view>
+                    </view>
+                  </view>
+                  <block wx:if="{{inviter.rewardsList[inviterIndex].value.rewards.length > 1 && rewards.value.get_limit != 2 && inviter[inviter.rewardsList[inviterIndex].key+'_chance_num'] > 1}}">
+                    <view class="inviter-calc-wrap">
+                      <view bindtap="{{item.add_num ? 'subRewardsNum':''}}" data-ladder-index="{{ladderIndex}}" data-findex="{{rewards_index}}" data-index="{{index}}" class="inviter-rewards-sub calc-button {{item.add_num ? 'default':'limit'}}">
+                        <text class="ico-moon icon-cart-sub"></text>
+                      </view>
+                      <view class="inviter-rewards-num">{{item.add_num || 0}}</view>
+                      <view bindtap="{{rewards.add_limit || ((item.type == 4 || item.type == 5) && item.add_num == 1)  ? '' : 'addRewardsNum'}}" data-ladder-index="{{ladderIndex}}" data-findex="{{rewards_index}}" data-index="{{index}}" class="inviter-rewards-add calc-button {{rewards.add_limit || ((item.type == 4 || item.type == 5) && item.add_num == 1) ? 'limit':'default'}}">
+                        <text class="ico-moon icon-news-add"></text>
+                      </view>
+                    </view>
+                  </block>
+                  <block wx:else>
+                    <view class="newcomer-button" bindtap="toCheckRewards" data-ladder-index="{{ladderIndex}}" data-reward-type="inviter" data-findex="{{rewards_index}}" data-index="{{index}}" wx:if="{{rewards.value.chose || rewards.value.rewards.length == 1 || rewards.value.get_limit == 2}}">
+                      <image class="image-common" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-newcomer/newcomer-active.png"></image>
+                      <view class="newcomer-button-text">查看</view>
+                    </view>
+                    <view class="newcomer-button" bindtap="toGetPullUserGift" data-ladder-index="{{ladderIndex}}" data-findex="{{rewards_index}}" data-index="{{index}}" wx:elif="{{!rewards.value.chose && !has_chose && rewards.value.rewards.length > 1 && rewards.value.get_limit == 1}}">
+                      <image class="image-common" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-newcomer/newcomer-active.png"></image>
+                      <view class="newcomer-button-text">领取</view>
+                    </view>
+                    <view class="newcomer-button" wx:else>
+                      <image class="image-common" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-newcomer/newcomer-default.png"></image>
+                      <view class="newcomer-button-text" style="color:#fff;">领取</view>
+                    </view>
+                  </block>
+                </view>
+              </block>
+            </view>
+          </view>
+
+          <view class="inviter-gift-box" wx:for="{{inviter.rewardsList}}" wx:for-item="rewards" wx:for-index="rewards_index" wx:key="rewards_index" wx:if="{{rewards.key == 'add_up' && rewards.value.length}}">
+            <view class="inviter-scroll-wrap" wx:for="{{rewards.value}}" wx:for-item="value" wx:for-index="value_index" wx:key="value_index">
+              <block wx:for="{{value.rewards}}" wx:for-item="item" wx:for-index="index" wx:key="index">
+                <view class="newcomer-gift-item {{(rewards.key == 'add_up' && rewards.add_type == 1 && rewards.value[0].get_limit != 2 && rewards.value[0].rewards.length > 1) || (rewards.key != 'add_up' && rewards.value.get_limit != 2 && rewards.value.rewards.length > 1 && inviter[rewards.key+'_chance_num'] > 1) ? 'numType':''}}" wx:if="{{value.ladder == ladderIndex}}">
+                  <view class="newcomer-gift">
+                    <view class="newcomer-gift-pic">
+                      <image class="image-common" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-newcomer/newcomer-{{imgs[item.type]}}.png" mode="scaleToFill"></image>
+                    </view>
+                    <view class="newcomer-gift-detail">
+                      <block wx:if="{{item.type == 5 || item.type == 4 || item.type == 1}}">
+                        <view class="newcomer-gift-title ellipsis">{{item.data.title}}</view>
+                        <view class="newcomer-gift-tips ellipsis">{{item.data.useCondition}}</view>
+                      </block>
+                      <block wx:else>
+                        <view class="newcomer-gift-title ellipsis">{{item.title}}</view>
+                        <view class="newcomer-gift-tips ellipsis">{{item.useCondition}}</view>
+                      </block>
+                      <view class="newcomer-gift-tips ellipsis" wx:if="{{item.type == 4 || item.type == 5}}">{{item.giveCouponStr}}{{item.giveBirCouponStr}}</view>
+                    </view>
+                  </view>
+                  <block wx:if="{{value.get_limit == 1 && inviter.add_up.type == 1 && inviter[inviter.rewardsList[inviterIndex].key+'_chance_num'] > 1}}">
+                    <view class="inviter-calc-wrap">
+                      <view bindtap="{{item.add_num ? 'subRewardsNum':''}}" data-ladder-index="{{ladderIndex}}" data-findex="{{rewards_index}}" data-index="{{index}}" class="inviter-rewards-sub calc-button {{item.add_num ? 'default':'limit'}}">
+                        <text class="ico-moon icon-cart-sub"></text>
+                      </view>
+                      <view class="inviter-rewards-num">{{item.add_num || 0}}</view>
+                      <view bindtap="{{rewards.add_limit || ((item.type == 4 || item.type == 5) && item.add_num == 1)  ? '' : 'addRewardsNum'}}" data-ladder-index="{{ladderIndex}}" data-findex="{{rewards_index}}" data-index="{{index}}" class="inviter-rewards-add calc-button {{rewards.add_limit || ((item.type == 4 || item.type == 5) && item.add_num == 1) ? 'limit':'default'}}">
+                        <text class="ico-moon icon-news-add"></text>
+                      </view>
+                    </view>
+                  </block>
+                  <block wx:else>
+                    <view class="newcomer-button" bindtap="toCheckRewards" data-ladder-index="{{ladderIndex}}" data-reward-type="inviter" data-findex="{{rewards_index}}" data-index="{{index}}" wx:if="{{value.chose || value.rewards.length == 1 || value.get_limit == 2}}">
+                      <image class="image-common" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-newcomer/newcomer-active.png"></image>
+                      <view class="newcomer-button-text">查看</view>
+                    </view>
+                    <view class="newcomer-button" bindtap="toGetPullUserGift" data-ladder-index="{{ladderIndex}}" data-findex="{{rewards_index}}" data-index="{{index}}" wx:elif="{{!value.chose && !has_chose && value.rewards.length > 1 && value.get_limit == 1}}">
+                      <image class="image-common" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-newcomer/newcomer-active.png"></image>
+                      <view class="newcomer-button-text">领取</view>
+                    </view>
+                    <view class="newcomer-button" wx:else>
+                      <image class="image-common" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-newcomer/newcomer-default.png"></image>
+                      <view class="newcomer-button-text" style="color:#fff;">领取</view>
+                    </view>
+
+                  </block>
+                </view>
+              </block>
+            </view>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 判断是否是累计奖励，1：累计奖励如果是阶梯，2： 如果奖品种类小于等于1, 3： 如果奖励领取设置 无限制； 不展示领取奖励  -->
+
+      <view class="inviter-bottom-wrap {{ (inviter.rewardsList[inviterIndex].key == 'add_up' && inviter[inviter.rewardsList[inviterIndex].key].type == 1 && inviter[inviter.rewardsList[inviterIndex].key].prize[0].get_limit != 2 && inviter[inviter.rewardsList[inviterIndex].key + '_chance_num'] > 1) || (inviter.rewardsList[inviterIndex].key != 'add_up' && inviter[inviter.rewardsList[inviterIndex].key].get_limit != 2 && inviter[inviter.rewardsList[inviterIndex].key].rewards.length > 1 && inviter.rewardsList[inviterIndex].value.get_limit != 2 && inviter[inviter.rewardsList[inviterIndex].key + '_chance_num'] > 1) ? 'numType' :''}}">
+        <block wx:if="{{(inviter.rewardsList[inviterIndex].key == 'add_up' && inviter[inviter.rewardsList[inviterIndex].key].type == 1 && inviter[inviter.rewardsList[inviterIndex].key].prize[0].get_limit != 2 && inviter[inviter.rewardsList[inviterIndex].key + '_chance_num'] > 1) || (inviter.rewardsList[inviterIndex].key != 'add_up' && inviter[inviter.rewardsList[inviterIndex].key].get_limit != 2 && inviter[inviter.rewardsList[inviterIndex].key].rewards.length > 1 && inviter.rewardsList[inviterIndex].value.get_limit != 2 && inviter[inviter.rewardsList[inviterIndex].key + '_chance_num'] > 1)}}">
+          <view class="inviter-friends" bindtap="inviterGetRewards">领取奖励</view>
+        </block>
+        <block wx:else>
+          <button open-type="share" class="inviter-friends">邀请好友</button>
+          <view class="inviter-check-more" bindtap="checkMoreInfo">查看更多
+            <text class="ico-moon icon-rightarrow" style="font-size:18rpx;"></text>
+          </view>
+        </block>
+      </view>
+      <view class="newcomer-gift-close" style="bottom: {{inviter.add_up.type == 2 ? '-160':'-120'}}rpx;" bindtap="closeInviterModal">
+        <text class="ico-moon icon-closes"></text>
+      </view>
+    </view>
+  </view>
+</template>
+<template is="inviteNewTemplate" data="{{inviter,showInviterModal,imgs,has_chose,inviterIndex,animation,ladderIndex,rewardsClassName}}"></template>

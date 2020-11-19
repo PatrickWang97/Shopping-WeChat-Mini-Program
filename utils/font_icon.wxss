@@ -1,0 +1,2142 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/css/fonts/icomoon.eot');
+  src:  url('https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/css/fonts/icomoon.eot') format('embedded-opentype'),
+    url('https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/css/fonts/icomoon.ttf') format('truetype'),
+    url('https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/css/fonts/icomoon.woff') format('woff'),
+    url('https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/css/fonts/icomoon.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+.ico-moon {
+  display: inline-block;
+  font-family: 'icomoon' !important;
+}
+.icon-sort:before {
+  content: "\ebc4";
+}
+.icon-share-friends-link:before {
+  content: "\e900";
+}
+.icon-community-goods-setting:before {
+  content: "\ebc1";
+}
+.icon-community-pick-setting:before {
+  content: "\ebc2";
+}
+.icon-promotion-my-tasks:before {
+  content: "\ebbf";
+}
+.icon-ranking-list:before {
+  content: "\ebc0";
+}
+.icon-promotion-calendar:before {
+  content: "\ebb9";
+}
+.icon-promotion-copywriting:before {
+  content: "\ebba";
+}
+.icon-promotion-date:before {
+  content: "\ebbb";
+}
+.icon-promotion-order:before {
+  content: "\ebbc";
+}
+.icon-promotion-task:before {
+  content: "\ebbd";
+}
+.icon-promotion-reward:before {
+  content: "\ebbe";
+}
+.icon-download-sign:before {
+  content: "\ebb8";
+}
+.icon-commodity-sign:before {
+  content: "\ebb6";
+}
+.icon-commodity-sign-background:before {
+  content: "\ebb7";
+}
+.icon-community-data:before {
+  content: "\ebaf";
+}
+.icon-community-delivered:before {
+  content: "\ebb0";
+}
+.icon-community-pick-up:before {
+  content: "\ebb1";
+}
+.icon-community-receipt:before {
+  content: "\ebb2";
+}
+.icon-community-scan:before {
+  content: "\ebb3";
+}
+.icon-community-setting:before {
+  content: "\ebb4";
+}
+.icon-community-tips:before {
+  content: "\ebb5";
+}
+.icon-all-order-2:before {
+  content: "\eb63";
+}
+.icon-balance-2:before {
+  content: "\eb64";
+}
+.icon-coupon-2:before {
+  content: "\eb65";
+}
+.icon-custom-2:before {
+  content: "\eb66";
+}
+.icon-customer-service-2:before {
+  content: "\eb67";
+}
+.icon-favorites-2:before {
+  content: "\eb68";
+}
+.icon-foot-print-2:before {
+  content: "\eb69";
+}
+.icon-franchisee-manager-2:before {
+  content: "\eb6a";
+}
+.icon-group-2:before {
+  content: "\eb6b";
+}
+.icon-groupcenter-2:before {
+  content: "\eb6c";
+}
+.icon-group-pickCode-2:before {
+  content: "\eb6d";
+}
+.icon-has-confirm-2:before {
+  content: "\eb6e";
+}
+.icon-integral-2:before {
+  content: "\eb6f";
+}
+.icon-inviteReward-2:before {
+  content: "\eb70";
+}
+.icon-invoice-2:before {
+  content: "\eb71";
+}
+.icon-league-vip-2:before {
+  content: "\eb72";
+}
+.icon-location-2:before {
+  content: "\eb73";
+}
+.icon-my-attention-2:before {
+  content: "\eb74";
+}
+.icon-my-presale-2:before {
+  content: "\eb75";
+}
+.icon-notebook-2:before {
+  content: "\eb76";
+}
+.icon-notify-2:before {
+  content: "\eb77";
+}
+.icon-pending-confirm-receipt-2:before {
+  content: "\eb78";
+}
+.icon-pending-delivery-2:before {
+  content: "\eb79";
+}
+.icon-pending-evaluate-2:before {
+  content: "\eb7a";
+}
+.icon-pending-payment-2:before {
+  content: "\eb7b";
+}
+.icon-pending-receipt-2:before {
+  content: "\eb7c";
+}
+.icon-promotionusercenter-2:before {
+  content: "\eb7d";
+}
+.icon-red-envelope-2:before {
+  content: "\eb7e";
+}
+.icon-seting-release-2:before {
+  content: "\eb7f";
+}
+.icon-seting-replies-2:before {
+  content: "\eb80";
+}
+.icon-shoppingcart-2:before {
+  content: "\eb81";
+}
+.icon-timecard-2:before {
+  content: "\eb82";
+}
+.icon-usercenter-gift-card-2:before {
+  content: "\eb83";
+}
+.icon-usercenter-jijile-2:before {
+  content: "\eb84";
+}
+.icon-usercenter-shopping-card-2:before {
+  content: "\eb85";
+}
+.icon-videousercenter-2:before {
+  content: "\eb86";
+}
+.icon-vip-card-2:before {
+  content: "\eb87";
+}
+.icon-winningRecord-2:before {
+  content: "\eb88";
+}
+.icon-all-order-block-2:before {
+  content: "\eb89";
+}
+.icon-balance-block-2:before {
+  content: "\eb8a";
+}
+.icon-coupon-block-2:before {
+  content: "\eb8b";
+}
+.icon-custom-block-2:before {
+  content: "\eb8c";
+}
+.icon-customer-service-block-2:before {
+  content: "\eb8d";
+}
+.icon-favorites-block-2:before {
+  content: "\eb8e";
+}
+.icon-foot-print-block-2:before {
+  content: "\eb8f";
+}
+.icon-franchisee-manager-block-2:before {
+  content: "\eb90";
+}
+.icon-group-block-2:before {
+  content: "\eb91";
+}
+.icon-groupcenter-block-2:before {
+  content: "\eb92";
+}
+.icon-group-pickCode-block-2:before {
+  content: "\eb93";
+}
+.icon-has-confirm-block-2:before {
+  content: "\eb94";
+}
+.icon-integral-block-2:before {
+  content: "\eb95";
+}
+.icon-inviteReward-block-2:before {
+  content: "\eb96";
+}
+.icon-invoice-block-2:before {
+  content: "\eb97";
+}
+.icon-league-vip-block-2:before {
+  content: "\eb98";
+}
+.icon-location-block-2:before {
+  content: "\eb99";
+}
+.icon-my-attention-block-2:before {
+  content: "\eb9a";
+}
+.icon-my-presale-block-2:before {
+  content: "\eb9b";
+}
+.icon-notebook-block-2:before {
+  content: "\eb9c";
+}
+.icon-notify-block-2:before {
+  content: "\eb9d";
+}
+.icon-pending-confirm-receipt-block-2:before {
+  content: "\eb9e";
+}
+.icon-pending-delivery-block-2:before {
+  content: "\eb9f";
+}
+.icon-pending-evaluate-block-2:before {
+  content: "\eba0";
+}
+.icon-pending-payment-block-2:before {
+  content: "\eba1";
+}
+.icon-pending-receipt-block-2:before {
+  content: "\eba2";
+}
+.icon-promotionusercenter-block-2:before {
+  content: "\eba3";
+}
+.icon-red-envelope-block-2:before {
+  content: "\eba4";
+}
+.icon-seting-release-block-2:before {
+  content: "\eba5";
+}
+.icon-seting-replies-block-2:before {
+  content: "\eba6";
+}
+.icon-shoppingcart-block-2:before {
+  content: "\eba7";
+}
+.icon-timecard-block-2:before {
+  content: "\eba8";
+}
+.icon-usercenter-gift-card-block-2:before {
+  content: "\eba9";
+}
+.icon-usercenter-jijile-block-2:before {
+  content: "\ebaa";
+}
+.icon-usercenter-shopping-card-block-2:before {
+  content: "\ebab";
+}
+.icon-videousercenter-block-2:before {
+  content: "\ebac";
+}
+.icon-vip-card-block-2:before {
+  content: "\ebad";
+}
+.icon-winningRecord-block-2:before {
+  content: "\ebae";
+}
+.icon-electronic-card:before {
+  content: "\eb5a";
+}
+.icon-user-close:before {
+  content: "\eb5b";
+}
+.icon-user-used:before {
+  content: "\eb5c";
+}
+.icon-user-wait-use:before {
+  content: "\eb5d";
+}
+.icon-ec-mark:before {
+  content: "\eb5e";
+}
+.icon-electronic-card-block:before {
+  content: "\eb5f";
+}
+.icon-user-close-block:before {
+  content: "\eb60";
+}
+.icon-user-used-block:before {
+  content: "\eb61";
+}
+.icon-user-wait-use-block:before {
+  content: "\eb62";
+}
+.icon-order-dine:before {
+  content: "\eb55";
+}
+.icon-order-storedvalue:before {
+  content: "\eb56";
+}
+.icon-order-shoppingcard:before {
+  content: "\eb57";
+}
+.icon-order-secondarycard:before {
+  content: "\eb58";
+}
+.icon-order-rechargecard:before {
+  content: "\eb59";
+}
+.icon-group-pickCode:before {
+  content: "\eb53";
+}
+.icon-group-pickCode-block:before {
+  content: "\eb54";
+}
+.icon-order-giftcard:before {
+  content: "\eb48";
+}
+.icon-order-transfer:before {
+  content: "\eb49";
+}
+.icon-order-tostore:before {
+  content: "\eb4a";
+}
+.icon-order-ecommerce:before {
+  content: "\eb4b";
+}
+.icon-order-exchange:before {
+  content: "\eb4c";
+}
+.icon-order-vipcard:before {
+  content: "\eb4d";
+}
+.icon-order-rownumber:before {
+  content: "\eb4e";
+}
+.icon-order-communitygroup:before {
+  content: "\eb4f";
+}
+.icon-order-takeaway:before {
+  content: "\eb50";
+}
+.icon-order-market:before {
+  content: "\eb51";
+}
+.icon-order-appointment:before {
+  content: "\eb52";
+}
+.icon-add-subshop:before {
+  content: "\eb47";
+}
+.icon-red-envelope:before {
+  content: "\e901";
+}
+.icon-news-turntable:before {
+  content: "\e93a";
+}
+.icon-franchisee-community:before {
+  content: "\e93f";
+}
+.icon-franchisee-index:before {
+  content: "\e940";
+}
+.icon-goods-refund-doing:before {
+  content: "\e94f";
+}
+.icon-foot-print-block:before {
+  content: "\e960";
+}
+.icon-foot-print:before {
+  content: "\e956";
+}
+.icon-comWrite:before {
+  content: "\e990";
+}
+.icon-promotion-commission:before {
+  content: "\ea0d";
+}
+.icon-beDelivered:before {
+  content: "\ea02";
+}
+.icon-inviteReward:before {
+  content: "\eb40";
+}
+.icon-inviteReward-block:before {
+  content: "\eb41";
+}
+.icon-usercenter-gift-card:before {
+  content: "\eb14";
+}
+.icon-usercenter-gift-card-block:before {
+  content: "\eb15";
+}
+.icon-dynamic-classify3:before {
+  content: "\eae0";
+}
+.icon-customer-service:before {
+  content: "\e958";
+}
+.icon-vip-card-block:before {
+  content: "\e972";
+}
+.icon-vip-card:before {
+  content: "\ea2a";
+}
+.icon-timecard:before {
+  content: "\eb39";
+}
+.icon-timecard-block:before {
+  content: "\eb25";
+}
+.icon-league-vip:before {
+  content: "\eb2c";
+}
+.icon-league-vip-block:before {
+  content: "\eb2d";
+}
+.icon-usercenter-shopping-card:before {
+  content: "\eb17";
+}
+.icon-usercenter-shopping-card-block:before {
+  content: "\eb18";
+}
+.icon-usercenter-jijile:before {
+  content: "\eac0";
+}
+.icon-usercenter-jijile-block:before {
+  content: "\eabf";
+}
+.icon-pending-delivery:before {
+  content: "\ea3e";
+}
+.icon-comEye:before {
+  content: "\e98a";
+}
+.icon-viewed-count:before {
+  content: "\eb3f";
+}
+.icon-pending-payment-block:before {
+  content: "\e96b";
+}
+.icon-all-order:before {
+  content: "\ea6a";
+}
+.icon-all-order-block:before {
+  content: "\e95a";
+}
+.icon-videousercenter-block:before {
+  content: "\e971";
+}
+.icon-videousercenter:before {
+  content: "\ea32";
+}
+.icon-winningRecord-block:before {
+  content: "\e973";
+}
+.icon-pending-delivery-block:before {
+  content: "\e969";
+}
+.icon-shop-home-page-new:before {
+  content: "\eb3c";
+}
+.icon-goods-four-shop:before {
+  content: "\eb2f";
+}
+.icon-group-block:before {
+  content: "\e962";
+}
+.icon-share-friend:before {
+  content: "\eb2e";
+}
+.icon-shop-location:before {
+  content: "\eb37";
+}
+.icon-goods-four-navigation:before {
+  content: "\eb30";
+}
+.icon-shop-good-share:before {
+  content: "\eb3d";
+}
+.icon-goods-four-share:before {
+  content: "\eb31";
+}
+.icon-community-group-hover-share:before {
+  content: "\ead8";
+}
+.icon-communityDetail-share:before {
+  content: "\eb20";
+}
+.icon-community-group-share:before {
+  content: "\eaf8";
+}
+.icon-promotionusercenter-block:before {
+  content: "\e96d";
+}
+.icon-goods-four-favorite:before {
+  content: "\eb32";
+}
+.icon-favorites:before {
+  content: "\e957";
+}
+.icon-favorites-block:before {
+  content: "\e95f";
+}
+.icon-like:before {
+  content: "\e9ca";
+}
+.icon-like_fill:before {
+  content: "\e9cb";
+}
+.icon-pending-receipt-block:before {
+  content: "\e96c";
+}
+.icon-pending-receipt:before {
+  content: "\ea4a";
+}
+.icon-goods-four-purchased:before {
+  content: "\eb33";
+}
+.icon-goods-four-cart:before {
+  content: "\eb34";
+}
+.icon-customer-service-block:before {
+  content: "\e95e";
+}
+.icon-franchisee-service:before {
+  content: "\e9db";
+}
+.icon-shop-to-top:before {
+  content: "\eb3e";
+}
+.icon-top:before {
+  content: "\ea2f";
+}
+.icon-custom-block:before {
+  content: "\e95d";
+}
+.icon-pending-payment:before {
+  content: "\ea41";
+}
+.icon-goods-four-service:before {
+  content: "\eb35";
+}
+.icon-pending-evaluate:before {
+  content: "\ea46";
+}
+.icon-pending-evaluate-block:before {
+  content: "\e96a";
+}
+.icon-invoice-block:before {
+  content: "\eb3a";
+}
+.icon-invoice:before {
+  content: "\eb3b";
+}
+.icon-location-block:before {
+  content: "\e965";
+}
+.icon-pending-confirm-receipt-block:before {
+  content: "\e968";
+}
+.icon-pending-confirm-receipt:before {
+  content: "\ea48";
+}
+.icon-custom:before {
+  content: "\ea90";
+}
+.icon-goods-four-pickup:before {
+  content: "\eb36";
+}
+.icon-has-confirm:before {
+  content: "\ea81";
+}
+.icon-shop-phone:before {
+  content: "\eb38";
+}
+.icon-fn-phone:before {
+  content: "\e977";
+}
+.icon-promotion-my-team:before {
+  content: "\ea0f";
+}
+.icon-my-promotion:before {
+  content: "\ea0c";
+}
+.icon-promotion-record:before {
+  content: "\ea10";
+}
+.icon-comPack:before {
+  content: "\e98d";
+}
+.icon-wait-shipment:before {
+  content: "\e9bc";
+}
+.icon-beConfirmed:before {
+  content: "\ea01";
+}
+.icon-card-num:before {
+  content: "\eb13";
+}
+.icon-select-good:before {
+  content: "\eb16";
+}
+.icon-selfDelivery-active:before {
+  content: "\eb08";
+}
+.icon-selfDelivery-default:before {
+  content: "\eb09";
+}
+.icon-my-presale-block:before {
+  content: "\eac4";
+}
+.icon-bargain-pay-success:before {
+  content: "\eac2";
+}
+.icon-franchisee-shop:before {
+  content: "\e9d8";
+}
+.icon-franchisee-goods:before {
+  content: "\e9dd";
+}
+.icon-goods-pick-model:before {
+  content: "\e90f";
+}
+.icon-pendingPayment:before {
+  content: "\e9fb";
+}
+.icon-goods-delivery-model:before {
+  content: "\eaf3";
+}
+.icon-community-group-goods-manage:before {
+  content: "\ead7";
+}
+.icon-my-presale:before {
+  content: "\eac8";
+}
+.icon-dining-active:before {
+  content: "\eb0a";
+}
+.icon-dining-default:before {
+  content: "\eb0b";
+}
+.icon-franchisee-restaurant:before {
+  content: "\e9d5";
+}
+.icon-goods-store-model:before {
+  content: "\eaf4";
+}
+.icon-list-vertical:before {
+  content: "\e924";
+}
+.icon-news-goodsdetail:before {
+  content: "\e92f";
+}
+.icon-dynamic-classify4:before {
+  content: "\eae1";
+}
+.icon-showclassify1:before {
+  content: "\eae2";
+}
+.icon-showclassify3:before {
+  content: "\eae4";
+}
+.icon-throughline:before {
+  content: "\eae6";
+}
+.icon-collect-first:before {
+  content: "\eadc";
+}
+.icon-collect-second:before {
+  content: "\eadd";
+}
+.icon-cart-sub:before {
+  content: "\eb1c";
+}
+.icon-communityPage-more:before {
+  content: "\eb1d";
+}
+.icon-collect-line:before {
+  content: "\ead3";
+}
+.icon-collect-rect-left:before {
+  content: "\ead4";
+}
+.icon-bindphone-code:before {
+  content: "\eb03";
+}
+.icon-share-integral:before {
+  content: "\eac9";
+}
+.icon-share-luckyWheel:before {
+  content: "\eaca";
+}
+.icon-share-scratch:before {
+  content: "\eacb";
+}
+.icon-share-vip-card:before {
+  content: "\eacc";
+}
+.icon-share-coupon:before {
+  content: "\ead0";
+}
+.icon-share-golden:before {
+  content: "\ead1";
+}
+.icon-presell-consign:before {
+  content: "\eabb";
+}
+.icon-integral-block:before {
+  content: "\e964";
+}
+.icon-balance-income:before {
+  content: "\eabd";
+}
+.icon-balance-spending:before {
+  content: "\eabe";
+}
+.icon-integral2:before {
+  content: "\ea2c";
+}
+.icon-subshop:before {
+  content: "\eaa7";
+}
+.icon-hotel-bed:before {
+  content: "\e9e5";
+}
+.icon-shopping-cart-set:before {
+  content: "\e9c9";
+}
+.icon-seckill-alarm:before {
+  content: "\e9a8";
+}
+.icon-leader-logo:before {
+  content: "\e9c3";
+}
+.icon-draw-lucky:before {
+  content: "\e99e";
+}
+.icon-friends-pay:before {
+  content: "\e9a0";
+}
+.icon-invite-friends:before {
+  content: "\e9a2";
+}
+.icon-peoplemore-pricelow:before {
+  content: "\e9a5";
+}
+.icon-regiment-leader:before {
+  content: "\e9a7";
+}
+.icon-share-collect:before {
+  content: "\eacf";
+}
+.icon-differential-tag:before {
+  content: "\e998";
+}
+.icon-collect-drink:before {
+  content: "\eb26";
+}
+.icon-star-empty:before {
+  content: "\ea58";
+}
+.icon-score:before {
+  content: "\ea6c";
+}
+.icon-new-appointment-grade:before {
+  content: "\e97e";
+}
+.icon-takeoutSocre:before {
+  content: "\e99a";
+}
+.icon-dmstar-empty:before {
+  content: "\e996";
+}
+.icon-dmstar:before {
+  content: "\e997";
+}
+.icon-fullstar:before {
+  content: "\ea13";
+}
+.icon-star:before {
+  content: "\ea63";
+}
+.icon-emptystar:before {
+  content: "\ea14";
+}
+.icon-timecard-comfirm:before {
+  content: "\eb27";
+}
+.icon-winning-record-nouse:before {
+  content: "\e993";
+}
+.icon-winning-record-invalid:before {
+  content: "\eac1";
+}
+.icon-winning-record-used:before {
+  content: "\e994";
+}
+.icon-new-appointment-used:before {
+  content: "\e984";
+}
+.icon-comLoad:before {
+  content: "\e98b";
+}
+.icon-new-appointment-pm:before {
+  content: "\e985";
+}
+.icon-new-appointment-am:before {
+  content: "\e986";
+}
+.icon-new-appointment-night:before {
+  content: "\e987";
+}
+.icon-promotion-team-phone:before {
+  content: "\e97b";
+}
+.icon-promotion-team-time:before {
+  content: "\e97c";
+}
+.icon-refresh:before {
+  content: "\eb24";
+}
+.icon-row-number-refresh:before {
+  content: "\e90a";
+}
+.icon-vip:before {
+  content: "\e991";
+}
+.icon-row-number-wait:before {
+  content: "\e90c";
+}
+.icon-shopping-scan:before {
+  content: "\e912";
+}
+.icon-filter-f:before {
+  content: "\e921";
+}
+.icon-news-to-page:before {
+  content: "\e913";
+}
+.icon-news-storage:before {
+  content: "\e928";
+}
+.icon-vip-card2:before {
+  content: "\ea3f";
+}
+.icon-news-payment:before {
+  content: "\e932";
+}
+.icon-news-refreshlist:before {
+  content: "\e934";
+}
+.icon-news-popup:before {
+  content: "\e933";
+}
+.icon-news-refreshpage:before {
+  content: "\e935";
+}
+.icon-Scratch:before {
+  content: "\ea51";
+}
+.icon-news-scratch:before {
+  content: "\e936";
+}
+.icon-community-nosee:before {
+  content: "\eab8";
+}
+.icon-communityPage-read:before {
+  content: "\eb1e";
+}
+.icon-community_view:before {
+  content: "\e91c";
+}
+.icon-view-records:before {
+  content: "\ea5e";
+}
+.icon-community-view_fill:before {
+  content: "\e93c";
+}
+.icon-eye:before {
+  content: "\e9f3";
+}
+.icon-community-follow:before {
+  content: "\eaad";
+}
+.icon-community-topic:before {
+  content: "\eaae";
+}
+.icon-gender-male:before {
+  content: "\eab0";
+}
+.icon-gender-female:before {
+  content: "\eaaf";
+}
+.icon-franchisee-wifi:before {
+  content: "\e942";
+}
+.icon-pack:before {
+  content: "\e943";
+}
+.icon-weixin-miniapp:before {
+  content: "\ea9a";
+}
+.icon-alipay:before {
+  content: "\e93d";
+}
+.icon-weixin:before {
+  content: "\e945";
+}
+.icon-full-weixin:before {
+  content: "\e949";
+}
+.icon-weixin-pay:before {
+  content: "\e9b6";
+}
+.icon-news-sharecircle:before {
+  content: "\e937";
+}
+.icon-lucky-wheel:before {
+  content: "\e9ae";
+}
+.icon-shopping-cart-delete:before {
+  content: "\e947";
+}
+.icon-delete:before {
+  content: "\ea34";
+}
+.icon-franchisee-intro:before {
+  content: "\e9d9";
+}
+.icon-refuse-refunds:before {
+  content: "\eac6";
+}
+.icon-goods-already-refund:before {
+  content: "\e94b";
+}
+.icon-bargain-refund-fail:before {
+  content: "\eac3";
+}
+.icon-goods-order-close:before {
+  content: "\e94c";
+}
+.icon-comFaile:before {
+  content: "\e995";
+}
+.icon-presell-completed:before {
+  content: "\eac5";
+}
+.icon-goods-order-complete:before {
+  content: "\e94d";
+}
+.icon-goods-refund:before {
+  content: "\e94e";
+}
+.icon-goods-refund-review:before {
+  content: "\e950";
+}
+.icon-balance-all:before {
+  content: "\eabc";
+}
+.icon-red-envelope-block:before {
+  content: "\e96f";
+}
+.icon-share-balance:before {
+  content: "\eace";
+}
+.icon-message-pay:before {
+  content: "\ea52";
+}
+.icon-goods-undone-payment:before {
+  content: "\e952";
+}
+.icon-goods-undone-ship:before {
+  content: "\e954";
+}
+.icon-topic-classify:before {
+  content: "\eb43";
+}
+.icon-showclassify2:before {
+  content: "\eae3";
+}
+.icon-list-block:before {
+  content: "\e923";
+}
+.icon-industry-type:before {
+  content: "\eaef";
+}
+.icon-row-number-type:before {
+  content: "\e909";
+}
+.icon-community-category:before {
+  content: "\e9df";
+}
+.icon-dynamic-classify2:before {
+  content: "\eadf";
+}
+.icon-delicious:before {
+  content: "\eacd";
+}
+.icon-showclassify4:before {
+  content: "\eae5";
+}
+.icon-video-collect:before {
+  content: "\e9af";
+}
+.icon-news-videodetail:before {
+  content: "\e911";
+}
+.icon-winningRecord2:before {
+  content: "\ea07";
+}
+.icon-winningRecord:before {
+  content: "\ea35";
+}
+.icon-qr-code:before {
+  content: "\e96e";
+}
+.icon-franchisee-qrcode:before {
+  content: "\e974";
+}
+.icon-new-appointment-qrcode:before {
+  content: "\e981";
+}
+.icon-qrcode-new:before {
+  content: "\ea0b";
+}
+.icon-notify-block:before {
+  content: "\e967";
+}
+.icon-announce1:before {
+  content: "\e9b0";
+}
+.icon-announce2:before {
+  content: "\e9b1";
+}
+.icon-announce3:before {
+  content: "\e9b2";
+}
+.icon-franchisee-manager-block:before {
+  content: "\e961";
+}
+.icon-franchisee-environment:before {
+  content: "\e9f4";
+}
+.icon-news-business:before {
+  content: "\e92a";
+}
+.icon-back-home-page:before {
+  content: "\eb19";
+}
+.icon-franchisee-store:before {
+  content: "\e9d7";
+}
+.icon-community-group-stock:before {
+  content: "\eadb";
+}
+.icon-community-group-goods-home:before {
+  content: "\eaea";
+}
+.icon-new-appointment-home:before {
+  content: "\e97f";
+}
+.icon-back-to-home:before {
+  content: "\e9be";
+}
+.icon-franchisee-manager:before {
+  content: "\e9bf";
+}
+.icon-store2:before {
+  content: "\ea16";
+}
+.icon-tostoreBusinessSure:before {
+  content: "\e9fa";
+}
+.icon-promotion-shop-setting:before {
+  content: "\ea11";
+}
+.icon-franchisee-tostore:before {
+  content: "\e9de";
+}
+.icon-store:before {
+  content: "\ea25";
+}
+.icon-man:before {
+  content: "\ea9d";
+}
+.icon-promotion-dealer:before {
+  content: "\ea04";
+}
+.icon-promotion-shareholder:before {
+  content: "\ea05";
+}
+.icon-promotion-head:before {
+  content: "\ea06";
+}
+.icon-my-attention-block:before {
+  content: "\eb01";
+}
+.icon-my-attention:before {
+  content: "\eafe";
+}
+.icon-group-success:before {
+  content: "\ea60";
+}
+.icon-group-fail:before {
+  content: "\ea65";
+}
+.icon-reach-num:before {
+  content: "\e9a6";
+}
+.icon-franchisee-my:before {
+  content: "\e941";
+}
+.icon-invite-news:before {
+  content: "\e9a3";
+}
+.icon-number-people:before {
+  content: "\e9a4";
+}
+.icon-groupcenter-block:before {
+  content: "\eaf1";
+}
+.icon-groupcenter:before {
+  content: "\eaf2";
+}
+.icon-communityPage-head:before {
+  content: "\eb1f";
+}
+.icon-usercenter:before {
+  content: "\ea39";
+}
+.icon-group:before {
+  content: "\ea76";
+}
+.icon-not-start-group:before {
+  content: "\ea72";
+}
+.icon-community-default_image:before {
+  content: "\e9ba";
+}
+.icon-mine:before {
+  content: "\e9ce";
+}
+.icon-community_usercenter:before {
+  content: "\e9bd";
+}
+.icon-bbs-avatar:before {
+  content: "\e9b7";
+}
+.icon-comApply:before {
+  content: "\e989";
+}
+.icon-community_mine:before {
+  content: "\e9c4";
+}
+.icon-danmu-send:before {
+  content: "\e9f0";
+}
+.icon-message-push:before {
+  content: "\e992";
+}
+.icon-seting-release-block:before {
+  content: "\eae8";
+}
+.icon-community-group-thumb:before {
+  content: "\eaf7";
+}
+.icon-like-bold:before {
+  content: "\eaa8";
+}
+.icon-news-unlike:before {
+  content: "\eab7";
+}
+.icon-news-like:before {
+  content: "\eab4";
+}
+.icon-thumb-empty:before {
+  content: "\e904";
+}
+.icon-like2:before {
+  content: "\ea40";
+}
+.icon-like-solid:before {
+  content: "\ea37";
+}
+.icon-thumb:before {
+  content: "\e905";
+}
+.icon-praise:before {
+  content: "\e9cf";
+}
+.icon-praise_fill:before {
+  content: "\e9d0";
+}
+.icon-news-share:before {
+  content: "\eab5";
+}
+.icon-franchisee-share:before {
+  content: "\e9dc";
+}
+.icon-comShare:before {
+  content: "\e999";
+}
+.icon-bbs-share:before {
+  content: "\e9b9";
+}
+.icon-share-v:before {
+  content: "\e9f2";
+}
+.icon-news-jump:before {
+  content: "\e930";
+}
+.icon-community-share:before {
+  content: "\e9e3";
+}
+.icon-community_share:before {
+  content: "\e91d";
+}
+.icon-share2:before {
+  content: "\ea17";
+}
+.icon-community_share_fill:before {
+  content: "\e9c8";
+}
+.icon-share:before {
+  content: "\e9d2";
+}
+.icon-news-sharefriends:before {
+  content: "\e938";
+}
+.icon-share_fill:before {
+  content: "\e9d3";
+}
+.icon-share-new:before {
+  content: "\ea0a";
+}
+.icon-new-share:before {
+  content: "\ea9f";
+}
+.icon-new-appointment-share:before {
+  content: "\e983";
+}
+.icon-promotionusercenter2:before {
+  content: "\e9eb";
+}
+.icon-promotion-goods:before {
+  content: "\ea0e";
+}
+.icon-news-extension:before {
+  content: "\e92d";
+}
+.icon-promotionusercenter:before {
+  content: "\e9b5";
+}
+.icon-community-stop:before {
+  content: "\e9d4";
+}
+.icon-community-group-leader-unused:before {
+  content: "\eaeb";
+}
+.icon-luckyMute:before {
+  content: "\e9f1";
+}
+.icon-luckyMusic:before {
+  content: "\ea03";
+}
+.icon-community_like:before {
+  content: "\e9c1";
+}
+.icon-community_like_fill:before {
+  content: "\e9c0";
+}
+.icon-goods-detail-favorites:before {
+  content: "\e959";
+}
+.icon-heart-empty:before {
+  content: "\ea54";
+}
+.icon-collect:before {
+  content: "\e9f6";
+}
+.icon-community_praise:before {
+  content: "\e91e";
+}
+.icon-community_praise_fill:before {
+  content: "\e91b";
+}
+.icon-community-thumb-up:before {
+  content: "\e9e1";
+}
+.icon-collect-solid:before {
+  content: "\e9f7";
+}
+.icon-heart:before {
+  content: "\ea6b";
+}
+.icon-tostoreBadComment:before {
+  content: "\e9fe";
+}
+.icon-tostoreGoodComment:before {
+  content: "\e9ff";
+}
+.icon-tostoreMiddleComment:before {
+  content: "\ea00";
+}
+.icon-commonly:before {
+  content: "\ea1b";
+}
+.icon-dissatisfied:before {
+  content: "\ea1a";
+}
+.icon-satisfied:before {
+  content: "\ea19";
+}
+.icon-smilingface:before {
+  content: "\ea49";
+}
+.icon-smileface:before {
+  content: "\ea68";
+}
+.icon-smiley-empty:before {
+  content: "\e906";
+}
+.icon-smiley:before {
+  content: "\e907";
+}
+.icon-franchisee-picture:before {
+  content: "\e9da";
+}
+.icon-upload-picture:before {
+  content: "\eb44";
+}
+.icon-fn-camera:before {
+  content: "\e976";
+}
+.icon-goods-add-image:before {
+  content: "\e946";
+}
+.icon-addassessimg:before {
+  content: "\ea12";
+}
+.icon-news-wifi:before {
+  content: "\e93b";
+}
+.icon-wifi:before {
+  content: "\ea21";
+}
+.icon-express-default:before {
+  content: "\eb0f";
+}
+.icon-express-active:before {
+  content: "\eb10";
+}
+.icon-franchisee-waimai:before {
+  content: "\e9d6";
+}
+.icon-goods-express-model:before {
+  content: "\eaf5";
+}
+.icon-beReceived:before {
+  content: "\e9fd";
+}
+.icon-goods-undone-receipt:before {
+  content: "\e953";
+}
+.icon-distribution:before {
+  content: "\ea1c";
+}
+.icon-goods-logistics:before {
+  content: "\e99d";
+}
+.icon-addshoppingcart5:before {
+  content: "\e99b";
+}
+.icon-shoppingcart-drink:before {
+  content: "\eb28";
+}
+.icon-shoppingcart-block:before {
+  content: "\e970";
+}
+.icon-fn-cart:before {
+  content: "\e975";
+}
+.icon-community-group-goods-cart:before {
+  content: "\eae9";
+}
+.icon-shoppingcart2:before {
+  content: "\ea67";
+}
+.icon-shoppingcart:before {
+  content: "\e9f9";
+}
+.icon-new-goods-shopping:before {
+  content: "\e925";
+}
+.icon-franchisee-cart:before {
+  content: "\e93e";
+}
+.icon-shoppingCart2:before {
+  content: "\ea24";
+}
+.icon-addshoppingcart:before {
+  content: "\ea2b";
+}
+.icon-addshoppingcart1:before {
+  content: "\e9ac";
+}
+.icon-addshoppingcart2:before {
+  content: "\e9ab";
+}
+.icon-balance-block:before {
+  content: "\e95b";
+}
+.icon-balance2:before {
+  content: "\ea26";
+}
+.icon-balance:before {
+  content: "\ea38";
+}
+.icon-recharge:before {
+  content: "\ea3a";
+}
+.icon-sevice-drink:before {
+  content: "\eb29";
+}
+.icon-news-custom:before {
+  content: "\e92c";
+}
+.icon-community-ai:before {
+  content: "\e91a";
+}
+.icon-new-appointment-service:before {
+  content: "\e982";
+}
+.icon-service2:before {
+  content: "\ea2e";
+}
+.icon-big-pic:before {
+  content: "\e910";
+}
+.icon-topic-return:before {
+  content: "\eb42";
+}
+.icon-fillet-rectangle:before {
+  content: "\e99f";
+}
+.icon-shopping-cart-switch:before {
+  content: "\e9c6";
+}
+.icon-change:before {
+  content: "\eaf0";
+}
+.icon-news-top:before {
+  content: "\e939";
+}
+.icon-community-sort:before {
+  content: "\e9e8";
+}
+.icon-bargain-save:before {
+  content: "\e978";
+}
+.icon-news-totop:before {
+  content: "\eab6";
+}
+.icon-community-go-top:before {
+  content: "\e918";
+}
+.icon-comment55:before {
+  content: "\ea28";
+}
+.icon-publish:before {
+  content: "\ea47";
+}
+.icon-edit:before {
+  content: "\ea36";
+}
+.icon-community-edit:before {
+  content: "\e919";
+}
+.icon-news-video-play:before {
+  content: "\e90d";
+}
+.icon-filter-up:before {
+  content: "\e922";
+}
+.icon-new-appointment-arrowhead:before {
+  content: "\e97d";
+}
+.icon-filter-down:before {
+  content: "\e920";
+}
+.icon-play:before {
+  content: "\e9f5";
+}
+.icon-news-video:before {
+  content: "\eaa1";
+}
+.icon-fesdown:before {
+  content: "\ea78";
+}
+.icon-news-up:before {
+  content: "\e914";
+}
+.icon-news-down:before {
+  content: "\e915";
+}
+.icon-user-comment-arrow:before {
+  content: "\eb02";
+}
+.icon-community-group-arrow:before {
+  content: "\eafc";
+}
+.icon-collect-rect-right:before {
+  content: "\ead5";
+}
+.icon-community-group-retract:before {
+  content: "\eaf9";
+}
+.icon-dynamic-classify1:before {
+  content: "\eade";
+}
+.icon-downarrow:before {
+  content: "\ea3b";
+}
+.icon-uparrow:before {
+  content: "\ea3c";
+}
+.icon-leftarrow:before {
+  content: "\ea6e";
+}
+.icon-rightarrow:before {
+  content: "\ea6f";
+}
+.icon-verify:before {
+  content: "\ea7d";
+}
+.icon-announce4:before {
+  content: "\e9b3";
+}
+.icon-pending-delivery-meal:before {
+  content: "\ea4c";
+}
+.icon-user-center-news:before {
+  content: "\eaac";
+}
+.icon-user-center-news-block:before {
+  content: "\eaab";
+}
+.icon-Interactive-message:before {
+  content: "\ea29";
+}
+.icon-topic:before {
+  content: "\ea4b";
+}
+.icon-service:before {
+  content: "\ea73";
+}
+.icon-comment:before {
+  content: "\ea42";
+}
+.icon-communityDetail-reply:before {
+  content: "\eb21";
+}
+.icon-communityPage-reply:before {
+  content: "\eb22";
+  color: #666;
+}
+.icon-community-group-reply:before {
+  content: "\eafa";
+}
+.icon-goods-customer-service:before {
+  content: "\e955";
+}
+.icon-good-comment:before {
+  content: "\ea08";
+}
+.icon-news-topic:before {
+  content: "\e903";
+}
+.icon-no-criticism:before {
+  content: "\e9b4";
+}
+.icon-news-comment:before {
+  content: "\eab1";
+}
+.icon-beEvaluated:before {
+  content: "\e9fc";
+}
+.icon-message:before {
+  content: "\e9cc";
+}
+.icon-message_fill:before {
+  content: "\e9cd";
+}
+.icon-commen-bottom:before {
+  content: "\ea59";
+}
+.icon-reply:before {
+  content: "\ea27";
+}
+.icon-bbs-comment:before {
+  content: "\e9b8";
+}
+.icon-comment-right:before {
+  content: "\ea5b";
+}
+.icon-consult:before {
+  content: "\e9f8";
+}
+.icon-comment-bottom:before {
+  content: "\ea33";
+}
+.icon-franchisee-dynamics:before {
+  content: "\e97a";
+}
+.icon-message-comment:before {
+  content: "\ea50";
+}
+.icon-community-group-comments:before {
+  content: "\eafb";
+}
+.icon-comment2:before {
+  content: "\ea6d";
+}
+.icon-community_message:before {
+  content: "\e91f";
+}
+.icon-community_message_fill:before {
+  content: "\e9c2";
+}
+.icon-bubble:before {
+  content: "\ea86";
+}
+.icon-goods-undone-evaluation:before {
+  content: "\e951";
+}
+.icon-community-friend:before {
+  content: "\e9e9";
+}
+.icon-communityPage-news:before {
+  content: "\eb23";
+}
+.icon-community_notify:before {
+  content: "\e917";
+}
+.icon-remind:before {
+  content: "\e9d1";
+}
+.icon-community_remind:before {
+  content: "\e9c7";
+}
+.icon-notify2:before {
+  content: "\ea4d";
+}
+.icon-notify:before {
+  content: "\ea7b";
+}
+.icon-integral:before {
+  content: "\ea53";
+}
+.icon-integral-income:before {
+  content: "\ea56";
+}
+.icon-integral-pay:before {
+  content: "\ea5a";
+}
+.icon-community-group-fire:before {
+  content: "\eaee";
+}
+.icon-community-group-saled:before {
+  content: "\eada";
+}
+.icon-fire:before {
+  content: "\ea43";
+}
+.icon-clubs-empty:before {
+  content: "\ea57";
+}
+.icon-clubs:before {
+  content: "\ea55";
+}
+.icon-negative:before {
+  content: "\ea5c";
+}
+.icon-negative-active:before {
+  content: "\ea5d";
+}
+.icon-positive:before {
+  content: "\ea61";
+}
+.icon-neutral-active:before {
+  content: "\ea5f";
+}
+.icon-positive-active:before {
+  content: "\ea62";
+}
+.icon-seting-release:before {
+  content: "\eb07";
+}
+.icon-seting-replies:before {
+  content: "\eb06";
+}
+.icon-vcard-msg-list:before {
+  content: "\eaff";
+}
+.icon-completed:before {
+  content: "\ea87";
+}
+.icon-comOrder:before {
+  content: "\e98c";
+}
+.icon-sales-num:before {
+  content: "\ea18";
+}
+.icon-intraCity-active:before {
+  content: "\eb11";
+}
+.icon-intraCity-default:before {
+  content: "\eb12";
+}
+.icon-news-community:before {
+  content: "\e902";
+}
+.icon-comRoom:before {
+  content: "\e98e";
+}
+.icon-goods-city-model:before {
+  content: "\eaf6";
+}
+.icon-ex-remark:before {
+  content: "\eb1a";
+}
+.icon-card-ex:before {
+  content: "\eb1b";
+}
+.icon-tokeout-info:before {
+  content: "\ea1d";
+}
+.icon-new-appointment-notebook:before {
+  content: "\e988";
+}
+.icon-news-news:before {
+  content: "\e908";
+}
+.icon-franchisee-shop-info:before {
+  content: "\e979";
+}
+.icon-notebook-block:before {
+  content: "\e966";
+}
+.icon-seting-replies-block:before {
+  content: "\eae7";
+}
+.icon-message-form:before {
+  content: "\ea4f";
+}
+.icon-comNote:before {
+  content: "\e99c";
+}
+.icon-form-info:before {
+  content: "\e9bb";
+}
+.icon-notebook:before {
+  content: "\ea66";
+}
+.icon-community-group-order:before {
+  content: "\eaec";
+}
+.icon-pending-order:before {
+  content: "\ea44";
+}
+.icon-franchisee-certif:before {
+  content: "\ea9e";
+}
+.icon-community-group-income-detail:before {
+  content: "\ead9";
+}
+.icon-refund-audit:before {
+  content: "\ea70";
+}
+.icon-waimai-search:before {
+  content: "\e9c5";
+}
+.icon-search4:before {
+  content: "\eb0c";
+}
+.icon-search3:before {
+  content: "\eb0d";
+}
+.icon-search2:before {
+  content: "\eb0e";
+}
+.icon-search:before {
+  content: "\ea71";
+}
+.icon-tradeApt-location:before {
+  content: "\eb2a";
+}
+.icon-relocate:before {
+  content: "\e9ec";
+}
+.icon-location2:before {
+  content: "\ea64";
+}
+.icon-topic-location:before {
+  content: "\eb45";
+}
+.icon-fesadress:before {
+  content: "\ea77";
+}
+.icon-location:before {
+  content: "\ea2d";
+}
+.icon-goods-location:before {
+  content: "\e948";
+}
+.icon-hotel-location:before {
+  content: "\e9e7";
+}
+.icon-community-location:before {
+  content: "\e916";
+}
+.icon-fes_adress:before {
+  content: "\ea7a";
+}
+.icon-presell-payment-overtime:before {
+  content: "\eac7";
+}
+.icon-seckill-alarm-clock:before {
+  content: "\e9a9";
+}
+.icon-news-kill:before {
+  content: "\e931";
+}
+.icon-seckill-detail-alarm:before {
+  content: "\e9e2";
+}
+.icon-about-start:before {
+  content: "\eaed";
+}
+.icon-time:before {
+  content: "\e944";
+}
+.icon-franchisee-business:before {
+  content: "\ea97";
+}
+.icon-comTime:before {
+  content: "\e98f";
+}
+.icon-dm-clock:before {
+  content: "\eaaa";
+}
+.icon-business-time:before {
+  content: "\ea1e";
+}
+.icon-group-buy:before {
+  content: "\ea80";
+}
+.icon-vcard:before {
+  content: "\eb00";
+}
+.icon-group-join:before {
+  content: "\ea82";
+}
+.icon-news-bigpicture:before {
+  content: "\e929";
+}
+.icon-image:before {
+  content: "\ea45";
+}
+.icon-facetoface-pay:before {
+  content: "\ea79";
+}
+.icon-attestation:before {
+  content: "\ea7e";
+}
+.icon-good-detail:before {
+  content: "\ea09";
+}
+.icon-new-appointment-pic:before {
+  content: "\e980";
+}
+.icon-news-input-image:before {
+  content: "\eab3";
+}
+.icon-picture:before {
+  content: "\ea69";
+}
+.icon-pic-code:before {
+  content: "\eb04";
+}
+.icon-news-comment-image:before {
+  content: "\eab2";
+}
+.icon-pic:before {
+  content: "\ea84";
+}
+.icon-not-used:before {
+  content: "\ea74";
+}
+.icon-invalid:before {
+  content: "\ea83";
+}
+.icon-already-user:before {
+  content: "\ea85";
+}
+.icon-presell-surplus:before {
+  content: "\eab9";
+}
+.icon-presell-handsel:before {
+  content: "\eaba";
+}
+.icon-coupon2:before {
+  content: "\ea3d";
+}
+.icon-news-coupon:before {
+  content: "\e92b";
+}
+.icon-pending-consum:before {
+  content: "\ea4e";
+}
+.icon-already-consumed:before {
+  content: "\ea89";
+}
+.icon-row-number-fee:before {
+  content: "\e90b";
+}
+.icon-refunds:before {
+  content: "\ea30";
+}
+.icon-group-pay:before {
+  content: "\ea8a";
+}
+.icon-goods-after-sale:before {
+  content: "\e94a";
+}
+.icon-group-pay1:before {
+  content: "\ea8b";
+}
+.icon-mine-row-number:before {
+  content: "\e90e";
+}
+.icon-coupon-block:before {
+  content: "\e95c";
+}
+.icon-coupon:before {
+  content: "\ea8c";
+}
+.icon-news-goldegg:before {
+  content: "\e92e";
+}
+.icon-golden-eggs:before {
+  content: "\ea8e";
+}
+.icon-promotion-identity:before {
+  content: "\ea91";
+}
+.icon-community-comment:before {
+  content: "\e9ea";
+}
+.icon-more:before {
+  content: "\ea92";
+}
+.icon-tokeout-discount:before {
+  content: "\ea8d";
+}
+.icon-tokeout-reduce:before {
+  content: "\ea8f";
+}
+.icon-takeout-replace:before {
+  content: "\ea93";
+}
+.icon-franchisee-cate:before {
+  content: "\ea98";
+}
+.icon-list:before {
+  content: "\ea9b";
+}
+.icon-filter:before {
+  content: "\eaa0";
+}
+.icon-franchisee-coupon:before {
+  content: "\ea99";
+}
+.icon-franchisee-video:before {
+  content: "\ea95";
+}
+.icon-franchisee-booking:before {
+  content: "\ea96";
+}
+.icon-for-help:before {
+  content: "\e9ef";
+}
+.icon-warning:before {
+  content: "\ead6";
+}
+.icon-community-report:before {
+  content: "\e9e6";
+}
+.icon-userCollect-fail:before {
+  content: "\eaa2";
+}
+.icon-userCollect-farm:before {
+  content: "\eaa3";
+}
+.icon-for-notice:before {
+  content: "\e9e4";
+}
+.icon-news-add:before {
+  content: "\e926";
+}
+.icon-news-collect:before {
+  content: "\e927";
+}
+.icon-cart-add:before {
+  content: "\eb05";
+}
+.icon-addshoppingcart3:before {
+  content: "\e9ad";
+}
+.icon-plus:before {
+  content: "\ea23";
+}
+.icon-addshoppingcart4:before {
+  content: "\e9aa";
+}
+.icon-closes:before {
+  content: "\ea7c";
+}
+.icon-community-group-close:before {
+  content: "\eafd";
+}
+.icon-collect-close:before {
+  content: "\ead2";
+}
+.icon-close-btn:before {
+  content: "\e9ee";
+}
+.icon-closed:before {
+  content: "\ea7f";
+}
+.icon-gou:before {
+  content: "\ea22";
+}
+.icon-goods-support-delivery:before {
+  content: "\e9e0";
+}
+.icon-group-complete:before {
+  content: "\ea88";
+}
+.icon-gp-success:before {
+  content: "\e9a1";
+}
+.icon-has-confirm-block:before {
+  content: "\e963";
+}
+.icon-success-tip:before {
+  content: "\e9ed";
+}
+.icon-userCollect-success:before {
+  content: "\eaa4";
+}
+.icon-userCollect-successS:before {
+  content: "\eaa5";
+}
+.icon-topic-phone:before {
+  content: "\eb46";
+}
+.icon-communityDetail-phone:before {
+  content: "\eb2b";
+}
+.icon-news-callphone:before {
+  content: "\ea15";
+}
+.icon-tokeout-phone:before {
+  content: "\ea1f";
+}
+.icon-tokeout-mobile:before {
+  content: "\ea20";
+}
+.icon-franchisee-phone:before {
+  content: "\ea9c";
+}
+.icon-fesphone:before {
+  content: "\ea75";
+}
+.icon-telephone:before {
+  content: "\ea94";
+}
+.icon-phone:before {
+  content: "\ea31";
+}
+.icon-takeout-cellphone:before {
+  content: "\eaa6";
+}
+.icon-dm-phone:before {
+  content: "\eaa9";
+}
+.icon-takeout-cellphone-left:before {
+  content: "\ebc3";
+}

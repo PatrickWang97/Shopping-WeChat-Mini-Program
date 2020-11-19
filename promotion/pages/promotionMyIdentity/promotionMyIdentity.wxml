@@ -1,0 +1,62 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="top-section">
+  <view wx:if="{{ identity === '1' }}">
+    <view class="identity-logo-container">
+      <view class="ico-moon icon-promotion-head promotion-avatar"></view>
+      <image class="logo-bg" mode="widthFix" src="http://cdn.jisuapp.cn/static/webapp/images/promotion-medals.png"></image>
+    </view>
+    <view class="identity-title">团长</view>
+    <view class="identity-benefit">团长身份推广员可额外获得团队成员订单5%佣金收益</view>
+    <view class="identity-manage-btn" bindtap="goToLeaderPromotion">团长推广中心</view>
+  </view>
+  <view wx:else>
+    <view class="identity-logo-container">
+      <view class="ico-moon icon-promotion-shareholder promotion-avatar" wx:if="{{ identity == 3}}"></view>
+      <view class="ico-moon icon-promotion-dealer promotion-avatar" wx:if="{{ identity == 2}}"></view>
+      <view class="ico-moon icon-promotion-shareholder promotion-avatar" wx:if="{{ identity == 0}}"></view>
+      <image class="logo-bg" mode="widthFix" src="http://cdn.jisuapp.cn/static/webapp/images/promotion-medals.png"></image>
+    </view>
+    <view class="identity-title" wx:if="{{ identity == 2}}">区域经销商</view>
+    <view class="identity-title" wx:if="{{ identity == 3}}">商城股东</view>
+    <view class="identity-title" wx:if="{{ identity == 0}}">普通推广员</view>
+    <view class="identity-benefit">申请身份获得更多佣金提成</view>
+  </view>
+</view>
+ <view class="middle-section">
+  <view class="middle-section-title">推广员可申请身份</view>
+   <view>
+    <!-- <view class="middle-section-item">
+      <view class="middle-img-container">
+        <view class="ico-moon icon-promotion-head promotion-ico"></view>
+      </view>
+      <view class="middel-benefit">
+        <view class="promotion-title">团长</view>
+        <view>团长身份推广员可额外获得团队成员订单<text>{{ '5%' }}</text>的佣金收益</view>
+      </view>
+    </view>  -->
+     <view class="middle-section-item">
+      <view class="middle-img-container">
+        <view class="ico-moon icon-promotion-dealer promotion-ico"></view>
+      </view>
+      <view class="middel-benefit">
+        <view class="promotion-title">区域经销商</view>
+        <view>区域经销商身份推广员可额外获得承包区域订单,省级为<text>{{ distributionInfo.role_setting[2].province_commission_percent }}%</text>，市级为<text>{{ distributionInfo.role_setting[2].city_commission_percent }}%</text>，区级为<text>{{ distributionInfo.role_setting[2].county_commission_percent }}%</text>的佣金收益</view>
+      </view>
+    </view>
+    <view class="middle-section-item">
+      <view class="middle-img-container">
+        <view class="ico-moon icon-promotion-shareholder promotion-ico"></view>
+      </view>
+      <view class="middel-benefit">
+        <view class="promotion-title">股东</view>
+        <view>商城股东身份推广员可额外获得商城订单<text>{{ distributionInfo.role_setting[3].commission_percent }}%</text>的佣金收益</view>
+      </view>
+    </view> 
+  </view> 
+</view>
+<view class="middel-section-tip">注意：身份唯一且不可重复</view>
+<view class="bottom-section">
+  <view class="promotion-btn" bindtap="makePhoneCall">申请身份</view>
+</view> 
+

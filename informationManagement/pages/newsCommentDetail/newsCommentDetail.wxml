@@ -1,0 +1,204 @@
+<!--informationManagement/pages/commentDetail/commentDetail.wxml-->
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-sinkingModal></component-sinkingModal>
+<!-- 时间处理模块 -->
+<wxs module="trans">
+  var compare = function(num) {
+    return num < 10 ? '0' + num : num; 
+  }
+  var timeTrans = function(timestamp) {
+    var time = getDate(parseInt(timestamp) * 1000),
+        y = time.getFullYear(),
+        m = time.getMonth()+1,
+        d = time.getDate(),
+        h = time.getHours(),
+        mm = time.getMinutes(),
+        s = time.getSeconds();
+    return y + '-' + compare(m) + '-' + compare(d) + ' ' + compare(h) + ':' + compare(mm);
+  }
+  module.exports = {
+    timeTrans:timeTrans
+  }
+</wxs>
+
+<!-- 评论详情页  simple-->
+<block wx:if="{{type == 'simple'}}">
+  <!-- 主体 -->
+  <view class="commentStretch-body-box">
+    <view class="commentStretch-body-left">
+      <image class="commentStretch-body-avatar" src="{{commentInfo.content_data.headimgurl}}"></image>
+    </view>
+    <view class="commentStretch-body-right">
+      <view class="commentStretch-body-right-top">
+        <text class="commentStretch-body-nickname">{{commentInfo.content_data.nickname}}</text>
+        <view class="commentStretch-body-operation">
+          <icon 
+            class="ico-moon icon-news-comment"
+            catchtap="commentToComment" 
+            data-parent-comment-id="{{commentId}}" 
+            data-comment-id="{{commentId}}"
+            data-nickname="{{commentInfo.content_data.nickname}}"></icon>
+          <icon 
+            class="ico-moon ico-moon {{commentInfo.is_liked == 1 ? 'icon-news-like': 'icon-community-group-thumb'}}"
+            style="color:{{commentInfo.is_liked == 1 ? '#F85959': ''}};"
+            catchtap="addCommentLike"
+            data-id="{{commentId}}"
+            data-index="body"></icon>
+          <text 
+            catchtap="addCommentLike"
+            data-id="{{commentId}}"
+            data-index="body">{{commentInfo.like_count}}</text>
+        </view>
+      </view>
+      <text class="commentStretch-body-time" wx:if="{{commentInfo.content_data.add_time}}">{{trans.timeTrans(commentInfo.content_data.add_time)}}</text>
+      <text class="commentStretch-body-content">{{commentInfo.content_data.text}}</text>
+      <view 
+        class="commentStretch-body-image"
+        style="width: {{imageload['body']['width']}}rpx; height: {{imageload['body']['height']}}rpx;"
+        wx:if="{{commentInfo.content_data.comment_img_url}}"
+        catchtap="previewOneImage"
+        data-image="{{commentInfo.content_data.comment_img_url}}">
+        <image 
+          src="{{commentInfo.content_data.comment_img_url}}" 
+          bindload="imageload" 
+          data-key="body" 
+          data-max-width="564" 
+          data-max-height="240"
+          data-min-width="76"
+          style="width: {{imageload['body']['width']}}rpx; height: {{imageload['body']['height']}}rpx;"></image>
+        <view>
+          <text>查看原图</text>
+        </view>
+      </view>
+      <view class="commentStretch-body-location">
+        <icon class="ico-moon icon-community-location" wx:if="{{commentInfo.content_data.address}}"></icon>
+        <text wx:if="{{commentInfo.content_data.address}}">{{commentInfo.content_data.address}}</text>
+      </view>
+    </view>
+  </view>
+  <!-- 回复列表 -->
+  <view class="commentStretch-comment-list">
+    <view class="commentStretch-comment-list-item" wx:for="{{commentData.commentList}}" wx:key="index">
+      <view class="commentStretch-comment-list-left">
+        <image class="commentStretch-comment-list-avatar" src="{{item.content_data.headimgurl}}"></image>
+      </view>
+      <view class="commentStretch-comment-list-right">
+        <view class="commentStretch-comment-list-right-top">
+          <text class="commentStretch-comment-list-nickname">{{item.content_data.nickname}}{{(item.content_data.reply_to.nickname != commentInfo.content_data.nickname && item.content_data.reply_to.nickname != item.content_data.nickname) ? ' 回复 ' + item.content_data.reply_to.nickname : ''}}</text>
+          <view class="commentStretch-comment-list-operation">
+            <icon 
+              class="ico-moon ico-moon {{item.is_liked == 1 ? 'icon-news-like': 'icon-community-group-thumb'}}"
+              style="color:{{item.is_liked == 1 ? '#F85959': ''}};"
+              catchtap="addCommentLike" 
+              data-id="{{item.id}}"
+              data-index="{{index}}"></icon>
+            <text>{{item.like_count}}</text>
+          </view>
+        </view>
+        <text class="commentStretch-comment-list-time">{{trans.timeTrans(item.content_data.add_time)}}</text>
+        <text 
+          class="commentStretch-comment-list-content" 
+          catchtap="commentToComment" 
+          data-parent-comment-id="{{commentId}}" 
+          data-comment-id="{{item.id}}"
+          data-nickname="{{item.content_data.nickname}}">{{item.content_data.text}}</text>
+        <view 
+          class="commentStretch-comment-list-image" 
+          style="width: {{imageload[index]['width']}}rpx; height: {{imageload[index]['height']}}rpx;"
+          wx:if="{{item.content_data.comment_img_url}}"
+          catchtap="previewOneImage"
+          data-image="{{item.content_data.comment_img_url}}">
+          <image 
+            src="{{item.content_data.comment_img_url}}" 
+            bindload="imageload" 
+            data-key="{{index}}" 
+            data-max-width="564" 
+            data-max-height="240"
+            data-min-width="76"
+            style="width: {{imageload[index]['width']}}rpx; height: {{imageload[index]['height']}}rpx;"></image>
+          <view>
+            <text>查看原图</text>
+          </view>
+        </view>
+        <view class="commentStretch-comment-list-location">
+          <icon class="ico-moon icon-community-location" wx:if="{{item.content_data.address}}"></icon>
+          <text wx:if="{{item.content_data.address}}">{{item.content_data.address}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部评论框 -->
+  <view class="commentStretch-comment-input-blank" wx:if="{{!showReplyBox}}"></view>
+  <view class="commentStretch-comment-input-box" 
+        wx:if="{{!showReplyBox}}" 
+        catchtap="commentToComment"
+        data-parent-comment-id="{{commentId}}" 
+        data-comment-id="{{commentId}}"
+        data-nickname="{{commentInfo.content_data.nickname}}">
+    <input
+      class="commentStretch-comment-input"
+      placeholder="评论回复..."
+      placeholder-class="commentStretch-comment-input-placeholder"
+      value="{{replyParam.content}}"
+      show-confirm-bar="{{false}}"
+      adjust-position="{{false}}"
+      disabled="{{true}}"></input>
+  </view>
+</block>
+
+<!-- 新版评论框 -->
+<view class="commentDetail-comment-mask" wx:if="{{showReplyBox}}" bindtap="cancelReply">
+</view>
+<view class="commentDetail-comment-box" id="comment-box" wx:if="{{showReplyBox}}" style="bottom: {{ replyBoxFocus ? keyboardHeight : 0 }};">
+  <view class="commentDetail-comment-top">
+    <textarea 
+      class="commentDetail-comment-input"
+      id=""
+      placeholder="{{replyPlaceholder}}"
+      placeholder-style="color: #d8d8d8; font-size: 28rpx;"
+      maxlength="-1"
+      value="{{replyParam.content}}"
+      auto-focus="{{showReplyBox}}"
+      show-confirm-bar="{{false}}"
+      fixed="{{true}}"
+      adjust-position="{{false}}"
+      bindinput="replyInput"
+      bindfocus="replyFocus"
+      bindblur="replyBlur"
+      bindlinechange="replyLineChange"
+      style="height: {{commentContentHeight + 20}}rpx"></textarea>
+    <!-- 放置图片、位置 -->
+    <view class="commentDetail-comment-others" wx:if="{{commentImage || commentLocation.name}}">
+      <view class="commentDetail-comment-others-image" wx:if="{{commentImage}}" style="margin-bottom: {{commentLocation.name ? '36' : '0'}}rpx;">
+        <image src="{{commentImage}}" mode="aspectFill" catchtap="replyImagePreview"></image>
+        <view class="image-close-icon-box" catchtap="replyImageDelete">
+          <icon class="image-close-icon ico-moon icon-closes"></icon>
+        </view>
+      </view>
+      <view class="commentDetail-comment-others-location" wx:if="{{commentLocation.name}}" catchtap="replyLocationDelete">
+        <text>{{commentLocation.name}}</text>
+        <icon class="location-close-icon ico-moon icon-closes"></icon>
+      </view>
+    </view>
+  </view>
+  <!-- 上传图片按钮、选择位置按钮、发布按钮 -->
+  <view class="commentDetail-comment-bottom">
+    <view class="commentDetail-comment-bottom-left">
+      <icon class="commentDetail-comment-bottom-icon ico-moon icon-news-input-image" catchtap="replyImageChoose"></icon>
+      <icon class="commentDetail-comment-bottom-icon ico-moon icon-community-location" catchtap="replyLocationChoose"></icon>
+    </view>
+    <view class="commentDetail-comment-bottom-right">
+      <view class="commentDetail-comment-bottom-right-cancel" catchtap="cancelReply">
+        <text>取消</text>
+      </view>
+      <view class="commentDetail-comment-bottom-right-send" catchtap="submitReply">
+        <text>发布</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+
+ 

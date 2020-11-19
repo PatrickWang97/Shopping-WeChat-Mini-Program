@@ -1,0 +1,192 @@
+.vip-banner {
+  width: 100%;
+  height: 220rpx;
+}
+.vip-banner image {
+  width: 100%;
+  height: 100%;
+}
+.vip-item {
+  position: relative;
+  width: 660rpx;
+  height: 226rpx;
+  margin: 40rpx auto 0;
+  border-radius: 18rpx;
+  background-size: cover;
+  background-position: center center;
+  color: #fff;
+}
+.vip-item:nth-child(odd) {
+  background: -webkit-linear-gradient(#ffd23a, #ffb411);
+  background: linear-gradient(#ffd23a, #ffb411);
+}
+.vip-item:nth-child(even) {
+  background: -webkit-linear-gradient(#36e6fe, #12abff);
+  background: linear-gradient(#36e6fe, #12abff);
+}
+.vip-item-cover {
+  display: inline-block;
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  margin: 25rpx;
+  overflow: hidden;
+  vertical-align: top;
+}
+.vip-item-cover image {
+  width: 100%;
+  height: 100%;
+}
+.vip-item .bg-img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+.vip-item-info {
+  display: inline-block;
+  min-height: 134rpx;
+  margin-right: 30rpx;
+  vertical-align: top;
+  margin-bottom: 30px;
+}
+.vip-item-title {
+  width: 480rpx; 
+  font-size: 26rpx;
+  margin-top: 25rpx;
+}
+.vip-item-rights {
+  font-size: 24rpx;
+  margin-top: 10rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.vip-item-bottom {
+  position: absolute;
+  bottom: 34rpx;
+  right: 22rpx;
+  font-size: 24rpx;
+}
+.vip-item-id {
+  position: absolute;
+  bottom: 34rpx;
+  left: 34rpx;
+  font-size: 24rpx;
+}
+.no-receive-card .tip-area {
+  padding-top: 150rpx;
+  text-align: center;
+}
+.no-receive-card .tip-img {
+  display: block;
+  width: 120px;
+  height: 90px;
+  margin: 0 auto 22px;
+}
+.no-receive-card .tip-text-1 {
+  display: block;
+  margin-bottom: 10px;
+  color: #888;
+  font-size: 20px;
+}
+.no-receive-card .tip-text-2 {
+  display: block;
+  color: #b2b2b2;
+  font-size: 14px;
+}
+.league-vip-list {
+  padding-top: 30rpx;
+  font-size: 26rpx;
+}
+.league-vip-list .league-vip-item {
+  position: relative;
+  height: 300rpx;
+  display: flex;
+  flex-direction: column;
+  padding: 0 60rpx 0 90rpx;
+  border-radius: 30rpx;
+  margin-bottom: 44rpx;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.league-vip-list .league-vip-item.free {
+  color: #3a5178;
+  background-image: url(http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-leagueVip/list_bg1.png);
+}
+.league-vip-list .league-vip-item.condition {
+  color: #dfbd9a;
+  background-image: url(http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-leagueVip/list_bg2.png);
+}
+.league-vip-list .league-vip-item.pay {
+  color: #38200f;
+  background-image: url(http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-leagueVip/list_bg3.png);
+}
+.league-vip-list .league-vip-item .item-mark{
+  position: absolute;
+  top: 13rpx;
+  right: 46rpx;
+  color: #fff;
+}
+.league-vip-list .league-vip-item .item-name {
+  padding-top: 76rpx;
+  font-size: 42rpx;
+  font-weight: bold;
+  line-height: 42rpx;
+}
+.league-vip-list .league-vip-item .item-rights {
+  padding-top: 24rpx;
+  line-height: 26rpx;
+}
+.league-vip-list .league-vip-item .item-expired {
+  padding-top: 56rpx;
+  font-size: 24rpx;
+  text-align: right;
+}
+.league-vip-list .league-vip-more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 26rpx;
+  color: #999;
+}
+.league-vip-list .league-vip-more .icon-rightarrow {
+  font-size: 18rpx;
+  padding-left: 6rpx;
+}
+.no-receive-card .tip-league {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 170rpx;
+  font-size: 30rpx;
+  color: #333;
+}
+.no-receive-card .tip-league image {
+  width: 150rpx;
+  height: 150rpx;
+  padding-bottom: 50rpx;
+}
+.no-receive-card .tip-league .tip-btn {
+  margin-top: 50rpx;
+  padding: 18rpx 56rpx;
+  border-radius: 34rpx;
+  font-size: 28rpx;
+  color: #fff;
+  background:linear-gradient(-90deg,rgba(255,138,0,1) 0%,rgba(254,87,25,1) 100%);
+}
+.tip-button{
+  width:280rpx;
+  height:88rpx;
+  background:rgba(255,113,0,1);
+  border-radius:8rpx;
+  margin: 49rpx auto 0;
+  font-size:28rpx;
+  text-align: center;
+  line-height: 88rpx;
+  color: #fff;
+}

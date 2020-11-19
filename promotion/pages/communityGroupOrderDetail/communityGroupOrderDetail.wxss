@@ -1,0 +1,520 @@
+page {
+  background: #f3f3f3;
+  height: 100%;
+}
+.order-contain {
+  position: relative;
+  padding-bottom: 88rpx;
+  overflow: hidden;
+}
+.order-contain > view {
+  padding: 0 30rpx;
+  background: #fff;
+}
+.order-contain .seller-shipped {
+  position: relative;
+  height: 180rpx;
+  color: #fff;
+  line-height: 180rpx;
+  font-size: 34rpx;
+  background: linear-gradient(to right, #ffae00, #ff7100);
+  padding: 0;
+}
+.order-contain .seller-shipped text {
+  display: inline-block;
+  vertical-align: middle;
+}
+.order-contain .seller-shipped .order-icon {
+  font-size: 40rpx;
+  margin-right: 15rpx;
+}
+.order-contain .seller-shipped > view {
+  background-image: url('http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-goods/goods-order-bg.png');
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: 100% 100%;
+  padding-left: 30rpx;
+}
+.order-contain .buyer-information {
+  margin-bottom: 15rpx;
+  padding: 30rpx;
+}
+.order-contain .buyer-delgoods {
+  position: absolute;
+  left: 30rpx;
+  bottom: 18rpx;
+  width: 100%;
+  height: 26rpx;
+  line-height: 26rpx;
+  font-size: 24rpx;
+  color: #fff;
+}
+.buyer-name-box {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 6rpx;
+}
+.buyer-name-box > text {
+  vertical-align: middle;
+  display: inline-block;
+}
+.buyer-box {
+  position: relative;
+  font-size: 26rpx;
+  color: #666;
+  line-height: 40rpx;
+  width: 630rpx;
+  vertical-align: middle;
+  display: inline-block;
+}
+.goods-detail-box image {
+  width: 156rpx;
+  height: 156rpx;
+  display: inline-block;
+  vertical-align: middle;
+}
+.order-contain .goods-detail-box {
+  padding: 30rpx;
+}
+.goods-detail-box > view {
+  width: 506rpx;
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 28rpx;
+}
+.goods-name {
+  font-size: 26rpx;
+  color: #333;
+  line-height: 36rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  word-break: break-all;
+}
+.goods-rules {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 8rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.goods-price {
+  font-size: 26rpx;
+  color: #333;
+  margin-top: 12rpx;
+}
+.goods-amount, .promotion-method, .freight, .total-order-price,
+.stored-value-deduction, .spike-offer {
+  font-size: 22rpx;
+  color: #666;
+  line-height: 42rpx;
+  overflow: hidden;
+}
+.promotion-method .promotion-method-title {
+  width: 506rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+}
+.order-contain .stored-value-deduction {
+  padding-bottom: 20rpx;
+}
+.actual-payment {
+  line-height: 84rpx;
+  color: #333;
+  font-size: 26rpx;
+  margin-bottom: 16rpx;
+}
+.actual-payment .colorff7 {
+  font-size: 28rpx;
+}
+.addition-info {
+  line-height: 84rpx;
+  color: #333;
+  font-size: 26rpx;
+}
+.order-contain .buyer-message {
+  color: #333;
+  font-size: 26rpx;
+  overflow: hidden;
+  padding: 20rpx 30rpx;
+}
+.buyer-message .pull-right {
+  width: 492rpx;
+  line-height: 40rpx;
+  text-align: right;
+}
+.actual-payment > view, .addition-info > view {
+  border-top: 1px solid #f3f3f3;
+}
+.no-border > view {
+  border-top: 0;
+}
+.already-refund-goods {
+  margin-top: 16rpx;
+}
+.order-contain .order-number {
+  font-size: 24rpx;
+  color: #666;
+  padding: 15rpx 30rpx;
+  margin-bottom: 30rpx;
+  margin-top: 16rpx;
+}
+.order-number > view {
+  line-height: 50rpx;
+}
+.order-number  text:first-child {
+  margin-right: 30rpx;
+}
+.order-number .pull-right {
+  width: 100rpx;
+  border-radius: 17rpx;
+  height: 34rpx;
+  line-height: 34rpx;
+  font-size: 22rpx;
+  border: 1px solid #d2d2d2;
+  text-align: center;
+  color: #999;
+  margin-top: 6rpx;
+}
+.order-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 88rpx;
+  line-height: 80rpx;
+  text-align: right;
+  box-sizing: border-box;
+  border-top: 1px solid #ebebeb;
+}
+.order-bottom .btn {
+  border: 1px solid #d2d2d2;
+  padding: 0 28rpx;
+  line-height: 48rpx;
+  margin-left: 20rpx;
+  color: #999;
+  display: inline-block;
+  font-size: 24rpx;
+  border-radius: 30rpx;
+}
+.order-bottom .btn.btn-orange {
+  border-color: #ff7100;
+  color: #ff7100;
+  background: #fff;
+}
+.color999 {
+  color: #999;
+}
+.colorff7 {
+  color: #ff7100;
+}
+.buyer-information .icon-goods-location {
+  color: #333;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 16rpx;
+  font-size: 34rpx;
+}
+.cash-delivery {
+  display: inline-block;
+  padding: 0 10rpx;
+  background: #f2303e;
+  color: #fff;
+  font-size: 22rpx;
+  height: 28rpx;
+  line-height: 28rpx;
+  margin-right: 10rpx;
+  border-radius: 4rpx;
+}
+.shipping-type {
+  background: #ff7100;
+}
+.is-seckill {
+  display: inline-block;
+  padding: 0 10rpx;
+  background: #f2303e;
+  color: #fff;
+  font-size: 22rpx;
+  height: 26rpx;
+  line-height: 26rpx;
+  margin-right: 10rpx;
+  border-radius: 4rpx;
+}
+.app-box {
+  line-height: 84rpx;
+}
+.app-box .app-logo {
+  width: 44rpx;
+  height: 44rpx;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 20rpx;
+}
+.app-box .app-name {
+  font-size: 26rpx;
+  color: #333;
+  vertical-align: middle;
+}
+.app-box .contact-service {
+  font-size: 24rpx;
+  color: #999;
+  display: inline-block;
+  width: 130rpx;
+  position: relative;
+  height: 82rpx;
+}
+.contact-service .icon-goods-customer-service {
+  margin-left: 8rpx;
+}
+.app-box .contact-service button {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  left: 0;
+  top: 0;
+}
+.app-box > view {
+  border-bottom: 1px solid #f3f3f3;
+}
+.icon-rightarrow {
+  font-size: 20rpx;
+}
+.order-contain .orderDetail-goto-homepage {
+  position: absolute;
+  display: inline-block;
+  color: #ff7100;
+  right: 0;
+  top: 132rpx;
+  font-size: 24rpx;
+  background: rgba(255, 255, 255, 0.8);
+  width: 150rpx;
+  text-align: center;
+  line-height: 50rpx;
+  padding: 0;
+  border-radius: 4rpx 0 0 0;
+}
+.apply-refund {
+  float: left;
+  width: 150rpx;
+  font-size: 24rpx;
+  text-align: left;
+  color: #666;
+}
+.event-dialog-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+.event-dialog {
+  width: 560rpx;
+  height: 230rpx;
+  background: #fff;
+  margin-top: 350rpx;
+  display: inline-block;
+  border-radius: 10rpx;
+}
+.event-dialog-title {
+  height: 150rpx;
+  font-size: 28rpx;
+  line-height: 150rpx;
+}
+.event-dialog-bottom {
+  height: 80rpx;
+  line-height: 80rpx;
+  border-top: 1rpx solid #ebebeb;
+  font-size: 30rpx;
+}
+.event-dialog-bottom > text {
+  width: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+}
+.event-dialog-bottom .event-cancel {
+  border-right: 1rpx solid #ebebeb;
+  color: #666;
+}
+.event-dialog-bottom .event-sure {
+  color: #ff7100;
+}
+.order-contain .order-prompt {
+  padding: 24rpx 30rpx;
+  line-height: 37rpx;
+  color: #333;
+  font-size: 26rpx;
+  margin-bottom: 15rpx;
+}
+.order-prompt text {
+  color: #ff7100;
+}
+.order-contain .refund-apply-time {
+  padding-bottom: 10rpx;
+}
+.order-contain .refund-address-box {
+  padding: 20rpx 30rpx;
+  margin-bottom: 16rpx;
+  overflow: hidden;
+}
+.refund-address-title {
+  color: #333;
+  font-size: 26rpx;
+}
+.refund-address {
+  color: #666;
+  text-align: right;
+  width: 520rpx;
+  font-size: 24rpx;
+  line-height: 37rpx;
+  margin-top: 10rpx;
+}
+.buyer-address {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-height: 37rpx;
+  padding-right: 52rpx;
+}
+.buyer-name {
+  max-width: 300rpx;
+  margin-right: 18rpx;
+}
+.buyer-phone {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+.buyer-phone text {
+  font-size: 40rpx;
+}
+.icon-top {
+  -webkit-transform: rotateX(-180deg);
+  transform: rotateX(-180deg);
+}
+.order-contain .group-captain-box {
+  background: #fff;
+  display: flex;
+  padding: 30rpx;
+  align-items: center;
+  margin-top: 16rpx;
+}
+.group-captain-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-right: 26rpx;
+}
+.group-captain-content {
+  width: 550rpx;
+  padding-right: 30rpx;
+}
+.group-captain-phone {
+  width: 50rpx;
+  height: 50rpx;
+  background: #FFF1E5;
+  text-align: center;
+  line-height: 50rpx;
+  border-radius: 50%;
+}
+.group-captain-phone .icon-takeout-cellphone {
+  color: #ff7100;
+  font-size: 28rpx;
+}
+.group-captain-Community {
+  color: #303445;
+  font-size: 26rpx;
+  margin-bottom: 14rpx;
+}
+.group-captain-address {
+  font-size: 26rpx;
+  color: #666;
+}
+.group-captain-tips {
+  line-height: 88rpx;
+  padding: 0 30rpx;
+  border-bottom: 2rpx solid #f3f3f3;
+  background: #fff;
+  color: #333;
+  font-size: 26rpx;
+  margin-top: 16rpx;
+}
+.group-info > view {
+  line-height: 88rpx;
+  color: #303445;
+  font-size: 26rpx;
+  border-top: 2rpx solid #f3f3f3;
+  overflow: hidden;
+}
+.buyer-express-box {
+  padding-bottom:20rpx;
+}
+.group-info {
+  border-bottom: 16rpx solid #f3f3f3;
+}
+.buyer-info {
+  text-align:right;
+  font-size:28rpx;
+  color:#333;
+  line-height: 68rpx;
+}
+.buyer-info .pull-left {
+  font-size: 26rpx;
+}
+.buyer-address-info {
+  color:#666666;
+  line-height:40rpx;
+  width:500rpx;
+  vertical-align:top;
+  text-align: right;
+}
+.buyer-express-address {
+  line-height: initial;
+}
+.buyer-express-address text {
+  display:inline-block;
+  vertical-align:top;
+  line-height:40rpx;
+}
+.notice-group {
+  text-align:left;
+  background:#fff;
+  padding-left:0;
+  line-height:88rpx;
+  color:#ff7100;
+  font-size:26rpx;
+  width:650rpx;
+  margin:0;
+  display:inline-block;
+}
+.notice-group-box {
+  border-top: 2rpx solid #f3f3f3;
+  height: 88rpx;
+}
+.notice-group-contain {
+  margin-bottom: 16rpx;
+}
+.notice-group-contain .icon-rightarrow {
+  margin-top: 38rpx;
+}
+.buyer-nick-name {
+  white-space:nowrap;
+  width:300rpx;
+  display:inline-block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  vertical-align: top;
+}

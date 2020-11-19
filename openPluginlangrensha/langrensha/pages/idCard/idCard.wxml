@@ -1,0 +1,178 @@
+<!--pages/idCard/idCard.wxml-->
+<block wx:if="{{login}}"> 
+<loading hidden="{{hiddenLoading}}">正在加载</loading>
+<view class='idCard'>
+  <block wx:if="{{owner}}">
+    <image src="{{imgBaseUrl}}back.png" class='back'></image>
+
+    <view class='title'>牌局号:{{room.roomNum}}</view>
+
+    <!-- 几人局 -->
+    <view class="order">
+      <view class="line_left line_left_position_2"></view>
+      <view class="user_num user_num_position_2">{{room.userNum}}人局</view>
+      <view class="line_right line_right_position_2"></view>
+      <!-- <span style="white-space:pre;"> </span> -->
+      <!-- <span class="line"></span> -->
+      <!-- <span style="white-space:pre; "> </span> -->
+      <!-- <span class="txt">{{room.userNum}}人局</span> -->
+      <!-- <span style="white-space:pre;"> </span> -->
+      <!-- <span class="line"></span>  -->
+    </view>
+    <view class="add"></view>
+     
+      <!-- 身份牌 -->
+      <block wx:if="{{tapped}}">
+        <view class='card'>
+          <view class='cardPad' wx:for='{{room.identityList}}' wx:if='{{room.identityList[index]}}'>
+            <view class='cardItem'>
+              <view class='cardBackground' />
+              <view class='tagNumber'>{{room.identityList[index]}}</view>
+              <image class='tag' src='{{imgBaseUrl}}tabicon.png'></image>
+              <image class='cardImage' mode='aspectFit' src='{{imgBaseUrl}}animal/{{index}}.png' />
+              <view class='nameText'>{{cardList[index]}}</view>
+            </view>
+          </view>
+        </view>
+      </block>
+      <block wx:else>
+        <view class='card'>
+          <view class='cardPad' wx:for='{{userList}}'>
+            <view class='cardItem' id='{{index}}' bindtap='changOpacity'>
+              <view class='cardBackground' />
+              <!-- <view class='tagNumber'>{{room.identityList[index]}}</view> -->
+              <!-- <image class='tag' src='../../image/tag.png'></image> -->
+              <image class='cardImage' mode='aspectFit' src='{{imgBaseUrl}}{{opacity[index]}}/{{item.index}}.png' />
+              <view class='nameText'>{{item.name}}</view>
+            </view>
+          </view>
+        </view>
+      </block>
+      <!-- 我的身份 -->
+      <view class='mine'>
+        <image class='bgImage' mode='aspectFill' src='{{imgBaseUrl}}back2.png'></image>
+        <text class='mineText'>当前配置的人数：{{room.userNum}}</text>
+        <text class='mineText_2'>|</text>
+        <text class='mineText_3'> 当前发牌的人数:{{room.gameUserNum}}</text>
+        <block wx:if="{{hide}}">
+          <image class='gameAvatar' mode='aspectFit' src='{{imgBaseUrl}}animal/{{room.identity}}.png' />
+          <text class='myIdText'>我的身份：</text>
+          <text class='myId'>{{cardList[room.identity]}}</text>
+        </block>
+        <block wx:else>
+          <image class='gameAvatar' mode='aspectFit' src='{{imgBaseUrl}}animal/12.png' />
+          <text class='myIdText'>我的身份：</text>
+          <text class='myId'>--</text>
+        </block>
+        <block wx:if="{{openFlag}}">
+          <image src="{{imgBaseUrl}}openGame.png" class="dealCard_2" bindtap='openGame'></image>
+        </block>
+        <block wx:else>
+          <button class='dealCard' hover-class="other-button-hover" size="default" plain='1' type='default' open-type='share' />
+        </block>
+
+      </view>
+
+
+    </block>
+    <block wx:else>
+      <image src="{{imgBaseUrl}}background.png" class='back_2'></image>
+
+      <view class="room_title room_title_position">牌局号：{{room.roomNum}}</view>
+      <view class="line_left line_left_position"></view>
+      <view class="user_num user_num_position">{{room.userNum}}人局</view>
+      <view class="line_right line_right_position"></view>
+      <block wx:if="{{open}}">
+        <view class="name_4 name_position_4">点击头像可以标记玩家是否淘汰哦</view>
+
+      </block>
+      <block wx:else>
+        <view class="name_4 name_position_4">当前配置人数：{{room.userNum}}，当前发牌人数：{{room.gameUserNum}}</view>
+      </block>
+      <!-- <scroll-view scroll-y style="height:{{height}}rpx;" class="identityField"> -->
+
+
+      <scroll-view scroll-y style="height:{{height}}rpx;" class="scroll">
+        <view class="identityField">
+          <block wx:for="{{userList}}" wx:key="">
+
+            <view class="square">
+              <block wx:if="{{open}}">
+                <view class="back_square_2" id='{{index}}' bindtap='changOpacity'></view>
+              </block>
+              <block wx:else>
+              </block>
+              <view class="square_mask" style="display:{{out_display[index]}}"></view>
+              <image class="back_square" src="{{imgBaseUrl}}box.png" mode='aspectFit'></image>
+              <view class="avatar_square">
+                <block wx:if="{{item.name!='name'}}">
+                  <image src="{{item.avatar}}" mode='aspectFill' class="{{gray[index]==1?'avatar white_boder':'avatar_gray white_boder_gray'}} "> </image>
+                </block>
+                <block wx:else>
+                  <image src="{{item.avatar}}" mode='aspectFill' class="{{gray[index]==1?'avatar  ':'avatar_gray'}} "> </image>
+                </block>
+              </view>
+              <view class="out_tip out_tip_position_2" style="display:{{out_display[index]}}">出局</view>
+              <block wx:if="{{item.name!='name'}}">
+                <view class="{{gray[index]==1?'identity_circle_2 white_boder':'identity_circle_2 white_boder_gray'}}"></view>
+                <view class="identity_circle">
+                  <image class="{{gray[index]==1?'identity':'identity_gray'}}" src="https://api-langrensha.zhichikeji.com/langrenPic/{{item.index}}.png" mode="aspectFill"></image>
+
+                </view>
+              </block>
+              <view class="word_square">
+                <image src="{{imgBaseUrl}}word_square.png" mode="aspectFit" class="word"></image>
+              </view>
+              <view wx:if="{{item.name!='name'}}" class="flex_1">
+                <view class="shenfen">{{cardList[item.index]}}</view>
+                <view class="shutiao"></view>
+                <view class="mingzi">{{item.name}}</view>
+              </view>
+              <view wx:else class="flex_1">
+                <view class="mingzi_2">等玩家入座...</view>
+              </view>
+            </view>
+          </block>
+          <block wx:if="{{open}}">
+            <view class="btn_box_1" bindtap='backToIndex'>
+              <image class="btn_1" src="{{imgBaseUrl}}reopen.png" mode="aspectFill"></image>
+            </view>
+          </block>
+          <block wx:else>
+
+            <view class="btn_box_1">
+              <label>
+                <image src="{{imgBaseUrl}}sendToFriend.jpg" class="btn_2" mode='aspectFill'></image>
+                <button hover-class="other-button-hover" size="default" plain='1' type='default' open-type='share' />
+              </label>
+
+            </view>
+          </block>
+        </view>
+      </scroll-view>
+
+    </block>
+</view>
+
+
+</block>
+    <block wx:else>
+    <view class='idCard'>
+    <image src="{{imgBaseUrl}}back.png" class='back'></image>
+
+    <view class='title'>牌局号:{{room.roomNum}}</view>
+
+    <!-- 几人局 -->
+    <view class="order">
+      <view class="line_left line_left_position_2"></view>
+      <view class="user_num user_num_position_2">{{room.userNum}}人局</view>
+      <view class="line_right line_right_position_2"></view>
+      </view>
+      </view>
+      <label>
+<image class='submitButton' mode='aspectFit' src='{{imgBaseUrl}}sendToFriend.jpg' ></image>
+<button open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="toRoomPage" style='display:none'>获取用户信息</button>
+</label>
+    </block>
+   
+  

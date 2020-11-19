@@ -1,0 +1,25 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view id="logisticsPage">
+  <view class="logistics-header">
+    <view class="logistics-company">承运公司：<text>{{ info.express_name || info.delivery_name }}</text></view>
+    <view>运单编号：<text>{{ info.LogisticCode || info.express_no || info.waybill_id }}</text></view>
+  </view>
+  <view wx:if="{{ (info.is_custom && desArr.length) || (!info.is_custom && logistics.length)}}" class="logistics-container">
+    <block wx:if="{{ info.is_custom }}">
+      <text wx:for="{{ desArr }}" wx:key="index" class="self-express {{index%2 == 1 ? 'express-phone' : ''}}" catchtap="{{ index%2 == 1 ? 'dialNumber' : ''}}" data-phone="{{ item }}">{{ index%2 == 1 ? '[' + item + ']' : item }}</text>
+    </block>
+    <block wx:else>
+      <view class="logistics-list">
+        <view wx:for="{{ logistics }}" wx:key="index" class="logistics-item">
+          <view class="logistics-location">{{ item.AcceptStation }}</view>
+          <view class="logistics-time">{{ item.AcceptTime }}</view>
+        </view>
+      </view>
+    </block>
+  </view>
+  <view wx:else class="no-logistics">
+    <image src="http://cdn.jisuapp.cn/static/webapp/images/xcx-goods/no-logistics.png"></image>
+    <view>暂无物流信息</view>
+  </view>
+</view>

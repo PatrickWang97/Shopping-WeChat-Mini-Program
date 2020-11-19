@@ -1,0 +1,159 @@
+<import src="../../../components/wxParse/wxParse.wxml"/>
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-topNavBar topNavBarData="{{topNavBarData}}"></component-topNavBar>
+<component-behavior-track></component-behavior-track>
+<view class="video-detail-wrap page" id="videoDetail">
+  <view class="video-play-detail">
+    <video wx:if="{{videoInfo.enable_danmu == '1'}}" class="videoDetail-video-danmu" id="videoDetail-video-danmu" src="{{videoInfo.video_url}}" preload="meta" controls enable-danmu danmu-btn danmu-list="{{danmuList}}" custom-cache="{{false}}" play-btn-position="center" bindplay="videoPlay" bindpause="videoPause" bindtimeupdate="videoTimeupdate" binderror="videoError" bindfullscreenchange='fullScreenChange'>
+      <cover-view class="video-cover-view" wx:if="{{!videoPosterHidden}}">
+        <cover-view class="video-poster-wrap">
+          <cover-image class="video-poster" src="{{videoInfo.preview_img}}" />
+        </cover-view>
+        <cover-view class="video-play-icon" bindtap="startPlayVideo">
+          <cover-image class="video-play-image" src="http://cdn.jisuapp.cn/static/webapp/images/play.png" />
+        </cover-view>
+      </cover-view>
+      <cover-view class="video-pilot" wx:if="{{!videoPilot}}">
+        <cover-view class="exit-full-screen" bindtap="exitFullScreen"></cover-view>
+        <cover-view class="video-pilot-text">试看结束，完整视频需要付费观看</cover-view>
+      </cover-view>
+      <cover-view class="video-pilot" wx:if="{{videoNeed}}">
+        <cover-view class="exit-full-screen" bindtap="exitFullScreen"></cover-view>
+        <cover-view class="video-pilot-text">该视频需付费才能观看</cover-view>
+      </cover-view>
+      <cover-view class="video-error" wx:if="{{videoGetStatus != 0}}">
+        <cover-image class="video-error-icon" src="http://cdn.jisuapp.cn/static/webapp/images/video-error.png" />
+        <cover-view class="video-error-text">该视频已下架</cover-view>
+      </cover-view>
+    </video>
+    <video wx:else class="videoDetail-video" id="videoDetail-video" src="{{videoInfo.video_url}}" preload="meta" controls custom-cache="{{false}}" play-btn-position="center" bindplay="videoPlay" bindpause="videoPause" bindtimeupdate="videoTimeupdate" binderror="videoError" bindfullscreenchange='fullScreenChange'>
+      <cover-view class="video-cover-view" wx:if="{{!videoPosterHidden}}">
+        <cover-view class="video-poster-wrap">
+          <cover-image wx:if="{{videoInfo.preview_img}}" class="video-poster" src="{{videoInfo.preview_img}}" />
+        </cover-view>
+        <cover-view class="video-play-icon" bindtap="startPlayVideo">
+          <cover-image class="video-play-image" src="http://cdn.jisuapp.cn/static/webapp/images/play.png" />
+        </cover-view>
+      </cover-view>
+      <cover-view class="video-pilot" wx:if="{{!videoPilot}}">
+        <cover-view class="exit-full-screen" bindtap="exitFullScreen"></cover-view>
+        <cover-view class="video-pilot-text">试看结束，完整视频需要付费观看</cover-view>
+      </cover-view>
+      <cover-view class="video-pilot" wx:if="{{videoNeed}}">
+        <cover-view class="exit-full-screen" bindtap="exitFullScreen"></cover-view>
+        <cover-view class="video-pilot-text">该视频需付费才能观看</cover-view>
+      </cover-view>
+      <cover-view class="video-error" wx:if="{{videoGetStatus != 0}}">
+        <cover-image class="video-error-icon" src="http://cdn.jisuapp.cn/static/webapp/images/video-error.png" />
+        <cover-view class="video-error-text">该视频已下架</cover-view>
+      </cover-view>
+    </video>
+  </view>
+  <view class="video-danmu" wx:if="{{videoInfo.enable_danmu == '1'}}">
+    <input class="danmu-input" type="text" maxlength="60" confirm-type="send" placeholder="来发弹幕吧" placeholder-style="color: #fff;" bindinput="danmuInput" bindconfirm="sendDanmu" value="{{danmuInputText}}" /><label class="danmu-btn ico-moon icon-danmu-send" bindtap="sendDanmu"></label>
+  </view>
+  <view class="video-tab" wx:if="{{videoInfo.can_assess == '1' || (videoInfo.related_video && videoInfo.related_video.length) }}"><view class="{{tabType == 'detail' ? 'active' : ''}}" data-type="detail" bindtap="changeTab">介绍</view><view wx:if="{{videoInfo.related_video && videoInfo.related_video.length}}" class="{{tabType == 'relation' ? 'active' : ''}}" data-type="relation" bindtap="changeTab">相关</view><view wx:if="{{videoInfo.can_assess == '1'}}" class="{{tabType == 'comment' ? 'active' : ''}}" data-type="comment" bindtap="changeTab">评价</view></view>
+  <view class="video-content" id="video-content">
+    <view class="video-section video-detail {{tabType == 'detail' ? 'active' : ''}}" id="video-detail" data-type="detail">
+      <view class="video-info clearfix">
+        <view class="video-title">{{videoInfo.title}}</view>
+        <view class="video-other">
+          <view class="video-other-item">
+            <view class="video-score-wrap"><view class="numeric"><label class="star ico-moon icon-star"></label><label class="star ico-moon icon-star"></label><label class="star ico-moon icon-star"></label><label class="star ico-moon icon-star"></label><label class="star ico-moon icon-star"></label></view><view class="numeric numeric-top" style="width:{{videoInfo.score * 10 + '%'}};"><label class="star full-star ico-moon icon-star"></label><label class="star full-star ico-moon icon-star"></label><label class="star full-star ico-moon icon-star"></label><label class="star full-star ico-moon icon-star"></label><label class="star full-star ico-moon icon-star"></label></view></view><label class="rate video-score">{{videoInfo.score}}</label>
+            </view><label class='item-line'></label><view class="video-other-item">
+              <view class="video-views-num">{{videoInfo.video_view}}</view>次播放
+            </view><label class='item-line' wx:if="{{videoInfo.can_assess == '1'}}"></label><view class="video-other-item" wx:if="{{videoInfo.can_assess == '1'}}">
+              <view class="video-comment-num">{{videoInfo.assess_count}}</view>条评论
+            </view>
+        </view>
+        <view class="video-price-wrap" wx:if="{{videoInfo.is_free == '0'}}"><view>¥</view><view class="video-price">{{videoInfo.price}}</view></view>
+        <view class="video-price-wrap" wx:else>免费</view>
+      </view>
+      <view class="video-desc">
+        <view>视频简介</view>
+        <view class="video-desc-content">
+          <template is="wxParse" data="{{ wxParseData: videoInfo.description }}" />
+        </view>
+      </view>
+    </view>
+    <view class="video-section video-relation-wrap {{tabType == 'relation' ? 'active' : ''}}" data-type="relation">
+      <view class="video-relation">
+        <view class="video-relation-title">推荐视频</view>
+        <view class="video-relation-ul">
+          <view class="video-list-item clearfix" wx:for="{{videoInfo.related_video}}" wx:key="index" data-id="{{item.id}}" catchtap="turnToVideoDetail" >
+            <view class="video-list-inner">
+              <view class="list-img-outer">
+                <image class="list-img" src="{{item.preview_img}}" mode="scaleToFill"></image>
+                <view class="video-list-play icon-play ico-moon"></view>
+              </view>
+              <view class="title-container">
+                <view class="title">{{item.title}}</view>
+                <view class="video-list-score">
+                  <view class="video-score-wrap">
+                  <view class="numeric"><label class="star ico-moon icon-star"></label><label class="star ico-moon icon-star"></label><label class="star ico-moon icon-star"></label><label class="star ico-moon icon-star"></label><label class="star ico-moon icon-star"></label></view>
+                  <view class="numeric numeric-top" style="width:{{item.score * 10 + '%'}};"><label class="star full-star ico-moon icon-star"></label><label class="star full-star ico-moon icon-star"></label><label class="star full-star ico-moon icon-star"></label><label class="star full-star ico-moon icon-star"></label><label class="star full-star ico-moon icon-star"></label></view>
+                  </view><label class="rate">{{item.score}}</label><label class="video-eye ico-moon icon-eye"></label><label class="play-count">{{item.video_view}}</label>
+                </view>
+                <view class="price" wx:if="{{item.is_free == '0'}}"><label class="rmb">¥</label>{{item.price}}</view>
+                <view class="price" wx:else>免费</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="video-section video-comment-wrap {{tabType == 'comment' ? 'active' : ''}}" data-type="comment">
+      <view class="video-comment-btn" bindtap="showCommentPopup">
+        <view>评价该视频</view>
+        <view class="numeric"><label class="star ico-moon icon-star"></label><label class="star ico-moon icon-star"></label><label class="star ico-moon icon-star"></label><label class="star ico-moon icon-star"></label><label class="star ico-moon icon-star"></label></view>
+      </view>
+      <view class="videoDetail-comment">
+        <view class="videoDetail-comment-title"><view>评价详情</view><view class="videoDetail-comment-num-wrap">（<label>{{videoInfo.assess_count}}</label>条评价）</view><view class="videoDetail-comment-all" bindtap="turnToVideoAssess">查看全部<label class="ico-moon icon-rightarrow"></label></view></view>
+        <view class="video-assess-list">
+          <view class="video-assess-li" wx:for="{{assessList}}" wx:key="index">
+            <view class="video-assess-info">
+              <view class="video-assess-head">
+                <image mode="aspectFill" src="{{item.assess_info.assess.cover_thumb || '0'}}" data-index="{{index}}" binderror="imageError"></image>
+              </view><view class="video-assess-center">
+                <view class="video-assess-nickname">{{item.assess_info.assess.nickname}}</view>
+                <view class="numeric"><label wx:for="{{[2,4,6,8,10]}}" wx:for-item="starItem" wx:key="index" class="star {{ starItem <= item.score ? 'full-star' : ''}} ico-moon icon-star"></label></view>
+              </view><view class="video-assess-right">
+                  <view class="video-assess-time">{{item.add_time}}</view>
+                  <view class="video-assess-like" data-index="{{index}}" bindtap="assessLiked">{{item.like_num}}<label class="ico-moon icon-news-like {{item.like_status == 1 ? 'active' : ''}}"></label></view>
+                </view>
+            </view>
+            <view class="video-assess-content"><text>{{item.assess_info.assess.content}}</text></view>
+            <view class="video-assess-reply" wx:if="{{item.assess_info.reply}}">
+              <view class="video-assess-reply-nickname"><label class="video-assess-reply-line"></label>{{item.assess_info.reply.name}}</view>
+              <view class="video-assess-reply-content"><text>{{item.assess_info.reply.content}}</text></view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="videoDetail-bottom {{videoInfo.is_free == '0' ? '' : 'video-free'}}">
+    <view class="videoDetail-bottom-item videoDetail-consult"><view class="ico-moon icon-news-comment"></view><view>咨询</view><button class="video-contact" open-type="contact" session-from="video"></button></view><view class="videoDetail-bottom-item videoDetail-collect"  bindtap="videoCollect"><view class="ico-moon {{videoInfo.is_favorited == 1 ? 'icon-community-thumb-up' : 'icon-collect'}}"></view><view>收藏</view></view><view class="videoDetail-bottom-item videoDetail-share"><view class="ico-moon icon-share-v"></view><view>分享</view><button class="video-share" open-type="share"></button></view><view class="videoDetail-buy" bindtap="showVideoBuy" data-buyed="{{videoInfo.is_buyed}}">{{videoInfo.is_buyed == '1' ? '已购买' : '立即购买'}}</view>
+  </view>
+  <view class="video-comment-add" id="video-comment-add" hidden="{{commentHidden}}" catchtouchmove>
+    <view class="video-comment-add-bg" bindtap="hiddenCommentPopup"></view>
+    <view class="video-comment-add-inner">
+      <view class="video-comment-add-title"><text>发表评论</text><button class="video-comment-add-btn" bindtap="publishComment">发布</button></view>
+      <view class="video-comment-add-score">
+        <view class="numeric"><label wx:for="{{[2,4,6,8,10]}}" wx:key="index" class="star {{ item <= commentScore ? 'full-star' : ''}} ico-moon icon-star"  data-score="{{item}}" data-index="{{index}}" bindtap="commentScoreChange"></label><label class="rate">{{commentLevel}}</label></view>
+      </view>
+      <view><textarea class="video-comment-add-input" id="" placeholder="评论，100字以内" maxlength="100" cursor-spacing="80" fixed="true" value="{{commentText}}" bindinput="commentInput" focus="{{commentFocus}}"></textarea></view>
+    </view>
+  </view>
+  <view class="video-buy" id="video-buy" hidden="{{videoBuyHidden}}">
+    <view class="video-buy-bg"></view>
+    <view class="video-buy-inner">
+      <label class="video-buy-close ico-moon icon-closes" bindtap="hiddenVideoBuy"></label>
+      <view class="video-buy-title">{{videoInfo.title}}</view>
+      <view class="video-buy-price"><text>¥</text><text class="video-buy-price-num">{{videoInfo.price}}</text></view>
+      <view class="video-buy-bottom"><label>合计：<label class="video-buy-total">{{videoInfo.price}}</label>元</label><label class="video-buy-btn"><form report-submit="true" bindsubmit="videoPay">
+      <button formType="submit">确认结算</button></form></label></view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,270 @@
+<component-getUserInfo showGetUserInfo="{{ showGetUserInfo }}"></component-getUserInfo>
+<component-topNavBar topNavBarData="{{topNavBarData}}"></component-topNavBar>
+<component-behavior-track></component-behavior-track>
+<view class="content">
+  <view class="slide-wrapper {{ cardListData.length == 1 ? 'slide-wrapper-one' : '' }}">
+    <view class="member-day-block" wx:if="{{ isVipBenefitDay }}" bindtap="gotoMemberDay">
+      <view class="member-day"
+        style="background-color: {{ currentCard.style_config && currentCard.style_config.vip_benefit_day ? currentCard.style_config.vip_benefit_day : '#FF7100' }}">
+        会员日</view>
+    </view>
+    <swiper class="swiper" 
+            indicator-dots="{{ cardListData.length > 1}}"
+            bindchange="swiperBindChange"
+            easing-function="easeInOutCubic" 
+            indicator-color="rgba(255, 255, 255, .3)"
+            indicator-active-color="rgba(255, 255, 255, .6)"
+            current="{{ currentIndex }}"
+            previous-margin="40rpx" 
+            next-margin="40rpx">
+      <block wx:for="{{ cardListData }}" wx:key="item.id">
+        <swiper-item class="swiper-item">
+          <view class="card-img-box card-info-box-level{{item.condition_type}} {{currentIndex == index ? 'swiper-item-active' : ''}}">
+            <block wx:if="{{item.condition_type == 0}}">
+              <image src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/user-center/vip-benefits/vip_no_threshold.png"></image>
+            </block>
+            <block wx:elif="{{item.condition_type == 1}}">
+              <image src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/user-center/vip-benefits/vip_threshold.png"></image>
+            </block>
+            <block wx:else>
+              <image src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/user-center/vip-benefits/vip_pay.png"></image>
+            </block>
+            <view class="pay-dotted">{{currentCard.condition_type == 2 ? '付费版' : currentCard.condition_text[0] == '无门槛' ? '无门槛版' : '按条件获取'}}</view>
+            <view class="card-info-box">
+              <view class="card-info-title ellipsis">{{ item.title }}</view>
+              <view class="card-info-level ellipsis">当前等级：V{{ item.level }}</view>
+              <block wx:if="{{ userVipCard.vip_id == item.id || userPaidVipCard.vip_id === item.id }}">
+                <view class="card-info-time ellipsis">有效日期：{{ currentCard.expired_time }}</view>
+              </block>
+              <view class="card-info-discount" wx:if="{{ item.discount && item.discount != 0}}">{{ item.discount }}<text>折</text>
+              </view>
+              <view class="card-info-num">NO.{{ item.id }}</view>
+            </view>
+          </view>
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+  <view class="empty-data" wx:if="{{ cardListData.length === 0 && !loading }}">暂无会员卡</view>
+  <view class="detail" wx:if="{{ cardListData.length }}">
+    <view class="detail-item" wx:if="{{ isUserDiyLogo }}">
+      <view class="top-block">
+        <view class="name">名称</view>
+        <view class="condition"
+          style="color: {{ currentCard.style_config && currentCard.style_config.condition ? currentCard.style_config.condition : '#FF7100' }}">
+          {{ currentCard.title }}
+        </view>
+      </view>
+    </view>
+    <view class="detail-item">
+      <view class="top-block">
+        <view class="name">状态</view>
+        <view class="condition font-bold"
+          style="color: {{ currentCard.style_config && currentCard.style_config.condition ? currentCard.style_config.condition : '#FF7100' }}">
+          {{ userPaidVipCard.vip_id == currentCard.id || userVipCard.vip_id == currentCard.id ? '已领取' : '未领取' }}
+        </view>
+      </view>
+    </view>
+    <view class="detail-item">
+      <view class="top-block">
+        <view class="name">获取条件</view>
+        <view class="condition" style="color: {{ currentCard.style_config && currentCard.style_config.condition ? currentCard.style_config.condition : '#FF7100' }}">
+          <view wx:for="{{ currentCard.condition_text }}" wx:key="index">{{ item }}</view>
+        </view>
+      </view>
+    </view>
+    <view class="detail-item" wx:if="{{userVipCard.higher_level_card_info.level && userVipCard.vip_id == currentCard.id}}">
+      <view class="top-block">
+        <view class="name">下一等级</view>
+        <view class="condition">{{userVipCard.higher_level_card_info.level}}级免费会员卡</view>
+      </view>
+      <view class="top-block">
+        <view class="name">获取条件</view>
+        <view class="condition">
+          <view class="condition-item" wx:if="{{userVipCard.higher_level_card_info.trade_count != -1}}">
+            <view class="loading-strip">
+              <view class="loading-progress" style="width:{{userVipCard.trade_rate}}%"></view>
+            </view>
+            <view class='loading-condition'>累计交易成功{{userVipCard.user_trade_count}}笔（{{userVipCard.user_trade_count}}/{{userVipCard.higher_level_card_info.trade_count}}）</view>
+          </view>
+          <view class="condition-item" wx:if="{{userVipCard.higher_level_card_info.consume_count != -1}}">
+            <view class="loading-strip">
+              <view class="loading-progress" style="width:{{userVipCard.consume_rate}}%"></view>
+            </view>
+            <view class='loading-condition'>累计交易额{{userVipCard.user_consume_count}}元（{{userVipCard.user_consume_count}}/{{userVipCard.higher_level_card_info.consume_count}}）</view>
+          </view>
+          <view class="condition-item" wx:if="{{userVipCard.higher_level_card_info.integral_count != -1}}">
+            <view class="loading-strip">
+              <view class="loading-progress" style="width:{{userVipCard.integral_rate}}%"></view>
+            </view>
+            <view class='loading-condition'>累计积分{{userVipCard.user_integral_count}}分（{{userVipCard.user_integral_count}}/{{userVipCard.higher_level_card_info.integral_count}}）</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="detail-item" wx:if="{{fix_time_benefit.showBenefit}}">
+      <view class="top-block m-b-30">
+        <view class="name">高级权益</view>
+      </view>
+      <view class="about-wrapper about-berefit">
+        <view class="about-item" wx:if="{{ fix_time_benefit.sendCouponRule != '' }}">
+          <view class="name">
+            <image src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/user-center/vip-benefits/coupon.png"></image>
+          </view>
+          <view class="about">
+            <view class="about-title">优惠券</view>
+            <view>{{fix_time_benefit.sendCouponRule}}</view>
+          </view>
+        </view>
+        <view class="about-item" wx:if="{{ fix_time_benefit.sendIntegralRule != '' }}">
+          <view class="name">
+            <image src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/user-center/vip-benefits/intergral.png"></image>
+          </view>
+          <view class="about">
+            <view class="about-title">积分</view>
+            <view>{{fix_time_benefit.sendIntegralRule}}</view>
+          </view>
+        </view>
+        <view class="about-item" wx:if="{{ fix_time_benefit.sendBalanceRule != '' }}">
+          <view class="name">
+            <image src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/user-center/vip-benefits/stored.png"></image>
+          </view>
+          <view class="about">
+            <view class="about-title">储值</view>
+            <view>{{fix_time_benefit.sendBalanceRule}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="detail-item detail-benefit" wx:if="{{ currentCard.condition_type == 2 }}">
+      <scroll-view scroll-x class="benefits">
+        <view class="benefit-item {{currentComboIndex === index ? 'active' : ''}}" wx:for="{{ currentCard.combo }}"  data-index="{{index}}" wx:key="index" bindtap="selectCombo">
+          <view class="icon-block" style="border-color: {{ currentComboIndex !== index ? '#d5d5d5' : currentCard.style_config && currentCard.style_config.condition ? currentCard.style_config.condition : '#ffebdc' }}">
+            <label class="ico-moon icon-gou" wx:if="{{ currentComboIndex === index }}" style="color: {{ currentCard.style_config && currentCard.style_config.condition ? currentCard.style_config.condition : '#FF7100' }}"></label>
+          </view>
+          <view class="content-block">
+            <view class="count">{{ item.time || '' }}</view>
+            <view class="price"
+              style="color: {{ currentCard.style_config && currentCard.style_config.condition ? currentCard.style_config.condition : '#FF7100' }}">
+              ¥
+              <label>{{ item.price ? item.price : item.original_price }}</label>
+            </view>
+            <!-- 期限为永久和单月的不展示原价 -->
+            <view class="cut-price" hidden="{{item.unit_type == -1 || (item.unit_type == 1 && item.num == 1)}}">¥
+              <label>{{ item.original_price }}</label>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+    <view class="detail-item">
+      <view class="top-block m-b-30">
+        <view class="name">会员权益</view>
+      </view>
+      <view class="about-wrapper about-berefit">
+        <view class="about-item" wx:if="{{ currentCard.discount && currentCard.discount != 0}}">
+          <view class="name">
+            <image src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/user-center/vip-benefits/discount.png"></image>
+          </view>
+          <view class="about">
+            <view class="about-title">折扣</view>
+            <view>所有商品一律{{ currentCard.discount }}折</view>
+          </view>
+        </view>
+        <block wx:if="{{ currentCard['combo'] && currentCard['combo'][currentComboIndex] }}">
+          <view class="about-item" wx:if="{{ currentCard['combo'][currentComboIndex].coupon_list && currentCard['combo'][currentComboIndex].coupon_list.length }}">
+            <view class="name">
+              <image src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/user-center/vip-benefits/coupon.png"></image>
+            </view>
+            <view class="about">
+              <view class="about-title">优惠券</view>
+              <view wx:for="{{ currentCard['combo'][currentComboIndex].coupon_list }}" wx:key="index">{{item.name}}-{{item.title}}-{{item.num}}张</view>
+            </view>
+          </view>
+          <view class="about-item" wx:if="{{ currentCard['combo'][currentComboIndex].integral && currentCard['combo'][currentComboIndex].integral != 0 }}">
+            <view class="name">
+              <image src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/user-center/vip-benefits/intergral.png"></image>
+            </view>
+            <view class="about">
+              <view class="about-title">积分</view>
+              <view>开卡赠送{{ currentCard['combo'][currentComboIndex].integral }}积分</view>
+            </view>
+          </view>
+          <view class="about-item" wx:if="{{ currentCard['combo'][currentComboIndex].balance && currentCard['combo'][currentComboIndex].balance != 0}}">
+            <view class="name">
+              <image src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/user-center/vip-benefits/stored.png"></image>
+            </view>
+            <view class="about">
+              <view class="about-title">储值</view>
+              <view>开卡赠送储值{{ currentCard['combo'][currentComboIndex].balance }}元</view>
+            </view>
+          </view>
+        </block>
+        <view class="about-item" wx:if="{{ currentCard.is_free_postage == 1 }}">
+          <view class="name">
+            <image src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/user-center/vip-benefits/shopping.png"></image>
+          </view>
+          <view class="about">
+            <view class="about-title">包邮</view>
+            <view>所有商品满{{currentCard.free_postage_condition || '0.00'}}元包邮</view>
+          </view>
+        </view>
+        <view class="about-item" wx:if="{{ currentCard.birthday_coupon_list && currentCard.birthday_coupon_list.length }}">
+          <view class="name">
+            <image src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/user-center/vip-benefits/birthday.png"></image>
+          </view>
+          <view class="about">
+            <view class="about-title">生日优惠</view>
+            <view wx:for="{{ currentCard.birthday_coupon_list }}" wx:key="index">{{item.name}}-{{item.title}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="detail-item" wx:if="{{ currentCard.phone || currentCard.description || currentCard.condition_type == 2 }}">
+      <view class="about-wrapper">
+        <view class="about-item" wx:if="{{ specialNote !== '' && currentCard.condition_type == 2 }}">
+          <view class="title">特别说明</view>
+          <view class="about">
+            {{ specialNote }}
+            <view>付费卡购买成功后不支持退款</view>
+          </view>
+        </view>
+        <view class="about-item" wx:if="{{ currentCard.phone }}">
+          <view class="title">联系</view>
+          <view class="about">{{ currentCard.phone }}</view>
+        </view>
+        <view class="about-item" wx:if="{{ currentCard.description }}">
+          <view class="title">使用须知</view>
+          <text class="about">{{ currentCard.description }}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="buy-wrap" wx:if="{{ currentCard.condition_type == 2 && (userPaidVipCard.vip_id != currentCard.id || userPaidVipCard.expired_time != -1) }}">
+    <button class="buy-btn" 
+            disabled="{{ requesting }}" 
+            bindtap="addPaidCardOrder">
+      {{ userPaidVipCard.vip_id == currentCard.id ? '续费会员' : '立即购买' }}
+    </button>
+  </view>
+
+  <view class="register-button" catchtap="turnToUserInfo" 
+    wx:if="{{!userPaidVipCard.keys.length && !userVipCard.keys.length&&noLevel && needCollectInfo == 1}}"
+    style="background-color: {{ currentCard.style_config && currentCard.style_config.recv_button ? currentCard.style_config.recv_button : '#FF7100' }}">
+    注册会员
+  </view>
+</view>
+<!-- 永久会员续费 -->
+<view class="delete-tip-window" wx:if="{{ showRenew }}">
+  <view class="delete-box">
+    <view class="delete-title">提示</view>
+    <view class="delete-tip">
+      <text>您现在是高级永久会员卡，是否购买？</text>
+    </view>
+    <view class="delete-btn-box">
+      <text bindtap="cancelDelete">取消</text>
+      <text class="sure-delete" bindtap="sureDeleteGoods">确定</text>
+    </view>
+  </view>
+</view>

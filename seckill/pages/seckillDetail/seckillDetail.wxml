@@ -1,0 +1,1242 @@
+<import src="../../../components/wxParse/wxParse.wxml"/>
+<component-share pageQRCodeData="{{pageQRCodeData}}"></component-share>
+<component-reward-point rewardPointObj="{{rewardPointObj}}" shareGiftsObj="{{shareGiftsObj}}" collectGiftsObj="{{collectGiftsObj}}" collectGetObj="{{collectGetObj}}"></component-reward-point>
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-sinkingModal></component-sinkingModal>
+<component-goodsShoppingCart 
+  id="component-goodsShoppingCart"
+  bind:afterSelectedGoods="afterSelectedGoods"></component-goodsShoppingCart>
+<component-behavior-track></component-behavior-track>
+<component-share-timeline wx:if="{{scene === 1154}}"></component-share-timeline>
+<wxs module="businessWeekStyleOne">
+  var businessWeekStyleOne = function(data) {
+    var a = '';
+    for (var i = 0; i < data.length; i++) {
+      switch (i) {
+        case 0:
+          a += data[i] == 1 ? '周一  ' : '';
+          break;
+        case 1:
+          a += data[i] == 1 ? '周二  ' : '';
+          break;
+        case 2:
+          a += data[i] == 1 ? '周三  ' : '';
+          break;
+        case 3:
+          a += data[i] == 1 ? '周四  ' : '';
+          break;
+        case 4:
+          a += data[i] == 1 ? '周五  ' : '';
+          break;
+        case 5:
+          a += data[i] == 1 ? '周六  ' : '';
+          break;
+        case 6:
+          a += data[i] == 1 ? '周日  ' : '';
+          break;
+      }
+    }
+    return a;
+  }
+  module.exports.businessWeekStyleOne = businessWeekStyleOne;
+</wxs>
+<!-- 模式1模式2公用轮播 -->
+<view class="goods-detail-section">
+  <!-- 左上角的购买者轮播 -->
+  <view class="goods-buy-record" wx:if="{{goodsInfo.buyer_list.length}}" style="top: 10px;">
+    <swiper autoplay="true" circular="true" duration="1000" interval="3000" vertical="true">
+      <swiper-item wx:for="{{goodsInfo.buyer_list}}" wx:key="index">
+        <image src="{{item.cover_thumb}}"></image>
+        <text>{{item.nickname}}购买成功</text>
+      </swiper-item>
+    </swiper>
+  </view>
+  <!-- 视频加图片轮播 -->
+  <view class="image-carousel-container" wx:if="{{ imageOrVideo == 'image' }}">
+    <view class="goods-cover-container" wx:if="{{ !goodsInfo.img_urls }}">
+      <image data-src="{{ goodsInfo.cover }}" catchtap="clickPlusImages" src="{{ goodsInfo.cover }}" mode="aspectFill"></image>
+    </view>
+    <view class="slick-carousel-container" wx:else>
+      <swiper circular="true" autoplay="true" interval="5000" duration="1000" bindchange="carouselIndex">
+        <!-- 如果有视频 -->
+        <swiper-item wx:if="{{goodsInfo.video_url}}">
+          <block>
+            <video src="{{ goodsInfo.video_url }}" id="carousel-video" style="width:100%;height:100%;"></video>
+          </block>
+        </swiper-item>
+        <swiper-item wx:for="{{ goodsInfo.img_urls }}" wx:key="index">
+          <image data-src="{{ item }}" data-srcarr="{{ goodsInfo.img_urls }}" catchtap="clickPlusImages" src="{{ item }}" mode="aspectFit" class="slide-image"></image>
+        </swiper-item>
+      </swiper>
+      <!-- 如果只有一个则不显示（视频也算） -->
+      <view class="carousel-index" wx:if="{{goodsInfo.video_url ? goodsInfo.img_urls.length + 1 > 1 : goodsInfo.img_urls.length > 1}}">{{ carouselCurrentIndex }}/{{ goodsInfo.video_url ? goodsInfo.img_urls.length + 1 : goodsInfo.img_urls.length}}</view>
+    </view>
+  </view>
+
+   <view class="goods-seckill" style="{{'background:linear-gradient(to right,'+(storeStyle.theme?storeStyle.theme:'#FF7100') +','+(storeStyle.secondary?storeStyle.secondary:'#FFAC0C')+');'}}">
+      <view class="goods-seckill-left">
+        <view class="goods-seckill-current">
+          <view class="goods-current-price">
+            <text class="seckill-price-unit">¥</text>
+            <text class="goods-seckill-price">{{goodsInfo.seckill_price}}</text>
+          </view>
+
+            <view class="goods-seckill-original">
+              <view class="goods-original-price">¥{{goodsInfo.price}}<text class="goods-original-price-line"></text></view>
+              <view class="seckill-attention" wx:if="{{activityCareStatus}}">{{goodsInfo.seckill_activity_care}}人关注</view>
+            </view>
+        </view>
+
+      </view>
+      <view class="goods-seckill-right {{ goodsInfo.seckill_start_state == 2 ? 'seckill-end' : ''}}">
+      <view class="countdown">
+          <label wx:if="{{goodsInfo.seckill_start_state == 0 && goodsInfo.startDay == 1}}">距开始还剩</label>
+          <label wx:elif="{{goodsInfo.seckill_start_state == 0 && goodsInfo.startDay == 2}}"><text class="ico-moon icon-seckill-detail-alarm"></text>开抢时间</label>
+          <label wx:elif="{{goodsInfo.seckill_start_state == 1}}">距结束还剩</label>
+          <label wx:elif="{{goodsInfo.seckill_start_state == 2}}">已结束</label>
+          <block  wx:if="{{goodsInfo.seckill_start_state == 1 || (goodsInfo.seckill_start_state == 0 && goodsInfo.startDay == 1)}}">
+            <text class="days" wx:if="{{goodsInfo.downCount.days}}">{{goodsInfo.downCount.days}}天</text>
+            <text class="hours countdown-text" style="{{'color:' + storeStyle.theme }}">{{goodsInfo.downCount.hours}}</text>:
+            <text class="minutes countdown-text" style="{{'color:' + storeStyle.theme }}">{{goodsInfo.downCount.minutes}}</text>:
+            <text class="seconds countdown-text" style="{{'color:' + storeStyle.theme }}">{{goodsInfo.downCount.seconds}}</text>
+          </block>
+          <view class="seckill-start-time" style="{{'color:' + storeStyle.theme }}"  wx:if="{{goodsInfo.seckill_start_state == 0 && goodsInfo.startDay == 2}}">{{goodsInfo.seckill_startTime}}</view>
+
+        </view>
+        </view>
+    </view>
+</view>
+<!-- 模式1，2公用加入群聊弹窗 -->
+<view class="join-group-modal-cover" wx:if="{{showGroupModal}}">
+  <view class="join-group-modal">
+    <view style="margin-bottom:32rpx;line-height:42rpx;">{{appBECStoreConfig.join_group_config.notice}}</view>
+    <image src="http://develop.zhichiwangluo.com/static/webapp/images/xcx-goods/group-modal.png"></image>
+     <button class="button" style="{{'background:' + storeStyle.theme}}" open-type='contact' type="default-dark" size="20" session-from="{{sessionFrom}}">去发送
+    </button>
+    <view class="qrcode-close" catchtap="closeGroupChat">
+     <view class="ico-moon icon-closes close" style="color:#fff"></view>
+    </view>
+  </view>
+</view>
+<!-- 基础样式 -->
+<view class="goods-detail-content styleFour styleOne " wx:if="{{goodsInfo.detail_type == 0}}">
+  <view class="goods-header">
+    <!-- 标题 -->
+    <view class="price-box">{{ goodsInfo.title }}</view>
+    <!-- 分享 -->
+    <button class="share-favorite-box" bindgetuserinfo="showQRCodeComponent" open-type="getUserInfo">
+      <text class="ico-moon icon-goods-four-share"></text>
+    </button>
+  </view>
+  <!-- 浏览 -->
+  <view class="sales-view-box" wx:if="{{appBECStoreConfig.detail_fields_viewed_count.viewed_count == 1 || appBECStoreConfig.detail_fields_sales.sales == 1}}">
+    <view wx:if="{{appBECStoreConfig.detail_fields_viewed_count.viewed_count == 1}}">
+      <text class="ico-moon icon-viewed-count" style="{{'color:' + storeStyle.theme}}"></text>
+      <text>浏览{{goodsInfo.viewed_count}}{{goodsInfo.viewed_count >= 1000 ? '+' : ''}}</text>
+    </view>
+  </view>
+
+  <!-- 领取会员卡 -->
+  <view class="vip-card-into vip-card3" wx:if="{{appBECStoreConfig.card_switch == 1 && ((appBECStoreConfig.card_show_type == 1 && goodsInfo.is_vip_goods == 1) || appBECStoreConfig.card_show_type == 2)}}">
+    <view class="member-toast-wrap toast1" data-type="ordinary-vip" data-id="{{goodsInfo.vip_activity_id}}" bindtap="gotoVipBenefits" data-cardtype="{{cardtype}}" wx:if="{{appBECStoreConfig.card_detail_type == 1}}">
+      <view class="image-wrap">
+        <image src="http://cdn.jisuapp.cn/static/webapp/images/vip_price/a.png"></image>
+      </view>
+      <view class="member-toast">
+        <text class="member-tips">{{appBECStoreConfig.card_title}}</text>
+      </view>
+    </view>
+    <view class="member-toast-wrap toast2" data-type="ordinary-vip" data-id="{{goodsInfo.vip_activity_id}}" bindtap="gotoVipBenefits" data-cardtype="{{cardtype}}" wx:if="{{appBECStoreConfig.card_detail_type == 2}}">
+      <view class="image-wrap">
+        <image src="http://cdn.jisuapp.cn/static/webapp/images/vip_price/b.png"></image>
+      </view>
+      <view class="member-toast">
+        <text class="member-tips">{{appBECStoreConfig.card_title}}</text>
+      </view>
+    </view>
+    <view class="member-toast-wrap toast3" data-type="ordinary-vip" data-id="{{goodsInfo.vip_activity_id}}" bindtap="gotoVipBenefits" data-cardtype="{{cardtype}}" wx:if="{{appBECStoreConfig.card_detail_type == 3}}">
+      <view class="image-wrap">
+        <image src="http://cdn.jisuapp.cn/static/webapp/images/vip_price/c.png"></image>
+      </view>
+      <view class="member-toast">
+        <text class="member-tips">{{appBECStoreConfig.card_title}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="goods-coupon-box">
+    <block wx:if="{{showCouponsList && appBECStoreConfig.recv_coupon_switch == 1}}">
+      <view class="goods-coupon" catchtap="toCouponList">
+        <text class="coupon-title">优惠</text>
+        <text class="coupon-type-icon" style="{{'color:' + storeStyle.theme + ';background:' + storeStyle.theme + '1A'}}">{{couponTypeName}}</text>
+        <text class="coupon-name" style="{{'color:' + storeStyle.theme}}">{{couponName}}</text>
+        <image class="pull-right" src="http://develop.zhichiwangluo.com/static/webapp/images/xcx-goods/three-point.png"></image>
+      </view>
+    </block>
+    <block wx:if="{{ priceDiscountStr != '' && goodsInfo.integral != '2' }}">
+      <view class="goods-coupon">
+        <text class="coupon-title">活动</text>
+        <text style="color:#333;">积分可抵扣</text>
+        <text class="coupon-name" style="{{'color:' + storeStyle.theme}}">{{priceDiscountStrOne}}</text>
+      </view>
+    </block>
+    <view class="goods-coupon" catchtap="showAllshoppingCartBtn" wx:if="{{goodsInfo.model_items.length}}">
+      <text class="coupon-title">规格</text>
+      <text wx:if="{{selectModelInfo.models_text}}">已选：{{selectModelInfo.models_text}}</text>
+      <block wx:else>
+        <text style="color:#999;">请选择 </text>
+        <text class="model-sub-name" style="color:#999;" wx:for="{{goodsInfo.model}}" wx:key="index" wx:if="{{!selectModelInfo.models[index]}}">{{item.name}} </text>
+      </block>
+      <image class="pull-right" src="http://develop.zhichiwangluo.com/static/webapp/images/xcx-goods/three-point.png"></image>
+    </view>
+    <!-- 配送方式 -->
+    <view class="goods-coupon" style="border:none;" wx:if="{{communityType != 1}}">
+      <text class="coupon-title">配送</text>
+      <block wx:if="{{goodsInfo.pick_up_type.length > 2}}">
+        <text wx:for="{{goodsInfo.pick_up_type}}" wx:key="index">{{item == 1 ? '快递' : (item == 2 ? '同城' : (item == 3 ? '自提' : '点餐'))}}{{index + 1 == goodsInfo.pick_up_type.length ? '' : ' · '}}</text>
+      </block>
+      <block wx:else>
+        <text wx:for="{{goodsInfo.pick_up_type}}" wx:key="index">{{item == 1 ? '快递配送' : (item == 2 ? '同城配送' : (item == 3 ? '上门自提' : '堂食点餐'))}}{{index + 1 == goodsInfo.pick_up_type.length ? '' : ' · '}}</text>
+      </block>
+      <view class="freight" wx:if="{{showFreight && ((express == 1 && deliver == 0) || (express == 0 && deliver == 1)  || (express == 1 && deliver == 1))}}">免运费</view>
+      <view class="freight" wx:if="{{showFreight && express == 0 && deliver == 2}}">{{goodsInfo.goods_express_data.deliver_fee}}元</view>
+      <view class="freight" wx:if="{{showFreight && express == 2 && deliver == 0}}">{{goodsInfo.goods_express_data.express_fee}}元</view>
+      <view class="freight" wx:if="{{showFreight && express == 1 && deliver == 2}}">快递免运费，同城配送{{goodsInfo.goods_express_data.deliver_fee}}元</view>
+      <view class="freight" wx:if="{{showFreight && express == 2 && deliver == 1}}">快递{{goodsInfo.goods_express_data.express_fee}}元，同城配送免运费</view>
+      <view class="freight" wx:if="{{showFreight && express == 2 && deliver == 2 && goodsInfo.goods_express_data.express_fee != goodsInfo.goods_express_data.deliver_fee}}">快递{{goodsInfo.goods_express_data.express_fee}}元，同城配送{{goodsInfo.goods_express_data.deliver_fee}}元</view>
+      <view class="freight" wx:if="{{showFreight && express == 2 && deliver == 2 && goodsInfo.goods_express_data.express_fee == goodsInfo.goods_express_data.deliver_fee}}">{{goodsInfo.goods_express_data.express_fee}}元</view>
+    </view>
+     <!--服务 -->
+    <view class="goods-service" style="border:none;" wx:if="{{goodsInfo.service && goodsInfo.service.length}}">
+      <text class="coupon-title">服务</text>
+      <view class="goods-service-content">
+        <block wx:for="{{goodsInfo.service}}" wx:key="keys">
+          <text class="goods-service-item"><text class="ico-moon icon-goods-support-delivery goods-support-delivery" style="{{'color:' + storeStyle.theme}}"></text>{{item}}</text>
+        </block>
+      </view>
+    </view>
+  </view>
+  <!-- 他们都在看 -->
+  <view class="another-view-box">
+    <view class="another-view-head" wx:if="{{appBECStoreConfig.interact_switch == 1}}">
+      <view>
+        <view class="another-view-title">他们都在逛</view>
+        <image wx:for="{{viewGoodsUserList}}" wx:key="index" wx:if="{{index <= 5}}" src="{{item.cover_thumb}}"></image>
+      </view>
+      <button class="another-view-share" bindgetuserinfo="showQRCodeComponent" open-type="getUserInfo" style="{{storeStyle.theme == '#FF7100' ? 'background:linear-gradient(to right, #FFAC0C,'+ storeStyle.theme + ')' : storeStyle.theme == '#FE4070' ? 'background:linear-gradient(to right, #FF97B9,' + storeStyle.theme +')' : storeStyle.theme == '#F93D28' ? 'background:linear-gradient(to right, #FF6857,' + storeStyle.theme + ')' : storeStyle.theme == '#F93D28' ? 'background:linear-gradient(to right, #F95F4E,' + storeStyle.theme + ')' : storeStyle.theme == '#69C4AA' ? 'background:linear-gradient(to right, #97DFC9,' +  storeStyle.theme + ')' : storeStyle.theme == '#3091F2' ? 'background:linear-gradient(to right, #95CAFF,' +  storeStyle.theme + ')' : storeStyle.theme == '#D4A656' ? 'background:linear-gradient(to right, #E4B667,' +  storeStyle.theme + ')' : 'background:' + storeStyle.theme}}">
+        <text class="ico-moon icon-goods-four-share"></text>
+        <text>邀请好友一起抢</text>
+      </button>
+    </view>
+    <view class="welfare-box" wx:if="{{appBECStoreConfig.join_group_config.join_group_switch == 1}}">
+      <image class="welfare-img" src="{{appBECStoreConfig.join_group_config.icon}}"></image>
+      <text class="welfare-icon">福利群</text>
+      <text class="welfare-title">{{goodsInfo.app_name}}粉丝福利群</text>
+      <view class="description">{{appBECStoreConfig.join_group_config.description}}</view>
+      <view class="pull-right join" catchtap="joinGroupChat" style="{{'color:' + storeStyle.theme + ';background:' + storeStyle.theme + '1A'}}">
+        <text>立即加入</text>
+        <text class="ico-moon icon-rightarrow"></text>
+      </view>
+    </view>
+  </view>
+  <!-- 店铺信息 分店 本店推荐 -->
+  <view class="branch-shop-box">
+    <view class="shop-info">
+      <image src="{{goodsInfo.app_cover}}" class="store-picture"></image>
+      <view class="shop-info-content">
+        <view class="store-name">{{goodsInfo.app_name}}</view>
+        <view class="saling">在售
+          <text style="{{'color:' + storeStyle.theme}}">{{onSaleGoodsCount}}</text>件商品</view>
+      </view>
+      <view class="go-to-store" bindtap="goToHomepage" style="{{'color:' + storeStyle.theme + ';background:' + storeStyle.theme + '1A'}}">
+        <text>进入店铺</text>
+        <text class="ico-moon icon-rightarrow"></text>
+      </view>
+    </view>
+    <!-- 分店店铺 -->
+    <view class="branch-shop-info" wx:for="{{store_list_data}}" wx:key="index" wx:if="{{showSelfDeliveryShopList && store_list_data.length > 0}}">
+      <view class="branch-content">
+        <view class="branch-title" style="font-weight:bold;">{{item.title}}</view>
+        <view class="branch-time" wx:if="{{item.self_delivery_business_time_rule.type == 1}}" style="display: table;">
+          <view style="display: table-cell;">· </view>
+          <view>全年</view>
+        </view>
+        <block wx:else>
+          <block wx:for="{{item.self_delivery_business_time_rule.custom.business_time}}" wx:key="index">
+            <view class="branch-time">
+              <view style="display: table-cell;">· </view>
+              <view style="display: table-cell;">{{businessWeekStyleOne.businessWeekStyleOne(item.business_week)}}</view>
+            </view>
+            <view class="branch-time">
+              <view style="display: table-cell;">· </view>
+              <view style="display: table-cell;">
+                <text wx:for="{{item.business_time_interval}}" wx:for-item="store" wx:key="index">{{store.start_time}}-{{store.end_time}} {{index == item.business_time_interval.length - 1 ? '' : ', '}}                   </text>
+              </view>
+
+            </view>
+          </block>
+        </block>
+        <!-- 节假日是否营业 -->
+        <view class="branch-time" wx:if="{{item.self_delivery_business_time_rule.exclude_holiday != 0}}">
+          <view style="display: table-cell;">· </view>
+          <view style="display: table-cell;">(节假日不营业)</view>
+        </view>
+        <view class="branch-address">
+          <view style="display: table-cell;">· </view>
+          <view style="display: table-cell;">{{item.address_detail}}</view>
+        </view>
+      </view>
+      <view class="branch-icon-box" style="width: 142rpx;">
+        <text class="ico-moon icon-takeout-cellphone" catchtap="phoneCall" data-phone="{{item.contact_phone}}" style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.secondary + '33'}}"></text>
+        <text class="ico-moon icon-goods-four-navigation" bindtap="openMap" data-longitude="{{item.longitude}}" data-latitude="{{item.latitude}}" data-address="{{item.address_detail}}" data-title="{{item.title}}" style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.secondary + '33'}}"></text>
+      </view>
+    </view>
+    <view class="deliverty-shop-more" wx:if="{{is_more == 1}}" catchtap="getmoreshop">
+      <text>查看更多店铺</text>
+      <text class="ico-moon icon-rightarrow"></text>
+    </view>
+  </view>
+
+
+  <!-- 商品评价 -->
+  <view class="goods-comment" id="goodComment" hidden="{{displayComment}}" style="padding-bottom:0;">
+    <view class="comment-header">
+      <text class="goods-comment-title">商品评价 <text style="font-size:26rpx;font-weight:normal;">({{ commentNums[0] || 0 }})</text></text>
+      <view class="go-to-comment" bindtap="goToCommentPage">
+        <text class="ico-moon icon-rightarrow" style="font-size:20rpx;color:#ccc;"></text>
+      </view>
+    </view>
+    <view class="comment-item">
+      <image class="comment-avatar" src="{{ commentArr[0].buyer_headimgurl }}"></image>
+      <text class="comment-name">{{ commentArr[0].buyer_nickname }}</text>
+      <view class="comment-icon" wx:if="{{commentArr[0].assess_info.level == 1}}">
+        <image src="http://develop.zhichiwangluo.com/static/webapp/images/xcx-goods/styleone-great.png"></image>
+        <text>好评</text>
+      </view>
+      <view class="comment-icon" wx:if="{{commentArr[0].assess_info.level == 2}}">
+        <image src="http://develop.zhichiwangluo.com/static/webapp/images/xcx-goods/styleone-common.png"></image>
+        <text>中评</text>
+      </view>
+      <view class="comment-icon" wx:if="{{commentArr[0].assess_info.level == 3}}">
+        <image src="http://develop.zhichiwangluo.com/static/webapp/images/xcx-goods/styleone-bad.png"></image>
+        <text>差评</text>
+      </view>
+      <view class="comment-content-box">
+        <view class="four-comment-content">{{ commentArr[0].assess_info.content || '此用户没有填写评价' }}</view>
+        <block wx:if="{{commentArr[0].assess_info.img_arr.length}}">
+          <image wx:for="{{commentArr[0].assess_info.img_arr}}" wx:key="keys" class="comment-photo" src="{{item}}"></image>
+        </block>
+      </view>
+    </view>
+  </view>
+
+
+  <view class="goods-detail-section" id="goodDetail">
+    <view class="goods-detail-title">商品详情</view>
+    <view class="goods-details">
+      <template is="wxParse" data="{{ wxParseData: wxParseDescription.nodes }}" />
+    </view>
+  </view>
+
+
+
+  <view class="goods-recommend" wx:if="{{ goodsInfo.recommend_info.length }}" style="background:#F3F3F3;">
+    <view class="shop-recom-title" style="text-align:center;">- 相关推荐 -</view>
+    <view bindtap="toRecommendGoodsDetail" style="bcakgorund:#fff;" class="recommendGood" wx:for="{{goodsInfo.recommend_info}}" wx:key="index" data-id="{{ item.form_data.id }}" data-goods-type="{{ item.form_data.goods_type }}">
+      <image src="{{ item.form_data.cover }}" style="width:335rpx;height:335rpx;"></image>
+      <view class="title">{{ item.form_data.title }}</view>
+      <view class="price" style="vertical-align: bottom;font-size:26rpx;{{'color:' + storeStyle.theme }}">¥ {{ item.form_data.price }}</view>
+    </view>
+  </view>
+</view>
+<!-- 基础样式底部立即购买 -->
+<view class="goods-bottom-four styleOne" wx:if="{{goodsInfo.detail_type == 0}}">
+  <view class="bottom-four-left">
+    <!-- 客服 -->
+    <view>
+      <contact-button type="default-dark" size="20" session-from="{{sessionFrom}}"></contact-button>
+      <text class="ico-moon icon-franchisee-service" style="font-size:38rpx;"></text>
+      <view>客服</view>
+    </view>
+    <!-- 购物车 -->
+    <view catchtap="goToShoppingCart" wx:if="{{goodsInfo.integral != '2'}}" style="padding-top:12rpx;">
+      <text class="ico-moon icon-community-group-goods-cart" style="font-size:42rpx"></text>
+      <view>购物车</view>
+    </view>
+  </view>
+  <view class="bottom-four-right" style="padding-top:14rpx;">
+    <block wx:if="{{!isGoodsLimit && !isVipLimit}}">
+      <view wx:if="{{goodsInfo.seckill_progress != 100 && goodsInfo.seckill_start_state != 2 && goodsInfo.integral != 2 && goodsInfo.integral != '2'}}" class="add-to-shoppingCart" data-goods-id="{{goodsInfo.id}}" data-status="0" catchtap="{{goodsInfo.is_package_goods == 1 ? 'selectGoodsPackage' : 'showAddToShoppingCart'}}" style="{{ 'background:' + storeStyle.secondary + ';color:' + (storeStyle.secondary == '#ACD3FA' || storeStyle.secondary == '#FFCFDF' || storeStyle.secondary == '#ffffff' || storeStyle.secondary == '#DFF3ED' || storeStyle.secondary == '#FAF7ED' ? storeStyle.theme : '') }}">加入购物车</view>
+      <view wx:if="{{goodsInfo.seckill_progress !=100 && goodsInfo.seckill_start_state == 1}}" class="{{goodsInfo.integral == '2' ? 'integral-goods-directly' : 'buy-goods-directly'}}" data-goods-id="{{goodsInfo.id}}" data-status="0" catchtap="{{goodsInfo.is_package_goods == 1 ? 'selectGoodsPackage' : 'showBuyDirectly'}}" style="{{'background:' + storeStyle.theme}}">{{goodsInfo.price == 0 ? '立即兑换' : '立即购买'}}</view>
+      <view class="buy-goods-directly" style="{{'background:' + storeStyle.theme}}" data-goods="{{goodsInfo}}"  catchtap="formSubmitRemind" style="{{'background:'+storeStyle.theme}}" wx:if="{{goodsInfo.seckill_start_state == 0 && goodsInfo.is_seckill_activity_care == 0}}" data-is_deleted="0">设置提醒</view>
+      <view class="buy-goods-directly" style="{{'background:' + storeStyle.theme}}" data-goods="{{goodsInfo}}"  catchtap="formSubmitRemind" style="{{'background:'+storeStyle.theme}}" wx:if="{{goodsInfo.seckill_start_state == 0 && goodsInfo.is_seckill_activity_care == 1}}" data-is_deleted="1">取消提醒</view>
+      <view class="styleOne-active-end-button background-cccccc" wx:if="{{goodsInfo.seckill_progress == 100 && goodsInfo.seckill_start_state == 1}}">商品已抢光</view>
+    <view class="styleOne-active-end-button background-cccccc" wx:if="{{goodsInfo.seckill_start_state == 2}}">活动已结束</view>
+    </block>
+    <block wx:else>
+      <view class="goods-limit-btn style1" style="{{'background:' + storeStyle.theme}}">{{isVipLimit ? '指定会员限购' : '已达最大限购数量'}}</view>
+    </block>
+  </view>
+</view>
+
+
+
+<!-- 模式2 -->
+<view class="goods-detail-content styleTwo" wx:if="{{ goodsInfo.detail_type == 2 }}">
+  <!-- 标题 -->
+  <view class="goods-header" style="{{showCouponsList && appBECStoreConfig.recv_coupon_switch == 1 ? '' : 'margin-bottom: 20rpx;'}}">
+    <view class="goods-title goods-title-zero">
+      <view class="goodsInfo-title"><text class="ico-moon icon-seckill-alarm cover-icon-seckill-alarm" style="{{'color:'+storeStyle.theme}}"></text>{{ goodsInfo.title }}</view>
+    </view>
+  </view> 
+  <!-- 领取优惠券 -->
+  <view class="goods-coupon" catchtap="toCouponList" wx:if="{{showCouponsList && appBECStoreConfig.recv_coupon_switch == 1}}">
+    <view class="couponList">
+      <text class="ico-moon icon-row-number-fee"></text>
+      <text class="three-coupon">{{couponName}}</text>
+      <text class="ico-moon icon-new-appointment-arrowhead" style="font-size:18rpx;margin: 0 23rpx 0 9rpx;float:right;line-height:72rpx;"></text>
+      <text style="float:right;line-height:72rpx;">快来领取</text>
+    </view>
+  </view>
+  <!-- 选择规格 -->
+  <view class="select-goods-type" wx:if="{{goodsInfo.model.length > 0}}">
+    <view>
+      <view>选择</view>
+      <view wx:if="{{!selectModelInfo.models_text && goodsInfo.model.length > 0}}" class="model-name">请选择
+        <text wx:for="{{goodsInfo.model}}" wx:key="index" wx:if="{{!selectModelInfo.models[index]}}">{{item.name}} </text>
+      </view>
+      <view wx:if="{{selectModelInfo.models_text}}" class="model-name">已选：{{ selectModelInfo.models_text }}</view>
+      <label class="ico-moon icon-rightarrow" style="float:right;font-size:20rpx;margin-left:12rpx;" catchtap="typeThreeSelectGoods"></label>
+      <label style="float:right;" catchtap="typeThreeSelectGoods">共{{goodsInfo.model_items.length}}种规格可选</label>
+    </view>
+  </view>
+  <!-- 运费显示 -->
+  <view class="select-goods-type" wx:if="{{showFreight}}">
+    <view>
+      <view>运费</view>
+      <text class="model-name">{{ goodsInfo.express_fee || '包邮' }}</text>
+    </view>
+  </view>
+  <view class="select-goods-type" style="{{goodsInfo.service && goodsInfo.service.length?'':'margin-bottom:20rpx;border:none'}}" wx:if="{{communityType != 1}}">
+    <view style="{{goodsInfo.service && goodsInfo.service.length?'':'border:none;'}}">
+      <view>配送</view>
+      <view class="address-pick-up">
+        <view wx:for="{{goodsInfo.pick_up_type}}" wx:key="index" wx:if="{{goodsInfo.pick_up_type.length > 2}}">
+          <text style="{{'color:' + storeStyle.theme}}" class="ico-moon icon-goods-support-delivery suporrt"></text>
+          <text>{{item == 1 ? '快递' : (item == 2 ? '同城' : (item == 3 ? '自提' : '点餐'))}}</text>
+        </view>
+        <view wx:for="{{goodsInfo.pick_up_type}}" wx:key="index" wx:if="{{goodsInfo.pick_up_type.length <= 2}}">
+          <text style="{{'color:' + storeStyle.theme}}" class="ico-moon icon-goods-support-delivery suporrt"></text>
+          <text>{{item == 1 ? '快递配送' : (item == 2 ? '同城配送' : (item == 3 ? '上门自提' : '堂食点餐'))}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 服务 -->
+  <view class="select-goods-type goods-service-type" style="margin-bottom:20rpx;border:none" wx:if="{{goodsInfo.service && goodsInfo.service.length}}">
+    <view class="goods-service" style="border:none;">
+      <text class="coupon-title">服务</text>
+      <view>
+        <block wx:for="{{goodsInfo.service}}" wx:key="keys">
+          <text class="goods-service-item"><text class="ico-moon icon-goods-support-delivery goods-support-delivery" style="{{'color:' + storeStyle.theme}}"></text>{{item}}</text>
+        </block>
+      </view>
+    </view>
+  </view>
+  <!-- 会员卡入口 -->
+  <view class="vip-card-into vip-card1">
+      <block wx:if="{{appBECStoreConfig.card_switch == 1 && ((appBECStoreConfig.card_show_type == 1 && goodsInfo.is_vip_goods == 1) || appBECStoreConfig.card_show_type == 2)}}">
+        <view class="member-toast-wrap toast1" data-type="ordinary-vip" data-id="{{goodsInfo.vip_activity_id}}" bindtap="gotoVipBenefits" data-cardtype="{{cardtype}}" wx:if="{{appBECStoreConfig.card_detail_type == 1}}" style="border-bottom: 1rpx solid #E7E7E7;">
+          <view class="image-wrap">
+            <image src="http://cdn.jisuapp.cn/static/webapp/images/vip_price/a.png"></image>
+          </view>
+          <view class="member-toast">
+            <text class="member-tips">{{appBECStoreConfig.card_title}}</text>
+          </view>
+        </view>
+        <view class="member-toast-wrap toast2" data-type="ordinary-vip" data-id="{{goodsInfo.vip_activity_id}}" bindtap="gotoVipBenefits" data-cardtype="{{cardtype}}" wx:if="{{appBECStoreConfig.card_detail_type == 2}}" style="border-bottom: 1rpx solid #E7E7E7;">
+          <view class="image-wrap">
+            <image src="http://cdn.jisuapp.cn/static/webapp/images/vip_price/b.png"></image>
+          </view>
+          <view class="member-toast">
+            <text class="member-tips">{{appBECStoreConfig.card_title}}</text>
+          </view>
+        </view>
+        <view class="member-toast-wrap toast3" data-type="ordinary-vip" data-id="{{goodsInfo.vip_activity_id}}" bindtap="gotoVipBenefits" data-cardtype="{{cardtype}}" wx:if="{{appBECStoreConfig.card_detail_type == 3}}" style="border-bottom: 1rpx solid #E7E7E7;">
+          <view class="image-wrap">
+            <image src="http://cdn.jisuapp.cn/static/webapp/images/vip_price/c.png"></image>
+          </view>
+          <view class="member-toast">
+            <text class="member-tips">{{appBECStoreConfig.card_title}}</text>
+          </view>
+        </view>
+      </block>
+    </view>
+  <!-- 互动入口 -->
+  <view class="share-goods-type" wx:if="{{appBECStoreConfig.interact_switch == 1 && viewGoodsUserCount > 0}}">
+    <view style="border-bottom: 1rpx solid #E7E7E7;">
+      <view class="activity-member">
+        <view class="member-section">
+          <view class="member-image" wx:for="{{viewGoodsUserList}}" wx:key="index">
+            <image src="{{item.cover_thumb}}"></image>
+          </view>
+        </view>
+        <view class="member-section">
+          {{viewGoodsUserCount}}{{viewGoodsUserCount >= 1000 ? '+' : ''}}在逛
+        </view>
+        <view class="share-button" style="{{storeStyle.theme == '#FF7100' ? 'background:linear-gradient(to right, #FFAC0C,'+ storeStyle.theme + ')' : storeStyle.theme == '#FE4070' ? 'background:linear-gradient(to right, #FF97B9,' + storeStyle.theme +')' : storeStyle.theme == '#F93D28' ? 'background:linear-gradient(to right, #FF6857,' + storeStyle.theme + ')' : storeStyle.theme == '#F93D28' ? 'background:linear-gradient(to right, #F95F4E,' + storeStyle.theme + ')' : storeStyle.theme == '#69C4AA' ? 'background:linear-gradient(to right, #97DFC9,' +  storeStyle.theme + ')' : storeStyle.theme == '#3091F2' ? 'background:linear-gradient(to right, #95CAFF,' +  storeStyle.theme + ')' : storeStyle.theme == '#D4A656' ? 'background:linear-gradient(to right, #E4B667,' +  storeStyle.theme + ')' : 'background:' + storeStyle.theme}}" catchtap="showQRCodeComponent">
+          <text class="ico-moon icon-share-v" style="margin-right:5rpx"></text>
+          <text>邀请好友一起抢</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 进群入口 -->
+  <view class="joinGroup" wx:if="{{appBECStoreConfig.join_group_config.join_group_switch == 1}}">
+    <view>
+      <view class="group-cover">
+        <image src="{{appBECStoreConfig.join_group_config.icon}}" style="width:100%;height:100%;"></image>
+      </view>
+      <view class="group-title">{{appBECStoreConfig.join_group_config.title}}</view>
+      <view class="group-show">{{appBECStoreConfig.join_group_config.description}}</view>
+      <view class="joinButton" style="{{'border:1rpx solid ' + storeStyle.theme + ';color:' + storeStyle.theme }};"
+            catchtap="joinGroupChat">立即加入</view>
+    </view>
+  </view>
+  <!-- 当前门店 -->
+  <view class="joinGroup" style="margin-top:20rpx;">
+    <view>
+      <view class="group-cover">
+        <image src="{{goodsInfo.app_cover}}" style="width:100%;height:100%;"></image>
+      </view>
+      <view class="group-title">{{goodsInfo.app_name}}</view>
+      <view class="group-show">{{onSaleGoodsCount}}件商品</view>
+      <view class="joinButton">
+        <view class="pull-right ico-moon icon-rightarrow" style="float:right;font-size:20rpx;margin-top:4rpx;"></view>
+        <view style="color:#333;font-size:28rpx;" bindtap="goToHomepage">进店逛逛</view>
+      </view>
+    </view>
+  </view>
+  <!-- 自提门店 -->
+  <view class="delivery-list" wx:for="{{store_list_data}}" wx:key="index" wx:if="{{showSelfDeliveryShopList && store_list_data.length > 0}}"> 
+    <view class="delivery-store">
+      <view class="delivery-store-title" style="margin-bottom:12rpx;color:#333;">{{item.title}}</view>
+      <view class="delivery-store-title">
+        <view wx:if="{{item.self_delivery_business_time_rule.type == 1}}">· 全年</view>
+        <view wx:if="{{item.self_delivery_business_time_rule.type == 2}}">· {{item.self_delivery_business_time_rule.custom.business_time[0].business_week[0] == 1 ? '周一' : ''}}{{item.self_delivery_business_time_rule.custom.business_time[0].business_week[1] == 1 ? '、周二' : ''}}{{item.self_delivery_business_time_rule.custom.business_time[0].business_week[2] == 1 ? '、周三' : ''}}{{item.self_delivery_business_time_rule.custom.business_time[0].business_week[3] == 1 ? '、周四' : ''}}{{item.self_delivery_business_time_rule.custom.business_time[0].business_week[4] == 1 ? '、周五' : ''}}{{item.self_delivery_business_time_rule.custom.business_time[0].business_week[5] == 1 ? '、周六' : ''}}{{item.self_delivery_business_time_rule.custom.business_time[0].business_week[6] == 1 ? '、周日' : ''}}</view>
+        <view wx:if="{{item.self_delivery_business_time_rule.type == 2}}" style="width:530rpx;">· <text wx:for="{{item.self_delivery_business_time_rule.custom.business_time[0].business_time_interval}}" wx:for-item="store" wx:key="index">{{store.start_time}}-{{store.end_time}}; </text></view>
+        <view> {{item.self_delivery_business_time_rule.exclude_holiday == 0 ? '' : '(节假日不营业)'}}</view>
+      </view>
+      <view class="delivery-store-title">· {{item.address_detail}}</view>
+      <view class="ico-moon icon-fn-phone" style="right:73rpx;" catchtap="phoneCall" data-phone="{{item.contact_phone}}"></view>
+      <view class="ico-moon icon-shop-location" type="default" bindtap="openMap" data-longitude="{{item.longitude}}" data-latitude="{{item.latitude}}"  data-address="{{item.address_detail}}" data-title="{{item.title}}"></view>
+    </view>
+  </view>
+  <view class="selfDelivertyGetMore" wx:if="{{is_more == 1}}" catchtap="getmoreshop">
+    <text>查看更多</text>
+    <text class="ico-moon icon-downarrow" style="vertical-align: middle;"></text>
+  </view>
+  <!-- 顾客怎么说 -->
+  <view class="goods-comment" id="goodComment" hidden="{{displayComment}}">
+    <view class="comment-title">
+      <view class="goods-comment-title" style="display:inline-block;">顾客怎么说</view>
+      <view class="joinButton" style="top:10rpx;right:30rpx;">
+        <view class="pull-right ico-moon icon-rightarrow" style="float:right;font-size:20rpx;margin-top:4rpx;" bindtap="goToCommentPage"></view>
+        <view style="color:#333;font-size:28rpx;font-weight:normal;" bindtap="goToCommentPage">查看全部</view>
+      </view>
+    </view> 
+    <view class="block-item">
+      <view class="comPage-comment-list">
+        <view wx:for="{{ commentArr }}" class="comPage-comment-item" wx:key="index">
+          <view>
+            <image class="comPage-comment-photo" src="{{ item.buyer_headimgurl }}"></image>
+            <text class="comPage-comment-name">{{ item.buyer_nickname }}</text>
+            <text class="ico-moon icon-tostoreGoodComment" wx:if="{{item.assess_info.level == 1}}"></text>
+            <text style="font-size:26rpx;color:#EAAE41;" wx:if="{{item.assess_info.level == 1}}">好评</text>
+            <text class="ico-moon icon-tostoreMiddleComment" wx:if="{{item.assess_info.level == 2}}"></text>
+            <text style="font-size:26rpx;color:#EAAE41;" wx:if="{{item.assess_info.level == 2}}">中评</text>
+            <text class="ico-moon icon-tostoreBadComment" wx:if="{{item.assess_info.level == 3}}"></text>
+            <text style="font-size:26rpx;color:#EAAE41;" wx:if="{{item.assess_info.level == 3}}">差评</text>
+          </view>
+          <view class="comPage-comment-content">{{ item.assess_info.content || '此用户没有填写评论'}}</view>
+          <view  wx:if="{{item.assess_info.has_img > 0}}" style="margin-left:85rpx;overflow:hidden;margin-top:20rpx;">
+            <image src="{{img}}" style="width:134rpx;;height:134rpx;margin-right:22rpx;"  wx:for="{{ item.assess_info.img_arr }}" wx:for-item="img" wx:key="index"></image>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 商品详情 -->
+  <view style="padding:44rpx 0 27rpx;text-align:center;color:#b2b2b2;font-size:24rpx;">
+    <view class="line"></view>
+    <view style="display: inline-block;vertical-align:middle;margin:0 4px;">商品图文详情</view>
+    <view class="line"></view>
+  </view>
+  <view class="goods-detail-section" id="goodDetail">
+    <view class="goods-details">
+      <template is="wxParse" data="{{ wxParseData: wxParseDescription.nodes }}" />
+    </view>
+  </view>
+  <!-- 店铺推荐 -->
+  <view style="padding: 30rpx;text-align:center;color:#b2b2b2;font-size:24rpx;" wx:if="{{ goodsInfo.recommend_info.length }}">
+    <view class="line"></view>
+    <view style="display: inline-block;vertical-align:middle;margin:0 4px;">你可能还喜欢</view>
+    <view class="line"></view>
+  </view>
+  <view class="recommendGoodList" wx:if="{{ goodsInfo.recommend_info.length }}">
+    <view bindtap="toRecommendGoodsDetail" style="bcakgorund:#fff;" class="recommendGood"  wx:for="{{goodsInfo.recommend_info}}" wx:key="index" data-id="{{ item.form_data.id }}" data-goods-type="{{ item.form_data.goods_type }}">
+     <image src="{{ item.form_data.cover }}" style="width:335rpx;height:335rpx;"></image>
+     <view class="title">{{ item.form_data.title }}</view>
+     <view class="price" style="vertical-align: bottom;{{'color:' + storeStyle.theme }}">¥{{ item.form_data.price }}</view>
+     <view bindtap="toRecommendGoodsDetail" data-id="{{ item.form_data.id }}" data-goods-type="{{ item.form_data.goods_type }}" style="{{'background:' + storeStyle.theme }}" class="torecommend-good" >抢</view>
+   </view>
+  </view>
+</view>
+<!-- 底部tab -->
+<view class="goods-bottom-two" wx:if="{{ goodsInfo.detail_type == 2 && goodsInfo.integral != '2'}}">
+  <view class="bottom-two-left">
+    <view catchtap="goToHomepage">
+      <text class="ico-moon icon-shop-home-page-new"></text>
+      <view>首页</view>
+    </view>
+    <view catchtap="goToShoppingCart" wx:if="{{goodsInfo.integral != '2'}}">
+      <text class="ico-moon icon-shoppingcart"></text>
+      <view>购物车</view>
+    </view>
+    <view wx:if="{{!isVipLimit}}" class="getMoreGoods moregood" data-goods-id="{{goodsInfo.id}}" data-status="0"  catchtap="showAddToShoppingCart">加购</view>
+    <view wx:else class="getMoreGoods moregood"><text style="opacity: .2;">加购</text></view>
+  </view>
+  <label wx:if="{{goodsInfo.seckill_progress !=100 && goodsInfo.seckill_start_state == 1 && !isGoodsLimit && !isVipLimit}}" class="buy-goods-topay" data-goods-id="{{goodsInfo.id}}" data-status="1" bindtap="{{goodsInfo.is_package_goods == 1 ? 'selectGoodsPackage' : 'showBuyDirectly'}}" style="{{storeStyle.theme == '#FF7100' ? 'background:linear-gradient(to right, #FFAC0C,'+ storeStyle.theme + ')' : storeStyle.theme == '#FE4070' ? 'background:linear-gradient(to right, #FF97B9,' + storeStyle.theme +')' : storeStyle.theme == '#F93D28' ? 'background:linear-gradient(to right, #FF6857,' + storeStyle.theme + ')' : storeStyle.theme == '#F93D28' ? 'background:linear-gradient(to right, #F95F4E,' + storeStyle.theme + ')' : storeStyle.theme == '#69C4AA' ? 'background:linear-gradient(to right, #97DFC9,' +  storeStyle.theme + ')' : storeStyle.theme == '#3091F2' ? 'background:linear-gradient(to right, #95CAFF,' +  storeStyle.theme + ')' : storeStyle.theme == '#D4A656' ? 'background:linear-gradient(to right, #E4B667,' +  storeStyle.theme + ')' : 'background:' + storeStyle.theme}}">立即购买</label>
+  <label wx:if="{{goodsInfo.seckill_progress !=100 && goodsInfo.seckill_start_state == 1 && (isGoodsLimit || isVipLimit)}}" class="buy-goods-topay" style="{{storeStyle.theme == '#FF7100' ? 'background:linear-gradient(to right, #FFAC0C,'+ storeStyle.theme + ')' : storeStyle.theme == '#FE4070' ? 'background:linear-gradient(to right, #FF97B9,' + storeStyle.theme +')' : storeStyle.theme == '#F93D28' ? 'background:linear-gradient(to right, #FF6857,' + storeStyle.theme + ')' : storeStyle.theme == '#F93D28' ? 'background:linear-gradient(to right, #F95F4E,' + storeStyle.theme + ')' : storeStyle.theme == '#69C4AA' ? 'background:linear-gradient(to right, #97DFC9,' +  storeStyle.theme + ')' : storeStyle.theme == '#3091F2' ? 'background:linear-gradient(to right, #95CAFF,' +  storeStyle.theme + ')' : storeStyle.theme == '#D4A656' ? 'background:linear-gradient(to right, #E4B667,' +  storeStyle.theme + ')' : 'background:' + storeStyle.theme}}"><text style="opacity: .7;">{{isVipLimit ? '指定会员限购' : '已达限购量'}}</text></label>
+
+  <label  class="buy-goods-topay" style="{{storeStyle.theme == '#FF7100' ? 'background:linear-gradient(to right, #FFAC0C,'+ storeStyle.theme + ')' : storeStyle.theme == '#FE4070' ? 'background:linear-gradient(to right, #FF97B9,' + storeStyle.theme +')' : storeStyle.theme == '#F93D28' ? 'background:linear-gradient(to right, #FF6857,' + storeStyle.theme + ')' : storeStyle.theme == '#F93D28' ? 'background:linear-gradient(to right, #F95F4E,' + storeStyle.theme + ')' : storeStyle.theme == '#69C4AA' ? 'background:linear-gradient(to right, #97DFC9,' +  storeStyle.theme + ')' : storeStyle.theme == '#3091F2' ? 'background:linear-gradient(to right, #95CAFF,' +  storeStyle.theme + ')' : storeStyle.theme == '#D4A656' ? 'background:linear-gradient(to right, #E4B667,' +  storeStyle.theme + ')' : 'background:' + storeStyle.theme}}" data-goods="{{goodsInfo}}" catchtap="formSubmitRemind" wx:if="{{goodsInfo.seckill_start_state == 0 && goodsInfo.is_seckill_activity_care == 0}}" data-is_deleted="0">设置提醒</label>
+  <label  class="buy-goods-topay" style="{{storeStyle.theme == '#FF7100' ? 'background:linear-gradient(to right, #FFAC0C,'+ storeStyle.theme + ')' : storeStyle.theme == '#FE4070' ? 'background:linear-gradient(to right, #FF97B9,' + storeStyle.theme +')' : storeStyle.theme == '#F93D28' ? 'background:linear-gradient(to right, #FF6857,' + storeStyle.theme + ')' : storeStyle.theme == '#F93D28' ? 'background:linear-gradient(to right, #F95F4E,' + storeStyle.theme + ')' : storeStyle.theme == '#69C4AA' ? 'background:linear-gradient(to right, #97DFC9,' +  storeStyle.theme + ')' : storeStyle.theme == '#3091F2' ? 'background:linear-gradient(to right, #95CAFF,' +  storeStyle.theme + ')' : storeStyle.theme == '#D4A656' ? 'background:linear-gradient(to right, #E4B667,' +  storeStyle.theme + ')' : 'background:' + storeStyle.theme}}" data-goods="{{goodsInfo}}" catchtap="formSubmitRemind" wx:if="{{goodsInfo.seckill_start_state == 0 && goodsInfo.is_seckill_activity_care == 1}}" data-is_deleted="1">取消提醒</label>
+  <label class="buy-goods-topay background-cccccc" wx:if="{{goodsInfo.seckill_progress == 100 && goodsInfo.seckill_start_state == 1}}">商品已抢光</label>
+  <label class="buy-goods-topay background-cccccc" wx:if="{{goodsInfo.seckill_start_state == 2}}">活动已结束</label>
+  <view class="bottom-two-right-share">
+    <view catchtap="showQRCodeComponent" style="margin-top:12rpx;text-align: center" wx:if="{{showShare || goodsInfo.recommend_status}}">
+      <text class="ico-moon icon-communityDetail-share" style="font-size: 38rpx;"></text>
+      <view>分享</view>
+    </view>
+    <button open-type="share" wx:if="{{!showShare && !goodsInfo.recommend_status}}">
+      <text class="ico-moon icon-communityDetail-share" style="font-size: 38rpx;"></text>
+      <view>分享</view>
+    </button>
+  </view>
+</view>
+<view class="goods-bottom-two" wx:if="{{ goodsInfo.detail_type == 2 && goodsInfo.integral == '2'}}">
+  <view class="bottom-two-left" style="margin-left:30rpx;width:212rpx;">
+    <view catchtap="goToHomepage">
+      <text class="ico-moon icon-shop-home-page-new"></text>
+      <view>首页</view>
+    </view>
+    <view catchtap="showQRCodeComponent" style="margin-top:12rpx;text-align: center" wx:if="{{showShare || goodsInfo.recommend_status}}">
+      <text class="ico-moon icon-communityDetail-share" style="font-size: 42rpx;"></text>
+      <view>分享</view>
+    </view>
+    <button open-type="share" wx:if="{{!showShare && !goodsInfo.recommend_status}}">
+      <text class="ico-moon icon-communityDetail-share" style="font-size: 42rpx;"></text>
+      <view>分享</view>
+    </button>
+  </view>
+  <label wx:if="{{!isVipLimit && !isGoodsLimit}}" class="buy-goods-topay" data-goods-id="{{goodsInfo.id}}" data-status="1" bindtap="{{goodsInfo.is_package_goods == 1 ? 'selectGoodsPackage' : 'showBuyDirectly'}}" style="width:464rpx;{{storeStyle.theme == '#FF7100' ? 'background:linear-gradient(to right, #FFAC0C,'+ storeStyle.theme + ')' : storeStyle.theme == '#FE4070' ? 'background:linear-gradient(to right, #FF97B9,' + storeStyle.theme +')' : storeStyle.theme == '#F93D28' ? 'background:linear-gradient(to right, #FF6857,' + storeStyle.theme + ')' : storeStyle.theme == '#F93D28' ? 'background:linear-gradient(to right, #F95F4E,' + storeStyle.theme + ')' : storeStyle.theme == '#69C4AA' ? 'background:linear-gradient(to right, #97DFC9,' +  storeStyle.theme + ')' : storeStyle.theme == '#3091F2' ? 'background:linear-gradient(to right, #95CAFF,' +  storeStyle.theme + ')' : storeStyle.theme == '#D4A656' ? 'background:linear-gradient(to right, #E4B667,' +  storeStyle.theme + ')' : 'background:' + storeStyle.theme}}">{{goodsInfo.price != '0.00' ? '立即购买' : '立即兑换'}}</label>
+  <label wx:else class="buy-goods-topay"><text style="opacity: .7;">{{isVipLimit ? '指定会员限购' : '已达限购量'}}</text></label>
+</view>
+<!-- 悬浮窗 -->
+<view wx:if="{{ goodsInfo.detail_type == 2 }}">
+  <view class="two-to-top ico-moon icon-top" style="bottom:300rpx;" catchtap="srcollToTop" wx:if="{{scrollTop >= 300}}"></view>
+  <view class="two-to-top ico-moon icon-sevice-drink">
+    <contact-button type="default-dark" size="20" session-from="{{sessionFrom}}"></contact-button>
+  </view>
+</view>
+<!-- 餐饮模式 -->
+<view class="goods-detail-content styleThree" wx:if="{{ goodsInfo.detail_type == 3 }}">
+  <view class="goods-operation-wrap">
+    <view class="goods-detail-operation-bot">
+      <view class="goods-detail-name"><text class="ico-moon icon-seckill-alarm cover-icon-seckill-alarm" style="{{'color:'+storeStyle.theme}}"></text>{{goodsInfo.title}}</view>
+    </view>
+  </view>
+
+  <view class="goods-detail-discount-wrap flex-between" catchtap="toCouponList">
+    <view class="goods-detail-discount-left flex-between">
+      <text class="ico-moon icon-coupon2" style="font-size:42rpx;color:#D0A342;margin-right:18rpx;"></text>
+      <text>[最新优惠券]</text>
+    </view>
+    <view class="goods-detail-discount-right">
+      <text>快来领取</text>
+      <text class="ico-moon icon-new-appointment-arrowhead"></text>
+    </view>
+  </view>
+
+    <!--服务 -->
+  <view class="goods-service" wx:if="{{goodsInfo.service && goodsInfo.service.length}}">
+    <text class="coupon-title">服务</text>
+    <view class="goods-service-block">
+      <block wx:for="{{goodsInfo.service}}" wx:key="keys">
+        <text class="goods-service-item"><text class="ico-moon icon-goods-support-delivery goods-support-delivery" style="{{'color:' + storeStyle.theme}}"></text>{{item}}</text>
+      </block>
+    </view>
+  </view>
+    
+  <view class="goods-detail-comments-wrap" wx:if="{{commentExample}}">
+    <view class="goods-detail-comments-top flex-between">
+      <view style="font-size:30rpx;color:#333;">评价({{ commentNums[0] || 0 }})</view>
+      <view style="font-size:26rpx;color:#333;" bindtap="goToCommentPage">查看全部评价<text class="ico-moon icon-rightarrow" style="font-size:24rpx;color:#666;margin-left:10rpx;"></text></view>
+    </view>
+    <view class="goods-detail-comments">
+      <view class="goods-detail-comments-item">
+        <view class="goods-detail-avatar">
+          <image src="{{commentExample.buyer_headimgurl || defaultPhoto}}"></image>
+        </view>
+        <view style="width:100%;">
+          <view class="flex-between">
+            <view style="font-size:28rpx;color:#333;">{{ commentExample.buyer_nickname }}</view>
+            <view style="font-size:26rpx;color:#b0b0b0;">{{ commentExample.add_time }}</view>
+          </view>
+          <view class="goods-detail-evaluate">
+            <block wx:if="{{commentExample.assess_info.level == 1}}">
+            <image src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-dining/drink-smile-face.png"></image>好评
+            </block>
+            <block wx:elif="{{commentExample.assess_info.level == 2}}">
+            <image src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-dining/drink-peace-face.png"></image>中评
+            </block>
+            <block wx:else>
+            <image src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-dining/drink-sad-face.png" ></image>差评
+            </block>
+          </view>
+          <view class="goods-detail-comment">{{ commentExample.assess_info.content }}</view>
+          <view wx:if="{{ commentExample.assess_info.has_img }}" class="comPage-comment-pics">
+              <image wx:for="{{ commentExample.assess_info.img_arr }}" wx:for-item="imgSrc" src="{{ imgSrc }}" wx:key="index" data-src="{{ imgSrc }}" data-srcarr="{{ commentExample.assess_info.img_arr }}" catchtap="clickPlusImages"></image>
+            </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="goods-detail-recommend-wrap" wx:if="{{goodsInfo.recommend_info.length}}">
+    <view class="goods-detail-recommend-top flex-between">
+      <view style="font-size:30rpx;color:#333;">店家推荐</view>
+    </view>
+    <scroll-view scroll-X class="goods-detail-recommend-scroll">
+      <view class="flex-between">
+        <view wx:for="{{goodsInfo.recommend_info}}" wx:key="index" class="goods-detail-recommend-item" bindtap="toRecommendGoodsDetail" data-id="{{item.form_data.id}}" data-goods-type="{{item.form_data.goods_type}}">
+          <view class="">
+            <image src="{{item.form_data.cover}}"></image>
+          </view>
+          <view class="goods-detail-recommend-title">{{item.form_data.title}}</view>
+          <view class="flex-between">
+            <view class="goods-detail-recommend-tag">新人价</view>
+            <view class="goods-detail-recommend-price">¥{{item.form_data.price}}</view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="goods-particulars-wrap">
+    <view class="goods-detail-section">
+    <view class="goods-particulars-title">商品详情</view>
+    <view class="goods-details">
+      <template is="wxParse" data="{{ wxParseData: wxParseDescription.nodes }}" />
+    </view>
+  </view>
+
+  <view class="goods-detail-bottom-wrap" style="{{goodsInfo.integral == 2 ? 'right:28rpx':'left:28rpx'}};">
+    <view class="bottom-concat-wrap">
+      <text class="ico-moon icon-sevice-drink" style="font-size:40rpx;"></text>
+      <contact-button type="default-dark" size="20" session-from="{{sessionFrom}}"></contact-button>
+      <text>联系</text>
+    </view>
+    <view class="bottom-shoppingcart-wrap" bindtap="goToShoppingCart" wx:if="{{goodsInfo.integral != '2'}}">
+      <text class="ico-moon icon-shoppingcart" style="font-size:40rpx;"></text>
+      <text>购物车</text>
+    </view>
+    <view  wx:if="{{goodsInfo.seckill_progress != 100 && goodsInfo.seckill_start_state != 2 && goodsInfo.integral != 2}}" style="{{ 'background:' + storeStyle.secondary + ';color:' + (storeStyle.secondary == '#ACD3FA' || storeStyle.secondary == '#FFCFDF' || storeStyle.secondary == '#ffffff' || storeStyle.secondary == '#DFF3ED' || storeStyle.secondary == '#FAF7ED' ? storeStyle.theme : '') }}" class="bottom-add-shoppingcart" data-goods-id="{{goodsInfo.id}}" data-status="0" bindtap="{{goodsInfo.is_package_goods == 1 ? 'selectGoodsPackage' : (goodsInfo.model.length > 0 ? 'showAddToShoppingCart':'sureAddToShoppingCart')}}">加入购物车</view>
+    <view wx:if="{{goodsInfo.seckill_progress !=100 && goodsInfo.seckill_start_state == 1}}" class="botton-buy-now" style="{{'background:' + storeStyle.theme}}" data-goods-id="{{goodsInfo.id}}" data-status="1" bindtap="{{goodsInfo.is_package_goods == 1 ? 'selectGoodsPackage' : 'showBuyDirectly'}}">立即购买</view>
+    <view class="botton-buy-now" style="{{'background:' + storeStyle.theme}}" data-goods="{{goodsInfo}}"  catchtap="formSubmitRemind" style="{{'background:'+storeStyle.theme}}" wx:if="{{goodsInfo.seckill_start_state == 0 && goodsInfo.is_seckill_activity_care == 0}}" data-is_deleted="0">设置提醒</view>
+    <view class="botton-buy-now" style="{{'background:' + storeStyle.theme}}" data-goods="{{goodsInfo}}"  catchtap="formSubmitRemind" style="{{'background:'+storeStyle.theme}}" wx:if="{{goodsInfo.seckill_start_state == 0 && goodsInfo.is_seckill_activity_care == 1}}" data-is_deleted="1">取消提醒</view>
+    <view class="styleThree-active-end-button background-cccccc" wx:if="{{goodsInfo.seckill_progress == 100 && goodsInfo.seckill_start_state == 1}}">商品已抢光</view>
+    <view class="styleThree-active-end-button background-cccccc" wx:if="{{goodsInfo.seckill_start_state == 2}}">活动已结束</view>
+  </view>
+  </view>
+</view>
+<!-- 选择规格弹窗 -->
+<view class="page-dialog-wrap dialog" wx:if="{{ goodsInfo.detail_type != 1 && !addToShoppingCartHidden }}">
+  <view class="dialog-mask" bindtap="hiddeAddToShoppingCart"></view>
+  <!-- 弹窗 -->
+  <view class="page-bottom-dialog" style="border-radius:35rpx 35rpx 0 0">
+    <view class="pay-close-dialog page-dialog-close ico-moon icon-closes" bindtap="hiddeAddToShoppingCart"></view>
+    <!-- 弹窗头部 -->
+    <view class="dialog-goods-header">
+      <view class="thumb">
+        <view class="thumb-wrap">
+          <image data-src="{{ selectModelInfo.imgurl || goodsInfo.cover }}" catchtap="clickPlusImages" class="pay-goods-cover" src="{{ selectModelInfo.imgurl || goodsInfo.cover }}"></image>
+        </view>
+      </view>
+      <view class="pay-goods-baseinfo">
+       <view class="pay-current-price">
+          <text style="font-size:28rpx;" style="{{ 'color:' + storeStyle.theme }}" wx:if="{{selectModelInfo.price != '0.00'}}">¥{{ selectModelInfo.price || (goodsInfo.seckill_highPrice > goodsInfo.seckill_lowPrice && goodsInfo.seckill_lowPrice != 0 ? (goodsInfo.seckill_lowPrice+' ~ '+goodsInfo.seckill_highPrice) : goodsInfo.seckill_price)}}</text>
+          <block wx:if="{{goodsInfo.integral == '2'}}">
+            <text wx:if="{{ selectModelInfo.price != '0.00' && goodsInfo.max_can_use_integral != 0 }}" style="{{ goodsInfo.goods_type != 0 ? '' : 'color:' + storeStyle.theme }}">+</text>
+            <text wx:if="{{ goodsInfo.max_can_use_integral != 0 }}" style="{{ goodsInfo.goods_type != 0 ? '' : 'color:' + storeStyle.theme }}">{{ goodsInfo.max_can_use_integral }}积分</text>
+          </block>
+          <block wx:else>
+            <text class="goods-price-discount"  style="{{'color:'+ storeStyle.theme}};"  wx:if="{{ priceDiscountStr != '' }}">{{ priceDiscountStr }}</text>
+          </block>
+          <text class="virtualPrice" wx:if="{{ isShowVirtualPrice && selectModelInfo.virtualPrice != 0 && selectModelInfo.models_text }}">¥{{selectModelInfo.virtualPrice}}</text>
+          <text  class="goods-limit-num" wx:if="{{goodsInfo.limit.num}}" style="{{'background-color:' + storeStyle.theme + '1A;color:' + storeStyle.theme}};">限购{{goodsInfo.limit.num}}件</text>
+        </view>
+        <view class="pay-goods-stock" wx:if="{{showStock}}">库存 {{ selectModelInfo.stock || allStock }}</view>
+        <view wx:if="{{!selectModelInfo.models_text && goodsInfo.model.length > 0}}" class="pay-checked-text clearfix">请选择
+          <text wx:for="{{goodsInfo.model}}" wx:key="index" wx:if="{{!selectModelInfo.models[index]}}">{{item.name}} </text>
+        </view>
+        <view wx:if="{{selectModelInfo.models_text}}" class="pay-checked-text clearfix">已选：{{ selectModelInfo.models_text }}</view>
+      </view>
+    </view>
+    <!-- 弹窗内容部分 -->
+    <scroll-view class="payDialog-content" scroll-y="true">
+      <view class="pay-goods-models" hidden="{{ !goodsInfo.model_items.length }}">
+        <view wx:for="{{ goodsInfo.model }}" wx:for-item="model" wx:for-index="modelIndex" wx:key="index">
+          <text class="model-title">{{ model.name }}</text>
+          <label class="pills-list">
+            <label wx:for="{{ model.subModelName }}" wx:for-item="name" wx:key="index" data-model-index="{{ modelIndex }}" data-submodel-index="{{ index }}" class="subModel {{ selectModelInfo.models[modelIndex] == model.subModelId[index] ? 'select' : '' }}" data-submodel-id="{{ model.subModelId[index] }}"
+              bindtap="selectSubModel"style="color:{{goodsInfo.detail_type == 0 && selectModelInfo.models[modelIndex] == model.subModelId[index] ? storeStyle.theme : ''}};{{ selectModelInfo.models[modelIndex] == model.subModelId[index] ? goodsInfo.detail_type == 0 ? 'background:' + storeStyle.theme + '33' : 'background:' + storeStyle.theme : '' }}">{{ name }}</label>
+          </label>
+        </view>
+      </view>
+      <view class="pay-goods-attrs" hidden="{{ !goodsInfo.attributes.length }}">
+        <view class="pay-goods-attrs-item" wx:for="{{ goodsInfo.attributes }}" wx:for-item="attr" wx:for-index="attrIndex" wx:key="index">
+          <text class="attr-title">{{ attr.name }}</text>
+          <label class="pills-list">
+            <label wx:for="{{ attr.elem }}" wx:for-item="elem" wx:key="index" data-attr-index="{{ attrIndex }}" data-subattr-index="{{ index }}" data-status="{{ selectAttrInfo.attrs[attrIndex][index].is_selected && selectAttrInfo.attrs[attrIndex][index].attributes_id == attr.id ? '1' : '0' }}"
+              class="subModel {{ selectAttrInfo.attrs[attrIndex][index].is_selected && selectAttrInfo.attrs[attrIndex][index].attributes_id == attr.id ? 'select' : '' }}" bindtap="selectSubAttrs" style="background:{{ selectAttrInfo.attrs[attrIndex][index].is_selected && selectAttrInfo.attrs[attrIndex][index].attributes_id == attr.id ? storeStyle.theme : '' }}">{{ elem.name }} {{elem.price > 0 ? '+¥'+ elem.price : ''}}
+            </label>
+          </label>
+        </view>
+      </view>
+    </scroll-view>
+    <!-- 购买数量 -->
+    <view class="payDialog-buy-num">
+      <view class="clearfix">
+        <text style=" vertical-align: middle;color:#B0B0B0;font-size:30rpx;">数量</text>
+        <text style=" vertical-align: middle;color:#B0B0B0;" wx:if="{{selectModelInfo.min_sales_nums > 1}}">（{{selectModelInfo.min_sales_nums}}件起卖）</text>
+        <view class="pull-right" style=" vertical-align: middle;">
+          <view class="quantity pull-left">
+            <label class="minus {{ selectModelInfo.buyCount <= selectModelInfo.min_sales_nums || selectModelInfo.buyCount <= 1 ? 'disabled' : '' }}"></label>
+            <input class="pay-buy-count" type="number" class="txt" value="{{ selectModelInfo.buyCount }}" bindblur="inputBuyCount" />
+            <label class="plus {{ (selectModelInfo.buyCount >= selectModelInfo.stock) || (selectModelInfo.buyCount >= goodsInfo.seckill_buy_limit) ? 'disabled' : '' }}"></label>
+            <view class="response-area response-area-minus" bindtap="clickMinusButton"></view>
+            <view class="response-area response-area-plus" bindtap="clickPlusButton"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- 弹窗底部 -->
+    <view class="dialog-bottom">
+      <block wx:if="{{selectModelInfo.stock == 0 && selectModelInfo.stock}}">
+        <view>
+          <view style="background:#E0E0E0" class="pay-add-to-shoppingcart" wx:if="{{goodsInfo.integral != '2'}}">商品库存不足</view>
+        </view>
+      </block>
+      <block wx:elif="{{!threeselectGood}}">
+        <view hidden="{{ ifAddToShoppingCart }}">
+          <view style="{{ 'background:' + storeStyle.theme }}" class="btn-orange pay-buy-next" bindtap="buyDirectlyNextStep">立即购买</view>
+        </view>
+          <view hidden="{{ !ifAddToShoppingCart }}">
+          <view style="{{ 'background:' + storeStyle.theme }}" class="pay-add-to-shoppingcart" bindtap="sureAddToShoppingCart" wx:if="{{goodsInfo.integral != '2'}}">加入购物车</view>
+        </view>
+      </block>
+      <block wx:else>
+        <view>
+          <text class="three-addMore-shoppingcart" style="{{ 'background:' + storeStyle.secondary + ';color:' + (storeStyle.secondary == '#ACD3FA' || storeStyle.secondary == '#FFCFDF' || storeStyle.secondary == '#ffffff' || storeStyle.secondary == '#DFF3ED' || storeStyle.secondary == '#FAF7ED' ? storeStyle.theme : '') }}" bindtap="sureAddToShoppingCart">加入购物车</text>
+          <text class="three-addMore-buy" style="{{ 'background:' + storeStyle.theme }}" bindtap="buyDirectlyNextStep">立即购买</text>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>
+<!-- 模式四 -->
+<view class="goods-detail-content styleFour" wx:if="{{goodsInfo.detail_type == 1}}">
+  <view class="goods-header">
+    <view class="price-box">
+        <view class="goods-title"> <text class="ico-moon icon-seckill-alarm cover-icon-seckill-alarm" style="{{'color:'+storeStyle.theme}}"></text>{{ goodsInfo.title }}</view>
+    </view>
+    <!-- 分享收藏 -->
+    <view class="share-favorite-box">
+      <text class="ico-moon icon-goods-four-share" bindtap="showQRCodeComponent"></text>
+    </view>
+  </view>
+  <!-- 标题 -->
+
+  <!-- 浏览 -->
+  <view class="sales-view-box" wx:if="{{appBECStoreConfig.detail_fields_viewed_count.viewed_count == 1}}">
+    <view class="text-left">
+      <text class="ico-moon icon-comEye"></text>
+      <text>{{goodsInfo.viewed_count}}人看过</text>
+    </view>
+  </view>
+
+  <!-- 领取会员卡 -->
+  <view class="vip-card-into vip-card3" wx:if="{{appBECStoreConfig.card_switch == 1 && ((appBECStoreConfig.card_show_type == 1 && goodsInfo.is_vip_goods == 1) || appBECStoreConfig.card_show_type == 2)}}">
+      <view class="member-toast-wrap toast1" data-type="ordinary-vip" data-id="{{goodsInfo.vip_activity_id}}"
+        bindtap="gotoVipBenefits" data-cardtype="{{cardtype}}" wx:if="{{appBECStoreConfig.card_detail_type == 1}}">
+        <view class="image-wrap">
+          <image src="http://cdn.jisuapp.cn/static/webapp/images/vip_price/a.png"></image>
+        </view>
+        <view class="member-toast">
+          <text class="member-tips">{{appBECStoreConfig.card_title}}</text>
+        </view>
+      </view>
+      <view class="member-toast-wrap toast2" data-type="ordinary-vip" data-id="{{goodsInfo.vip_activity_id}}"
+        bindtap="gotoVipBenefits" data-cardtype="{{cardtype}}" wx:if="{{appBECStoreConfig.card_detail_type == 2}}">
+        <view class="image-wrap">
+          <image src="http://cdn.jisuapp.cn/static/webapp/images/vip_price/b.png"></image>
+        </view>
+        <view class="member-toast">
+          <text class="member-tips">{{appBECStoreConfig.card_title}}</text>
+        </view>
+      </view>
+      <view class="member-toast-wrap toast3" data-type="ordinary-vip" data-id="{{goodsInfo.vip_activity_id}}"
+        bindtap="gotoVipBenefits" data-cardtype="{{cardtype}}" wx:if="{{appBECStoreConfig.card_detail_type == 3}}">
+        <view class="image-wrap">
+          <image src="http://cdn.jisuapp.cn/static/webapp/images/vip_price/c.png"></image>
+        </view>
+        <view class="member-toast">
+          <text class="member-tips">{{appBECStoreConfig.card_title}}</text>
+        </view>
+      </view>
+  </view>
+
+  <!-- 配送方式 -->
+  <view class="pick-up-box" wx:if="{{communityType != 1}}">
+    <view class="support-pick-box">
+      <text style="{{'color:' + storeStyle.theme}}" class="ico-moon icon-goods-four-pickup"></text>
+      <block wx:if="{{goodsInfo.pick_up_type.length > 2}}">
+        <text wx:for="{{goodsInfo.pick_up_type}}" wx:key="index">{{item == 1 ? '快递' : (item == 2 ? '同城' : (item == 3 ? '自提' : '点餐'))}}{{index + 1 == goodsInfo.pick_up_type.length ? '' : ' · '}}</text>
+      </block>
+      <block wx:else>
+        <text wx:for="{{goodsInfo.pick_up_type}}" wx:key="index">{{item == 1 ? '快递配送' : (item == 2 ? '同城配送' : (item == 3 ? '上门自提' : '堂食点餐'))}}{{index + 1 == goodsInfo.pick_up_type.length ? '' : ' · '}}</text>
+      </block>
+    </view>
+    <view class="goods-freight" wx:if="{{showFreight}}">
+      <view>运费:{{ goodsInfo.express_fee || '包邮' }}</view>
+    </view>
+  </view>
+  <view class="goods-coupon-box goods-coupon-box-styleFour">
+    <block wx:if="{{showCouponsList && appBECStoreConfig.recv_coupon_switch == 1}}">
+      <view class="goods-coupon" catchtap="toCouponList">
+        <text class="coupon-title">活动</text><text class="coupon-type-icon" style="{{'border-color:' + storeStyle.theme + ';color:' + storeStyle.theme + ';background:' + storeStyle.secondary + '33'}}">{{couponTypeName}}</text><text class="coupon-name">{{couponName}}</text><text class="pull-right ico-moon icon-rightarrow"></text>
+      </view>
+      <text class="coupon-line"></text>
+    </block> 
+    <view class="goods-coupon" catchtap="showAllshoppingCartBtn" wx:if="{{goodsInfo.model_items.length}}">
+      <text class="coupon-title">规格</text>
+      <text class="select-model-info" wx:if="{{selectModelInfo.models_text}}">已选：{{selectModelInfo.models_text}}</text>
+      <block wx:else>
+        <text>请选择 </text>
+        <text class="model-sub-name" wx:for="{{goodsInfo.model}}" wx:key="index" wx:if="{{!selectModelInfo.models[index]}}">{{item.name}} </text>
+      </block>
+      <text class="pull-right ico-moon icon-rightarrow"></text>
+    </view>
+     <!--服务 -->
+    <view class="goods-service" wx:if="{{goodsInfo.service && goodsInfo.service.length}}">
+      <text class="coupon-title">服务</text>
+      <view class="goods-service-block">
+        <block wx:for="{{goodsInfo.service}}" wx:key="keys">
+          <text class="goods-service-item"><text class="ico-moon icon-goods-support-delivery goods-support-delivery" style="{{'color:' + storeStyle.theme}}"></text>{{item}}</text>
+        </block>
+      </view>
+    </view>
+  </view>
+  <!-- 他们都在看 -->
+  <view class="another-view-box">
+    <view class="another-view-head" wx:if="{{appBECStoreConfig.interact_switch == 1}}">
+      <view>
+        <view class="another-view-title">他们都在逛</view>
+        <image wx:for="{{viewGoodsUserList}}" wx:key="index" wx:if="{{index <= 5}}" src="{{item.cover_thumb}}"></image>
+      </view>
+      <view class="another-view-share" bindtap="showQRCodeComponent" style="{{storeStyle.theme == '#FF7100' ? '' : 'background:' + storeStyle.theme + ';color: #fff'}}"><text class="ico-moon icon-goods-four-share"></text><text>邀请好友一起抢</text></view>
+    </view>
+    <view class="welfare-box" wx:if="{{appBECStoreConfig.join_group_config.join_group_switch == 1}}">
+      <text class="welfare-icon">福利群</text>
+      <text>{{goodsInfo.app_name}}粉丝福利群</text>
+      <view class="pull-right" catchtap="joinGroupChat" style="{{'color:' + storeStyle.theme}}"><text>立即加入</text><text class="ico-moon icon-rightarrow"></text></view>
+    </view>
+  </view>
+  <!-- 店铺信息 分店 本店推荐 -->
+  <view class="branch-shop-box">
+    <view class="shop-info">
+      <image src="{{goodsInfo.app_cover}}" class="store-picture"></image>
+      <view class="shop-info-content">
+        <view class="store-name">{{goodsInfo.app_name}}</view>
+        <view class="saling">在售</view>
+        <view class="total-num-goods"><text style="{{'color:' + storeStyle.theme}}">{{onSaleGoodsCount}}</text>件商品</view>
+      </view>
+      <view class="go-to-store" bindtap="goToHomepage" style="{{storeStyle.theme == '#FF7100' ? '' : 'background:' + storeStyle.theme + ';color: #fff'}}">进店逛逛</view>
+    </view>
+    <!-- 分店店铺 -->
+    <view class="branch-shop-info" wx:for="{{store_list_data}}" wx:key="index" wx:if="{{showSelfDeliveryShopList && store_list_data.length > 0}}">
+      <view class="branch-content">
+        <view class="branch-title">{{item.title}}</view>
+        <wxs module="businessWeek">
+          var businessWeek = function(data) {
+            var a = '';
+            for(var i = 0;i < data.length;i++){
+              switch(i){
+                case 0: 
+                  a += data[i] == 1 ? '周一' : '';
+                  break;
+                case 1: 
+                  a += data[i] == 1 ? '、周二' : '';
+                  break;
+                case 2: 
+                  a += data[i] == 1 ? '、周三' : '';
+                  break;
+                case 3: 
+                  a += data[i] == 1 ? '、周四' : '';
+                  break;
+                case 4: 
+                  a += data[i] == 1 ? '、周五' : '';
+                  break;
+                case 5: 
+                  a += data[i] == 1 ? '、周六' : '';
+                  break;
+                case 6: 
+                  a += data[i] == 1 ? '、周日' : '';
+                  break;
+              }
+            }
+            return a;    
+          }
+          module.exports.businessWeek = businessWeek;
+        </wxs>
+        <view class="branch-time" wx:if="{{item.self_delivery_business_time_rule.type == 1}}"><text class="ico-moon icon-dm-clock"></text>全年</view>
+        <block wx:else>
+          <view class="branch-time"><text class="ico-moon icon-dm-clock"></text>{{businessWeek.businessWeek(item.self_delivery_business_time_rule.custom.business_time[0].business_week)}}</view>
+        <view class="branch-time"><text class="ico-moon icon-dm-clock"></text><text wx:for="{{item.self_delivery_business_time_rule.custom.business_time[0].business_time_interval}}" wx:for-item="store" wx:key="index">{{store.start_time}}-{{store.end_time}} </text></view>
+        </block>
+        <!-- 节假日是否营业 -->
+        <view class="branch-time" wx:if="{{item.self_delivery_business_time_rule.exclude_holiday != 0}}"><text class="ico-moon icon-dm-clock"></text><text>(节假日不营业)</text></view>
+        <view class="branch-address"><text class="ico-moon icon-fesadress"></text>{{item.address_detail}}</view>
+      </view>
+      <view class="branch-icon-box">
+        <text class="ico-moon icon-takeout-cellphone" catchtap="phoneCall" data-phone="{{item.contact_phone}}" style="{{'color:' + storeStyle.theme + ';background:' + storeStyle.theme + '33'}}"></text>
+        <text class="ico-moon icon-goods-four-navigation" bindtap="openMap" data-longitude="{{item.longitude}}" data-latitude="{{item.latitude}}"  data-address="{{item.address_detail}}" data-title="{{item.title}}" style="{{'color:' + storeStyle.theme + ';background:' + storeStyle.theme + '33'}}"></text>
+      </view>
+    </view>
+    <view class="deliverty-shop-more" wx:if="{{is_more == 1}}" catchtap="getmoreshop">
+      <text>查看更多店铺</text>
+      <text class="ico-moon icon-rightarrow"></text>
+    </view>
+   
+  </view>
+
+  <!-- 商品评价 -->
+  <view class="goods-comment" id="goodComment" hidden="{{displayComment}}">
+    <view class="comment-header">
+      <text class="goods-comment-title">商品评价 ({{ commentNums[0] || 0 }})</text>
+      <view class="go-to-comment" bindtap="goToCommentPage">
+        <text>全部评价</text>
+        <text class="ico-moon icon-rightarrow"></text>
+      </view>
+    </view>
+    <view class="comment-type-box">
+      <label bindtap="clickCommentLabel" data-type="0" class="{{ commentType == 0 ? 'active' : '' }}"> 全部 </label>
+      <label bindtap="clickCommentLabel" data-type="1" class="{{ commentType == 1 ? 'active' : '' }}">好评 ({{ commentNums[1] }})</label>
+      <label bindtap="clickCommentLabel" data-type="2" class="{{ commentType == 2 ? 'active' : '' }}">中评 ({{ commentNums[2] }})</label>
+      <label bindtap="clickCommentLabel" data-type="3" class="{{ commentType == 3 ? 'active' : '' }}">差评 ({{ commentNums[3] }})</label>
+      <label bindtap="clickCommentLabel" data-type="4" class="{{ commentType == 4 ? 'active' : '' }}">有图 ({{ commentNums[4] }})</label>
+    </view>
+    <scroll-view class="comment-list" scroll-x>
+      <view wx:for="{{ commentArr }}" class="comment-item" wx:key="index">
+        <image class="comment-avatar" src="{{ item.buyer_headimgurl }}"></image>
+        <view class="comment-content-box">
+          <view>
+            <text class="comment-name">{{ item.buyer_nickname }}</text>
+            <text class="comment-time pull-right">{{item.add_time}}</text>
+          </view> 
+          <view class="comment-icon" wx:if="{{item.assess_info.level == 1}}">
+            <text class="ico-moon icon-tostoreGoodComment"></text>
+            <text>好评</text>
+          </view>
+          <view class="comment-icon" wx:if="{{item.assess_info.level == 2}}">
+            <text class="ico-moon icon-tostoreMiddleComment"></text>
+            <text>中评</text>
+          </view>
+          <view class="comment-icon" wx:if="{{item.assess_info.level == 3}}">
+            <text class="ico-moon icon-tostoreBadComment" ></text>
+            <text>差评</text>
+          </view> 
+          <view class="four-comment-content">{{ item.assess_info.content || '此用户没有填写评价'}}</view>
+          <block wx:if="{{item.assess_info.img_arr.length}}">
+            <image wx:for="{{item.assess_info.img_arr}}" wx:key="" class="comment-photo" src="{{item}}"></image>
+          </block>  
+        </view>    
+      </view>
+    </scroll-view>
+  </view>
+  <view class="goods-detail-section" id="goodDetail">
+    <view class="goods-detail-title">详情</view>
+    <view class="goods-details">
+      <template is="wxParse" data="{{ wxParseData: wxParseDescription.nodes }}" />
+    </view>
+  </view>
+  <view class="goods-recommend" wx:if="{{ goodsInfo.recommend_info.length }}">
+    <view class="shop-recom-title">店铺推荐</view>
+    <view bindtap="toRecommendGoodsDetail" style="bcakgorund:#fff;" class="recommendGood"  wx:for="{{goodsInfo.recommend_info}}" wx:key="index" data-id="{{ item.form_data.id }}" data-goods-type="{{ item.form_data.goods_type }}">
+     <image src="{{ item.form_data.cover }}" style="width:335rpx;height:335rpx;"></image>
+     <view class="title">{{ item.form_data.title }}</view>
+     <view class="price" style="vertical-align: bottom;{{'color:' + storeStyle.theme }}">¥{{ item.form_data.price }}</view>
+     <view bindtap="toRecommendGoodsDetail" data-id="{{ item.form_data.id }}" data-goods-type="{{ item.form_data.goods_type }}" style="{{'background:' + storeStyle.theme }}" class="torecommend-good" >抢</view>
+    </view>
+  </view>
+</view>
+<!-- 模式四底部立即购买 -->
+<view class="goods-bottom-four" wx:if="{{goodsInfo.detail_type == 1}}">
+  <view class="bottom-four-left">
+    <!-- 客服 -->
+    <view>
+      <contact-button type="default-dark" size="20" session-from="{{sessionFrom}}"></contact-button>
+      <text class="ico-moon icon-goods-four-service"></text>
+      <view>客服</view>
+    </view>
+    <!-- 店铺 -->
+    <view catchtap="goToHomepage">
+      <text class="ico-moon icon-goods-four-shop"></text>
+      <view>店铺</view>
+    </view>
+    <!-- 购物车 -->
+    <view catchtap="goToShoppingCart" wx:if="{{goodsInfo.integral != '2'}}">
+      <text class="ico-moon icon-goods-four-cart"></text>
+      <view>购物车</view>
+    </view>
+  </view>
+  <view class="bottom-four-right">
+    <block wx:if="{{!isGoodsLimit && !isVipLimit}}">
+      <view class="add-to-shoppingCart" data-goods-id="{{goodsInfo.id}}" data-status="0" catchtap="{{goodsInfo.is_package_goods == 1 ? 'selectGoodsPackage' : 'showAddToShoppingCart'}}" wx:if="{{goodsInfo.integral != '2'}}" style="{{ 'background:' + storeStyle.secondary + ';color:' + (storeStyle.secondary == '#ACD3FA' || storeStyle.secondary == '#FFCFDF' || storeStyle.secondary == '#ffffff' || storeStyle.secondary == '#DFF3ED' || storeStyle.secondary == '#FAF7ED' ? storeStyle.theme : '') }}" wx:if="{{goodsInfo.seckill_progress != 100 && goodsInfo.seckill_start_state != 2}}">加入购物车</view>
+      <view wx:if="{{goodsInfo.seckill_progress !=100 && goodsInfo.seckill_start_state == 1}}" class="{{goodsInfo.integral==2?'integral-goods-directly':'buy-goods-directly'}}" data-goods-id="{{goodsInfo.id}}" data-status="0" catchtap="{{goodsInfo.is_package_goods == 1?'selectGoodsPackage':'showBuyDirectly'}}" style="{{'background:'+storeStyle.theme}}">立即购买</view>
+      <view class="{{goodsInfo.integral==2?'integral-goods-directly':'buy-goods-directly'}}" data-goods="{{goodsInfo}}"  catchtap="formSubmitRemind" style="{{'background:'+storeStyle.theme}}" wx:if="{{goodsInfo.seckill_start_state == 0 && goodsInfo.is_seckill_activity_care == 0}}" data-is_deleted="0">设置提醒</view>
+      <view class="{{goodsInfo.integral==2?'integral-goods-directly':'buy-goods-directly'}}" data-goods="{{goodsInfo}}"  catchtap="formSubmitRemind" style="{{'background:'+storeStyle.theme}}" wx:if="{{goodsInfo.seckill_start_state == 0 && goodsInfo.is_seckill_activity_care == 1}}" data-is_deleted="1">取消提醒</view>
+      <view class="active-end-button  background-cccccc"  wx:if="{{goodsInfo.seckill_progress == 100 && goodsInfo.seckill_start_state == 1}}">
+        <label>商品已抢光</label>
+      </view>
+      <view class="active-end-button background-cccccc"  wx:if="{{goodsInfo.seckill_start_state == 2}}">
+        <label>活动已结束</label>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="goods-limit-btn style2" style="{{'background:' + storeStyle.theme}}">{{isVipLimit ? '指定会员限购' : '已达最大限购数量'}}</view>
+    </block>
+  </view>
+   
+</view>
+<!-- 模式四立即购买弹窗 -->
+<view class="goods-dialog-four" wx:if="{{ goodsInfo.detail_type == 1 && !addToShoppingCartHidden }}">
+  <view class="page-bottom-dialog">
+      <view class="close-dialog-four ico-moon icon-closes" bindtap="hiddeAddToShoppingCart"></view>
+    <view class="dialog-goods-header">
+      <image data-src="{{ selectModelInfo.imgurl || goodsInfo.cover }}" catchtap="clickPlusImages" src="{{ selectModelInfo.imgurl || goodsInfo.cover }}"></image>
+      <view class="pay-goods-baseinfo">
+        <view class="pay-goods-price">
+             <view class="pay-current-price">
+              <text style="font-size:28rpx;" style="{{'color:' + storeStyle.theme}}" wx:if="{{selectModelInfo.price != '0.00'}}">¥{{ selectModelInfo.price || (goodsInfo.seckill_highPrice > goodsInfo.seckill_lowPrice && goodsInfo.seckill_lowPrice != 0 ? (goodsInfo.seckill_lowPrice+' ~ '+goodsInfo.seckill_highPrice) : goodsInfo.seckill_price)}}</text>
+              <block wx:if="{{goodsInfo.integral == '2'}}">
+                <text wx:if="{{ selectModelInfo.price != '0.00' && goodsInfo.max_can_use_integral != 0 }}" style="{{'color:' + storeStyle.theme}}">+</text>
+                <text wx:if="{{ goodsInfo.max_can_use_integral != 0 }}" style="{{'color:' + storeStyle.theme}}">{{ goodsInfo.max_can_use_integral }}积分</text>
+              </block>
+              <block wx:else>
+                <text class="goods-price-discount" style="{{'color:'+ storeStyle.theme}};" wx:if="{{ priceDiscountStr != '' }}">{{ priceDiscountStr }}</text>
+              </block>
+              <text class="virtualPrice" wx:if="{{isShowVirtualPrice && selectModelInfo.virtualPrice}}">¥{{selectModelInfo.virtualPrice}}</text>
+            </view>
+        </view>
+        <view class="pay-goods-stock" wx:if="{{showStock}}">库存 {{ selectModelInfo.stock || allStock }}</view>
+        <view wx:if="{{!selectModelInfo.models_text && goodsInfo.model.length > 0}}" class="pay-checked-text">请选择
+          <text wx:for="{{goodsInfo.model}}" wx:key="index" wx:if="{{!selectModelInfo.models[index]}}">{{item.name}} </text>
+        </view>
+        <view wx:if="{{selectModelInfo.models_text}}" class="pay-checked-text">已选：{{ selectModelInfo.models_text }}</view>
+      </view>
+    </view>
+    <view class="payDialog-content">
+      <view class="pay-goods-models" hidden="{{ !goodsInfo.model_items.length }}">
+        <view wx:for="{{ goodsInfo.model }}" wx:for-item="model" wx:for-index="modelIndex" wx:key="index">
+            <text class="model-title">{{ model.name }}</text>
+            <label class="pills-list">
+              <label wx:for="{{ model.subModelName }}"
+                     wx:for-item="name"
+                     wx:key="index"
+                     data-model-index="{{ modelIndex }}"
+                     data-submodel-index="{{ index }}"
+                     class="subModel {{ selectModelInfo.models[modelIndex] == model.subModelId[index] ? 'select' : '' }}"
+                     data-submodel-id="{{ model.subModelId[index] }}" bindtap="selectSubModel"  style="{{selectModelInfo.models[modelIndex] == model.subModelId[index] ?    'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme + ';background:' + storeStyle.theme + '33' : ''}}">{{ name }}</label>
+            </label>
+          </view>
+      </view>
+      <view class="pay-goods-attrs" hidden="{{ !goodsInfo.attributes.length }}">
+        <view class="pay-goods-attrs-item" wx:for="{{ goodsInfo.attributes }}" wx:for-item="attr" wx:for-index="attrIndex" wx:key="index">
+            <text class="attr-title">{{ attr.name }}</text>
+            <label class="pills-list">
+              <label wx:for="{{ attr.elem }}"
+                     wx:for-item="elem"
+                     wx:key="index"
+                     data-attr-index="{{ attrIndex }}"
+                     data-subattr-index="{{ index }}"
+                     data-status="{{ selectAttrInfo.attrs[attrIndex][index].is_selected && selectAttrInfo.attrs[attrIndex][index].attributes_id == attr.id ? '1' : '0' }}"
+                     class="subModel {{ selectAttrInfo.attrs[attrIndex][index].is_selected && selectAttrInfo.attrs[attrIndex][index].attributes_id == attr.id ? 'select' : '' }}"
+                     bindtap="selectSubAttrs">{{ elem.name }} {{elem.price > 0 ? '+¥'+ elem.price : ''}}
+              </label>
+            </label>
+          </view>
+      </view>
+      <view class="pay-goods-num">
+        <text class="pay-goods-number-title">数量</text>
+        <text class="pay-goods-number-title" wx:if="{{selectModelInfo.min_sales_nums > 1}}">（起卖数 {{selectModelInfo.min_sales_nums}}）</text>
+        <view class="pull-right quantity-box">
+          <view class="response-area-minus {{selectModelInfo.buyCount <= selectModelInfo.min_sales_nums || selectModelInfo.buyCount <= 1 ? 'disabled' : ''}}" bindtap="clickMinusButton">-</view>
+          <input class="pay-count" type="number" value="{{ selectModelInfo.buyCount }}" bindblur="inputBuyCount" />
+          <view class="response-area-plus {{selectModelInfo.buyCount >= selectModelInfo.stock ? 'disabled' : ''}}" bindtap="clickPlusButton">+</view>
+        </view>
+      </view>
+    </view>
+    <view class="dialog-bottom">
+      <view wx:if="{{ selectModelInfo.stock == 0 && selectModelInfo.stock }}">
+        <view style="background: #E0E0E0;color:#fff;" class="pay-add-to-shoppingcart" wx:if="{{goodsInfo.integral != '2'}}">商品库存不足</view>
+      </view>
+      <view wx:elif="{{ifAddToShoppingCart || showAllCarBtn}}">
+        <view style="{{ 'background:' + storeStyle.secondary + ';color:' + (storeStyle.secondary == '#ACD3FA' || storeStyle.secondary == '#FFCFDF' || storeStyle.secondary == '#ffffff' || storeStyle.secondary == '#DFF3ED' || storeStyle.secondary == '#FAF7ED' ? storeStyle.theme : '') }}" class="pay-add-to-shoppingcart {{showAllCarBtn ? 'radius-left' : ''}}"  bindtap="sureAddToShoppingCart" wx:if="{{goodsInfo.integral != '2'}}">加入购物车</view>
+      </view>
+      <view wx:if="{{!ifAddToShoppingCart || showAllCarBtn}}">
+        <view style="{{ 'background:' + storeStyle.theme }}" class="btn-orange pay-buy-next {{showAllCarBtn ? 'radius-right' : ''}}" bindtap="buyDirectlyNextStep">立即购买</view>
+      </view>
+    </view>
+  </view>
+</view>
+<!-- 选择团长 -->
+<view class="leaderInfo-dialog" catchtouchmove="stopMove" bindtap="hideLeaderDialog" hidden="{{!isshowLeaderDialog}}">
+  <scroll-view class="leaderInfo-dialog-view" catchtap="stopPropagation" scroll-y="true">
+    <view class="l-header">请选择团长下单</view>
+    <view class="community-list-content" wx:for="{{leader_list}}" wx:key="id" wx:if="{{leader_list.length}}">
+      <view class="list-content-item">
+        <image class="avatar" src="{{item.logo}}"></image>
+        <text class="nick-name ellipsis">{{item.nick_name}}</text>
+        <text class="distance-name">距离你{{item.distance}}</text>
+      </view>
+      <view style="position: relative;">
+        <view class="list-address-item">
+          <text class="icon-comRoom ico-moon"></text>
+          <view class="flex330">
+            <view style="word-break:break-all;color:#303445;"><label style="color: #666666;">小区名称：</label>{{item.housing_estate}}</view>
+          </view>
+        </view>
+        <view class="list-address-item">
+          <text class="icon-goods-location ico-moon"></text>
+          <view class="flex330">
+            <view style="word-break:break-all;color:#303445;"><label style="color: #666666;">提货地点：</label>{{item.address_detail}}</view>
+          </view>
+        </view>
+        <view class="select-leader" bindtap="selectLeader" data-index="{{index}}">选择</view>
+      </view>
+    </view>
+    <view class="no-leader" wx:if="{{!leader_list.length}}">当前无团长代理该商品</view>
+  </scroll-view>
+</view>

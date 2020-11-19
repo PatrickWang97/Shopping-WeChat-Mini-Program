@@ -1,0 +1,235 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view wx:if="{{pickUpType == 2 && isShowPayInstruct}}" class="payment-instructions" style="{{'background:' + storeStyle.theme + '1A;' + 'color:' + storeStyle.theme}}">
+  <text catchtap="hidePaymentInstruct" class="ico-moon icon-closes"></text>
+  <text>赔付说明</text>
+  <text class="pull-right check-instructions" style="{{'border-color:' + storeStyle.theme}}" catchtap="checkInstruction">立即查看</text>
+</view>
+<view class="refund-box">
+  <view class="goods-detail-box" wx:for="{{ goodsList }}" wx:key="index" wx:for-item="goods">
+    <image src="{{ goods.cover }}"></image>
+    <view>
+      <view class="goods-name"><text class="is-seckill" wx:if="{{ is_group_buy_order != 0 }}">拼团</text><text class="is-seckill" wx:if="{{ goods.is_seckill == 1 }}">秒杀</text><text class="is-seckill" wx:if="{{ goods.is_vip_goods == 1 }}">会员价</text>{{ goods.goods_name }}</view>
+      <view wx:if="{{ goods.model_value }}" class="goods-rules">{{ goods.model_value }}</view>
+      <view class="goods-price">
+        <block wx:if="{{goods.use_integral == 0}}">
+          <text class="colorff7" style="{{'color:' + storeStyle.theme }}">¥{{ goods.price }}</text>
+        </block>
+        <block wx:else>
+          <text class="colorff7" style="{{'color:' + storeStyle.theme }}" wx:if="{{goods.price !='0.00' || !goods.use_integral || (goods.use_integral == 0)}}">¥{{ goods.price }}</text>
+          <text class="colorff7" style="{{'color:' + storeStyle.theme }}" wx:if="{{goods.use_integral && goods.use_integral != 0 && goods.price !='0.00'}}">+</text>
+          <text class="colorff7" style="{{'color:' + storeStyle.theme }}" wx:if="{{goods.use_integral}}">{{goods.use_integral}}积分</text>
+        </block>
+        <text class="pull-right">x {{ goods.preview_refund_num }}</text>
+      </view>
+    </view>
+    <!-- 餐饮3.0 新增商品属性 -->
+    <view class="goods-attributes-wrap" wx:if="{{goods.is_package_goods != 1 && goods.attributes_id &&goods.attributes_id != 0}}" style="width:100%;margin-left:0;margin-top:20rpx;">
+      <view class="goods-attributes-item" wx:for="{{goods.attributes}}" wx:key="index" wx:for-item="attributes">
+        <view>
+          <text>{{attributes.name}}：</text>
+          <view wx:for="{{attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+            <text>{{elem.name}}</text><text class="attributes-add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+            <text wx:if="{{elem_index != attributes.elem.length -1}}">，</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- 餐饮3.0 新增套餐 -->
+    <view class="package-info-wrap" wx:if="{{goods.is_package_goods == 1}}" style="margin-left:0;width:100%;max-height:{{goods.showPackageInfo?'auto':''}};">
+      <view class="package-info-content" hidden='{{!goods.showPackageInfo}}'>
+        <view class="package-info-item" wx:for="{{goods.package_goods}}" wx:key="index" wx:for-item="package">
+          <view class="package-info-l">
+            <block wx:if="{{package.is_require == 1 && package.is_multi_select == 1 && package.selected_num >= package.min_sales_nums && package.selected_num > 1}}">
+              <view class="package-info-title">
+                <view style="display:flex;">
+                  <text class="package-info-require" wx:if="{{package.is_require == 1}}">必</text>
+                  <text class="package-info-require" wx:if="{{package.is_require == 1}}">标配</text>
+                  <text class="package-info-name">{{package.title}}</text>
+                </view>
+                <view>
+                  <text class="package-info-num">x{{package.min_sales_nums}}</text>
+                </view>
+              </view>
+              <view class="package-info-model">
+                <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+              </view>
+              <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                <text>{{_attributes.name}} : </text>
+                <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                  <text>{{elem.name}}</text>
+                  <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                  <text wx:if="{{elem_index != _attributes.elem.length -1}}">，</text>
+                </view>
+              </view>
+              <block wx:if="{{package.selected_num - package.min_sales_nums > 0}}">
+                <view class="package-info-title">
+                  <view>
+                    <text class="package-info-name">{{package.title}}</text>
+                  </view>
+                  <view>
+                    <text class="package-info-add_price" wx:if="{{package.added_price > 0}}">+¥{{package.added_price}}</text>
+                    <text class="package-info-num">x{{package.selected_num - package.min_sales_nums}}</text>
+                  </view>
+                </view>
+                <view class="package-info-model">
+                    <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                    <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                </view>
+                <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                  <text>{{_attributes.name}} : </text>
+                  <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                    <text>{{elem.name}}</text>
+                    <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                    <text wx:if="{{elem_index != _attributes.elem.length -1}}">，</text>
+                  </view>
+                </view>
+              </block>
+            </block>
+            <block wx:else>
+              <view class="package-info-title">
+                <view style="display: flex;">
+                  <text class="package-info-require" wx:if="{{package.is_require == 1}}">必</text>
+                  <text class="package-info-require" wx:if="{{package.is_require == 1}}">标配</text>
+                  <text class="package-info-name">{{package.title}}</text>
+                </view>
+                <view>
+                  <text class="package-info-add_price" wx:if="{{package.added_price > 0}}">+¥{{package.added_price}}</text>
+                  <text class="package-info-num">x{{package.selected_num}}</text>
+                </view>
+              </view>
+              <view class="package-info-model">
+                <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+              </view>
+              <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                <text>{{_attributes.name}} : </text>
+                <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                  <text>{{elem.name}}</text>
+                  <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                  <text wx:if="{{elem_index != _attributes.elem.length -1}}">，</text>
+                </view>
+              </view>
+            </block>
+          </view>
+        </view>
+      </view>
+      <view class='goods-showMore'>
+        <view class='package-info' hidden='{{goods.showPackageInfo}}' data-index='{{index}}' data-status='1' catchtap='showPackageInfoFn' style="{{ 'color:' + storeStyle.theme }}">
+          展开套餐明细
+          <text class='ico-moon icon-downarrow package-info-icon'></text>
+        </view>
+        <view class='package-info' hidden='{{!goods.showPackageInfo}}' data-index='{{index}}' data-status='0' catchtap='showPackageInfoFn' style="{{ 'padding-top:20rpx;color:' + storeStyle.theme }}">
+          收起
+          <text class='ico-moon icon-uparrow package-info-icon'></text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="type-reason-way">
+    <view catchtap="showRefundBox" data-type="type">
+      <text class="type-reason-way-title">退款类型</text>
+      <text class="pull-right ico-moon icon-rightarrow"></text>
+      <text class="pull-right select-reason {{ typeIndex !== '' ? 'select' : ''}}">{{ refundTypeData[typeIndex].title || '请选择'}}</text>
+    </view>
+    <view catchtap="showRefundBox" data-type="reason">
+      <text class="type-reason-way-title">退款原因</text>
+      <text class="pull-right ico-moon icon-rightarrow"></text>
+      <text class="pull-right select-reason {{ reasonIndex !== '' ? 'select' : ''}}">{{(pickUpType == 2 ? refundJourneyReasonData[reasonIndex].title : refundReasonData[reasonIndex].title) || '请选择退款原因'}}</text>
+    </view>
+    <view catchtap="showRefundBox" data-type="way">
+      <text class="type-reason-way-title">退款方式</text>
+      <text class="pull-right ico-moon icon-rightarrow"></text>
+      <text class="pull-right select-reason {{ wayIndex !== '' ? 'select' : ''}}">{{ refundWayData[wayIndex].title || '请选择退款方式'}}</text>
+      <view wx:if="{{ wayIndex == 1 }}" class="storage-tip">注：储值金不会跟着退款一起退回，在商家同意退款后，还需用户点击“确认退款”，才会退回。</view>
+    </view>
+  </view>
+  <view class="refund-price-box">
+    <view>
+      <text class="refund-price-title">退款金额</text>
+      <text wx:if="{{  typeIndex != 1 && typeIndex != 2 }}" class="pull-right refund-price" style="{{'color:' + storeStyle.theme }}">¥{{ refundPrice }}</text>
+      <input wx:if="{{ (typeIndex == 1 || typeIndex == 2) && showRefundType && showRefundReason && showRefundWay }}" style="{{'color:' + storeStyle.theme }}" class="pull-right refund-price-input" type="digit" value="{{ refundPrice }}" bindinput="changeRefundPrice" />
+    </view>
+    <view class="refund-price-detail">最多退¥{{ maxRefundPrice }}，含配送费¥{{ express }}元</view>
+    <view wx:if="{{ wayIndex == 1 }}" class="refund-price-detail">最终退款储值金额 ¥{{ refundPrice }}元</view>
+  </view>
+  <view class="refund-instruct">
+    <view class="refund-instruct-title" wx:if="{{!isShowInstructionMask}}"><text class="refund-instruct-label">退款说明</text><input wx:if="{{ showRefundType && showRefundReason && showRefundWay}}" class="refund-instruct-input" type="text" value="{{ refundDes }}" bindinput="inputRefundDes" placeholder="选填" /></view>
+    <view class="images-box">
+      <view wx:for="{{ imagesArr }}" wx:key="index">
+        <text class="delete-image ico-moon icon-closes" catchtap="deleteImage" data-index="{{ index }}"></text>
+        <image src="{{ item }}" data-index="{{ index }}" catchtap="previewImage"></image>
+      </view>
+      <view wx:if="{{ imagesArr.length < 8 }}" class="add-images" bindtap="chooseImage">
+        <text class="ico-moon icon-fn-camera"></text>
+        <view>添加图片</view>
+      </view>
+    </view>
+    <view class="images-length">{{ imagesArr.length }}/8</view>
+  </view>
+  <view class="refund-bottom">
+    <view class="refund-cancel" catchtap="cancelRefund">取消</view>
+    <view class="refund-submit" catchtap="sureRefund" style="{{'background:' + storeStyle.theme }}">提交</view>
+  </view>
+</view>
+<!-- 退款类型 -->
+<view class="refund-type-mask" bindtap="closeRefundBox" hidden="{{showRefundType}}">
+  <view class="refund-type-box" catchtap="stopPropagation">
+    <view class="refund-type-title">退款类型</view>
+    <view class="refund-type-menu">
+      <block wx:for="{{ refundTypeData }}" wx:key="index">
+        <view hidden="{{(refundWithGoods == 0 || orderInfoStatus == 1 || orignalStatus == 1 || deliveryStatus == 3 || pickUpType == 3) && (index == 2 && !sameCity)}}" class="refund-type-list" catchtap="selectReason" data-index="{{ index }}" data-type="type">
+          <text style="{{ typeIndex === index ? 'color:' + storeStyle.theme : ''}}" class="{{ typeIndex === index ? 'select' : '' }}">{{item.title}}</text>
+          <text class="pull-right ico-moon icon-rightarrow"></text>
+        </view>
+      </block>
+    </view>
+    <view class="refund-type-close" catchtap="closeRefundBox" style="{{'background:' + storeStyle.theme }}">关闭</view>
+  </view>
+</view>
+<!-- 退款原因 -->
+<view class="refund-type-mask" bindtap="closeRefundBox" hidden="{{showRefundReason}}">
+  <view class="refund-type-box" catchtap="stopPropagation">
+    <view class="refund-type-title">退款原因</view>
+    <view class="refund-type-menu">
+      <view wx:for="{{ pickUpType == 2 ? refundJourneyReasonData : refundReasonData }}" wx:key="index" class="refund-type-list" catchtap="selectReason" data-index="{{ index }}" data-type="reason">
+        <text style="{{ reasonIndex === index ? 'color:' + storeStyle.theme : ''}}" class="{{ reasonIndex === index ? 'select' : '' }}">{{item.title}}</text>
+        <text class="pull-right ico-moon icon-rightarrow"></text>
+      </view>
+    </view>
+    <view class="refund-reason-close">
+      <text class="pre-btn" catchtap="prevRefundBox" data-type="reason">上一步</text>
+      <text class="close-btn" catchtap="closeRefundBox" style="{{'background:' + storeStyle.theme }}">关闭</text>
+    </view>
+  </view>
+</view>
+<!-- 退款方式 -->
+<view class="refund-type-mask" bindtap="closeRefundBox" hidden="{{showRefundWay}}">
+  <view class="refund-type-box" catchtap="stopPropagation">
+    <view class="refund-type-title">退款方式</view>
+    <view class="refund-type-menu">
+      <block wx:for="{{ refundWayData }}" wx:key="index">
+        <view hidden="{{ refundTobalance == 0 && index == 1 }}" class="refund-type-list" catchtap="selectReason" data-index="{{ index }}" data-type="way">
+          <text style="{{ wayIndex === index ? 'color:' + storeStyle.theme : ''}}" class="{{ wayIndex === index ? 'select' : '' }}">{{item.title}}</text>
+          <text class="pull-right ico-moon icon-rightarrow"></text>
+        </view>
+      </block>
+    </view>
+    <view class="refund-reason-close" >
+      <text class="pre-btn" catchtap="prevRefundBox" data-type="way">上一步</text>
+      <text class="close-btn" catchtap="closeRefundBox" style="{{'background:' + storeStyle.theme }}">关闭</text>
+    </view>
+  </view>
+</view>
+<view class="payment-instructions-mask" wx:if="{{isShowInstructionMask}}">
+  <view class="payment-instructions-box">
+    <view class="title">赔付说明</view>
+    <view>1.根据实际情况定位骑手还是商家问题，必要时上传产品详情照片1-3张</view>
+    <view>2.流程：投诉后商家将会收到您的反馈，并在<text style="{{'color:' + storeStyle.theme}}">1-3</text>个工作日内对提交的内容进行审核，审核无误将会赔付金额到您的储值账户中</view>
+    <view>3.最高赔付<text style="{{'color:' + storeStyle.theme}}">{{maxRefundPrice}}</text>元</view>
+    <view wx:if="{{contactPhone && refundWithGoods == 1}}">4.若长时间未处理，可拨打热线电话<text style="{{'color:' + storeStyle.theme}}">{{contactPhone}}</text></view>
+    <view class="known-btn" style="{{'color:' + storeStyle.theme}}" catchtap="closeMask">知道了</view>
+  </view>
+</view>
+

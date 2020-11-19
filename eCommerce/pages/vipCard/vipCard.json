@@ -1,0 +1,11 @@
+{
+	"navigationBarTitleText":"会员卡详情",
+	"navigationBarTextStyle":"black",
+	"navigationStyle":"custom",
+	"usingComponents":{
+		"component-getUserInfo": "/components/getUserInfo/getUserInfo",
+		"component-topNavBar": "/components/topNavBar/topNavBar",
+		"component-behavior-track": "/components/behaviorTrack/behaviorTrack",
+		"component-newcomer-gift": "/components/newcomerGift/newcomerGift"
+	}
+}

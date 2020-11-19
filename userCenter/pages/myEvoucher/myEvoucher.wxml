@@ -1,0 +1,49 @@
+<component-reward-point rewardPointObj="{{rewardPointObj}}" shareGiftsObj="{{shareGiftsObj}}" collectGiftsObj="{{collectGiftsObj}}" collectGetObj="{{collectGetObj}}"></component-reward-point>
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-sinkingModal></component-sinkingModal>
+
+<view class="my-evoucher-container">
+  <view class="evoucher-list">
+    <block wx:if="{{evoucherData.list.length}}">
+      <view class="evoucher-item flex {{item.status == 1 ? 'used' : item.status == 2 ? 'expired' : '' }}" wx:for="{{evoucherData.list}}" wx:key="index" bindtap="turnToEvoucherDetailPage" data-id="{{item.id}}" data-status="{{item.status}}">
+        <view class="item-img">
+          <image src="{{item.form_data.goods_info.cover}}"></image>
+        </view>
+        <view class="item-content flex-column">
+          <view class="row-between">
+            <text class="item-name">{{item.form_data.goods_info.goods_name}}</text>
+            <text class="ico-moon icon-qr-code" catchtap="getWriteOffCodeBox" data-order-id="{{item.order_id}}" data-id="{{item.id}}" wx:if="{{item.status == 0 && item.unused_num > 0}}"></text>
+          </view>
+          <text class="item-species gray">{{item.form_data.goods_info.model_value_str}}</text>
+          <view class="row-between">
+            <text class="gray">有效期 {{item.form_data.goods_info.valid_date_str}}</text>
+            <text>×{{item.receiveNum}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="evoucher-list-null">
+        <image src="{{evoucherData.listNull.img}}" mode="aspectFill"></image>
+        <text>{{evoucherData.listNull.txt}}</text>
+      </view>
+    </block>
+  </view>
+</view>
+
+<!-- 核销码 start -->
+<view class="qr-code-dialog column-center" wx:if="{{isShowQRCode}}">
+  <view class="qr-code column-center">
+    <text class="code-title">请向商家出示核销码</text>
+    <image class="code-img" src="{{codeImgUrl}}" mode="aspectFit"></image>
+    <view class="column-center">
+      <text class="code-num">{{codeNum}}</text>
+      <text class="code-copy" catchtap="copyCodeNum" data-code="{{codeNum}}">复制</text>
+    </view>
+  </view>
+  <view class="qr-code-close" catchtap="hideQRCode">
+    <text class="ico-moon icon-closes"></text>
+  </view>
+</view>
+<!-- 核销码 end -->

@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "分享有礼",
+  "usingComponents": {
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+    "component-reward-point": "/components/rewardPointModal/rewardPointModal",
+    "component-behavior-track": "/components/behaviorTrack/behaviorTrack"
+  }
+}

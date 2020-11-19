@@ -1,0 +1,96 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-behavior-track></component-behavior-track>
+<view class="video-usercenter-tabs">
+  <text data-index="purchased" class="{{activeTab === 'purchased' ? 'active' : ''}}" bindtap="tabChange">已购</text>
+  <text data-index="favorited" class="{{activeTab === 'favorited' ? 'active' : ''}}" bindtap="tabChange">收藏</text>
+  <text data-index="browsing" class="{{activeTab === 'browsing' ? 'active' : ''}}" bindtap="tabChange">浏览</text>
+</view>
+<scroll-view scroll-y id="video-usercenter-container" bindscrolltolower="scrollBottom">
+  <view class="container-item {{activeTab === 'purchased' ? 'show' : ''}}" id="purchased">
+    <view class="video-item" wx:for="{{purchasedVideo}}" wx:key="index" data-id="{{item.video_id}}" catchtap="turnToVideoDetail">
+      <view class="video-preview-image">
+        <image src="{{item.preview_img}}"></image>
+      </view>
+      <view class="video-intro-text">
+        <view class="video-name">{{item.title}}</view>
+        <view class="blank"></view>
+        <view class="viewed-rate">已看{{item.progress}}%</view>
+      </view>
+    </view>
+  </view>
+  <view class="container-item {{activeTab === 'favorited' ? 'show' : ''}}" id="favorited">
+    <view class="video-item" wx:for="{{favoritedVideo}}" wx:key="index"  data-id="{{item.video_id}}" catchtap="turnToVideoDetail">
+      <view class="video-preview-image">
+        <image src="{{item.preview_img}}"></image>
+        <view class="video-list-play icon-play ico-moon"></view>
+      </view>
+      <view class="video-intro-text">
+        <view class="video-name">{{item.title}}</view>
+        <view class="video-score-wrap">
+          <view class="video-score">
+            <view class="numeric">
+              <lable class="star ico-moon icon-star"></lable>
+              <lable class="star ico-moon icon-star"></lable>
+              <lable class="star ico-moon icon-star"></lable>
+              <lable class="star ico-moon icon-star"></lable>
+              <lable class="star ico-moon icon-star"></lable>
+            </view>
+            <view class="numeric numeric-top" style="width:{{item.score*10}}%">
+              <lable class="star full-star ico-moon icon-star"></lable>
+              <lable class="star full-star ico-moon icon-star"></lable>
+              <lable class="star full-star ico-moon icon-star"></lable>
+              <lable class="star full-star ico-moon icon-star"></lable>
+              <lable class="star full-star ico-moon icon-star"></lable>
+            </view>
+          </view>
+          <text class="video-rate">{{item.score == null ? 0 : item.score}}</text>
+          <lable class="video-eye ico-moon icon-eye"></lable>
+          <text class="play-count">{{item.video_view}}</text>
+        </view>
+        <view class="video-cash">
+          <text class="video-price" wx:if="{{item.is_free == '0'}}">¥{{item.price}}</text>
+          <text class="video-price" wx:else>免费</text>
+          <text class="video-state">{{item.is_purchased ? "已购买" : ""}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="container-item {{activeTab === 'browsing' ? 'show' : ''}}" id="browsing">
+    <view class="video-item" wx:for="{{browsingHistory}}" wx:key="index"  data-id="{{item.video_id}}" catchtap="turnToVideoDetail">
+      <view class="video-preview-image">
+        <image src="{{item.preview_img}}"></image>
+        <view class="video-list-play icon-play ico-moon"></view>
+      </view>
+      <view class="video-intro-text">
+        <view class="video-name">{{item.title}}</view>
+        <view class="video-score-wrap">
+          <view class="video-score">
+            <view class="numeric">
+              <lable class="star ico-moon icon-star"></lable>
+              <lable class="star ico-moon icon-star"></lable>
+              <lable class="star ico-moon icon-star"></lable>
+              <lable class="star ico-moon icon-star"></lable>
+              <lable class="star ico-moon icon-star"></lable>
+            </view>
+            <view class="numeric numeric-top" style="width:{{item.score*10}}%">
+              <lable class="star full-star ico-moon icon-star"></lable>
+              <lable class="star full-star ico-moon icon-star"></lable>
+              <lable class="star full-star ico-moon icon-star"></lable>
+              <lable class="star full-star ico-moon icon-star"></lable>
+              <lable class="star full-star ico-moon icon-star"></lable>
+            </view>
+          </view>
+          <text class="video-rate">{{item.score == null ? 0 : item.score}}</text>
+          <lable class="video-eye ico-moon icon-eye"></lable>
+          <text class="play-count">{{item.video_view}}</text>
+        </view>
+        <view class="video-cash">
+            <text class="video-price" wx:if="{{item.is_free == '0'}}">¥{{item.price}}</text>
+            <text class="video-price" wx:else>免费</text>
+          <text class="video-state">{{item.is_purchased ? "已购买" : ""}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</scroll-view>

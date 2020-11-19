@@ -1,0 +1,12 @@
+{
+    "navigationBarTitleText":"刮刮乐",
+    "navigationBarTextStyle":"black",
+    "navigationStyle":"custom",
+    "usingComponents":{
+        "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+        "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+        "component-topNavBar": "/components/topNavBar/topNavBar",
+        "component-reward-point": "/components/rewardPointModal/rewardPointModal",
+        "component-behavior-track": "/components/behaviorTrack/behaviorTrack"
+    }
+}

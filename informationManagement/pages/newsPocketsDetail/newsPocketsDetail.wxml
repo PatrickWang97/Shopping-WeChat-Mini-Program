@@ -1,0 +1,28 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="newsPocketsDetail-wrap">
+  <view class="newsPocketsDetail-top">
+    <view wx:if="{{ownGrabRecord.price}}" class="top-title">口令红包</view>
+    <view wx:if="{{ownGrabRecord.price}}" class="own-money">{{ownGrabRecord.price}}<text class="money-unit">元</text></view>
+    <view class="userlogo"><image src="{{pocketConfig.app_logo || pocketConfig.app_cover || pocketConfig.headimgurl}}" alt="" mode="aspectFill"></image></view>
+  </view>
+  <view class="username">来自  <text>{{pocketConfig.app_name || pocketConfig.nickname}}</text></view>
+  <view class="pockets-list-title">
+    <text class="title-left">{{pocketConfig.opened_count+'/'+pocketConfig.number}}个话费红包，己领取{{pocketConfig.grabed_price}}元</text>
+    <text class="title-right" bindtap="turnToNewsPocketsBalance">查看我领取的红包</text>
+  </view>
+  <view class="pockets-list">
+    <view class="pocket-item" wx:for="{{userGarbRecord}}" wx:for-item="userItem" wx:key="index">
+      <view class="item-left">
+        <image class="item-userlogo" src="{{userItem.headimgurl}}" alt="" mode="aspectFill"></image>
+      </view>
+      <view class="item-center">
+        <view class="item-username">{{userItem.nickname}}</view>
+        <view class="item-receivetime">{{userItem.add_time}}</view>
+      </view>
+      <view class="item-right">{{userItem.price}}元</view>
+    </view>
+    <view wx:if="{{recordStatus.isMore}}" class="more-btn" bindtap="getRedPocketRecord">查看更多记录</view>
+    <view wx:else class="no-more">没有更多记录</view>
+  </view>
+</view>

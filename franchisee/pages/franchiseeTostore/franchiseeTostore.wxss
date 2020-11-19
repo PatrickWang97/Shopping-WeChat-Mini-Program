@@ -1,0 +1,1361 @@
+page {
+  background-color: #F3F3F3;
+}
+.custom-style-Page {
+  position: relative;
+}
+.has-incomplete{
+  padding-top: 80rpx;
+}
+.franchisee-head{
+  background-color: #fff;
+}
+.franchisee-head-info{
+  padding: 25rpx 0 25rpx 25rpx;
+}
+.franchisee-picture{
+  width: 165rpx;
+  height: 165rpx;
+  border-radius: 4rpx;
+  vertical-align: top;
+}
+.franchisee-info{
+  display: inline-block;
+  width: 537rpx;
+  margin-left: 20rpx;
+  margin-top: 5rpx;
+  vertical-align: top;
+}
+.franchisee-title{
+  display: inline-block;
+  width: 430rpx;
+  color: #303445;
+  font-size: 30rpx;
+  line-height: 45rpx;
+  vertical-align: top;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.franchisee-phone{
+  display: inline-block;
+  width: 95rpx;
+  font-size: 46rpx;
+  line-height: 45rpx;
+  vertical-align: top;
+}
+.franchisee-phone label{
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  color: #FF7100;
+  line-height: 45rpx;
+  border-left: 1px solid #EBEBEB;
+}
+.franchisee-head-text{
+  color: #666;
+  font-size: 22rpx;
+  margin-top: 10rpx;
+}
+.franchisee-head-text text:first-child{
+  display: inline-block;
+  width: 120rpx;
+  vertical-align: top;
+}
+.franchisee-head-text text:last-child{
+  display: inline-block;
+  width: 395rpx;
+}
+.franchisee-div{
+  margin-top: 20rpx;
+  background-color: #fff;
+}
+.franchisee-div-head2{
+  margin: 0 30rpx;
+  color: #333;
+  font-size: 28rpx;
+  border-bottom: 1px solid #F2F2F2;
+  line-height: 80rpx;
+}
+.franchisee-div-icon{
+  display: inline-block;
+  width: 40rpx;
+  height: 40rpx;
+  color: #fff;
+  text-align: center;
+  line-height: 40rpx;
+  font-size: 28rpx;
+  background-color: #FF3B49;
+  border-radius: 2rpx;
+  margin-right: 20rpx;
+}
+.franchisee-div-icon2{
+  display: inline-block;
+  color: #666;
+  width: 30rpx;
+  font-size: 30rpx;
+  vertical-align: top;
+}
+.franchisee-section{
+  margin-top: 20rpx;
+}
+.right-icon{
+  float: right;
+  color: #999;
+}
+.franchisee-miniapp{
+  color: #333;
+  font-size: 26rpx;
+  padding: 0 30rpx;
+  line-height: 80rpx;
+}
+.miniapp-icon{
+  font-size: 40rpx;
+  color: #16D328;
+  margin-right: 10rpx;
+  vertical-align: top;
+}
+.franchisee-coupon-list{
+  padding: 0 30rpx;
+}
+.franchisee-coupon-item{
+  padding: 26rpx 0;
+  border-bottom: 1px solid #F2F2F2;
+}
+.coupon-info{
+  display: inline-block;
+  width: 510rpx;
+  height: 135rpx;
+  border: 1px solid rgba(249,96,98,.2);
+  box-sizing: border-box;
+  vertical-align: top;
+}
+.coupon-center{
+  display: inline-block;
+  width: 16rpx;
+  height: 135rpx;
+  margin-left: -8rpx;
+  position: relative;
+  vertical-align: top;
+  overflow: hidden;
+}
+.coupon-receive{
+  display: inline-block;
+  width: 170rpx;
+  height: 135rpx;
+  margin-left: -8rpx;
+  border: 1px solid rgba(249,96,98,.2);
+  border-left: none;
+  box-sizing: border-box;
+  vertical-align: top;
+}
+.coupon-info-cover{
+  display: inline-block;
+  width: 80rpx;
+  height: 80rpx;
+  margin: 30rpx 20rpx 30rpx 15rpx;
+  border-radius: 50%;
+  vertical-align: top;
+  overflow: hidden;
+}
+.coupon-info-cover image{
+  width: 100%;
+  height: 100%;
+}
+.coupon-title-wrap{
+  display: inline-block;
+  vertical-align: top;
+}
+.coupon-title{
+  color: #333;
+  font-size: 24rpx;
+  margin-top: 34rpx;
+}
+.coupon-rights{
+  max-width: 360rpx;
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #FF3B49;
+}
+.coupon-btn{
+  width: 116rpx;
+  height: 46rpx;
+  margin: 42rpx auto;
+  border-radius: 23rpx;
+  text-align: center;
+  color: #fff;
+  font-size: 24rpx;
+  line-height: 46rpx;
+  background-color: #FF3B49;
+}
+.coupon-top-circle,
+.coupon-bottom-circle{
+  position: absolute;
+  left: 0;
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50rpx;
+  border: 1px solid rgba(249,96,98,.2);
+  box-sizing: border-box;
+  background-color: #fff;
+}
+.coupon-top-circle{
+  top: -5rpx;
+}
+.coupon-bottom-circle{
+  bottom: -5rpx;
+}
+.franchisee-coupon-more{
+  font-size: 24rpx;
+  color: #999;
+  line-height: 60rpx;
+  text-align: center;
+}
+.franchisee-coupon-more label{
+  font-size: 28rpx;
+  margin-left: 10rpx;
+  vertical-align:top;
+}
+.franchisee-flex-tab{
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  height: 75rpx;
+  border-bottom: 1px solid #F2F2F2;
+  background-color: #fff;
+}
+.franchisee-flex-item{
+  display: inline-block;
+  width: 33.3%;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #333;
+  font-size: 28rpx;
+  line-height: 72rpx;
+  text-align: center;
+}
+.franchisee-flex-item view{
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.franchisee-flex-item view label{
+  color: #FF7100;
+}
+.franchisee-flex-item.active view{
+  color: #FF7100;
+  border-bottom: 1px solid #FF7100;
+}
+.franchisee-tab{
+  height: 75rpx;
+  border-bottom: 1px solid #F2F2F2;
+  background-color: #fff;
+}
+.franchisee-item{
+  display: inline-block;
+  width: 150rpx;
+  color: #333;
+  font-size: 28rpx;
+  line-height: 72rpx;
+  text-align: center;
+}
+.franchisee-item view{
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.franchisee-item.active view{
+  color: #FF3B49;
+  border-bottom: 1px solid #FF3B49;
+}
+.franchisee-waimai-section{
+  position: absolute;
+  top: 235rpx;
+  bottom: 0;
+  width: 100%;
+  transition: top 0.5s;
+  background-color: #F3F3F3;
+}
+.has-incomplete .franchisee-waimai-section{
+  top: 315rpx;
+}
+.has-vip .franchisee-waimai-section {
+  top: 330rpx;
+}
+.has-incomplete.has-vip .franchisee-waimai-section {
+  top: 410rpx;
+}
+.has-scroll .franchisee-waimai-section{
+  top: 0;
+}
+.franchisee-waimai-wrap{
+  width: 100%;
+  height: 100%;
+  padding-top: 75rpx;
+  padding-bottom: 94rpx;
+  box-sizing: border-box;
+}
+.franchisee-waimai-tab{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+.franchisee-wl{
+  display: inline-block;
+  width: 160rpx;
+  height: 100%;
+  background-color: #F3F3F3;
+  vertical-align: top;
+}
+.franchisee-wt-item{
+  width: 100%;
+  height: 94rpx;
+  color: #999;
+  font-size: 24rpx;
+  text-align: center;
+  line-height: 94rpx;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.franchisee-wt-item.active{
+  color: #666;
+  background-color: #fff;
+  border-left: 6rpx solid #FF7100;
+}
+.franchisee-wr{
+  display: inline-block;
+  width: 590rpx;
+  height: 100%;
+  vertical-align: top;
+}
+.franchisee-c-wt{
+  padding: 0 18rpx;
+  color: #666;
+  font-size: 24rpx;
+  line-height: 48rpx;
+  background-color: #F3F3F3;
+}
+.franchisee-waimai{
+  height: 100%;
+  background-color: #fff;
+}
+.franchisee-waimai-item{
+  position: relative;
+  padding: 24rpx 18rpx;
+  border-bottom: 1px solid #F3F3F3;
+}
+.franchisee-waimai-item .new-goods{
+  position: absolute;
+  top: 27rpx;
+  left: 18rpx;
+  width: 50rpx;
+  height: 24rpx;
+}
+.franchisee-waimai-img{
+  width: 110rpx;
+  height: 110rpx;
+  border-radius: 4rpx;
+  vertical-align: top;
+}
+.franchisee-waimai-info{
+  display: inline-block;
+  width: 420rpx;
+  margin-left: 20rpx;
+  vertical-align: top;
+}
+.franchisee-waimai-title{
+  color: #333;
+  font-size: 26rpx;
+  line-height: 32rpx;
+  overflow : hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.franchisee-waimai-deal{
+  color: #666;
+  font-size: 20rpx;
+  margin-top: 10rpx;
+}
+.franchisee-waimai-assess{
+  margin-left: 20rpx;
+}
+.franchisee-waimai-qw{
+  height: 45rpx;
+  margin-top: 10rpx;
+}
+.franchisee-waimai-price{
+  display: inline-block;
+  color: #FF7100;
+  font-size: 20rpx;
+  vertical-align: bottom;
+}
+.franchisee-waimai-price text{
+  font-size: 26rpx;
+}
+.franchisee-waimai-quantity{
+  float: right;
+}
+.franchisee-waimai-decrement{
+  display: inline-block;
+  width: 45rpx;
+  height: 45rpx;
+  color: #FF6500;
+  text-align: center;
+  font-size: 32rpx;
+  line-height: 36rpx;
+  border: 1px solid #FF6500;
+  border-radius: 23rpx;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  vertical-align: top;
+}
+.franchisee-waimai-increment{
+  display: inline-block;
+  width: 45rpx;
+  height: 45rpx;
+  color: #fff;
+  text-align: center;
+  font-size: 32rpx;
+  line-height: 40rpx;
+  border-radius: 23rpx;
+  background-color: #FF6500;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  vertical-align: top;
+}
+.franchisee-waimai-increments{
+  font-size: 20rpx;
+  width: 92rpx;
+}
+.franchisee-waimai-qinput{
+  display: inline-block;
+  width: 40rpx;
+  height: 45rpx;
+  min-height: 45rpx;
+  color: #333;
+  font-size: 22rpx;
+  text-align: center;
+  line-height: 45rpx;
+  vertical-align: top;
+}
+.franchisee-score-wrap{
+  width:100%;
+  height:100%;
+  padding-top:75rpx;
+  box-sizing:border-box;
+}
+.franchisee-score-scroll{
+  height: 100%;
+}
+.franchisee-qrcode{
+  padding: 38rpx 0;
+  text-align: center;
+}
+.franchisee-qrcode-img{
+  width: 180rpx;
+  height: 180rpx;
+}
+.franchisee-qrcode view{
+  font-size: 24rpx;
+  color: #666;
+  margin-top: 20rpx;
+}
+.franchisee-bottom-waimai{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  height:94rpx;
+  border-top:1px solid #eee;
+  background-color:#3E3E3E;
+  -webkit-user-select:none;
+  user-select:none;
+  z-index:2;
+}
+.franchisee-bfl{
+  position: relative;
+  display: inline-block;
+  width: 510rpx;
+  height: 100%;
+}
+.franchisee-waimai-cart{
+  position: absolute;
+  left: 25rpx;
+  bottom: 0;
+  width: 94rpx;
+  height: 94rpx;
+  color: #fff;
+  font-size: 56rpx;
+  text-align: center;
+  line-height: 94rpx;
+  background-color: #FF7100;
+  border: 10rpx solid #4E4C51;
+  border-radius: 50%;
+  box-shadow: 0 0 5px #4E4C51;
+}
+.franchisee-waimai-count{
+  position:absolute;
+  left:72rpx;
+  top:-17rpx;
+  min-width:20rpx;
+  height:28rpx;
+  padding:0 6rpx;
+  color: #FFF;
+  border-radius:28rpx;
+  text-align:center;
+  line-height:28rpx;
+  font-size:18rpx;
+  background-color: #F9442C;
+}
+.franchisee-waimai-total{
+  margin-left: 160rpx;
+  color: #fff;
+}
+.franchisee-waimai-money{
+  font-size: 35rpx;
+  line-height: 90rpx;
+}
+.franchisee-waimai-deliver{
+  font-size: 20rpx;
+}
+.franchisee-waimai-no{
+  color:#9b9b9d;
+  line-height: 90rpx;
+}
+.franchisee-bfr{
+  float:right;
+  width:230rpx;
+  height:94rpx;
+  line-height:94rpx;
+  font-size:14px;
+  text-align:center;
+  color:#fff;
+  background-color: #FF7100;
+}
+.disabled{
+  background-color: #535355;
+  pointer-events: none;
+}
+.franchisee-buy{
+  display: inline-block;
+  width: 66.6%;
+  -webkit-box-flex: 4;
+  -moz-box-flex: 4;
+  -webkit-flex: 4;
+  -ms-flex: 4;
+  flex: 4;
+  color: #fff;
+  font-size: 30rpx;
+  text-align: center;
+  line-height: 98rpx;
+  background-color: #FF3B49;
+}
+.franchisee-score-img{
+  display: block;
+  width: 230rpx;
+  height: 231rpx;
+  margin: 80rpx auto 40rpx;
+}
+.franchisee-score-coantent{
+  color: #ccc;
+  font-size: 24rpx;
+  text-align: center;
+}
+.franchisee-info-wrap{
+  width:100%;
+  height:100%;
+  padding-top:75rpx;
+  box-sizing:border-box;
+}
+.franchisee-info-scroll{
+  height: 100%;
+}
+.franchisee-info-wrap .franchisee-div-head2{
+  font-size: 26rpx;
+}
+.franchisee-profiles{
+  background-color: #fff;
+}
+.franchisee-info-content{
+  padding: 0 30rpx 30rpx;
+  color: #666;
+  font-size: 24rpx;
+}
+.franchisee-info-item{
+  margin-top: 30rpx;
+}
+.franchisee-head-sub{
+  font-size: 24rpx;
+  line-height: 80rpx;
+}
+.franchisee-info-r{
+  display: inline-block;
+  width: 635rpx;
+  margin-left: 20rpx;
+}
+.franchisee-img-item{
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: 10rpx;
+  margin-right: 30rpx;
+}
+.franchisee-video-video{
+  width: 650rpx;
+  height: 400rpx;
+}
+.franchisee-incomplete{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80rpx;
+  padding: 10rpx 30rpx 10rpx 0;
+  box-sizing: border-box;
+  background-color: #FFFAEE;
+}
+.franchisee-incomplete-close{
+  display: inline-block;
+  width: 60rpx;
+  height: 60rpx;
+  margin-left: 10rpx;
+  color: #999;
+  text-align: center;
+  font-size: 28rpx;
+  line-height: 60rpx;
+  vertical-align: top;
+}
+.franchisee-incomplete-text{
+  display: inline-block;
+  font-size: 24rpx;
+  color: #656565;
+  line-height: 60rpx;
+  vertical-align: top;
+}
+.franchisee-incomplete-btn{
+  float: right;
+  width: 120rpx;
+  height: 40rpx;
+  margin-top: 8rpx;
+  color: #FF3B49;
+  font-size: 24rpx;
+  text-align: center;
+  line-height: 40rpx;
+  border: 1px solid #FF3B49;
+  border-radius: 4rpx;
+}
+.franchisee-change-tpl{
+  position: fixed;
+  bottom:150rpx;
+  right: 20rpx;
+  width: 94rpx;
+  height: 94rpx;
+  z-index: 2;
+  color: #fff;
+  font-size: 24rpx;
+  line-height: 94rpx;
+  text-align: center;
+  background-color: #3091F2;
+  border-radius: 50%;
+  box-shadow: 0px 2px 3px #999;
+}
+.franchisee-change-confirm{
+  position: fixed;
+  bottom:0;
+  left: 0;
+  width: 100%;
+  height: 100rpx;
+  color: #fff;
+  font-size: 28rpx;
+  line-height: 100rpx;
+  text-align: center;
+  background-color: rgba(0, 0, 0, .4);
+  z-index: 10;
+}
+.franchisee-tpl{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 11;
+   background-color: rgba(0, 0, 0, .75);
+}
+.franchisee-tpl-content{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 560rpx;
+  transform: translate(-50%, -50%);
+}
+.franchisee-tpl-list{
+  display: inline-block;
+  width: 50%;
+  margin-bottom: 40rpx;
+  color: #fff;
+  font-size: 26rpx;
+  text-align: center;
+}
+.franchisee-tpl-icon{
+  display: block;
+  width: 94rpx;
+  height: 94rpx;
+  margin: 10rpx auto;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 46rpx;
+  text-align: center;
+  line-height: 94rpx;
+}
+.franchisee-tpl-store .franchisee-tpl-icon{
+  background-color: #3091F2;
+}
+.franchisee-tpl-waimai .franchisee-tpl-icon{
+  background-color: #FFB33B;
+}
+.franchisee-tpl-shop .franchisee-tpl-icon{
+  background-color: #FF3B49;
+}
+.franchisee-tpl-tostore .franchisee-tpl-icon{
+  background-color: #FF7100;
+}
+.franchisee-wsku-wrap{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .5);
+  z-index: 3;
+}
+.franchisee-wsku-inner{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 650rpx;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border-radius: 6rpx;
+}
+.franchisee-wsku-head{
+  height: 115rpx;
+  color: #333;
+  font-size: 32rpx;
+  line-height: 115rpx;
+  text-align: center;
+  background-color: #FBFBFB;
+}
+.franchisee-wsku-head text{
+  display: inline-block;
+  width: 70%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.franchisee-wsku-close{
+  position: absolute;
+  top: 18rpx;
+  right: 18rpx;
+  width: 80rpx;
+  height: 80rpx;
+  color: #D5D5DE;
+  font-size: 36rpx;
+  text-align: center;
+  line-height: 80rpx;
+}
+.franchisee-wsku-bottom{
+  border-top: 1px solid #ECECEC;
+}
+.franchisee-wsku-price{
+  display: inline-block;
+  width: 450rpx;
+  padding-left: 30rpx;
+  color: #FF7100;
+  font-size: 24rpx;
+  line-height: 88rpx;
+  background-color: #FBFBFB;
+  box-sizing: border-box;
+  vertical-align: top;
+}
+.franchisee-wsku-price label{
+  font-size: 32rpx;
+  vertical-align: top;
+}
+.franchisee-wsku-confirm{
+  display: inline-block;
+  width: 200rpx;
+  color: #fff;
+  font-size: 28rpx;
+  text-align: center;
+  line-height: 88rpx;
+  vertical-align: top;
+  background-color: #FF7100;
+}
+.franchisee-wsku-main{
+  margin-bottom: 50rpx;
+  max-height: 700rpx;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-size: 0;
+}
+.franchisee-wsku-item{
+  padding: 0 30rpx;
+}
+.franchisee-wsku-title{
+  padding: 20rpx 0;
+  color: #666;
+  font-size: 24rpx;
+}
+.franchisee-wsku-type label{
+  display: inline-block;
+  max-width: 100%;
+  min-width: 100rpx;
+  padding: 0 15rpx;
+  height:70rpx;
+  margin-right: 20rpx;
+  margin-bottom: 10rpx;
+  color: #666;
+  font-size: 26rpx;
+  line-height: 70rpx;
+  text-align: center;
+  background-color: #F5F5F5;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.franchisee-wsku-type label.active{
+  color: #FF7100;
+  background-color: rgba(255,113,0,.2);
+}
+.franchisee-waimai-shoppingcart{
+  position: fixed;
+  bottom: 94rpx;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+.franchisee-wsc-bg{
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .5);
+}
+.franchisee-wsc-inner{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 600rpx;
+  background-color: #fff;
+}
+.franchisee-wsc-head{
+  padding: 0 20rpx 0 35rpx;
+  color: #666;
+  font-size: 28rpx;
+  line-height: 80rpx;
+  background-color: #ECECEE;
+}
+.franchisee-wsc-deleteall{
+  font-size: 24rpx;
+  color: #999;
+}
+.franchisee-wsc-deleteall label{
+  line-height:80rpx;
+  vertical-align:top;
+}
+.franchisee-wsc-list{
+  height: 520rpx;
+}
+.franchisee-wsc-item{
+  padding: 30rpx;
+  border-bottom: 1px solid #E6E6E6;
+}
+.franchisee-wsc-info{
+  display: inline-block;
+  width: 340rpx;
+  vertical-align: middle;
+}
+.franchisee-wsc-price{
+  display: inline-block;
+  width: 180rpx;
+  text-align: right;
+  margin-right: 30rpx;
+  line-height: 45rpx;
+  vertical-align: middle;
+}
+.franchisee-wsc-quanc-quantity{
+  display: inline-block;
+  line-height: 45rpx;
+  vertical-align: middle;
+}
+.franchisee-wsc-quanc-quantity .franchisee-waimai-quantity{
+  float: none;
+}
+.franchisee-wsc-title{
+  color: #333;
+  font-size: 28rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.franchisee-wsc-spec{
+  color: #999;
+  font-size: 24rpx;
+  margin-top: 10rpx;
+}
+.franchisee-wsc-oprice{
+  color: #999;
+  font-size: 20rpx;
+  text-decoration: line-through;
+}
+.franchisee-wsc-pprice{
+  display: inline-block;
+  color: #FF7100;
+  font-size: 28rpx;
+}
+.franchisee-waimai-detail{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+}
+.franchisee-wd-bg{
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .5);
+}
+.franchisee-wd-inner{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 550rpx;
+  transform: translate(-50%, -50%);
+  border-radius: 4rpx;
+  background-color: #fff;
+  overflow: hidden;
+}
+.franchisee-wd-picture{
+  display: block;
+  width: 100%;
+  height: 550rpx;
+}
+.franchisee-wd-main{
+  padding: 20rpx 30rpx;
+}
+.franchisee-wd-title{
+  color: #323232;
+  font-size: 26rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.franchisee-wd-sales{
+  color: #999;
+  font-size: 20rpx;
+  margin-top: 10rpx;
+  margin-bottom: 30rpx;
+}
+.franchisee-wd-price{
+  display: inline-block;
+  color: #FF6500;
+  font-size: 20rpx;
+  line-height: 45rpx;
+}
+.franchisee-wd-price text{
+  font-size: 28rpx;
+}
+.franchisee-score-main{
+  height: 190rpx;
+  background-color: #fff;
+}
+.franchisee-score-l{
+  display: inline-block;
+  width: 270rpx;
+  height: 120rpx;
+  margin-top: 32rpx;
+  color: #666;
+  font-size: 21rpx;
+  text-align: center;
+  border-right: 1px solid #E6E6E6;
+  vertical-align: top;
+}
+.franchisee-score-r{
+  display: inline-block;
+  width: 475rpx;
+  vertical-align: top;
+}
+.franchisee-score-score{
+  color: #F76413;
+  font-size: 46rpx;
+  margin-top: 15rpx;
+  margin-bottom: 5rpx;
+}
+.franchisee-score-star{
+  display: inline-block;
+  color: #FFA82A;
+  font-size: 28rpx;
+  margin-left: 30rpx;
+  line-height: 40rpx;
+  vertical-align: middle;
+}
+.franchisee-score-star label{
+  vertical-align: middle;
+  margin: 0 5rpx;
+}
+.franchisee-score-section{
+  color: #666;
+  font-size: 22rpx;
+  margin-left: 85rpx;
+  margin-top: 10rpx;
+}
+.franchisee-score-service{
+  margin-top: 20rpx;
+}
+.franchisee-score-section text{
+  display: inline-block;
+  vertical-align: middle;
+}
+.franchisee-assess-wrap{
+  padding: 0 30rpx;
+  margin-top: 12rpx;
+  background-color: #fff;
+}
+.franchisee-assess-label{
+  padding-bottom: 20rpx;
+  border-bottom: 1px dashed #DBDBDB;
+}
+.franchisee-assess-label label{
+  display: inline-block;
+  padding: 0 20rpx;
+  margin-top: 20rpx;
+  margin-right: 20rpx;
+  line-height: 63rpx;
+  color: #999;
+  font-size: 22rpx;
+  text-align: center;
+  border: 1px solid #D9D9D9;
+}
+.franchisee-assess-label label.active{
+  color: #fff;
+  background-color: #FF7100;
+  border-color: #FF7100;
+}
+.franchisee-assess-item{
+  padding: 35rpx 0;
+  border-bottom: 1px solid #E6E6E6;
+}
+.franchisee-assess-cover{
+  display: inline-block;
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  vertical-align: top;
+}
+.franchisee-assess-cover image{
+  width: 100%;
+  height: 100%;
+}
+.franchisee-assess-reviewer{
+  display: inline-block;
+  margin-left: 20rpx;
+  font-size: 0;
+  vertical-align: top;
+}
+.franchisee-assess-nickname{
+  color: #333;
+  font-size: 26rpx;
+}
+.franchisee-assess-time{
+  color: #999;
+  font-size: 22rpx;
+  margin-left: 20rpx;
+}
+.franchisee-assess-level{
+  color: #666;
+  font-size: 22rpx;
+}
+.franchisee-assess-level label.active{
+  color: #FFA82A;
+}
+.franchisee-assess-line{
+  color: #9b9b9b;
+  margin: 0 15rpx
+}
+.franchisee-assess-content{
+  color: #666;
+  font-size: 26rpx;
+  margin-left: 95rpx;
+  margin-top: 30rpx;
+}
+.franchisee-assess-goodsTitle{
+  color: #FF7100;
+}
+.franchisee-assess-img{
+  margin-left: 95rpx;
+  margin-top: 30rpx;
+}
+.franchisee-assess-img image{
+  display: inline-block;
+  width: 180rpx;
+  height: 180rpx;
+  margin-right:15rpx;
+  margin-bottom: 15rpx;
+}
+.franchisee-assess-nomore{
+  padding:20rpx 0;
+  text-align:center;
+  color:#999;
+  font-size:28rpx;
+  background-color: #f3f3f3;
+}
+.franchisee-nobusiness{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  line-height: 120rpx;
+  font-size: 32rpx;
+  color: #fff;
+  text-align: center;
+  background-color: rgba(0, 0, 0, .5);
+  z-index: 5;
+}
+.no-goods{
+  color: #656565;
+  text-align:center;
+  line-height:140rpx;
+  font-size:24rpx;
+}
+.promotion-tab-view {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 20rpx;
+  width: 248rpx;
+  height: 100%;
+}
+.promotion-tab {
+  position: relative;
+  width: 120rpx;
+  height: 46rpx;
+  text-align: center;
+  line-height: 46rpx;
+  font-size: 26rpx;
+  color: #FF3600;
+}
+.promotion-tab::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  border: 1rpx solid #FF3600;
+  border-radius: 48rpx;
+  transform: scale(0.5);
+  transform-origin: left top;
+}
+.promotion-poster-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 999;
+}
+.promotion-poster-modal .promotion-poster {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  padding: 20rpx;
+  width: 560rpx;
+  height: 750rpx;
+  background: #fff;
+  box-sizing: border-box;
+  border-radius: 10rpx;
+  overflow: hidden;
+}
+.promotion-poster-modal .promotion-poster image {
+  display: block;
+  width: 518rpx;
+  height: 518rpx;
+}
+.promotion-poster-modal .poster-title {
+  margin-top: 40rpx;
+  max-width: 420rpx;
+  line-height: 28rpx;
+  font-size: 28rpx;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.promotion-poster-modal .poster-title .industry-tag {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 6rpx 10rpx;
+  margin-right: 15rpx;
+  font-size: 20rpx;
+  color: #FF3600;
+  background-color: rgba(255, 54, 0, 0.06);
+}
+.promotion-poster-modal .poster-title .franchisee-name {
+  display: inline-block;
+  vertical-align: middle;
+}
+.promotion-poster-modal .profit-stratification {
+  margin-top: 18rpx;
+  line-height: 24rpx;
+  font-size: 24rpx;
+  color: #999;
+}
+.promotion-poster-modal .profit-stratification .level {
+  display: inline-block;
+  margin-right: 30rpx;
+}
+.promotion-poster-modal .profit-stratification .center-border {
+  display: inline-block;
+  width: 0;
+  height: 18rpx;
+  border-left: 1px solid #CCCCCC;
+}
+.promotion-poster-modal .profit-stratification .level-2 {
+  margin-left: 30rpx;
+}
+.promotion-poster-modal .poster-bottom {
+  position: relative;
+  left: 15rpx;
+  text-align: right;
+}
+.promotion-poster-modal .poster-bottom .btn {
+  display: inline-block;
+  padding: 15rpx;
+  font-size: 0;
+  border: none;
+}
+.promotion-poster-modal .poster-bottom .weixin-btn {
+  position: relative;
+  padding-right: 10rpx;
+}
+.promotion-poster-modal .weixin-btn button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+}
+.promotion-poster-modal .poster-bottom .wx-friends-btn {
+  padding-left: 10rpx;
+}
+.promotion-poster-modal .poster-bottom image {
+  display: block;
+  width: 40rpx;
+  height: 40rpx;
+}
+.promotion-poster-modal .poster-bottom .weixin-btn image {
+  width: 48rpx;
+}
+.promotion-poster-modal .promotion-share-poster {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 560rpx;
+  height: 900rpx;
+  border-radius: 10rpx;
+  background-color: #fff;
+}
+.promotion-poster-modal canvas {
+  display: block;
+  width: 100%;
+  height: 780rpx;
+}
+.promotion-poster-modal .save-picture-btn {
+  display: block;
+  margin: 20rpx auto;
+  padding: 0;
+  width: 300rpx;
+  height: 70rpx;
+  text-align: center;
+  line-height: 70rpx;
+  font-size: 28rpx;
+  color: #fff;
+  background-color: rgba(255, 113, 0, 1);
+  border-radius: 4rpx;
+}
+.promotion-poster-modal .save-picture-btn.is-drawing {
+  background-color: rgba(226, 226, 226, 1);
+}
+.franchisee-vip-wrapper {
+  height: 82rpx;
+  padding: 0 25rpx 16rpx;
+  background-color: #fff;
+}
+.franchisee-vip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  border-radius: 10rpx;
+  color: #835932;
+  background: url('http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-leagueVip/vip_sub_bg.png') no-repeat center;
+  background-size: cover;
+  overflow: hidden;
+}
+.franchisee-vip .vip-name-txt {
+  display: flex;
+  align-items: center;
+  padding-left: 94rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+}
+.franchisee-vip .vip-name-txt .app-name {
+  display: inline-block;
+  max-width: 200rpx;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.franchisee-vip .vip-rights {
+  display: flex;
+  align-items: center;
+  padding-right: 40rpx;
+  font-size: 26rpx;
+}
+.franchisee-vip .icon-rightarrow {
+  margin-left: 14rpx;
+  font-size: 20rpx;
+  font-weight: bold;
+}
+.subshop-qrcode {
+  position: absolute;
+  top: -1000rpx;
+  left: -1000rpx;
+}

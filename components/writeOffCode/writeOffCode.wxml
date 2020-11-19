@@ -1,0 +1,13 @@
+<view class="verification-code" catchtap="hideWriteOffCodeBox" wx:if="{{ showWriteOffCodeBox }}">
+  <view class="verification-code-tips">向商家出示二维码或核销码后即可消费</view>
+  <view class="verification-image-box {{ codeStatus != 1 ? 'mg-t-30' : '' }}">
+    <image class="verification-code-img" src="{{ codeImgFullUrl }}"></image>
+    <view class="verification-code-finished" wx:if="{{ codeStatus == 1 }}">
+      <view class="finished-text">已核销</view>
+    </view>
+  </view>
+  <view class="verification-code-text">
+    <text>核销码：</text>
+    <text>{{ codeNum }}</text>
+  </view>
+</view>

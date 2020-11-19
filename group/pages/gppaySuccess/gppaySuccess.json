@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "支付成功",
+  "usingComponents": {
+    "component-share": "/components/pageQRCode/pageQRCode",
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+    "component-payFinishGift": "/components/payFinishGift/payFinishGift"
+  }
+}

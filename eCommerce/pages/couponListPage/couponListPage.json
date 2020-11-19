@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "优惠券列表",
+  "navigationBarTextStyle":"black",
+  "navigationStyle":"custom",
+  "usingComponents":{
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+    "component-topNavBar": "/components/topNavBar/topNavBar"
+  }
+}

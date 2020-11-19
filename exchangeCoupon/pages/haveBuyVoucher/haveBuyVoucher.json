@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "可兑换券详情",
+  "usingComponents": {
+    "component-behavior-track": "/components/behaviorTrack/behaviorTrack"
+  }
+}

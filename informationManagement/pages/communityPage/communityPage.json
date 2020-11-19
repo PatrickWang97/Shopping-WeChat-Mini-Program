@@ -1,0 +1,14 @@
+{
+    "navigationBarTitleText":"",
+    "navigationBarTextStyle":"black",
+    "navigationStyle":"custom",
+    "usingComponents":{
+        "component-topNavBar": "/components/topNavBar/topNavBar",
+        "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+        "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+        "component-community-publish": "/components/communityPublish/communityPublish",
+        "component-community-publish-type": "/components/communityPublishType/communityPublishType",
+        "component-sinkingModal": "/components/sinkingModal/sinkingModal",
+        "component-behavior-track": "/components/behaviorTrack/behaviorTrack"
+      }
+}

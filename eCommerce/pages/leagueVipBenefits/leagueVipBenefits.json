@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "联盟会员权益",
+  "navigationBarTextStyle": "black",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",    
+    "component-topNavBar": "/components/topNavBar/topNavBar"
+  }
+}

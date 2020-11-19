@@ -1,0 +1,36 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="commission-search">
+  <view class="commission-search-contain"><text class="ico-moon icon-search"></text><input type="text" confirm-type="search" bindconfirm="searchOrder" value="{{ orderId }}" placeholder="佣金订单：请输入订单编号" /></view>
+</view>
+<view class="status-column">
+  <view class="order-status-box" bindtap="toggleStatusOrderMask">{{ selectStatus.statusName }}<text class="triangle"></text>订单状态
+  </view>
+</view>
+<view class="commission-content-box">
+  <view class="commission-content" wx:for="{{ commissionArray }}" wx:key="index">
+    <block wx:if="{{item.role != 7 && item.role != 6}}">
+      <view class="commission-time-box"><text>{{ item.create_time }}</text><text class="pull-right commission-status">{{ orderStatus[item.status] }}</text></view>
+      <view class="commission-goods-cover" wx:if="{{item.role != 7}}">
+      <view class="goods-detail" wx:for="{{ item.goods_info }}" wx:key="index" wx:for-item="goods">
+        <image src="{{ item.goods_type == 5 ? 'http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/promotion/dmf.png' : ( item.goods_type == 4 ? 'http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/promotion/czx.png' : item.goods_type == 12 ? goods.card_face : goods.cover ) }}"></image>
+        <text class="goods-num">{{ goods.num }}</text>
+      </view>
+      </view>
+      <view wx:if="{{!!item.sub_app_id}}" class="commission-subshop"><text>订单来源子店</text><text class="pull-right">{{item.s_nickname}}的{{item.sub_app_name}}店</text></view>
+      <view class="commission-money" style="{{item.role == 7 ? 'padding-top: 0;' : ''}}"><text>{{ item.distribution_type == 1 ? '一级' : (item.distribution_type == 2 ? '二级' : (item.role == 2 ? '区域' : '股东') ) }}佣金</text><text class="pull-right">¥{{ item.commission }}</text></view>
+      <view class="commission-from"><text>佣金来源</text><text class="pull-right">{{item.s_nickname}}</text></view>
+      <view class="commission-order-box"><text>订单编号</text><text class="order-id">{{ item.order_id }}</text><text class="pull-right copy-order" catchtap="copyOrderId" data-id="{{ item.order_id }}">复制</text></view>
+    </block>
+  </view>
+</view>
+<view class="order-status-mask" wx:if="{{ showOrderStatusMask }}" bindtap="hideOrderStatusMask">
+  <view class="order-status" catchtap="stopPropagation">
+    <view class="{{ selectedStatus == -1 ? 'selected' : '' }}" data-index="-1" catchtap="clickStatus">全部状态</view>
+    <view class="{{ selectedStatus == 0 ? 'selected' : '' }}" data-index="0" catchtap="clickStatus">进行中</view>
+    <view class="{{ selectedStatus == 1 ? 'selected' : '' }}" data-index="1" catchtap="clickStatus">已生效</view>
+    <view class="{{ selectedStatus == 2 ? 'selected' : '' }}" data-index="2" catchtap="clickStatus">无效</view>
+  </view>
+</view>
+
+

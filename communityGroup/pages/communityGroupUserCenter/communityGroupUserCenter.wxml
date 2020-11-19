@@ -1,0 +1,96 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-behavior-track></component-behavior-track>
+<view class="top-content">
+  <view class="top-section">
+    <view bindtap="goUserInfo">
+      <view>
+        <image src="{{ colonelInfo.logo || userInfo.cover_thumb}}"></image>
+      </view>
+      <view class="top-section-detail">
+        <view style="font-size: 32rpx;color:#fff;display:inline-block;">
+          {{ colonelInfo.nick_name  || userInfo.nickname }}
+        </view>
+        <label class="ico-moon icon-rightarrow"></label>
+      </view>
+    </view>
+    <!-- <view class="detail-level" catchtap="checkLevelRules"  wx:if="{{ distributionInfo.enable_level_commission == 1 && userLevel && distributorInfo.dis_group_info.is_block_up != 1}}">
+      <view>
+        <text class='ico-moon icon-vip'></text>
+        <text>{{userLevel}}</text>
+      </view>
+    </view> !-->
+    <view class="detail-level" wx:if="{{ distributorInfo.dis_group_info.is_block_up == 1}}">
+      <view>
+        <text class='ico-moon icon-community-group-leader-unused'></text>
+        <text>已停用</text>
+      </view>
+    </view>
+    <view class="top-commission clearfix">
+      <view class="withdraw-title">可提现收入（元）</view>
+      <view class="withdraw-total">¥{{nowCommission || 0.00}}</view>
+      <view class="withdraw-btn" bindtap="withdraw">
+        提现
+        <label class="ico-moon icon-rightarrow"></label>
+      </view>
+    </view>
+  </view>
+  <view class="middle-section">
+    <view class="withdraw-item" wx:for="{{commissionArr}}" wx:key="index">
+      <view class="item-title">{{item.title}}</view>
+      <view class="item-price">{{item.price}}元</view>
+    </view>
+  </view>
+</view>
+<view class="bottom-section">
+  <view class="bottom-section-item">
+    <view class="bottom-sub-item" bindtap="checkCommission">
+      <label class="ico-moon icon-community-group-income-detail"></label>
+      <view>收入明细</view>
+    </view>
+    <view class="bottom-sub-item" bindtap="checkWithdrawRecord">
+      <label class="ico-moon icon-promotion-record"></label>
+      <view>提现记录</view>
+    </view>
+    <view class="bottom-sub-item" bindtap="checkGoods">
+      <label class="ico-moon icon-community-group-goods-manage"></label>
+      <view>商品管理</view>
+    </view>
+  </view>
+  <view class="bottom-section-item">
+    <view class="bottom-sub-item" bindtap="checkMyPromotion">
+      <label class="ico-moon icon-my-promotion"></label>
+      <view>推广</view>
+    </view>
+    <view class="bottom-sub-item" bindtap="checkOrder">
+      <label class="ico-moon icon-notebook"></label>
+      <view>社区订单</view>
+    </view>
+    <view class="bottom-sub-item" bindtap="checkWriteOff">
+      <label class="ico-moon icon-comWrite"></label>
+      <view>订单核销</view>
+    </view>
+  </view>
+</view>
+<view class="bottom-button" bindtap="checkMyPromotion">
+  <view  class="promotion-btn">开始推广</view>
+</view>
+<!-- 团长停用提示框 -->
+<view class="apply-info" wx:if="{{isShowReason}}">
+  <view class="apply-info-message">
+    <view class="message-title">提示</view>
+    <view class="block-text-title">
+      社区团长功能被停用，原因：
+    </view>
+    <view class="block-text" >
+      <text wx:for="{{blockReason}}" wx:key="index" wx:for-item="itemReason">
+        {{itemReason}}
+      </text>
+    </view>
+    <view class="block-show">
+    <checkbox-group bindchange="checkboxChange">
+      <checkbox  checked="{{isCheckedReason}}"/>不再提示
+    </checkbox-group>
+    </view>
+    <view class="message-btn" bindtap="showBlockReason">确定</view>
+  </view>
+</view>

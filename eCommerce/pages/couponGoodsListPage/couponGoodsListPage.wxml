@@ -1,0 +1,19 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="coupon-goods-header" wx:if="{{pickUpArr.length == 2}}">
+  <text class="goods-type {{goodsType == 1 ? 'selected' : ''}}" catchtap="selectGoodsType" data-type="1">电商</text>
+  <text class="goods-type {{goodsType == 2 ? 'selected width120' : ''}}" catchtap="selectGoodsType" data-type="2">社区团购</text>
+</view>
+<view class="couponGoodsList-ul" style="padding-top: {{pickUpArr.length == 2 ? '100rpx' : '0'}}">
+  <view class="couponGoods-li" wx:for="{{goodsList}}" wx:for-item="goodsItem" wx:for-index="goodsIdx" wx:key="id" data-idx="{{goodsIdx}}" catchtap="turnToGoodsDetail">
+    <view class="couponGoods-logo">
+      <image src="{{goodsItem.cover}}" mode="aspectFill" alt=""></image>
+    </view>
+    <view class="couponGoods-text">
+      <view class="couponGoods-name">{{goodsItem.title}}</view>
+      <view class="couponGoods-price">¥{{goodsItem.price}}</view>
+    </view>
+  </view>
+  <view class="more" wx:if="{{!noMore}}" bindtap="getGoodsList">点击加载</view>
+  <view class="no-more" wx:if="{{noMore}}">没有更多了</view>
+</view>

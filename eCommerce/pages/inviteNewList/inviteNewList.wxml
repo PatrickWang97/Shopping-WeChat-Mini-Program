@@ -1,0 +1,36 @@
+<view class="page-wrap">
+	<view class="page-head">
+		<label class="input-wrap">
+			<text class="ico-moon icon-search input-search-icon"></text>
+			<input class="page-input" bindconfirm="searchUserByName" placeholder-class="input-placeholder-style" placeholder="请输入搜索内容" />
+		</label>
+	</view>
+	<view class="bread-wrap">
+		<view class="bread-type {{inviteType == '0' ? 'active':''}}" bindtap="changeTab" data-type="0">邀请用户<label class="bread-border" hidden="{{inviteType != '0'}}"></label></view>
+		<view class="bread-type {{inviteType == '1' ? 'active':''}}" bindtap="changeTab" data-type="1">拉新用户<label class="bread-border" hidden="{{inviteType != '1'}}"></label></view>
+	</view>
+	<view class="invite_wrap">
+		<view class="invite_wrap_head" hidden="{{inviteType != '1'}}">
+			<view class="bread_level_type {{type == '0' ? 'active':''}}" bindtap="checkUserByType" data-type="0">全部
+      </view>
+			<view class="bread_level_type {{type == '1' ? 'active':''}}" bindtap="checkUserByType" data-type="1">一级</view>
+			<view class="bread_level_type {{type == '2' ? 'active':''}}" bindtap="checkUserByType" data-type="2">二级</view>
+		</view>
+		<scroll-view class="userList {{inviteType == 1 ? 'type1' : ''}} {{userList.length > 6 ? 'height':''}}" scroll-y="true" wx:if="{{userList.length > 0}}"  bindscrolltolower="getMoreUser">
+			<view class="userList-item" wx:for="{{userList}}" wx:key="index">
+				<view class="flex-between">
+					<view class="userList-name">{{item.nickname}}</view>
+					<view class="userList-timestamp">{{item.add_time}}</view>
+				</view>
+				<label class="record-badge" hidden="{{ inviteType == 0 || item.residue_num < 1}}">剩余奖励{{item.residue_num}}次</label>
+				<label class="record-badge" hidden="{{ inviteType == 1 || item.is_win == 2}}">拉新成功</label>
+			</view>
+		</scroll-view>
+		<view class="user-list-none" wx:if="{{userList.length == 0}}">
+			<image src="https://develop.zhichiwangluo.com/zhichi_frontend/static/webapp/images/xcx-inviteNew/no-activity.png"></image>
+			<view class="user-list-none-tip"> 暂无数据 </view>
+		</view>
+		<view class="userList-tips" wx:if="{{consume && userList.length > 0}}" hidden="{{inviteType != '1'}}">剩余奖励次数：新人用户每完成满¥{{consume.price}}的订单，可为您带来奖励的剩余次数</view>
+	</view>
+
+</view>

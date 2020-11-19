@@ -1,0 +1,11 @@
+{
+    "navigationBarTitleText":"个人中心",
+    "usingComponents":{
+        "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+        "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+        "component-community-publish": "/components/communityPublish/communityPublish",
+        "component-community-publish-type": "/components/communityPublishType/communityPublishType",
+        "component-sinkingModal": "/components/sinkingModal/sinkingModal",
+        "component-behavior-track": "/components/behaviorTrack/behaviorTrack"
+    }
+}

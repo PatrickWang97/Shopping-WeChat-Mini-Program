@@ -1,0 +1,651 @@
+#scratch{
+  height: 100%;
+  padding-bottom: 30px;
+   position: relative; 
+}
+.bg-audio{
+  display: block;
+  width: 0;
+  height: 0;
+}
+#scratch .scratch-cantaniner{
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -20;
+}
+#scratch .scratchMusic{
+  width: 70rpx;
+  height: 70rpx;
+  position: absolute;
+  top: 18rpx;
+  right: 5%;
+  text-align: center;
+  border-radius: 50%;
+  background: rgba(0,0,0,.4);
+  color: #fff;
+}
+#scratch .scratchMusic text{
+  padding-top:20rpx;
+}
+#scratch .scratchMusic.active{
+  animation:roes 2s infinite linear; 
+}
+@keyframes roes{
+  0%{
+    transform: rotate(0deg)
+  }
+  100%{
+    transform: rotate(360deg)
+  }
+}
+#scratch .scratch-scater{
+  width: 748rpx;
+  height: 300rpx;
+  margin: 10rpx auto;
+}
+#scratch .scratch-scater image{
+  width: 100%;
+  height: 100%;
+}
+#scratch .phoneCx{
+  text-align: center;
+  font-size: 26rpx;
+  width: 620rpx;
+  line-height: 60rpx;
+  height: 60rpx;
+  margin: 0 auto;
+  border-radius: 32.76rpx;
+  background:rgba(223,56,28,.3);
+  margin-top: 46.8rpx;
+}
+#scratch .phone-todayChance{
+  color: #fff;
+  display: inline-block;
+  text-align: center;
+}
+#scratch .phone-todayChance text{
+  color: #fed932;
+}
+#scratch .phone-personNum{
+  color: #fff;
+  display: inline-block;
+  text-align: center;
+}
+#scratch .phone-personNum text{
+  color: #fed932;
+}
+#scratch .structurePrize{
+  width: 100%;
+  margin: 0 auto;
+  height: 70.2rpx;
+  margin-top: 45rpx;
+  text-align: center;
+}
+#scratch .structurePrize .scratch-lookPrize,
+#scratch .structurePrize .scratch-exchangePrize{
+  display: inline-block;
+  height: 74rpx;
+  width: 248.04rpx;
+  text-align: center;
+  background: #fed932;
+  line-height: 74rpx;
+  border-radius: 9.36rpx;
+  font-size: 32.76rpx;
+  font-weight: bold;
+  color: rgb(104,51,0);
+  box-shadow: 0px 2px 2px rgba(180,33,5,.4);
+}
+#scratch .structurePrize .scratch-exchangePrize{
+  margin-left: 23.4rpx;
+}
+#scratch .scratchRoster{
+  width: 614rpx;
+  height: 328rpx;
+  margin: 0 auto;
+  margin-top: 70rpx;
+}
+#scratch .scratchRoster .rosterTitle{
+  text-align: center;
+}
+#scratch .rosterTitle .rosterStar{
+  width: 300rpx;
+  height: 32rpx;
+  margin: 0 auto;
+  background-image: url(http://cdn.jisuapp.cn/static/webapp/images/scratchRule.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+#scratch .scratchRoster .rosterCon{
+  width: 100%;
+  border-radius: 12rpx;
+  height: 187rpx;
+  background: rgba(223,56,28,.3);
+  text-align: center;
+  overflow: hidden;  
+  margin-top: 35rpx;
+  position: relative;
+}
+#scratch .rosterCon .no-roster-list {
+  line-height:180rpx;
+  color:#fff;
+}
+#scratch .rosterCon .rosterList{
+  width: 468rpx;
+  position: absolute;
+  top: 190rpx;
+  left: 73rpx;
+}
+#scratch .rosterCon .rosterList view{
+  color: #fff;
+  height: 44rpx;
+  font-size: 26rpx;
+  line-height: 44rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#scratch .scratchExplain{
+  width: 608rpx;
+  margin: 0 auto;
+  height: auto;
+}
+#scratch .scratchExplain .explainTitle{
+  text-align: center;
+}
+#scratch .scratchExplain .explainTitle .explainStar{
+  width: 300rpx;
+  height: 32rpx;
+  margin: 0 auto;
+  background-image: url(http://cdn.jisuapp.cn/static/webapp/images/scratchPerson.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+#scratch .scratchExplain .explainCon{
+  background: rgba(223,56,28,.3);
+  padding: 23rpx;
+  border-radius:12rpx;
+  margin-top: 35rpx;
+  color: #fff;
+  font-size: 24rpx;
+}
+#scratch .explainShare view,
+#scratch .explainMoney view{
+  display:inline-block;
+  width:450rpx;
+  vertical-align:top;
+}
+ #scratch .explainCon view{
+  line-height: 40rpx;
+} 
+#scratch .scratchExplain .explainCon .explainRule{
+  padding: 23rpx 0;
+  word-break: break-all;
+}
+#scratch .scratchExplain .explainCon .scratchDisc{
+  font-size: 46rpx;
+  padding: 0 12rpx;
+  vertical-align:top;
+  line-height:28rpx;
+}
+#scratch .scratchArea{
+  width: 604rpx;
+  height: 300rpx;
+  margin: 0 auto;
+  background-image: url(http://cdn.jisuapp.cn/static/webapp/images/scratchCon.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  position: relative;
+  margin-top: 46rpx;
+  overflow: hidden;
+}
+#scratch .scratch_wp{
+  margin: 17rpx auto 0;
+  width: 558rpx; 
+  height: 258rpx;
+}
+.scratch-canvas{
+  background: transparent;
+  position: relative;
+}
+#scratch .showArea{
+    width: 556rpx;
+    height: 263rpx;
+    background:url('http://cdn.jisuapp.cn/static/webapp/images/scratchMovie.png');
+    background-size:556rpx 263rpx;
+}
+#scratch .showArea .showTitle{
+  width: 100%;
+  font-size: 32rpx;
+  color: rgb(102,102,102);
+  text-align: center;
+  padding: 60rpx 0;
+  letter-spacing: 4rpx;
+}
+#scratch .showArea .showBtn{
+  width: 206rpx;
+  height: 70rpx;
+  background: #ff5b3f;
+  color: #fff;
+  font-size: 28rpx;
+  border-radius: 9rpx;
+  text-align: center;
+  line-height: 70rpx;
+  margin: 0 auto;
+}
+#scratch .scratchFail {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 604rpx;
+  height: 300rpx;
+}
+#scratch .scratchFail image {
+  width: 100%;
+  height: 100%;
+}
+#scratch .failTitle{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+#scratch .failTitle .failShare{
+  font-size: 24rpx;
+  color: #999;
+  text-align: right;
+  padding: 24rpx 40rpx;
+  cursor: pointer;
+  background: none;
+  line-height: 1.5;
+}
+#scratch .failTitle .failText{
+  text-align: center;
+  padding: 40rpx 0 24rpx 0;
+  font-size: 26rpx;
+  color: rgb(102,102,102);
+}
+#scratch .failTitle .failBtn{
+  width: 206rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+  background: #ff5b3f;
+  text-align: center;
+  color: #fff;
+  border-radius: 8rpx;
+  margin: 0 auto;
+  font-size: 28rpx;
+  cursor: pointer;
+}
+#scratch .scratchWinning{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 604rpx;
+  height: 300rpx;
+}
+#scratch .scratchWinning image{
+  width: 100%;
+  height: 100%;
+}
+#scratch .winningTitle{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+#scratch .winningTitle .winningShare{
+  font-size: 24rpx;
+  color: #999;
+  text-align: right;
+  padding: 24rpx 40rpx 0px 40rpx;
+  cursor: pointer;
+  background: none;
+  line-height: 1.5;
+}
+#scratch .winningTitle .winningText{
+  text-align: center;
+  color: #ff5b3f;
+}
+#scratch .winningTitle .winningBtn{
+  width: 206rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+  background: #ff5b3f;
+  text-align: center;
+  color: #fff;
+  border-radius:8rpx;
+  margin: 0 auto;
+  font-size: 28rpx;
+  cursor: pointer;
+  margin-top: 40rpx;
+}
+#scratch .winningTitle .btnGroup,#scratch .comfortTitle .btnGroup{
+    display:flex;
+    justify-content:center;
+    margin-top:40rpx;
+}
+#scratch .winningTitle .btnGroup .winningBtn,#scratch .comfortTitle .btnGroup .comfortBtn{
+    margin: 0 10rpx;
+}
+#scratch .scratchDurMax{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 604rpx;
+  height: 300rpx;
+}
+#scratch .scratchDurMax image{
+  width: 100%;
+  height: 100%;
+}
+#scratch .durMaxTitle{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+#scratch .durMaxTitle .durMaxShare{
+  font-size: 24rpx;
+  color: #999;
+  text-align: right;
+  padding:23rpx 40rpx 100rpx 40rpx;
+  cursor: pointer;
+  background: none;
+  line-height: 1.5;
+}
+#scratch .durMaxTitle .durMaxText{
+  text-align: center;
+  color: rgb(102,102,102);
+  font-size:26rpx;
+  line-height: 35rpx;
+}
+#scratch .scratchDegree{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 604rpx;
+  height: 300rpx;
+}
+#scratch .scratchDegree image{
+  width: 100%;
+  height: 100%;
+}
+#scratch .degreeTitle{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+#scratch .degreeTitle .degreeText{
+  text-align: center;
+  color: rgb(102,102,102);
+  margin-top: 175rpx;
+  font-size: 26rpx;
+}
+#scratch .scratchLimit{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 604rpx;
+  height: 300rpx;
+}
+#scratch .scratchLimit image{
+  width: 100%;
+  height: 100%;
+}
+#scratch .limitTitle{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+#scratch .limitTitle .limitShare{
+  font-size: 24rpx;
+  color: #999;
+  text-align: right;
+  padding:23rpx 40rpx 100rpx 40rpx;
+  cursor: pointer;
+  background: none;
+  line-height: 1.5;
+}
+#scratch .limitTitle .limitText{
+  text-align: center;
+  color: rgb(102,102,102);
+  font-size:26rpx;
+}
+#scratch .scratchPrize-sick{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: rgba(0,0,0,.8);
+   z-index: 223; 
+}
+#scratch .scratchPrize-sick .scratchPrize-wrap{
+  width: 702rpx;
+  height:auto;
+  margin:auto;
+  top:100rpx;
+  position:absolute;
+  left:24rpx;
+  padding-top:80rpx;
+}
+#scratch .scratchPrize-wrap .scratchImg{
+  width:100%;
+  height:655rpx;
+  position:absolute;
+  left:-20rpx;
+  top:-67rpx;
+}
+#scratch .scratchPrize-wrap .scratchPrize-header{
+  width: 631.8rpx;
+  height: 128.7rpx;
+  margin: 0 auto;
+  background-image: url(http://cdn.jisuapp.cn/static/webapp/images/prize_header.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+#scratch .scratchPrize-wrap .scratchPrize-con{
+  width:596.7rpx;
+  background:#f8f0d1;
+  margin:0 auto;
+  height:720rpx;
+  margin-top:-21rpx;
+  position: relative;
+  overflow: hidden;
+}
+#scratch .scratchPrize-wrap .scratchPrize-con .scratchPrize-title{
+  width: 100%;
+  height: 93.6rpx;
+  border-bottom: 2.34rpx dashed #e3dcb1;
+  position: relative;
+}
+#scratch .scratchPrize-wrap .scratchPrize-con .scratchPrize-title label{
+  width: 50%;
+  display: inline-block;
+  height: 100%;
+  font-weight: bold;
+  color: #890200;
+  text-align: center;
+  line-height: 93.6rpx;
+  float: left;
+}
+#scratch .scratchPrize-wrap .scratchPrize-con .scratchPrize-title .scratchPrize-line{
+  width: 0px;
+  height: 58.5rpx;
+  border-left: 2.34rpx dashed #e3dcb1;
+  position: absolute;
+  left: 294.84rpx;
+  top: 23.4rpx;
+}
+#scratch .scratchPrize-wrap .scratchPrize-con .scratchprize-list{
+  height: 702rpx;
+  overflow: auto;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top:93.6rpx; 
+}
+#scratch .scratchPrize-wrap .scratchPrize-con .scratchprize-list view{
+  height: 70.2rpx;
+  line-height: 70.2rpx;
+}
+#scratch .scratchPrize-wrap .scratchPrize-con .scratchprize-list view label{
+  text-align: center;
+  width: 50%;
+  height: 100%;
+  font-size: 26rpx;
+  color: #666666;
+  display: inline-block;
+} 
+#scratch .scratchPrize-wrap .scratchPrize-con .scratchPrize-fail{
+  text-align: center;
+  margin-top: 160rpx;
+  margin-bottom: 140.4rpx;
+}
+#scratch .scratchPrize-wrap .scratchPrize-con .scratchPrize-fail image{
+  width: 187.2rpx;
+  height: 81.9rpx;
+}
+#scratch .scratchPrize-wrap .scratchPrize-con .scratchPrize-fail view{
+  color: #cdc48d;
+  margin-top: 70.2rpx;
+}
+#scratch .scratchInte{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: rgba(0,0,0,.4);
+  z-index: 1200;
+}
+#scratch .scratchInte .scratchInte-wrap{
+  width: 538.2rpx;
+  background: #fff;
+  border-radius: 9.36rpx;
+  margin: 0 auto;
+  margin-top: 351rpx;
+}
+#scratch .scratchInte .scratchInte-wrap .scratchInte-con{
+  padding-top: 58.5rpx;
+  margin-bottom: 37.44rpx;
+  font-size: 32.76rpx;
+  color: #999;
+}
+#scratch .scratchInte-con .scratchInteCan{
+  width: 439.92rpx;
+  margin: 0 auto;
+  text-align: center;
+  margin-bottom: 35.1rpx;
+  color: #000;
+}
+#scratch .scratchInte-con .scratchInteCan label{
+  color: #ff7100;
+}
+#scratch .scratchInte-con .scratchInteLimit{
+  width: 439.92rpx;
+  color: #999;
+  padding: 11.7rpx 0;
+  margin: 0 auto;
+  border-bottom: 2.34rpx solid #D2D3D5;
+}
+#scratch .scratchInte-con .scratchInteLimit input{
+  border: none;
+  outline: none;
+  width:170rpx;
+  color: #000;
+  display: inline-block;
+  overflow:inherit;
+}
+#scratch .scratchInte-con .scratchInteLimit label{
+  color: #ff7100;
+  font-size: 28.08rpx;
+  cursor: pointer;
+}
+#scratch .scratchInte-con .scratchInteRule{
+  width: 439.92rpx;
+  padding:28rpx 0 20rpx 0;
+  margin: 0 auto;
+}
+#scratch .scratchInte-con .scratchInteBalance{
+  width: 439.92rpx;
+  padding-bottom: 11.7rpx;
+  margin: 0 auto;
+}
+#scratch .scratchInte-wrap .scratchInte-btns{
+  height: 114.66rpx;
+  width: 100%;
+  font-size: 35.1rpx;
+  border-top: 2.34rpx solid #D2D3D5;
+}
+#scratch .scratchInte-wrap .scratchInte-btns .scratchInte-confirm{
+  width: 266.76rpx;
+  float: left;
+  text-align: center;
+  line-height: 114.66rpx;
+  color: #ff7100;
+}
+#scratch .scratchInte-wrap .scratchInte-btns .scratchInte-cancel{
+  width: 266.76rpx;
+  float: left;
+  text-align: center;
+  line-height: 114.66rpx;
+  color: #333333;
+}
+.scratchComfort{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 604rpx;
+  height: 300rpx;
+}
+.scratchComfort image{
+  width: 100%;
+  height: 100%
+}
+.scratchComfort .comfortTitle{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.scratchComfort .comfortTitle .comfortShare{
+  font-size: 24rpx;
+  color: #999;
+  text-align: right;
+  padding: 24rpx 40rpx 10rpx 40rpx;
+  cursor: pointer;
+  background: none;
+  line-height: 1.5;
+}
+.scratchComfort .comfortTitle .comfortText{
+  color: rgb(102,102,102);
+  text-align: center;
+  letter-spacing: 2rpx;
+  font-size: 32rpx;
+}
+.scratchComfort .comfortTitle .comfortBtn{
+  width: 206rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+  background: #ff5b3f;
+  text-align: center;
+  color: #fff;
+  border-radius: 8rpx;
+  margin: 0 auto;
+  font-size: 28rpx;
+  cursor: pointer;
+  margin-top: 16rpx;
+}

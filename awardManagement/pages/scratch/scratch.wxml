@@ -1,0 +1,178 @@
+<!-- <import src="../../../utils/scratch.wxml" /> -->
+ <!-- <view style="height:100%;overflow:{{isRoll?'auto':'hidden'}}" >  -->
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-topNavBar topNavBarData="{{topNavBarData}}"></component-topNavBar>
+<component-reward-point rewardPointObj="{{rewardPointObj}}" shareGiftsObj="{{shareGiftsObj}}" collectGiftsObj="{{collectGiftsObj}}" collectGetObj="{{collectGetObj}}"></component-reward-point>
+<component-behavior-track></component-behavior-track>
+<view class="page scratch" id="scratch">
+  <audio class="bg-audio" id="scratchAudio" wx:if="{{scratchInfo.bgm!=0}}" src="{{scratchInfo.bgm}}" bindplay="audioPlay" bindpause="audioPause"></audio>
+  <image class="scratch-cantaniner" src="{{scratchInfo.background ||'http://cdn.jisuapp.cn/static/webapp/images/scratchContainer.png'}}"></image>
+  <view class="scratchMusic {{isPlay==true?'active':''}}" wx:if="{{scratchInfo.bgm!=0}}" bindtap='playMusics'>
+    <text wx:if="{{isPlay==true}}" class="ico-moon icon-luckyMusic"></text>
+    <text wx:if="{{isPlay==false}}" class="ico-moon icon-luckyMute"></text>
+  </view>
+  <view class="scratch-scater">
+    <image src="http://cdn.jisuapp.cn/static/webapp/images/scratchPonter.png"></image>
+  </view>
+  <view class="phoneCx">
+    <view class="phone-todayChance">您今日还剩<text>{{scratchTimes}}</text>次刮奖机会 </view>
+    <view class="phone-personNum" wx:if="{{scratchInfo.joined_show!=-1}}">,共有<text>{{scratchInfo.joined_show}}</text>人参加活动 </view>
+  </view>
+  <view class="scratchArea">
+    <!-- 未中奖 -->
+    <view class="scratchFail" hidden="{{isFail}}">
+    <image src="http://cdn.jisuapp.cn/static/webapp/images/scratchFail.png"></image>
+     <view class="failTitle">
+      <button class="failShare" open-type='share'>分享</button>
+      <view class="failText">很遗憾没有中奖哦</view>
+      <view class="failBtn" bindtap='failBtnClick'>再来一次</view>
+     </view>
+    </view>
+    <!-- 中奖 -->
+    <view class="scratchWinning" hidden="{{isPrize}}">
+      <image src="http://cdn.jisuapp.cn/static/webapp/images/scratchPrize.png"></image>
+      <view class="winningTitle">
+        <button class="winningShare" open-type='share'>分享</button>
+        <view class="winningText">恭喜你获得了</view>
+        <view class="winningText winningValue">{{scratchPrizeTitle}}</view>
+        <view wx:if="{{ifWxCoupon}}" class="btnGroup">
+            <view class="winningBtn" bindtap='toAddCard'>立即领取</view>
+            <view class="winningBtn" bindtap='shadeClose' data-type="1">再来一次</view>
+        </view>
+        <view wx:else class="winningBtn" bindtap='winningBtnClick'>再来一次</view>
+      </view>
+    </view>
+    <!-- 次数不足，分享可获得次数 -->
+    <view class="scratchDurMax" hidden='{{!isDurMax}}'>
+      <image src="http://cdn.jisuapp.cn/static/webapp/images/scratchLimit.png"></image>
+      <view class="durMaxTitle">
+        <button class="durMaxShare" open-type='share'>分享</button>
+        <view class="durMaxText">对不起，您的刮奖次数不足，</view>
+        <view class="durMaxText">分享即可获取次数哦~</view>
+      </view>
+    </view>
+    <!-- 次数已达到上限 -->
+    <view class="scratchLimit" hidden='{{!isLimit}}'>
+      <image src="http://cdn.jisuapp.cn/static/webapp/images/scratchLimit.png"></image>
+      <view class="limitTitle">
+        <button class="limitShare" open-type='share'>分享</button>
+        <view class="limitText">今日刮奖次数已达到上限，</view>
+        <view class="limitText">明日可继续参与刮奖哦~</view>
+      </view>
+    </view>
+    <!-- 安慰奖 -->
+    <view class="scratchComfort" hidden='{{isComfort}}'>
+      <image src="http://cdn.jisuapp.cn/static/webapp/images/scratchComfort.png"></image>
+      <view class="comfortTitle">
+        <button class='comfortShare' open-type="share">分享</button>
+        <view wx:if="{{ifGetComfort}}" class="comfortText">已领取，在微信卡包中查看哦~</view>
+        <view wx:else class="comfortText" class="comfortText">又没中奖，送你一个小礼品</view>
+        <view wx:if="{{ifWxCoupon}}" class="btnGroup">
+            <view class="comfortBtn" bindtap='toAddCard'>立即领取</view>
+            <view class="comfortBtn" bindtap='shadeClose' data-type="2">知道了</view>
+        </view>
+        <block wx:else>
+            <view wx:if="{{!ifGetComfort}}" class="comfortText">在优惠券卡包进行查收哦~</view>
+            <view class="comfortBtn" bindtap='comfortBtnClick'>知道了</view>
+        </block>
+      </view>
+    </view>
+    <!-- 次数不足，不可分享 -->
+    <view class="scratchDegree" hidden='{{!isDegree}}'>
+      <image src="http://cdn.jisuapp.cn/static/webapp/images/scratchLimit.png"></image>
+      <view class="degreeTitle">
+        <view class="degreeText">对不起，您的刮奖次数不足</view>
+      </view>
+    </view>
+    <view hidden='{{hideCanvas}}' class="scratch_wp" style="width: {{scratch.width}}px; height: {{scratch.height}}px;" >
+        <view  hidden='{{isShowBtn}}'>
+            <canvas class="scratch-canvas" style="width: {{scratch.width}}px; height: {{scratch.height}}px;" canvas-id="scratch" bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd" disable-scroll ="true"></canvas>
+        </view>
+        <view wx:if='{{isShowBtn}}' class='showArea'>
+            <view class="showTitle">赢取优惠大奖</view>
+            <view class="showBtn" bindtap="startScratch">点我刮奖</view>
+        </view>
+    </view>
+  </view>
+  <view class="structurePrize">
+    <view class="scratch-lookPrize" bindtap="lookPrize">查看奖品</view>
+    <view class="scratch-exchangePrize" bindtap="intelClick" style="display:{{scratchInfo.integral_exchange==0?'none':'inline-block'}}">积分兑换</view>
+  </view>
+  <view class="scratchRoster">
+    <view class="rosterTitle">
+      <view class="rosterStar"></view>
+    </view>
+    <view class="rosterCon">
+      <view wx:if="{{winnerList.length === 0}}" class="no-roster-list">暂无中奖名单</view>
+      <block wx:else>
+        <view class="rosterList" animation="{{animationData}}">
+          <view wx:for="{{winnerList}}" wx:key="index">{{item.nickname}} 抽中 {{item.prize_title}}</view>
+        </view>
+        <view class="rosterList" animation="{{animationData2}}">
+          <view wx:for="{{winnerList}}" wx:key="index">{{item.nickname}} 抽中 {{item.prize_title}}</view>
+        </view>
+      </block>
+    </view>
+  </view>
+  <view class="scratchExplain">
+    <view class="explainTitle">
+      <view class="explainStar"></view>
+    </view>
+    <view class="explainCon">
+      <view class="explainTimeDiv"><text>活动时间：</text><text class="explainTime">{{scratchInfo.start_time}}-{{scratchInfo.end_time}}</text></view>
+      <view class="explainRule"><text>{{scratchInfo.description}}</text></view>
+      <view>获取刮奖次数：</view>
+      <view class="explainDayTime" wx:if="{{scratchInfo.user_times_initial > 0}}"><label class="scratchDisc">·</label>用户每日首次登录可获取<text>{{scratchInfo.user_times_initial}}</text>次刮奖机会</view>
+      <view class="explainLimit"><label class="scratchDisc">·</label>每日抽奖机会最多为<text class="explainValue">{{scratchInfo.user_times=='-1'?'无限':scratchInfo.user_times}}</text>次</view>
+      <view class="explainIntegral" wx:if="{{scratchInfo.integral_exchange!=0}}"><label class="scratchDisc">·</label>每<span>{{scratchInfo.integral_exchange}}</span>积分可兑换一次抽奖机会</view>
+      <view class="explainShare" wx:if="{{scratchInfo.time_share!=0}}"><label class="scratchDisc">·</label><view>每成功分享1个好友可增加<text>{{scratchInfo.time_share}}</text>次抽奖机会，最多可增加<text>{{scratchInfo.time_share_limit}}</text>次机会</view></view>
+      <view class="explainMoney" wx:if="{{scratchInfo.consume_times!=0}}">
+        <block wx:if="{{ scratchInfo.consume_money != 0 }}">
+          <label class="scratchDisc">·</label><view>单次消费每满{{ scratchInfo.consume_money }}元，即赠送{{ scratchInfo.consume_times }}次刮奖机会,最高可赠送{{ scratchInfo.consume_times_limit }}次</view>
+        </block>
+        <block wx:if="{{ scratchInfo.consume_money == 0 }}">
+          <label class="scratchDisc">·</label>消费即赠送{{ scratchInfo.consume_times }}次刮奖机会。
+        </block>
+      </view>
+    </view>
+  </view>
+  <!-- 中奖记录弹窗 -->
+  <view class="scratchPrize-sick" wx:if="{{isPrizeSick==true}}" bindtap='wrapPrize'>
+    <view class="scratchPrize-bg" catchtouchmove></view>
+    <view class="scratchPrize-wrap" catchtap='stopPropagation'>
+      <view class="scratchPrize-header" catchtouchmove></view>
+      <view class="scratchPrize-con">
+        <image class="scratchImg" src="http://cdn.jisuapp.cn/static/webapp/images/prize_con.png" hidden="{{myPrize==''}}" catchtouchmove></image>
+        <view class="scratchPrize-title" catchtouchmove>
+          <view class="scratchPrize-line"></view>
+          <label>中奖时间</label>
+          <label>获得奖品</label>
+        </view>
+        <view class="scratchprize-list" hidden="{{myPrize==''}}">
+          <view wx:for="{{myPrize}}" wx:key="index"><label>{{item.add_time}}</label><label>{{item.prize_title}}</label></view> 
+        </view>
+        <view class="scratchPrize-fail" hidden="{{myPrize!=''}}">
+          <image src="http://cdn.jisuapp.cn/static/webapp/images/prize_fail.png"></image>
+          <view>暂未获得任何奖品哦~</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 积分兑换弹窗 -->
+  <view class="scratchInte" wx:if="{{isIntel==true}}">
+    <view class="scratchInte-wrap">
+      <view class="scratchInte-con">
+        <view class="scratchInteCan">可兑换次数:<label>{{intelMes.exchange_times}}</label><label>次</label></view>  
+        <view class="scratchInteLimit">兑换次数:<input type="text" bindinput="bindReplaceInput" value="{{inputValue}}"/><label class="scratchInteAll" bindtap='scratchInteAll'>全部兑换</label></view>
+        <view class="scratchInteRule">兑换规则:<label>{{intelMes.integral_exchange}}</label>分/次</view>
+        <view class="scratchInteBalance">积分余额:<label>{{intelMes.can_use_integral}}</label>分</view>
+      </view>
+      <view class="scratchInte-btns">
+        <view class="scratchInte-cancel" bindtap="intelClose">取消</view>
+        <view class="scratchInte-confirm" bindtap="intelConfirm">确定</view>
+      </view>
+    </view>
+  </view>
+</view>
+ <!-- </view>  -->

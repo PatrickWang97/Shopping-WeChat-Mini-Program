@@ -1,0 +1,136 @@
+<component-behavior-track></component-behavior-track>
+<view id="shareGifts">
+  <view class="banner-top">
+    <view class="image-wrap">
+      <image src="http://cdn.jisuapp.cn/static/webapp/images/share-gifts/banner-top.png" mode="aspectFill"></image>
+    </view>
+  </view>
+  <view class="total-main-wrap">
+    <view class="methods-wrap">
+      <view class="share-gifts-title">
+        <block wx:if="{{recv_limit == 0 || giftslen == 1}}">
+          恭喜你获得以下奖励
+        </block>
+        <block wx:elif="{{recv_limit == 1}}">
+          {{recv_chance == 0 ? '奖励领取成功' :!isMultiple ? '以下奖励选一个' : '以下奖励可选'}}
+          <view wx:if="{{isMultiple}}" class="no-normal">
+            <block wx:if="{{recv_chance > 0}}">
+              <block wx:if="{{type == 1}}">
+                成功分享
+                <text style="color:#FF7100;">{{surplus_times}}</text> 次，剩余
+                <text style="color:#FF7100;">{{recv_chance}}</text> 次机会
+              </block>
+              <block wx:if="{{type == 2}}">
+                成功分享
+                <text style="color:#FF7100;">{{share_persons}}</text> 位好友，剩余
+                <text style="color:#FF7100;">{{recv_chance}}</text> 次机会
+              </block>
+            </block>
+          </view>
+        </block>
+      </view>
+      <view class="share-method-list" wx:if="{{!isMultiple}}">
+        <block wx:for="{{gifts}}" wx:key="index">
+          <view class="main-wrap" wx:if="{{!item.is_hide}}">
+            <view>
+              <image src="{{item.image}}"></image>
+              <text class="mian-title">{{item.title}}</text>
+              <text wx:if="{{(recv_limit == 0 || gifts.length == 1) && item.already_times > 1}}" space="ensp" > *{{item.already_times}}</text>
+            </view>
+            <block
+              wx:if="{{(item.type == 4 || item.type == 5) && item.already_recv || (item.type == 1 && !item.is_hide && item.stock == 0)}}">
+              <view class="showGifts" data-type="{{item.type}}" bindtap='showGifts'
+                data-index='{{index}}'>查看</view>
+            </block>
+            <block wx:else>
+              <block wx:if="{{item.giftsModal == 1}}">
+                <view wx:if="{{!item.is_select && recv_chance > 0}}" bindtap='recvReward' class="getGifts no_select"  data-type="{{item.type}}" data-index="{{index}}">
+                  领取
+                </view>
+                <view wx:else class="getGifts select" data-type="{{item.type}}" data-index="{{index}}">
+                  领取
+                </view>
+              </block>
+              <block wx:else>
+                <view class="getGifts" bindtap='showGifts' data-index="{{index}}" data-type="{{item.type}}">查看</view>
+              </block>
+            </block>
+          </view>
+        </block>
+      </view>
+      <view wx:else>
+        <view class="share-method-list">
+          <block wx:for="{{gifts}}" wx:key="index">
+            <view class="main-wrap" wx:if="{{!item.is_hide}}">
+              <view>
+                <image src="{{item.image}}"></image>
+                <text class="mian-title">{{item.title}}</text>
+                <text wx:if="{{recv_limit == 0  && item.already_times > 1}}" space="ensp"> *{{item.already_times}}</text>
+              </view>
+              <block wx:if="{{(item.type == 4 || item.type == 5) && item.already_recv || (item.type == 1 && !item.is_hide && item.stock == 0)}}">
+                <view class="showGifts" data-type="{{item.type}}" bindtap='showGifts' data-index='{{index}}'>查看</view>
+              </block>
+              <block wx:else>
+                <block wx:if="{{ recv_chance == 0 }}">
+                  <view class="showGifts" data-type="{{item.type}}" wx:if="{{item.is_select}}" bindtap='showGifts' data-index='{{index}}'>查看</view>
+                  <view wx:else class="getGifts select" data-type="{{item.type}}" data-index="{{index}}">
+                    领取
+                  </view>
+                </block>
+                <block wx:else>
+                  <view class="quantity" wx:if="{{recv_chance != 0}}">
+                    <label class="minus"></label>
+                    <input class="pay-buy-count" type="number" class="txt" value="{{ item.times }}"
+                      data-index="{{index}}" bindinput="inputBuyCount" />
+                    <label class="plus">
+                    </label>
+                    <view class="response-area response-area-minus" catchtap="clickMinusButton" data-index="{{index}}">
+                    </view>
+                    <view class="response-area response-area-plus isRelative" catchtap="clickPlusButton" data-index="{{index}}">
+                    </view>
+                  </view>
+                </block>
+              </block>
+            </view>
+          </block>
+        </view>
+        <block wx:if="{{recv_chance != 0}}">
+          <view style='width:100%;padding-bottom:40rpx;background:#fff;'>
+            <view class="getGifts {{rebateNum == 0 ? 'select' : 'no_select'}} multi-getGifts" bindtap='recvReward'
+              data-type="all" data-index="{{index}}">
+              领取</view>
+          </view>
+        </block>
+      </view>
+    </view>
+    <view class="extra-wrap" wx:if="{{extra_rewards && extra_rewards.num >= 1}}">
+      <view class="share-gifts-title">拉新额外奖励</view>
+      <view class="share-method-list">
+        <view class="main-wrap">
+          <view>
+            <image src="{{extra_rewards.image}}"></image>
+            <text class="mian-title">{{extra_rewards.reward_title}}</text>
+            <text wx:if="{{extra_rewards.num > 1}}" space="ensp"> *{{extra_rewards.num}}</text>
+          </view>
+          <view class="showGifts" data-type="{{extra_rewards.type}}" bindtap='showShareGifts'>查看</view>
+        </view>
+      </view>
+    </view>
+    <view class="toast-wrap" wx:if="{{description}}">
+      <view class="tips">
+        分享说明
+      </view>
+        <view class="content">
+        <view wx:if="{{long_term != 1}}">活动时间：{{start_time}}-{{end_time}}</view>
+        <view class="">分享奖励：<text wx:for="{{gifts}}" wx:key="index" wx:for-index="index" style="color:#ff7100;">{{item.title}}{{index == gifts.length - 1 ? '' : '、'}}</text>{{recv_limit == 1 && gifts.length > 1 ? '(' + gifts.length + '选1)'  : ''}}</view>
+        <view>奖励限制：{{times_limit.type == 2 ? '每天' : ''}}限领<text>{{times_limit.value}}</text>次</view>
+        <block wx:if="{{activity_rewards.length > 0}}">
+          <view>拉新额外奖励：<text>{{activity_rewards[0].title}}</text> </view>
+          <view>拉新奖励条件：{{extra_reward_type == 0 ? '每' : ''}}邀请{{extra_reward_type_value}}个新用户可领</view>
+          <view wx:if="{{extra_reward_type == 0}}">拉新奖励限制：{{extra_times_limit.type == 2 ? '每天' : ''}}限领<text>{{extra_times_limit.value}}</text>次</view>
+          
+        </block>
+      </view>
+    </view>
+  </view>
+</view>

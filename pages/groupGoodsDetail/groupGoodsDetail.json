@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "拼团商品详情",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "usingComponents": {
+    "component-reward-point": "\/components\/rewardPointModal\/rewardPointModal",
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+    "component-share": "/components/pageQRCode/pageQRCode",
+    "component-sinkingModal": "/components/sinkingModal/sinkingModal"
+  }
+}

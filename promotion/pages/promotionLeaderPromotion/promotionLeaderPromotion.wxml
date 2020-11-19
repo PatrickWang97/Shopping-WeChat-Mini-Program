@@ -1,0 +1,45 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view>
+  <view class="tab-bar">
+    <view class="tab-bar-item {{ activeType === 'recruit' ? 'active' : '' }}">
+      <view style="border-right: 1px solid #e4e4e4;" bindtap="SwitchMenuBar" data-type="recruit">团长招募中心</view>
+    </view>
+    <view class="tab-bar-item {{ activeType === 'team' ? 'active' : '' }}">
+      <view bindtap="SwitchMenuBar" data-type="team">我的团队</view>
+    </view>
+  </view>
+  <view class="tab-content" hidden="{{ activeType === 'team' }}">
+    <view class="promotion-title">团长推广二维码</view>
+    <view>
+      <image class="recruit-qrcode" mode="widthFix" src="{{ distributorInfo.leader_qrcode }}"></image>
+    </view>
+    <view style="font-size: 24rpx; color: #999; margin-bottom: 360rpx;">分享二维码，招募团队成员</view>
+    <view style="font-size: 28rpx; color: #666;">注：每个团队最高有20名队员</view>
+  </view>
+  <view class="tab-content" hidden="{{ activeType === 'recruit' }}">
+    <view class="table-header">
+      <view>团员名称</view>
+      <view>联系方式</view>
+      <view>团员佣金</view>
+      <view>团长佣金</view>
+      <view>操作</view>
+    </view>
+    <view class="table-body">
+      <view class="table-row" wx:for="{{ commissionArray }}" wx:key="index">
+        <view class="table-cell">{{ item.name }}</view>
+        <view class="table-cell" catchtap="phoneCall">{{ item.phone }}</view>
+        <view class="table-cell">{{ item.total_commission }}</view>
+        <view class="table-cell">{{ item.total_commission }}</view>
+        <view class="table-cell"><view class="ico-moon icon-delete"></view></view>
+      </view>
+    </view>
+    <view class="navigator-footer" wx:if="{{ totalPage > 1 }}">
+      <view class="navitaor-btn" bindtap="prevPage">上一页</view>
+      <text>{{ currentPage || 1 }}/{{ totalPage || 1 }}</text>
+      <view class="navitaor-btn" bindtap="nextPage">下一页</view>
+    </view>
+  </view>
+</view>
+
+

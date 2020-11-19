@@ -1,0 +1,2189 @@
+page {
+  background-color: #F3F3F3;
+}
+.custom-style-Page {
+  position: relative;
+}
+.franchisee-detail{
+  padding-bottom: 100rpx;
+}
+.has-incomplete{
+  padding-top: 80rpx;
+}
+.franchisee-picture{
+  display: block;
+  width: 100%;
+  height: 380rpx;
+}
+.franchisee-swiper {
+  width: 100%;
+  height: 380rpx;
+}
+.franchisee-swiper image {
+  width: 100%;
+  height: 100%;
+}
+.franchisee-info,
+.franchisee-address-wrap{
+  padding: 0 30rpx;
+  background-color: #fff;
+  overflow: hidden;
+} 
+.franchisee-address-wrap {
+ display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.franchisee-title{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  line-height: 95rpx;
+}
+.franchisee-title-name {
+  width: 430rpx;
+  color: #333;
+  font-size: 32rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+.franchisee-attention {
+  width:88rpx;
+  height:44rpx;
+  border-radius:10rpx;
+  text-align: center;
+  line-height: 44rpx;
+  font-size: 22rpx;
+}
+.franchisee-attention-no {
+  background:rgba(255,59,73,1);
+  color: #fff;
+}
+.franchisee-attention-has {
+  color: #FF3B49;
+  border:1px solid rgba(255,59,73,1);
+}
+.franchisee-address{
+  display: inline-block;
+  width: 615rpx;
+  font-size: 26rpx;
+  color: #333;
+  line-height: 95rpx;
+  vertical-align: top;
+  border-top: 1px solid #F2F2F2;
+}
+.franchisee-address label{
+  color: #ccc;
+  margin-right: 15rpx;
+  font-size: 28rpx;
+  vertical-align: top;
+}
+.franchisee-address text{
+  display: inline-block;
+  width: 565rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: top;
+}
+.franchisee-phone, .franchisee-share {
+  display: inline-block;
+  width: 70rpx;
+  height: 95rpx;
+  line-height: 95rpx;
+  font-size: 40rpx;
+  vertical-align: top;
+}
+.franchisee-share {
+  border-top: 1px solid #F2F2F2;
+}
+.franchisee-phone label{
+  display: inline-block;
+  width: 100%;
+  text-align: right;
+  color: #FF3B49;
+  line-height: 40rpx;
+}
+.franchisee-div{
+  margin-top: 20rpx;
+  background-color: #fff;
+}
+.franchisee-div-head{
+  padding: 0 30rpx;
+  color: #333;
+  font-size: 28rpx;
+  border-bottom: 1px solid #F2F2F2;
+  line-height: 80rpx;
+}
+.franchisee-div-icon{
+  display: inline-block;
+  width: 30rpx;
+  height: 30rpx;
+  color: #fff;
+  text-align: center;
+  line-height: 30rpx;
+  font-size: 23rpx;
+  background-color: #FF3B49;
+  border-radius: 4rpx;
+  margin-right: 16rpx;
+  vertical-align: middle;
+}
+.franchisee-div-head text{
+  display: inline-block;
+  vertical-align: middle;
+}
+.franchisee-div-icon2{
+  display: inline-block;
+  color: #D2D2D2;
+  font-size: 30rpx;
+  margin-right: 8rpx;
+  vertical-align: middle;
+}
+.franchisee-section{
+  margin-top: 20rpx;
+}
+.right-icon{
+  float: right;
+  color: #999;
+  font-size: 24rpx;
+}
+.right-icon .icon-rightarrow{
+  font-size: 23rpx;
+}
+.franchisee-tab-content{
+  margin-top: 0rpx;
+  margin-bottom: 20rpx;
+}
+.franchisee-div-head3{
+  font-size: 32rpx;
+  line-height: 100rpx;
+}
+.franchisee-fun-list{
+  border-bottom: 1px solid #F2F2F2;
+}
+.franchisee-fun-item{
+  position: relative;
+  display: inline-block;
+  width: 187rpx;
+  height: 190rpx;
+  vertical-align: top;
+}
+.franchisee-fun-logo{
+  width: 70rpx;
+  height: 70rpx;
+  margin: 40rpx auto 10rpx;
+}
+.franchisee-fun-logo image{
+  width: 100%;
+  height: 100%;
+}
+.franchisee-fun-text{
+  font-size: 24rpx;
+  color: #333;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.franchisee-miniapp{
+  color: #333;
+  font-size: 26rpx;
+  padding: 0 30rpx;
+  line-height: 80rpx;
+}
+.miniapp-icon{
+  font-size: 40rpx;
+  color: #16D328;
+  margin-right: 10rpx;
+  vertical-align: top;
+}
+.franchisee-vip-wrapper{
+  padding: 25rpx 0;
+}
+.franchisee-vip{
+  width: 690rpx;
+  height: 160rpx;
+  margin: 0rpx auto;
+  background-image: url(http://cdn.jisuapp.cn/static/webapp/images/franchisee/franchisee-vip.png);
+  background-size: 100% 100%;
+}
+.franchisee-vip-cover{
+  display: inline-block;
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  margin: 35rpx 30rpx 0 20rpx;
+  overflow: hidden;
+  vertical-align: top;
+}
+.franchisee-vip-cover image{
+  width: 100%;
+  height: 100%;
+}
+.franchisee-vip-info{
+  display: inline-block;
+  width: 360rpx;
+  color: #fff;
+  margin-right: 30rpx;
+  vertical-align: top;
+}
+.franchisee-vip-title{
+  font-size: 26rpx;
+  margin-top: 40rpx;
+}
+.franchisee-vip-rights{
+  font-size: 24rpx;
+  margin-top: 10rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.franchisee-vip-btn{
+  display: inline-block;
+  width: 140rpx;
+  height: 46rpx;
+  margin-top: 57rpx;
+  border-radius: 23rpx;
+  background-color: #FFA800;
+  color: #fff;
+  font-size: 24rpx;
+  text-align: center;
+  line-height: 46rpx;
+  vertical-align: top;
+}
+.franchisee-vip-more {
+  padding-top: 25rpx;
+  font-size: 28rpx;
+  line-height: 28rpx;
+  text-align: center;
+  color: #999;
+}
+.franchisee-vip-more .icon-downarrow {
+  margin-left: 14rpx;
+  font-size: 24rpx;
+}
+.franchisee-coupon{
+  overflow: hidden;
+  width:702rpx;
+  border-radius:10rpx;
+  margin:20rpx auto;
+}
+.franchisee-coupon .franchisee-div-head{
+  font-size: 30rpx;
+  font-weight: bold;
+  border-bottom: none;
+  line-height: 1;
+  padding: 32rpx 30rpx;
+}
+.coupon-style{
+  float: left;
+}
+.franchisee-coupon-list{
+  padding: 0 30rpx;
+}
+.franchisee-coupon-item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #F2F2F2;
+  padding: 30rpx 0 26rpx;
+}
+.franchisee-coupon-item:first-child{
+  padding-top: 0;
+}
+.coupon-info{
+  display: inline-block;
+  width: 470rpx;
+  box-sizing: border-box;
+  vertical-align: top;
+}
+.coupon-center{
+  display: inline-block;
+  width: 16rpx;
+  height: 120rpx;
+  margin-left: -8rpx;
+  position: relative;
+  vertical-align: top;
+  overflow: hidden;
+}
+.coupon-receive{
+  display: inline-block;
+  border-left: none;
+  box-sizing: border-box;
+  vertical-align: top;
+}
+.coupon-info-cover{
+  display: inline-block;
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 4rpx;
+  background-color: #FF3B49;
+  color: #fff;
+  font-size: 22rpx;
+  text-align: center;
+  line-height: 32rpx;
+  margin-right: 10rpx;
+}
+.coupon-info-cover image{
+  width: 100%;
+  height: 100%;
+}
+.coupon-title-wrap{
+  display: inline-block;
+  vertical-align: top;
+}
+.coupon-title{
+  color: #333;
+  font-size: 28rpx;
+}
+.coupon-rights{
+  color: #999999;
+  font-size: 24rpx;
+  margin-top: 10rpx;
+  width: 412rpx;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
+.coupon-btn{
+  width: 116rpx;
+  height: 46rpx;
+  border-radius: 23rpx;
+  text-align: center;
+  color: #FF3B49;
+  font-size: 24rpx;
+  line-height: 46rpx;
+  background-color: #fff;
+  border: 1px solid #FF3B49;
+}
+.coupon-top-circle,
+.coupon-bottom-circle{
+  position: absolute;
+  left: 0;
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50rpx;
+  border: 1px solid rgba(249,96,98,.2);
+  box-sizing: border-box;
+  background-color: #fff;
+}
+.coupon-top-circle{
+  top: -5rpx;
+}
+.coupon-bottom-circle{
+  bottom: -5rpx;
+}
+.franchisee-coupon-more{
+  font-size: 24rpx;
+  color: #999;
+  line-height: 66rpx;
+  text-align: center;
+}
+.franchisee-coupon-more label{
+  font-size: 28rpx;
+  margin-left: 10rpx;
+  vertical-align:top;
+}
+.franchisee-coupon-no{
+  width: 646rpx;
+  height: 109rpx;
+  margin: 0 30rpx 20rpx;
+  font-size: 38rpx;
+  text-align: center;
+  color: #3E3E3E;
+  line-height: 109rpx;
+  background-image: url(http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/franchisee/coupon-no.png);
+  background-size: 100% 100%;
+}
+.franchisee-flex-tab{
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  height: 75rpx;
+  border-bottom: 1px solid #F2F2F2;
+  background-color: #fff;
+}
+.franchisee-flex-item{
+  display: inline-block;
+  width: 33.3%;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #333;
+  font-size: 28rpx;
+  line-height: 72rpx;
+  text-align: center;
+}
+.franchisee-flex-item view{
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.franchisee-flex-item.active view{
+  color: #FF3B49;
+  border-bottom: 4rpx solid #FF3B49;
+}
+.franchisee-tab{
+  height: 75rpx;
+  border-bottom: 1px solid #F2F2F2;
+  background-color: #fff;
+  overflow-x:auto;
+  overflow-y:hidden;
+  white-space:nowrap;
+}
+.franchisee-item{
+  display: inline-block;
+  width: 150rpx;
+  height: 100%;
+  color: #333;
+  font-size: 28rpx;
+  line-height: 72rpx;
+  text-align: center;
+}
+.franchisee-item view{
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.franchisee-item.active view{
+  color: #FF3B49;
+  border-bottom: 1px solid #FF3B49;
+}
+.franchisee-goods{
+  background-color: #fff;
+}
+.franchisee-goods-list{
+  padding: 0 30rpx;
+  background: linear-gradient(0deg,rgba(243,243,243,1) 0%,rgba(255,255,255,1) 100%);
+}
+.franchisee-goods-item{
+  position: relative;
+  float: left;
+  width: 332rpx;
+  height: 517rpx;
+  margin-top: 20rpx;
+  vertical-align: top;
+  background-color: #fff;
+  border-radius: 10rpx;
+  overflow: hidden;
+}
+.franchisee-goods-item:nth-child(even){
+  margin-left: 26rpx;
+}
+.franchisee-goods-item .goods-subscript {
+  position: absolute;
+  top: 10rpx;
+  left: 0;
+  width: 70rpx;
+  height: 35rpx;
+  z-index: 2;
+}
+.franchisee-goods-img{
+  display: block;
+  width: 332rpx;
+  height: 335rpx;
+}
+.franchisee-goods-info{
+  width: 100%;
+  padding: 20rpx;
+  box-sizing: border-box;
+}
+.franchisee-goods-title{
+  color: #333;
+  font-size: 28rpx;
+  margin-bottom: 36rpx;
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.franchisee-goods-title .title-subscript {
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: -6rpx;
+  margin-right: 10rpx;
+  width: 62rpx;
+  height: 30rpx;
+}
+.franchisee-goods-price{
+  color: #FF3B49;
+  font-size: 32rpx;
+}
+.goods-price-icon{
+  font-size: 26rpx;
+  padding-right: 10rpx;
+}
+.franchisee-goods-sales{
+  float: right;
+  color: #999;
+  font-size: 22rpx;
+  line-height: 32rpx;
+  margin-top: 8rpx;
+}
+.franchisee-qrcode{
+  padding-bottom: 30rpx;
+}
+.franchisee-qrcode-img{
+  display: block;
+  width: 200rpx;
+  height: 200rpx;
+  margin: 0 auto;
+}
+.franchisee-score-img{
+  display: block;
+  width: 230rpx;
+  height: 231rpx;
+  margin: 80rpx auto 40rpx;
+}
+.franchisee-score-coantent{
+  color: #ccc;
+  font-size: 24rpx;
+  text-align: center;
+  padding-bottom: 80rpx;
+}
+.franchisee-goods-wrap .franchisee-div-head{
+  border-bottom: none;
+  color: #333;
+  font-size: 32rpx;
+  padding-top: 10rpx;
+}
+.franchisee-goods-wrap .right-icon{
+  color: #999;
+}
+.franchisee-info-wrap .franchisee-div-head{
+  font-size: 26rpx;
+  color: #333;
+  padding: 0;
+  border-bottom: none;
+}
+.franchisee-msg{
+  margin: 0 30rpx;
+  background-color: #fff;
+  border-bottom:1px solid #F2F2F2;
+}
+.franchisee-info-content{
+  padding: 0 0 20rpx 40rpx;
+  color: #656565;
+  font-size: 24rpx;
+}
+.franchisee-img-item{
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: 10rpx;
+  margin-right: 10rpx;
+}
+.franchisee-video-video{
+  width: 650rpx;
+  height: 400rpx;
+}
+.franchisee-incomplete{
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+  height: 80rpx;
+  padding: 10rpx 30rpx 10rpx 0;
+  box-sizing: border-box;
+  background-color: #FFFAEE;
+}
+.franchisee-incomplete-close{
+  display: inline-block;
+  width: 60rpx;
+  height: 60rpx;
+  margin-left: 10rpx;
+  color: #999;
+  text-align: center;
+  font-size: 28rpx;
+  line-height: 60rpx;
+  vertical-align: top;
+}
+.franchisee-incomplete-text{
+  display: inline-block;
+  font-size: 24rpx;
+  color: #656565;
+  line-height: 60rpx;
+  vertical-align: top;
+}
+.franchisee-incomplete-btn{
+  float: right;
+  width: 120rpx;
+  height: 40rpx;
+  margin-top: 8rpx;
+  color: #FF3B49;
+  font-size: 24rpx;
+  text-align: center;
+  line-height: 40rpx;
+  border: 1px solid #FF3B49;
+  border-radius: 4rpx;
+}
+.franchisee-change-tpl{
+  position: fixed;
+  bottom:150rpx;
+  right: 20rpx;
+  width: 94rpx;
+  height: 94rpx;
+  color: #fff;
+  font-size: 24rpx;
+  line-height: 94rpx;
+  text-align: center;
+  background-color: #3091F2;
+  border-radius: 50%;
+  box-shadow: 0px 2px 3px #999;
+}
+.franchisee-change-confirm{
+  position: fixed;
+  bottom:0;
+  left: 0;
+  width: 100%;
+  height: 100rpx;
+  color: #fff;
+  font-size: 28rpx;
+  line-height: 100rpx;
+  text-align: center;
+  background-color: rgba(0, 0, 0, .4);
+}
+.franchisee-tpl{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 11;
+   background-color: rgba(0, 0, 0, .75);
+}
+.franchisee-tpl-content{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 560rpx;
+  transform: translate(-50%, -50%);
+}
+.franchisee-tpl-list{
+  display: inline-block;
+  width: 50%;
+  margin-bottom: 40rpx;
+  color: #fff;
+  font-size: 26rpx;
+  text-align: center;
+}
+.franchisee-tpl-icon{
+  display: block;
+  width: 94rpx;
+  height: 94rpx;
+  margin: 10rpx auto;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 46rpx;
+  text-align: center;
+  line-height: 94rpx;
+}
+.franchisee-tpl-store .franchisee-tpl-icon{
+  background-color: #3091F2;
+}
+.franchisee-tpl-waimai .franchisee-tpl-icon{
+  background-color: #FFB33B;
+}
+.franchisee-tpl-shop .franchisee-tpl-icon{
+  background-color: #FF3B49;
+}
+.franchisee-tpl-tostore .franchisee-tpl-icon{
+  background-color: #FF7100;
+}
+.sidebar{
+  position: fixed;
+  width: 100rpx;
+  right: 0;
+  bottom: 130rpx;
+}
+.sidebar > view{
+  position: relative;
+  width: 100rpx;
+  height: 100rpx;
+  color: #fff;
+  font-size: 20rpx;
+  text-align: center;
+  background-color: #F46267;
+  border-radius: 50%;
+  margin-top: 1px;
+  overflow: hidden;
+}
+.sidebar-icon{
+  font-size: 40rpx;
+  margin-top: 12rpx;
+}
+.franchisee-nobusiness{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  line-height: 120rpx;
+  font-size: 32rpx;
+  color: #fff;
+  text-align: center;
+  background-color: rgba(0, 0, 0, .5);
+  z-index: 5;
+}
+.franchisee-facility{
+  font-size: 26rpx;
+  color: #333;
+  line-height: 95rpx;
+  border-top: 1px solid #F2F2F2;
+}
+.franchisee-facility-item{
+  display: inline-block;
+  margin-right: 20rpx;
+  vertical-align: top;
+}
+.facility-icon{
+  display: inline-block;
+  color: #ccc;
+}
+.groupbuy-div{
+  width: 702rpx;
+  border-radius: 10rpx;
+  margin: 20rpx auto;
+  overflow: hidden;
+}
+.franchisee-div-head2{
+  font-size: 32rpx;
+  color: #333;
+  padding: 20rpx 20rpx 10rpx;
+  font-weight: bold;
+}
+.reset-padding{
+  padding: 30rpx 28rpx;
+}
+.franchisee-div-head2 label{
+  color: #D2D2D2;
+}
+.franchisee-signature{
+  padding: 0 30rpx;
+}
+.franchisee-signature-img{
+  width: 690rpx;
+  height: 690rpx;
+}
+.franchisee-signature-info{
+  padding: 10rpx 0;
+}
+.franchisee-signature-title{
+  display: inline-block;
+  width: 500rpx;
+  font-size: 26rpx;
+  line-height: 50rpx;
+  vertical-align: top;
+}
+.franchisee-signature-price{
+  display: inline-block;
+  width: 190rpx;
+  color: #FF3B49;
+  font-size: 36rpx;
+  line-height: 50rpx;
+  text-align: right;
+  vertical-align: top;
+}
+.franchisee-groupbuy-item{
+  padding: 20rpx;
+  border-bottom: 1px solid #F2F2F2;
+  display: flex;
+}
+.franchisee-groupbuy-head{
+  display: inline-block;
+  width: 118rpx;
+  height: 118rpx;
+}
+.franchisee-groupbuy-head image{
+  width: 100%;
+  height: 100%;
+}
+.franchisee-groupbuy-info{
+  display: inline-block;
+  width: 520rpx;
+  margin-left: 20rpx;
+  vertical-align: top;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.franchisee-groupbuy-price{
+  color: #FF3B49;
+  line-height: 40rpx;
+  font-size: 32rpx;
+  padding-left: 42rpx;
+}
+.franchisee-groupbuy-icon{
+  float: left;
+  display: inline-block;
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 4rpx;
+  font-size: 22rpx;
+  text-align: center;
+  line-height: 32rpx;
+  color: #fff;
+  background-color: #FF3B49;
+  margin-right: 10rpx;
+}
+.franchisee-groupbuy-title{
+  display: flex;
+  font-size: 28rpx;
+}
+.franchisee-groupbuy-text{
+  width: 480rpx;
+  line-height:1.1;
+  overflow: hidden;
+  word-break: break-word;
+  display:-webkit-box;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+}
+.ranking-div {
+  background: linear-gradient(0deg,rgba(243,243,243,1) 0%,rgba(255,255,255,1) 100%);
+}
+.franchisee-ranking{
+  padding: 0 30rpx;
+  width: 690rpx;
+  white-space: nowrap;
+}
+.franchisee-ranking-item{
+  display: inline-block;
+  width: 315rpx;
+  height: 330rpx;
+  margin-right: 20rpx;
+  background-color: #fff;
+  vertical-align: top;
+  border-radius: 10rpx;
+  overflow: hidden;
+}
+.franchisee-ranking-head{
+  position: relative;
+}
+.franchisee-ranking-img{
+  display: block;
+  width: 315rpx;
+  height: 200rpx;
+}
+.franchisee-ranking-r{
+  position: absolute;
+  top: 10rpx;
+  left: 10rpx;
+  width: 68rpx;
+  height: 38rpx;
+  color: #fff;
+  font-size: 20rpx;
+  text-align: center;
+  line-height: 38rpx;
+  background-color: #FF3B49;
+  border-radius: 4rpx;
+}
+.franchisee-ranking-title{
+  font-size: 26rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 0 20rpx;
+  margin-top: 20rpx;
+}
+.franchisee-ranking-price{
+  color: #FF3B49;
+  font-size: 36rpx;
+  margin-top: 10rpx;
+  padding-left: 20rpx;
+}
+.franchisee-swiper-item{
+  position: relative;
+}
+.share-btn{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+}
+.franchisee-tab-wrap{
+  height: 77rpx;
+}
+.fixedTab{
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:20;
+  width:100%;
+}
+.community-li-top {
+  display: flex;
+}
+.community-li-cover{
+  display: inline-block;
+  width: 60rpx;
+  height: 60rpx;
+  border: 1px solid #eee;
+  border-radius: 50%;
+  overflow: hidden;
+  vertical-align: bottom;
+  margin-right: 20rpx;
+}
+.community-li-cover > image{
+  width: 100%;
+  height: 100%;
+}
+.community-li-author{
+  flex: 1;
+  vertical-align: bottom;
+  overflow: hidden;
+}
+.community-li-name{
+  display: inline-block;
+  max-width: 100px;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 70rpx;
+  color: #010101;
+  font-size: 30rpx;
+}
+.community-li-time{
+  display: block;
+  font-size: 20rpx;
+  color: #999;
+}
+.communityPage-list{
+  overflow: hidden;
+}
+.communityPage-li{
+  margin-top: 20rpx;
+  background-color: #fff;
+  padding: 30rpx 0;
+  margin: 0 30rpx;
+  padding-bottom: 0;
+  border-bottom: 1px solid #F2F2F2;
+}
+.communityPage-li-title{
+  display: block;
+  margin-top: 15rpx;
+  font-size: 36rpx;
+  color: #333;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.communityPage-li-content{
+  display: block;
+  font-size: 30rpx;
+  color: #2a2a2a;
+  margin-top: 15rpx;
+  overflow : hidden;
+}
+.communityPage-li-link {
+  display: flex;
+  align-items: center;
+  margin-top: 15rpx;
+  padding: 14rpx;
+  box-sizing: border-box;
+  height: 100rpx;
+  background-color: #F5F5F5;
+}
+.communityPage-li-link .link-logo {
+  margin-right: 15rpx;
+  width: 72rpx;
+  height: 72rpx;
+}
+.communityPage-li-link .link-text {
+  flex: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-size: 26rpx;
+  color: #666;
+}
+.text-p{
+  display: block;
+}
+.communityPage-li-info{
+  color: #999;
+  font-size: 20rpx;
+}
+.communityPage-li-imgli-wrap{
+  margin-top: 10px;
+  display: inline-block;
+}
+.communityPage-li-imgli{
+  display: inline-block;
+  width: 210.6rpx;
+  height: 210.6rpx;
+  margin: 7.02rpx;
+  overflow: hidden;
+  vertical-align: top;
+}
+.communityPage-li-imgli-one{
+  margin: 7.02rpx;
+}
+.communityPage-li-imgli > image{
+  width: 100%;
+  height: 100%;
+}
+.communityPage-li-info > icon{
+  font-size: 12px;
+  margin-right: 3px;
+  vertical-align: middle;
+}
+.communityPage-li-info > icon:before{
+  display: block;
+}
+.communityPage-li-info > .icon-community-share {
+  font-size: 18px;
+}
+.communityPage-li-info > text{
+  position: relative;
+  top: 1px;
+}
+.communityPage-li-foot{
+  margin-top: 10px;
+}
+.communityPage-li-none{
+  text-align: center;
+  margin-top: 20px;
+  padding-bottom: 20rpx;
+}
+.communityPage-li-none image{
+  display: block;
+  margin: 20px auto;
+  width: 170px;
+  height: 88px;
+}
+.communityPage-li-nomore{
+  padding: 15px 0;
+  text-align: center;
+  font-size: 12px;
+  color: #949494;
+}
+.ellipsis-a{
+  color: #577a9f;
+  margin-left: 8px;
+}
+.communityPage-li-foot-top > view {
+  display: inline-block;
+  margin-bottom: 20rpx;
+  font-size: 20rpx;
+  vertical-align: middle;
+}
+.communityPage-li-foot-top .community-li-time {
+  margin-right: 10rpx;
+}
+.communityPage-li.friendType-li {
+ padding-bottom: 30rpx;
+}
+.friendType-li .community-li-cover {
+  margin-right: 20rpx;
+  width: 88rpx;
+  height: 88rpx;
+  vertical-align: top;
+  border-radius: 0;
+}
+.friendType-li .community-li-contact {
+  border-radius: 0;
+}
+.friendType-li .communityPage-li-title {
+  margin-top: 15rpx;
+  font-size: 36rpx;
+  font-weight: bold;
+}
+.friendType-li .community-li-name {
+  line-height: 28rpx;
+}
+.friendType-li .communityPage-li-imgli-wrap {
+  margin-left: 106rpx;
+}
+.friendType-li .communityPage-li-imgli {
+  margin: 4rpx;
+  width: 185rpx;
+  height: 185rpx;
+}
+.friendType-li .communityPage-li-content,
+.friendType-li .communityPage-li-link {
+  margin-left: 106rpx;
+}
+.friendType-li .communityPage-li-center {
+  margin: 15rpx 0;
+  margin-left: 106rpx;
+  font-size: 20rpx;
+}
+.friendType-li .communityPage-li-center.flex {
+  display: flex;
+}
+.friendType-li .communityPage-li-center > text,
+.friendType-li .communityPage-li-center > view {
+  display: inline-block;
+  vertical-align: middle;
+}
+.friendType-li .communityPage-li-center .community-li-time {
+  padding-right: 10px;
+  max-width: 70px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.friendType-li .communityPage-li-center .community-li-address {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #9c9c9c;
+}
+.friendType-li .community-li-address {
+  max-width: 325rpx;
+}
+.friendType-li .community-li-address label {
+  position: relative;
+  top: 1px;
+  margin-right: 10rpx;
+}
+.friendType-li .community-li-read {
+  margin: 0 10rpx;
+  line-height: 22rpx;
+  color: #9c9c9c;
+}
+.friendType-li .community-li-read  label {
+  margin-right: 10rpx;
+  vertical-align: middle;
+  font-size: 26rpx;
+}
+.friendType-li .community-li-read  text {
+  vertical-align: middle;
+}
+.friendType-li .community-li-comment {
+  position: relative;
+  float: right;
+  font-size: 26rpx;
+  color: #3091f2;
+}
+.friendType-li .community-li-comment:after {
+  position: absolute;
+  left: -15px;
+  top: -15px;
+  content: '';
+  width: 40px;
+  height: 40px;
+}
+.friendType-li .comment-box {
+  position: absolute;
+  left: -10rpx;
+  top: -16rpx;
+  display: none;
+  padding: 10rpx 0;
+  height: 20px;
+  border-radius: 5px;
+  background: rgba(76,81,84,1);
+  color: #fff;
+  transform: translateX(-100%);
+}
+.friendType-li .comment-box.show {
+  display: table-row;
+}
+.friendType-li .comment-box > view {
+  position: relative;
+  display: table-cell;
+  padding: 0 20rpx;
+  line-height: 20px;
+  font-size: 28rpx;
+  white-space: nowrap;
+}
+.friendType-li .comment-box label {
+  display: inline;
+  margin-right: 5px;
+}
+.friendType-li .comment-box view:first-child {
+  border-right: 1px solid #999;
+}
+.friendType-li .comment-box .ico-moon {
+  font-size: 12px;
+  vertical-align: middle;
+}
+.friendType-li .communityPage-li-likes {
+  margin-left: 106rpx;
+  padding: 15rpx;
+  line-height: 40rpx;
+  background: #f5f5f5;
+}
+.friendType-li .communityPage-li-likes > .icon-community_like {
+  color: #3091f2;
+}
+.friendType-li .communityPage-li-likes.border {
+  border-bottom:1px solid #e1e1e1;
+}
+.communityPage-li-likes label {
+  padding-right: 15rpx;
+  font-size: 36rpx;
+  color: #999;
+  vertical-align: middle;
+}
+.communityPage-li-likes label.icon-collect {
+  font-size: 14px;
+}
+.communityPage-li-likes .like-images {
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 150px;
+  height: 40rpx;
+  overflow: hidden;
+}
+.communityPage-li-likes image {
+  margin-right: 10rpx;
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 4rpx;
+}
+.communityPage-li-likes text {
+  display: inline-block;
+  padding-left: 18rpx;
+  line-height: 40rpx;
+  font-size: 18rpx;
+  color: #adadad;
+}
+.commuinty-li-replyList {
+  margin-left: 106rpx;
+  padding: 15rpx;
+  background: #f5f5f5;
+  color: #6a6a6a;
+}
+.commuinty-li-replyList view {
+  line-height: 40rpx;
+  font-size: 22rpx;
+}
+.commuinty-li-replyList > view:last-child {
+  color: #3091f2;
+}
+.commuinty-li-replyList .replyto {
+  display: inline-block;
+}
+.commuinty-li-replyList view text {
+  margin: 0 5px;
+  color: #999;
+}
+.franchisee-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 98rpx;
+  background-color: #fff;
+  border-top: 1px solid #EBEBEB;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+.franchisee-service,
+.franchisee-bottom-item {
+  position: relative;
+  display: inline-block;
+  width: 16.6%;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  height: 68rpx;
+  margin-top: 15rpx;
+  text-align: center;
+  font-size: 0;
+}
+.franchisee-bottom-item {
+  color: #000;
+}
+.franchisee-bottom-item.active{
+  color: #FF4200;
+}
+.franchisee-service{
+  border-left: 1px solid #EBEBEB;
+}
+.franchisee-bottom-icon {
+  width: 36rpx;
+  height: 36rpx;
+  font-size: 36rpx;
+  line-height: 36rpx;
+  text-align: center;
+}
+.franchisee-bottom-text {
+  font-size: 20rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 5rpx;
+}
+.franchisee-bottom-text.store-style-text {
+  margin-top: 10rpx;
+  color: #666;
+}
+.franchisee-service-btn{
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+.franchisee-settlement{
+  display: inline-flex;
+  width: 66.6%;
+  height: 83rpx;
+  -webkit-box-flex: 4;
+  -moz-box-flex: 4;
+  -webkit-flex: 4;
+  -ms-flex: 4;
+  flex: 4;
+  margin: 7rpx 10rpx;
+  font-size: 30rpx;
+  text-align: center;
+  line-height: 83rpx;
+  border-radius: 8rpx;
+  border: 1px solid #FF3B49;
+}
+.franchisee-cart{
+  width: 50%;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: #FF3B49;
+}
+.franchisee-buy{
+  width: 50%;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background-color: #FF3B49;
+  color: #fff;
+}
+.franchisee-bottom-img{
+  display: inline-block;
+  width: 36rpx;
+  height: 36rpx;
+  vertical-align: top;
+}
+.franchisee-bottom-img image{
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.recommend-div{
+  width: 702rpx;
+  box-sizing: border-box;
+  padding: 30rpx 24rpx;
+  margin: 20rpx auto;
+  overflow: hidden;
+  border-radius:10rpx;
+}
+.franchisee-recommend{
+  width: 100%;
+  border-radius: 10rpx;
+  overflow: hidden;
+}
+.recommend-style-3 .franchisee-recommend,
+.recommend-style-4 .franchisee-recommend {
+  width: 317rpx;
+  height: 176rpx;
+  overflow: hidden;
+}
+.recommend-style-4 .recommend-1 {
+  margin-bottom: 20rpx;
+}
+.recommend-style-3 .franchisee-recommend:nth-of-type(3) {
+  position: absolute;
+  right: 0;
+  bottom: 0rpx;
+}
+.franchisee-recommend image{
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.recom-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.recom-head-left {
+  display: flex;
+  align-items: center;
+}
+.recom-head-left image {
+  display: block;
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 10rpx;
+}
+.recom-head-title {
+  font-size:30rpx;
+  font-family:MicrosoftYaHei-Bold;
+  font-weight:bold;
+}
+.recom-head-right {
+  font-size: 24rpx;
+  color: #999;
+}
+.recom-content {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.recommend-style-1 .franchisee-recommend {
+  width: 654rpx;
+  height: 372rpx;
+  margin-bottom: 20rpx;
+}
+.recommend-style-1 .franchisee-recommend:last-child {
+  margin-bottom: 0;
+}
+.recommend-style-2 .franchisee-recommend,
+.recommend-style-3 .franchisee-recommend:first-of-type {
+  width: 317rpx;
+  height: 372rpx;
+}
+.recomhead-title {
+  padding-bottom: 30rpx;
+  font-weight: bold;
+  font-size: 30rpx;
+}
+.recommend-style-1 .recom-content .recommend-0.mg-top,
+.recommend-style-2 .recom-content .recommend-0.mg-top,
+.recommend-style-2 .recom-content .recommend-1.mg-top,
+.recommend-style-3 .recom-content .recommend-0.mg-top,
+.recommend-style-3 .recom-content .recommend-1.mg-top,
+.recommend-style-4 .recom-content .recommend-0.mg-top,
+.recommend-style-4 .recom-content .recommend-1.mg-top{
+  margin-top: 20rpx;
+}
+.franchisee-suspension {
+  position: fixed;
+  right: 10rpx;
+  bottom: 130rpx;
+  z-index: 20;
+}
+.franchisee-suspen-item {
+  position: relative;
+  margin-bottom: 4rpx;
+  width: 76rpx;
+  height: 76rpx;
+  background-color: rgba(0, 0, 0, .5);
+  border-radius: 50%;
+  overflow: hidden;
+}
+.franchisee-suspen-item button,
+.franchisee-suspen-item navigator,
+.franchisee-suspen-item image {
+  width: 100%;
+  height: 100%;
+}
+.franchisee-suspen-item button,
+.franchisee-suspen-item navigator {
+  position: absolute;
+}
+.franchisee-suspen-item button {
+  opacity: 0;
+}
+.franchisee-env-intro {
+  width: 100%;
+  font-size: 0;
+  white-space: nowrap;
+  background-color: #fff;
+  overflow: hidden;
+}
+.franchisee-env-intro .top-border {
+  height: 0;
+  border-top: 1px solid #f2f2f2;
+}
+.franchisee-env-intro .intro-container {
+  overflow: auto;
+}
+.franchisee-env-intro .intro-item {
+  position: relative;
+  display: inline-block;
+  margin: 20rpx 10rpx 20rpx 0;
+  width: 304rpx;
+  height: 228rpx;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+.franchisee-env-intro .intro-item image {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.franchisee-env-intro .intro-item .play-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 68rpx;
+  height: 68rpx;
+  background-color: rgba(0, 0, 0, .5);
+  border-radius: 34rpx;
+}
+.carousel-video-play{
+  position:absolute;
+  width:75rpx;
+  height:75rpx;
+  line-height:75rpx;
+  font-size:42.12rpx;
+  color:#fff;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  text-align:center;
+  background-color:rgba(0,0,0,.5);
+  border-radius:50%;
+  border:5rpx solid #fff;
+}
+.carouselVideoPlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width:100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 21;
+}
+.carouselVideoPlay-inner{
+  background-color: #fff;
+}
+.carouselVideoPlay video{
+  width: 100%;
+}
+.carouselVideoPlay-close{
+  float: right;
+  text-align: right;
+  font-size: 46.8rpx;
+  margin: 11.7rpx 23.4rpx;
+}
+.promotion-poster-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 999;
+}
+.promotion-poster-modal .promotion-poster {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  padding: 20rpx;
+  width: 560rpx;
+  height: 750rpx;
+  background: #fff;
+  box-sizing: border-box;
+  border-radius: 10rpx;
+  overflow: hidden;
+}
+.promotion-poster-modal .promotion-poster image {
+  display: block;
+  width: 518rpx;
+  height: 518rpx;
+}
+.promotion-poster-modal .poster-title {
+  margin-top: 40rpx;
+  max-width: 420rpx;
+  line-height: 28rpx;
+  font-size: 28rpx;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.promotion-poster-modal .poster-title .industry-tag {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 6rpx 10rpx;
+  margin-right: 15rpx;
+  font-size: 20rpx;
+  color: #FF3600;
+  background-color: rgba(255, 54, 0, 0.06);
+}
+.promotion-poster-modal .poster-title .franchisee-name {
+  display: inline-block;
+  vertical-align: middle;
+}
+.promotion-poster-modal .profit-stratification {
+  margin-top: 18rpx;
+  line-height: 24rpx;
+  font-size: 24rpx;
+  color: #999;
+}
+.promotion-poster-modal .profit-stratification .level {
+  display: inline-block;
+  margin-right: 30rpx;
+}
+.promotion-poster-modal .profit-stratification .center-border {
+  display: inline-block;
+  width: 0;
+  height: 18rpx;
+  border-left: 1px solid #CCCCCC;
+}
+.promotion-poster-modal .profit-stratification .level-2 {
+  margin-left: 30rpx;
+}
+.promotion-poster-modal .poster-bottom {
+  position: relative;
+  left: 15rpx;
+  text-align: right;
+}
+.promotion-poster-modal .poster-bottom .btn {
+  display: inline-block;
+  padding: 15rpx;
+  font-size: 0;
+  border: none;
+}
+.promotion-poster-modal .poster-bottom .weixin-btn {
+  position: relative;
+  padding-right: 10rpx;
+}
+.promotion-poster-modal .weixin-btn button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+}
+.promotion-poster-modal .poster-bottom .wx-friends-btn {
+  padding-left: 10rpx;
+}
+.promotion-poster-modal .poster-bottom image {
+  display: block;
+  width: 40rpx;
+  height: 40rpx;
+}
+.promotion-poster-modal .poster-bottom .weixin-btn image {
+  width: 48rpx;
+}
+.promotion-poster-modal .promotion-share-poster {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 560rpx;
+  height: 900rpx;
+  border-radius: 10rpx;
+  background-color: #fff;
+}
+.promotion-poster-modal canvas {
+  display: block;
+  width: 100%;
+  height: 780rpx;
+}
+.promotion-poster-modal .save-picture-btn {
+  display: block;
+  margin: 20rpx auto;
+  padding: 0;
+  width: 300rpx;
+  height: 70rpx;
+  text-align: center;
+  line-height: 70rpx;
+  font-size: 28rpx;
+  color: #fff;
+  background-color: rgba(255, 113, 0, 1);
+  border-radius: 4rpx;
+}
+.promotion-poster-modal .save-picture-btn.is-drawing {
+  background-color: rgba(226, 226, 226, 1);
+}
+.communityPage-li-goods {
+  margin-top: 20rpx;
+  display: flex;
+  background-color: #eee;
+}
+.friendType-li .communityPage-li-goods {
+  margin-left: 50px;
+}
+.communityPage-li-goods .goods-left image {
+  display: block;
+  margin: 24rpx;
+  margin-right: 32rpx;
+  width: 100rpx;
+  height: 100rpx;
+}
+.communityPage-li-goods .goods-center {
+  flex: 1;
+  margin-top: 24rpx;
+  overflow: hidden;
+}
+.communityPage-li-goods .goods-center .goods-name {
+  line-height: 40rpx;
+  font-size: 28rpx;
+  color: #303445;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.communityPage-li-goods .goods-center .goods-price {
+  margin-top: 16rpx;
+  line-height: 40rpx;
+  font-size: 28rpx;
+  color: #FD7B25;
+}
+.communityPage-li-goods .goods-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200rpx;
+}
+.communityPage-li-goods .goods-right button {
+  margin: 0;
+  padding: 0;
+  width: 116rpx;
+  height: 52rpx;
+  line-height: 52rpx;
+  text-align: center;
+  font-size: 24rpx;
+  color: #fff;
+  background-color: #3E97FF;
+  border-radius: 6rpx;
+}
+.franchisee-goods-item .vip-logo {
+  display: inline-block;
+  height: 30rpx;
+  line-height: 30rpx;
+  font-size: 18rpx;
+  border-radius: 15rpx;
+  padding: 0 10rpx;
+  color: #FF4D4F;
+  background: rgba(255, 77, 79, .16);
+  vertical-align: middle;
+}
+.franchisee-goods-item .real-price {
+  font-size: 32rpx;
+  margin-right: 14rpx;
+  color: #ff7100;
+  display: inline-block;
+  vertical-align: middle;
+}
+.franchisee-goods-item .sales {
+  float: right;
+  color: #999;
+  font-size: 22rpx;
+  line-height: 32rpx;
+  margin-top: 8rpx;
+}
+.franchisee-shop-card {
+  background: #f3f3f3;
+}
+.preciew-card {
+  height: 112rpx;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 25rpx;
+}
+.preciew-card-swiper {
+  width: 330rpx;
+  height: 50rpx;
+}
+.card-swiper-item {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  color: #666;
+}
+.card-swiper-item image {
+  margin-right: 4rpx;
+}
+.preciew-card image {
+  display: block;
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 50%;
+  border: 2rpx solid #fff;
+}
+.preciew-card-num {
+  display: flex;
+  align-items: center;
+}
+.card-num-pic {
+  display: flex;
+}
+.card-num-pic image {
+  position: relative;
+}
+.card-pic-1 {
+  left: -16rpx;
+}
+.card-pic-2 {
+  left: -32rpx;
+}
+.card-pic-3 {
+  left: -48rpx;
+}
+.card-num-text {
+  font-size: 24rpx;
+  color: #FF3B49;
+}
+.preciew-card-info {
+  display: flex;
+  margin-top: 20rpx;
+  background: #fff;
+  height: 160rpx;
+  padding: 0 34rpx;
+  align-items: center;
+  justify-content: space-between;
+}
+.card-info-left {
+  display: flex;
+}
+.card-info-img {
+  display: block;
+  width: 118rpx;
+  height: 118rpx;
+  border-radius: 4rpx;
+}
+.card-info-content {
+  height: 118rpx;
+  width: 370rpx;
+  margin-left: 20rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.card-info-title {
+  width: 370rpx;
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.card-info-des {
+  font-size: 24rpx;
+  color: #999;
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.franchisee-share-v {
+  width: 70rpx;
+  height: 95rpx;
+  line-height: 95rpx;
+  font-size: 40rpx;
+  padding: 0;
+  margin: 0;
+  background: #fff;
+  display: inline-block;
+}
+.franchisee-share-v .icon-communityDetail-share {
+  font-size: 32rpx;
+  color: #999;
+  display: inline-block;
+  width: 100%;
+  text-align: right;
+  line-height: 40rpx;
+  font-weight: bold;
+  border-left: 1rpx solid #EBEBEB;
+}
+.franchisee-score-wrap {
+  background: #fff;
+  margin-bottom: 20rpx;
+}
+.comPage-top-section {
+  padding: 28rpx 30rpx 10rpx;
+}
+.comPage-top-title {
+  padding-bottom: 20rpx;
+  font-size: 30rpx;
+  color: #333;
+}
+.comPage-comment-num {
+  font-size: 26rpx;
+  color: #666;
+}
+.comPage-comment-item {
+  padding-top: 10rpx;
+}
+.comPage-comment-label {
+  display: inline-block;
+  padding: 10rpx 20rpx;
+  border-radius: 30rpx;
+  font-size: 26rpx;
+  color: #666;
+  background: #F3F3F3;
+  margin: 10rpx 18rpx 10rpx 0;
+}
+.franchisee-score-wrap .active {
+  background: #FFEBEC;
+  color: #FF4451;
+}
+.comPage-bottom-section {
+  padding: 0 44rpx 0 30rpx;
+  border-bottom: 1rpx solid #EBEBEB;
+}
+.comPage-comment-info {
+  display: flex;
+  align-items: center; 
+}
+.comPage-comment-name {
+  font-size: 30rpx;
+  color: #333;
+}
+.comPage-comment-date {
+  font-size: 22rpx;
+  color: #999;
+}
+.comPage-comment-photo {
+  display: block;
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 20rpx;
+}
+.comPage-comment-assess {
+  width: 572rpx;
+  margin-left: 108rpx;
+  padding-bottom: 20rpx;
+  position: relative;
+  top: -14rpx;
+  left: 0;
+  border-bottom: 1rpx solid #EBEBEB;
+}
+.comPage-comment-star .icon-star.light {
+  margin-right: 4rpx;
+  font-size: 22rpx;
+  color: #FFAC11;
+}
+.comPage-comment-star .icon-star {
+  margin-right: 4rpx;
+  font-size: 22rpx;
+  color: #CECECE;
+}
+.comPage-comment-content {
+  font-size: 26rpx;
+  color: #333;
+  line-height: 1.7;
+  word-break: break-all;
+}
+.comPage-comment-content_pad {
+  padding-top: 15rpx;
+}
+.comPage-comment-pics {
+  width: 570rpx;
+  padding-top: 10rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  padding-bottom: 10rpx;
+}
+.comPage-comment-pics image {
+  display: inline-block;
+  width:163rpx;
+  height:163rpx;
+  border-radius:6rpx;
+  margin-right: 10rpx;
+}
+.comPage-comment-item:last-child .comPage-comment-assess {
+  border-bottom: none;
+  padding-bottom: 6rpx;
+}
+.comPage-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 78rpx;
+  color: #666;
+  font-size: 26rpx;
+}
+.comPage-more .ico-moon {
+  margin-left: 10rpx;
+  font-size: 28rpx;
+  color: #c4c4c4;
+}
+.no-comment {
+  line-height: 100rpx;
+  color: #666;
+  font-size: 24rpx;
+  text-align: center;
+}
+.all-word-btn {
+  display: block;
+  color: #ff3b49;
+  cursor: pointer;
+}
+.recommend-foods {
+  box-sizing: border-box;
+  width: 710rpx;
+  border-radius: 10rpx;
+  margin: 20rpx auto;
+  overflow: hidden;
+  padding: 30rpx 0 30rpx 0rpx;
+}
+.recommend-title{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0rpx 30rpx 20px;
+}
+.recommend-title_name {
+  font-size: 32rpx;
+  color: #303030;
+  font-weight: bold;
+}
+.recommend-title_more {
+  font-size: 24rpx;
+  color: #666;
+}
+.recommend-title_more .icon-rightarrow {
+  font-size: 20rpx;
+  color: #999;
+  margin-left: 16rpx;
+}
+.recommend-foods-sec {
+  margin-bottom: 22rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #303030;
+  padding-left: 30rpx;
+}
+.recommend-content-list {
+  width: 100%;
+  white-space: nowrap;
+}
+.recommend-item {
+  width: 220rpx;
+  height: 100%;
+  display: inline-block;
+  margin-right: 20rpx;
+}
+.recommend-item:first-child {
+  margin-left: 30rpx;
+}
+.recommend-item-pic {
+  position: relative;
+  border-radius: 6rpx;
+  width: 220rpx;
+  height: 160rpx;
+  overflow: hidden;
+}
+.recommend-item-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.recommend-item-lab {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 56rpx;
+  height: 28rpx;
+  border-radius: 6rpx 2rpx 6rpx 2rpx;
+}
+.recommend-item-name {
+  padding-top: 16rpx;
+  font-size: 26rpx;
+  color: #333;  
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.recommend-netizens {
+  padding: 0 30rpx;
+}
+.recommend-foods .mg-top {
+  margin-top: 42rpx;
+}
+.recommend-netizens-title {
+  font-size: 28rpx;
+  color: #303030;
+  font-weight: bold;
+}
+.recommend-netizens-list {
+  padding-top: 16rpx;
+  overflow: hidden;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-height: 1.6;
+}
+.recommend-netizens-item {
+  padding-right: 40rpx;
+  word-break: break-all;
+  font-weight: 400;
+  font-size: 26rpx;
+}
+.recommend-item_2 {
+  width: 190rpx;
+  height: 290rpx;
+  border-radius: 6rpx;  
+  overflow: hidden;
+  border: 1rpx solid rgba(242, 242, 242, 1);
+}
+.recommend-item-pic_2 {
+  width: 190rpx;
+  height: 190rpx;
+  border-radius: 0;
+}
+.recommend-item-name_2 {
+  font-size: 26rpx;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  padding-bottom:6rpx;
+}
+.recommend-item-desc {
+  color: #666;
+  font-size: 22rpx;
+  text-align: center;
+  width: 190rpx;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.subshop-qrcode {
+  position: absolute;
+  top: -1000rpx;
+  left: -1000rpx;
+}
+.franchisee-tostore,
+.franchisee-booking,
+.franchisee-goods {
+  margin-top: 0!important;
+  margin-bottom: 20rpx;
+}

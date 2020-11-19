@@ -1,0 +1,23 @@
+
+<!-- 礼品卡兑换码 -->
+<view class="exchange-code-icon" bindtap="showCodeInput">
+    <image src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/exchangeCode.png" class="exchange-code-bc"></image>
+</view>
+
+<!-- 请输入兑换码 -->
+<view class="exchange-code-input-wrap" hidden="{{!codeInputExist}}">
+  <view class="mask"></view>
+  <view class="exchange-code-input">
+    <text class="exchange-code-input-title">兑换</text>
+    <input placeholder-class="place-holder"  value="{{exchangeCodeValue}}" class="exchange-code-input-content" placeholder="请输入兑换码" bindinput="changeCodeInput"></input>
+    <view class="btn-box">
+      <view class="exchange-code-btn cancel" bindtap="closeCodeInput">取消</view>
+      <view class="exchange-code-btn confirm" bindtap="confirmExchange">兑换</view>
+    </view>
+  </view>
+</view>
+
+<!-- 兑换无效 -->
+<view>
+
+</view>

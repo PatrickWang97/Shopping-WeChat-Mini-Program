@@ -1,0 +1,174 @@
+page {
+  background-color: #f4f4f4;
+}
+.table-header {
+  line-height: 72rpx;
+  text-align: center;
+  background: #fff;
+  margin-top: 1px;
+  margin-bottom: 10rpx;
+}
+.table-header > view {
+  position: relative;
+  color: #999;
+  width: 170rpx;
+  font-size: 26rpx;
+}
+.triangle {
+  position: absolute;
+  right: 10rpx;
+  top: 34rpx;
+  border-top: 10rpx solid #999;
+  border-left: 8rpx solid transparent;
+  border-right: 8rpx solid transparent;
+}
+.reason-title {
+  color: #333;
+  font-weight: bold;
+}
+.reason-content {
+   padding: 60rpx;
+   color: #666;
+   word-break: break-all;
+}
+.record-fail-btn {
+  font-size: 30rpx;
+  text-align: center;
+  line-height: 80rpx;
+  height: 80rpx;
+  color: #ff7100;
+  border-top: 1px solid #EBEBEB;
+}
+.success-dialog {
+  position: relative;
+  width: 488rpx;
+  max-height: calc(100% - 152rpx);
+  margin: 40rpx auto;
+  padding: 36rpx;
+  background-color: #fff;
+  border-radius: 8rpx;
+  overflow:scroll;
+}
+.success-dialog image{
+  width: 100%;
+  box-shadow: 0 0 10rpx rgba(90,95,103,0.8)
+}
+.success-dialog textarea {
+  border-radius: 8rpx;
+  border: 1px solid #d5d5d5;
+  background-color: #f3f3f3;
+  width: auto;
+  margin: 30rpx 0;
+  height: 200rpx;
+  font-size: 24rpx;
+}
+.success-dialog button {
+  background-color: #ff7100;
+  color: #fff;
+  font-size: 30rpx;
+}
+.dialog-close {
+  position:absolute;
+  top:6rpx;
+  right:6rpx;
+  display:inline-block;
+  width:40rpx;
+  height:40rpx;
+  border-radius:50%;
+  color:#cacaca;
+  text-align:center;
+  line-height:40rpx;
+  font-size:40rpx;
+}
+.record-content {
+  margin-left: 6rpx;
+  padding-left: 24rpx;
+  background: #fff;
+}
+.record-list {
+  padding: 30rpx 24rpx 30rpx 0;
+  border-bottom: 1px solid #F3F3F3;
+}
+.record-to {
+  color: #333333;
+  font-size: 30rpx;
+}
+.record-money {
+  color: #333333;
+  font-size: 34rpx;
+}
+.record-time {
+  color: #999999;
+  font-size: 26rpx;
+}
+.record-status {
+  color: #999;
+  font-size: 24rpx;
+  margin-top: 8rpx;
+}
+.record-content-top {
+  margin-bottom: 20rpx;
+}
+.can-click {
+  color: #ff7100;
+}
+.order-status-box {
+  position: fixed;
+  background: rgba(0, 0,0, 0.4);
+  top: 78rpx;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.order-status {
+  background: #fff;
+}
+.order-status > view {
+  width: 216rpx;
+  border: 1px solid #F3F3F3;
+  line-height: 64rpx;
+  text-align: center;
+  display: inline-block;
+  margin-right: 14rpx;
+  margin-bottom: 20rpx;
+  background: #f3f3f3;
+  color: #333;
+  font-size: 26rpx;
+  border-radius: 4rpx;
+}
+.order-status > view:nth-child(3n){
+  margin-right: 0;
+}
+.order-status {
+  padding: 30rpx 30rpx 10rpx 30rpx;
+}
+.order-status > view.selected {
+  border-color: #ff7100;
+  color: #ff7100;
+  background: #FFF7F0;
+}
+.record-list .icon-rightarrow{
+  font-size: 20rpx;
+  color: #999;
+  margin-left: 8rpx;
+  margin-top: 16rpx;
+}
+.record-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0,0, 0.5);
+}
+.record-reason{
+  position: relative;
+  top: 350rpx;
+  width: 560rpx;
+  margin: 0 auto;
+  padding: 40rpx 0 0;
+  background-color: #fff;
+  text-align: center;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+}

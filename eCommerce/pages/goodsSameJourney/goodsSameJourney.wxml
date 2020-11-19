@@ -1,0 +1,65 @@
+<component-behavior-track></component-behavior-track>
+<view class="current-location-box" catchtap="selectGoodsSameJourney" wx:if="{{showAddress}}">
+  <text class="ico-moon icon-goods-location"></text>
+  <text class="ellipsis" style="max-width:500rpx">{{currentLocationData.formatted_addresses.recommend || '暂无地址'}}</text>
+  <text catchtap="getCurrentLocation" class="pull-right renew-position">
+    <text class="ico-moon icon-refresh" style="color:{{storeStyle.theme || '#ff7100'}}"></text>
+    <text style="color:{{storeStyle.theme || '#ff7100'}}">重新定位</text>
+  </text>
+</view>
+<view wx:if="{{ showMap}}">
+  <map longitude="{{ centerLng }}" latitude="{{ centerLat }}" scale="14" circles="{{ circles }}" markers="{{ addressListMakers }}"></map>
+</view>
+<view class="new-class" style="padding-bottom:{{showAddressList && addressList.length  ? '130rpx' : '80rpx'}}">
+    <view class="top-delivery">
+      <view class="receipt-header">收货地址</view>
+      <view class="delivery-list-box">
+        <block wx:for="{{ addressList }}" wx:key="index">
+          <view class="delivery-list" wx:if="{{from != 'preview' || item.config.intra_city == 1}}" catchtap="selectDelivery" data-index="{{ index }}">
+            <text class="ico-moon icon-goods-location"></text>
+            <view class="delivery-list-content">
+              <view class="delivery-list-title">
+                <label class="default address-label" wx:if="{{item.is_default == 1}}">默认</label>
+                <label class="support-same-city address-label" wx:if="{{item.config.intra_city == 1}}">可同城</label>
+                <label class="home address-label" wx:if="{{item.address_info.label == 0}}">家</label>
+                <label class="company address-label" wx:if="{{item.address_info.label == 2}}">公司</label>
+                <label class="school address-label" wx:if="{{item.address_info.label == 1}}">学校</label>{{item.address_info.name }} {{ item.address_info.contact }}</view>
+              <view class="delivery-list-detail">{{item.address_info.province.text + item.address_info.city.text + item.address_info.district.text + item.detail_address }}</view>
+            </view>
+            <label style="{{sameJourneyId == item.id ? ('color:'+ storeStyle.theme) : ''}}" class="delivery-check-box ico-moon icon-success-tip {{ sameJourneyId == item.id ? 'checked' : '' }}"></label>
+          </view>
+        </block>
+      </view>
+    </view>
+</view>
+<view class="new-class">
+  <block wx:if="{{from == 'preview' && addressList.length && notInRange}}">
+    <view class="bottom-delivery">
+      <view class="receipt-header no-support-header">以下地址超出配送范围</view>
+    </view>
+    <view class="delivery-list-box no-support-pick">
+      <block wx:for="{{ addressList }}" wx:key="index">
+        <view wx:if="{{item.config.intra_city != 1}}" class="delivery-list" style="padding-left:30rpx;">
+          <text class="ico-moon icon-goods-location"></text>
+          <view class="delivery-list-content" style="width:600rpx;">
+            <view class="delivery-list-title">
+              <label class="address-label" wx:if="{{item.is_default == 1}}">默认</label>
+              <label class="address-label" wx:if="{{item.address_info.label == 0}}">家</label>
+              <label class="address-label" wx:if="{{item.address_info.label == 2}}">公司</label>
+              <label class="address-label" wx:if="{{item.address_info.label == 1}}">学校</label>{{item.address_info.name }} {{ item.address_info.contact }}</view>
+            <view class="delivery-list-detail" style="margin-right:0">{{item.address_info.province.text + item.address_info.city.text + item.address_info.district.text + item.detail_address }}</view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </block>
+</view>
+<view class="same-journey-null" wx:if="{{!addressList.length}}">
+  <image src="http://cdn.jisuapp.cn/static/webapp/images/xcx-goods/same-journey-null.png"></image>
+  <view catchtap="opratAddress">暂无收货地址,
+    <text style="{{storeStyle.theme ? 'color:' + storeStyle.theme : 'color:' + '#ff7100'}}">去添加地址</text>
+  </view>
+</view>
+<view class="sure-delivery" catchtap="opratAddress">
+  <text class="sure-button" style="{{'background:' + storeStyle.theme}}">管理收货地址</text>
+</view>

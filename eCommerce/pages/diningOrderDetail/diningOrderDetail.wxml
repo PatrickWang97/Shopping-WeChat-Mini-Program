@@ -1,0 +1,1033 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-memberDiscount id="component-memberDiscount" discountType="{{ pageData.discountList }}"
+bind:afterSelectedDiscount="afterSelectedBenefit"></component-memberDiscount>
+<wxs module="dateTrans">
+  var toFix = function(a) {
+    var b = a.toFixed(2)
+    return b;
+  }
+  module.exports.toFix = toFix;
+</wxs>
+<view class='dining-wrapper'>
+  <view class='order-bg-wrapper'>
+    <view class='order-bg-pic'></view>
+    <view class='dining-notice' wx:if='{{showNoticeModal}}' hidden='{{pageData.ec_dining_data.take_meal_type == 2}}'>
+      <text class='ico-moon icon-community-report dining-notice-icon'></text>
+      <text>您已下单成功，请不要轻易换桌！</text>
+      <text class='ico-moon icon-closes dining-notice-close' catchtap='showNoticeModalFn'></text>
+    </view>
+    <view class='dining-order-status  flex-between' style='padding-top:{{showNoticeModal?"50":"40"}}rpx;'>
+      <block wx:if='{{pageData.account_type == 1 && !changeOrder}}'>
+        <view class='order-info' wx:if='{{pageData.orderInfo.status==0}}'>
+          <view class='order-info-title' catchtap='goOrderProgress'>
+            <text>待付款</text>
+            <text class='ico-moon icon-rightarrow' style='font-size:32rpx;margin-left:10rpx;color:#fff;'></text>
+          </view>
+          <text class='order-info-tips'>20分钟内未付款，将自动取消订单</text>
+        </view>
+        <view class='order-info' wx:elif='{{pageData.orderInfo.status==3}}'>
+          <view class='order-info-title' catchtap='goOrderProgress'>
+            <text>待评价</text>
+            <text class='ico-moon icon-rightarrow' style='font-size:32rpx;margin-left:10rpx;color:#fff;'></text>
+          </view>
+          <text class='order-info-tips' wx:if='{{pageData.ec_dining_data.duration_time>0}}'>预计等待{{pageData.ec_dining_data.duration_time}}分钟</text>
+        </view>
+        <view class='order-info' wx:elif='{{pageData.orderInfo.status==6}}'>
+          <view class='order-info-title' catchtap='goOrderProgress'>
+            <text>已完成</text>
+            <text class='ico-moon icon-rightarrow' style='font-size:32rpx;margin-left:10rpx;color:#fff;'></text>
+          </view>
+        </view>
+        <view class='order-info' wx:elif='{{pageData.orderInfo.status==7}}'>
+          <view class='order-info-title' catchtap='goOrderProgress'>
+            <text>已关闭</text>
+            <text class='ico-moon icon-rightarrow' style='font-size:32rpx;margin-left:10rpx;color:#fff;'></text>
+          </view>
+        </view>
+        <view class='order-info' wx:elif='{{pageData.orderInfo.status==8}}'>
+          <view class='order-info-title' catchtap='goOrderProgress'>
+            <text>待商家接单</text>
+            <text class='ico-moon icon-rightarrow' style='font-size:32rpx;margin-left:10rpx;color:#fff;'></text>
+          </view>
+          <text class='order-info-tips'>15分钟内商家未接单，将自动取消订单</text>
+        </view>
+        <!-- 订单按钮 先付后吃 -->
+        <view class='order-operate-box' style="margin-right: 30rpx;">
+          <view class='order-operate ' wx:if='{{pageData.orderInfo.status==6 || pageData.orderInfo.status == 3 || pageData.orderInfo.status == 7}}' catchtap='orderDelete'>
+            删除订单</view>
+          <block wx:if='{{pageData.orderInfo.status == 0}}'>
+            <form bindsubmit="goPayOrder" report-submit="true">
+              <button formType="submit" class='order-operate change' style='height:56rpx;'>
+                <label>立即支付</label>
+              </button>
+            </form>
+          </block>
+          <block wx:if='{{pageData.orderInfo.status == 3}}'>
+            <form bindsubmit="turnToComment" report-submit="true" data-id='{{orderId}}'>
+              <button formType="submit" class='order-operate change'>
+                <label>立即评价</label>
+              </button>
+            </form>
+          </block>
+          <view class='order-operate change' wx:if='{{pageData.ec_dining_data.has_reduce_dishes}}' catchtap='turnToRufundDish'>
+            退款详情</view>
+        </view>
+      </block>
+      <block wx:if='{{pageData.account_type == 2 && !changeOrder && !showBenefitInfo}}'>
+        <view class='order-info' wx:if='{{pageData.orderInfo.status==0}}'>
+          <view class='order-info-title' catchtap='goOrderProgress'>
+            <text>待付款</text>
+            <text class='ico-moon icon-rightarrow' style='font-size:32rpx;margin-left:10rpx;color:#fff;'></text>
+          </view>
+        </view>
+        <view class='order-info' wx:if='{{pageData.orderInfo.status==17}}'>
+          <view class='order-info-title' catchtap='goOrderProgress'>
+            <text>已下单</text>
+            <text class='ico-moon icon-rightarrow' style='font-size:32rpx;margin-left:10rpx;color:#fff;'></text>
+          </view>
+          <text class='order-info-tips' wx:if='{{pageData.ec_dining_data.duration_time>0}}'>预计等待{{pageData.ec_dining_data.duration_time}}分钟</text>
+        </view>
+        <view class='order-info' wx:elif='{{pageData.orderInfo.status==16}}'>
+          <view class='order-info-title' catchtap='goOrderProgress'>
+            <text>待商家接单</text>
+            <text class='ico-moon icon-rightarrow' style='font-size:32rpx;margin-left:10rpx;color:#fff;'></text>
+          </view>
+          <text class='order-info-tips'>15分钟内商家未接单，将自动取消订单</text>
+        </view>
+        <view class='order-info' wx:elif='{{pageData.orderInfo.status==7}}'>
+          <view class='order-info-title' catchtap='goOrderProgress'>
+            <text>已关闭</text>
+            <text class='ico-moon icon-rightarrow' style='font-size:32rpx;margin-left:10rpx;color:#fff;'></text>
+          </view>
+        </view>
+        <view class='order-info' wx:elif='{{pageData.orderInfo.status==3}}'>
+          <view class='order-info-title' catchtap='goOrderProgress'>
+            <text>待评价</text>
+            <text class='ico-moon icon-rightarrow' style='font-size:32rpx;margin-left:10rpx;color:#fff;'></text>
+          </view>
+        </view>
+        <view class='order-info' wx:elif='{{pageData.orderInfo.status==6}}'>
+          <view class='order-info-title' catchtap='goOrderProgress'>
+            <text>已完成</text>
+            <text class='ico-moon icon-rightarrow' style='font-size:32rpx;margin-left:10rpx;color:#fff;'></text>
+          </view>
+        </view>
+        <!-- 订单按钮 先吃后付 -->
+        <view class='order-operate-box' style="margin-right:{{pageData.orderInfo.status == 17 && pageData.allow_add_dish ? '0':'30'}}rpx;">
+          <view class='order-operate showMoreBtn' wx:if='{{showBtnNum == 3}}' catchtap='showMoreBtn'>
+            <view>
+              <text>更多</text>
+              <text class='ico-moon {{showMoreBtn?"icon-uparrow":"icon-downarrow"}}' style='font-size:24rpx;margin-left:10rpx;'></text>
+            </view>
+            <view class='moreBtn-box' hidden='{{!showMoreBtn}}'>
+              <view style='color:#FE782F;' wx:if='{{pageData.orderInfo.status== 17}}' catchtap='changeDiningOrder'>修改订单
+              </view>
+              <view wx:if='{{pageData.orderInfo.status == 0 || pageData.orderInfo.status== 17 }}' style='height:56rpx;top:120rpx;color:#FE782F;' catchtap='{{pageData.orderInfo.status == 0 ? "goPayOrder" : "showBenefitInfo"}}' hidden='{{!pageData.allow_app_account}}'>立即支付</view>
+              <view style='color:#FE782F;' wx:if='{{pageData.orderInfo.status == 3}}' data-id='{{orderId}}' catchtap='turnToComment'>
+                立即评价</view>
+            </view>
+          </view>
+           <block  wx:if='{{pageData.orderInfo.status == 17 && showBtnNum !=3}}'>
+            <form bindsubmit="changeDiningOrder" report-submit="true">
+              <button formType="submit" class='order-operate'>
+                <label>修改订单</label>
+              </button>
+            </form>
+          </block>
+          <view class='order-operate change' wx:if='{{pageData.ec_dining_data.has_reduce_dishes}}' catchtap='turnToRufundDish'>退菜详情</view>
+          <view class='order-operate ' wx:if='{{pageData.orderInfo.status == 6 || pageData.orderInfo.status == 3 || pageData.orderInfo.status== 7}}' catchtap='orderDelete'>
+            删除订单</view>
+          <block  wx:if='{{pageData.orderInfo.status == 0 || pageData.orderInfo.status== 17  && showBtnNum!=3 && pageData.allow_app_account}}' >
+            <form bindsubmit="{{pageData.orderInfo.status == 0 ? 'goPayOrder' : 'showBenefitInfo'}}" report-submit="true">
+              <button formType="submit" class='order-operate change' style='height:56rpx;'>
+                <label>立即支付</label>
+              </button>
+            </form>
+          </block>
+           <block  wx:if='{{pageData.orderInfo.status == 3 && showBtnNum != 3}}' >
+            <form bindsubmit="turnToComment" report-submit="true" data-id='{{orderId}}'>
+              <button formType="submit" class='order-operate' style='height:56rpx;'>
+                <label>立即评价</label>
+              </button>
+            </form>
+          </block>
+          <block  wx:if='{{pageData.orderInfo.status == 17 && pageData.allow_add_dish}}'>
+            <form bindsubmit="turnToAddDish" report-submit="true">
+              <button formType="submit" class='order-operate change'>
+                <label>加菜</label>
+              </button>
+            </form>
+          </block>
+          <view class='order-operate cancel' wx:if='{{pageData.orderInfo.status == 16 || pageData.orderInfo.status == 8 }}' catchtap='orderCancel'>取消订单
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+  <!-- 座号 -->
+  <view class='eating-place-wrapper' style='margin-top:{{changeOrder || showBenefitInfo?"-160":"-100"}}rpx;'>
+    <view class='half-shadow' style='left: 0rpx;'></view>
+    <view class='half-shadow' style='right: -60rpx;'></view>
+    <view class='eating-type flex-between'>
+      <view>{{pageData.ec_dining_data.dining_mode == 1 ? '堂食':'打包'}}</view>
+      <view style='font-weight:bold;color:#333;font-size:28rpx;'>
+        {{pageData.ec_dining_data.take_meal_type == 1 ? '送餐到桌':'前台自取'}}
+      </view>
+    </view>
+    <view class='eating-place-num'>
+      <view class='eating-num-item'>
+        <view style='font-size:68rpx;'
+          class='ellipsis {{pageData.ec_dining_data.take_meal_type == 2 ?"max_width":"limit_width"}}'>
+          {{pageData.ec_dining_data.formatted_queue_num||'------'}}</view>
+        <view style='color:#666;'>流水号</view>
+      </view>
+      <view class='eating-num-item' wx:if='{{pageData.location_id}}'>
+        <view style='font-size:68rpx;' class='ellipsis limit_width'>{{pageData.ec_dining_data.location_name||'------'}}
+        </view>
+        <view style='color:#666;'>桌号</view>
+      </view>
+    </view>
+    <view class='eating-info-detail'>
+      <view class='flex-between' style='{{!pageData.orderInfo.remark && !hasAdditionalInfo ? "":"margin-bottom:20rpx;"}}'>
+        <view style='color:#999;'>就餐人数</view>
+        <picker class='eating-picker' bindchange='changeCustomNum' range='{{customNumArr}}' wx:if='{{changeOrder}}'>
+          <text style='font-weight:bold;'>{{pageData.people_num || 1}}人</text>
+          <text class='ico-moon icon-rightarrow icon-right'></text>
+        </picker>
+        <view wx:if='{{!changeOrder}}'>{{pageData.people_num}}人</view>
+      </view>
+      <view class='flex-between' style='{{!hasAdditionalInfo?"":"margin-bottom:20rpx;"}}'  hidden='{{!pageData.orderInfo.remark}}'>
+        <view style='color:#999;'>订单备注</view>
+        <view>{{pageData.orderInfo.remark||'无'}}</view>
+      </view>
+      <view class='flex-between' catchtap='goToAdditionalInfo' wx:if='{{hasAdditionalInfo}}'>
+        <view style='color:#999;'>补充信息</view>
+        <text class='ico-moon icon-rightarrow icon-right'></text>
+      </view>
+    </view>
+  </view>
+  <!-- 订单详情 -->
+<view class='dining-shop-box'>
+    <view class='dining-shop flex-between'>
+      <text style='font-size:28rpx;font-weight:bold;'>{{app_store_data.title}}</text>
+      <text class='ico-moon icon-fn-phone icon-right' style='font-size:44rpx;'
+        data-phone='{{app_store_data.contact_phone}}' catchtap='callPhone'></text>
+    </view>
+  </view>
+  <!-- 商品列表 -->
+  <view class='order-info-wrapper'>
+    <view style='height:{{pageData.goodsSum < 4|| showMoreGoods ? "":"236rpx"}};overflow:hidden;'>
+      <view class='order-info-box' wx:for='{{pageData.diningOrderList}}' wx:key="index" wx:for-item='orderData' wx:for-index='order_index'>
+        <block wx:for='{{orderData.child_form_data}}' wx:key="index" wx:for-index='key' wx:for-item='item'>
+          <view class='custom-info-wrapper flex-between'>
+            <view class='flex-between'>
+              <view class='custom-info' wx:if='{{orderData.from_admin == 1}}'>
+                <image src='http://cdn.jisuapp.cn/static/webapp/images/xcx-dining/default.png'></image>
+              </view>
+              <view class='custom-info' wx:elif='{{orderData.from_admin == 0}}'>
+                <image src='{{item.buyer_info.cover_thumb}}'></image>
+              </view>
+              <text class='custom-name'
+                data-id='{{item.buyer_info.buyer_id}}'>{{item.buyer_info.nickname }}{{item.buyer_info.buyer_id == userToken ? "（我）":""}}{{orderData.from_admin == 1 ? "（商家）":""}}</text>
+            </view>
+            <text class='custom-selected'>{{orderData.add_time}}</text>
+          </view>
+          <view class='goods-info-wrapper'>
+            <block wx:for='{{item.goods_list}}' wx:key="index" wx:for-index='index' wx:for-item='goods'>
+              <view wx:if='{{goods.reduced_num}}' style="margin-bottom:{{index != item.goods_list.length -1 ? '10rpx':'0;border-bottom:0;'}};">
+                <view class='goods-info-item' 
+                style='{{goods.is_package_goods == 1 || goods.attributes_id != 0 ||  index == 0 && pageData.goodsSum >3 && !showMoreGoods ? "border-bottom:0;padding-bottom:0;":"padding-bottom:20rpx;"}}'>
+                  <view class='goods-image'>
+                    <image src='{{goods.cover}}' mode='aspectFill'></image>
+                  </view>
+                  <view class='goods-detail'>
+                    <view class='flex-between'>
+                      <view style='max-width:400rpx;' class='ellipsis'>
+                        <text class='goods-special' wx:if='{{goods.max_can_use_integral > 0}}'>积</text>
+                        <text class='goods-special' wx:if='{{goods.is_seckill == 1}}'>秒杀</text>
+                        <text class='goods-name' style='text-decoration:line-through;'>{{goods.goods_name}}</text>
+                      </view>
+                      <text class='goods-status2' wx:if='{{orderData.status == 10}}'>已拒绝</text>
+                      <!-- <text class='goods-status2' wx:elif='{{orderData.status == 40}}'>已关闭</text> -->
+                      <text class='goods-status2' wx:elif='{{orderData.status == 0||orderData.status == 20||orderData.status == 30||orderData.status == 40}}'>{{pageData.account_type == 1  ?"已退款":"已退菜"}}</text>
+                    </view>
+                    <view class='goods-type' wx:if='{{goods.model_value_str}}'>
+                      <view class='type-size ellipsis'>{{goods.model_value_str}}</view>
+                    </view>
+                    <view class='goods-price flex-between'>
+                      <view class='price-box'>
+                        <text class='priceNow'><text style='font-size:20rpx;'>¥</text>{{goods.price}}</text>
+                        <!-- <text class='priceNow'><text style='font-size:20rpx;'>¥</text>{{ pageData.orderInfo.is_vip_order == 1 && goods.is_vip_goods ? goods.vip_price : goods.price}}</text>
+                        <text class='dinning_vip_tips' wx:if="{{ pageData.orderInfo.is_vip_order == 1 && goods.is_vip_goods}}">会员价</text> -->
+                        <text class='priceBefore' wx:if='{{!pageData.orderInfo}}'><text
+                            style='font-size:20rpx;'>¥</text>{{goods.virtual_price || 0}}</text>
+                      </view>
+                      <view style='color:#999;font-size:24rpx;'>
+                        x {{goods.reduced_num}}
+                      </view>
+                    </view>
+                  </view>
+                </view>
+                <!-- 餐饮3.0 新增商品属性 -->
+                <view class="goods-attributes-wrap" wx:if="{{goods.is_package_goods != 1 && goods.attributes_id &&goods.attributes_id != 0}}">
+                  <view class="goods-attributes-item" wx:for="{{goods.attributes}}" wx:key="index" wx:for-item="attributes" style='text-decoration:line-through;'>
+                    <view>
+                      <text>{{attributes.name}}：</text>
+                      <view wx:for="{{attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;text-decoration:line-through;">
+                        <text>{{elem.name}}</text><text class="attributes-add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                        <text wx:if="{{elem_index != attributes.elem.length -1}}">，</text>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+                <!-- 餐饮3.0 新增套餐 -->
+                <view class="package-info-wrap" wx:if="{{goods.is_package_goods == 1}}"  style="max-height:{{goods.showPackageInfo?'auto':''}};">
+                  <view class="package-info-content" hidden='{{!goods.showPackageInfo}}'>
+                    <view class="package-info-item" wx:for="{{goods.package_goods}}" wx:key="index" wx:for-item="package">
+                      <view class="package-info-l">
+                        <block wx:if="{{package.is_require == 1 && package.is_multi_select == 1 && package.selected_num >= package.min_sales_nums && package.selected_num > 1}}" style='text-decoration:line-through;'>
+                          <view class="package-info-title" style='text-decoration:line-through;'>
+                            <view style="display:inline-block;">
+                              <text class="package-info-require" wx:if="{{package.is_require == 1}}">必</text>
+                              <text class="package-info-require" wx:if="{{package.is_require == 1}}">标配</text>
+                              <text class="package-info-name">{{package.title}}</text>
+                            </view>
+                            <text class="package-info-num">x{{package.min_sales_nums}}</text>
+                          </view>
+                          <view class="package-info-model">
+                              <text wx:if="{{package.model_name}}" style='text-decoration:line-through;'>{{package.model_name}}</text>
+                              <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}" style='text-decoration:line-through;'>+¥{{elem.price}}</text>
+                          </view>
+                          <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                            <text style='text-decoration:line-through;'>{{_attributes.name}} : </text>
+                            <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem"  wx:for-index="elem_index" style="display:inline-block;">
+                              <text style='text-decoration:line-through;'>{{elem.name}}</text>
+                              <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}" style='text-decoration:line-through;'>+¥{{elem.price}}</text>
+                              <text wx:if="{{elem_index != _attributes.elem.length -1}}">，</text>
+                            </view>
+                          </view>
+                          <block wx:if="{{package.selected_num - package.min_sales_nums > 0}}">
+                            <view class="package-info-title" style='text-decoration:line-through;'>
+                              <view>
+                                <text class="package-info-name" style='text-decoration:line-through;'>{{package.title}}</text>
+                              </view>
+                              <view>
+                                <text class="package-info-add_price" wx:if="{{package.added_price > 0}}">+¥{{package.added_price}}</text>
+                                <text class="package-info-num">x{{package.selected_num - package.min_sales_nums}}</text>
+                              </view>
+                            </view>
+                            <view class="package-info-model">
+                                <text wx:if="{{package.model_name}}" style='text-decoration:line-through;'>{{package.model_name}}</text>
+                                <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}" style='text-decoration:line-through;'>+¥{{elem.price}}</text>
+                            </view>
+                            <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                              <text style='text-decoration:line-through;'>{{_attributes.name}} : </text>
+                              <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem"  wx:for-index="elem_index" style="display:inline-block;">
+                                <text style='text-decoration:line-through;'>{{elem.name}}</text>
+                                <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}" style='text-decoration:line-through;'>+¥{{elem.price}}</text>
+                                <text wx:if="{{elem_index != _attributes.elem.length -1}}">，</text>
+                              </view>
+                            </view>
+                          </block>
+                        </block>
+                        <block wx:else>
+                          <view class="package-info-title" style='text-decoration:line-through;'>
+                            <view style="display: flex;">
+                              <text class="package-info-require" wx:if="{{package.is_require == 1}}">必</text>
+                              <text class="package-info-require" wx:if="{{package.is_require == 1}}">标配</text>
+                              <text class="package-info-name">{{package.title}}</text>
+                            </view>
+                            <view>
+                              <text class="package-info-add_price" wx:if="{{package.added_price > 0}}">+¥{{package.added_price}}</text>
+                              <text class="package-info-num">x{{package.selected_num}}</text>
+                            </view>
+                          </view>
+                          <view class="package-info-model">
+                            <text wx:if="{{package.model_name}}" style='text-decoration:line-through;'>{{package.model_name}}</text>
+                            <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}" style='text-decoration:line-through;'>+¥{{elem.price}}</text>
+                          </view>
+                          <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                            <text style='text-decoration:line-through;'>{{_attributes.name}} : </text>
+                            <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem"  wx:for-index="elem_index" style="display:inline-block;">
+                              <text style='text-decoration:line-through;'>{{elem.name}}</text>
+                              <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}" style='text-decoration:line-through;'>+¥{{elem.price}}</text>
+                              <text wx:if="{{elem_index != _attributes.elem.length -1}}">，</text>
+                            </view>
+                          </view>
+                        </block>
+                      </view>
+                    </view>
+                  </view>
+                  <view class='goods-showMore' style="{{order_index == pageData.diningOrderList.length - 1 ? 'border-bottom:0;':''}}">
+                    <view class='package-info' hidden='{{goods.showPackageInfo}}' data-index='{{order_index}}' data-sub-index='{{key}}' data-child-index='{{index}}' data-status='1' catchtap='showPackageInfoFn' style="{{ 'color:' + storeStyle.theme }}">
+                      展开套餐明细
+                      <text class='ico-moon icon-downarrow package-info-icon'></text>
+                    </view>
+                    <view class='package-info' hidden='{{!goods.showPackageInfo}}' data-index='{{order_index}}' data-sub-index='{{key}}' data-child-index='{{index}}' data-status='0' catchtap='showPackageInfoFn' style="{{ 'color:' + storeStyle.theme }}">
+                      收起
+                      <text class='ico-moon icon-uparrow package-info-icon'></text>
+                    </view>
+                  </view>
+                </view>
+              </view>
+              <view wx:if='{{goods.num}}' style="margin-bottom:{{index != item.goods_list.length -1 ? '10rpx':'0;border-bottom:0;'}};">
+                <view class='goods-info-item' 
+                  style='{{goods.is_package_goods || goods.attributes_id != 0 || index == 0 && pageData.goodsSum >3 && !showMoreGoods ? "border-bottom:0;padding-bottom:0;":"padding-bottom:20rpx;"}}'>
+                  <view class='goods-image'>
+                    <image src='{{goods.cover}}' mode='aspectFill'></image>
+                  </view>
+                  <view class='goods-detail'>
+                    <view class='flex-between'>
+                      <view style='max-width:400rpx;' class='ellipsis'>
+                        <text class='goods-special' wx:if='{{goods.max_can_use_integral > 0}}'>积</text>
+                        <text class='goods-special' wx:if='{{goods.is_seckill == 1}}'>秒杀</text>
+                        <text class='goods-name'>{{goods.goods_name}}</text>
+                      </view>
+                      <text class='goods-status3' wx:if='{{orderData.status == 20||orderData.status == 30}}'>已出厨</text>
+                    </view>
+                    <view class='goods-type' wx:if='{{goods.model_value_str}}'>
+                        <view class='type-taste ellipsis'>{{goods.model_value_str}}</view>
+                    </view>
+                    <view class='goods-price flex-between'>
+                      <view class='price-box'>
+                        <text class='priceNow'><text style='font-size:20rpx;'>¥</text>{{goods.price}}</text>
+                        <!-- <text class='priceNow'><text style='font-size:20rpx;'>¥</text>{{ pageData.orderInfo.is_vip_order == 1 && goods.is_vip_goods ? goods.vip_price : goods.price}}</text>
+                        <text class='dinning_vip_tips' wx:if="{{ pageData.orderInfo.is_vip_order == 1 && goods.is_vip_goods}}">会员价</text> -->
+                        <text class='priceBefore' wx:if='{{!pageData.orderInfo}}'><text
+                            style='font-size:20rpx;'>¥</text>{{goods.virtual_price || 0}}</text>
+                      </view>
+                      <view class='calculate-wrapper' wx:if='{{!pageData.orderInfo}}'>
+                        <view class='calculate-sub' catchtap='subGoods' data-key='{{key}}' data-index='{{index}}'
+                          data-value='{{goods.goodsNum}}'>-</view>
+                        <view class='calculate-num'>{{goods.goodsNum}}</view>
+                        <view class='calculate-add' catchtap='addGoods' data-key='{{key}}' data-index='{{index}}'
+                          data-value='{{goods.goodsNum}}'>+</view>
+                      </view>
+                      <view style='color:#999;font-size:24rpx;' wx:if='{{pageData.orderInfo}}'>
+                        x {{goods.num}}
+                      </view>
+                    </view>
+                  </view>
+                </view>
+                <!-- 餐饮3.0 新增商品属性 -->
+                <view class="goods-attributes-wrap" wx:if="{{goods.is_package_goods != 1 && goods.attributes_id &&goods.attributes_id != 0}}" >
+                  <view class="goods-attributes-item" wx:for="{{goods.attributes}}" wx:key="index" wx:for-item="attributes">
+                    <view>
+                      <text>{{attributes.name}}：</text>
+                      <view wx:for="{{attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                        <text>{{elem.name}}</text><text class="attributes-add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                        <text wx:if="{{elem_index != attributes.elem.length -1}}">，</text>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+                <!-- 餐饮3.0 新增套餐 -->
+                <view class="package-info-wrap" wx:if="{{goods.is_package_goods == 1}}"  style="max-height:{{goods.showPackageInfo?'auto':''}};">
+                  <view class="package-info-content" hidden='{{!goods.showPackageInfo}}'>
+                    <view class="package-info-item" wx:for="{{goods.package_goods}}" wx:key="index" wx:for-item="package">
+                      <view class="package-info-l">
+                        <block wx:if="{{package.is_require  == 1 && package.is_multi_select == 1 && package.selected_num >= package.min_sales_nums && package.selected_num > 1}}">
+                          <view class="package-info-title">
+                            <view style="display:inline-block;">
+                              <text class="package-info-require" wx:if="{{package.is_require == 1}}">必</text>
+                              <text class="package-info-require" wx:if="{{package.is_require == 1}}">标配</text>
+                              <text class="package-info-name">{{package.title}}</text>
+                            </view>
+                            <text class="package-info-num">x{{package.min_sales_nums}}</text>
+                          </view>
+                          <view class="package-info-model">
+                              <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                              <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                          </view>
+                          <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                            <text>{{_attributes.name}} : </text>
+                            <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem"  wx:for-index="elem_index" style="display:inline-block;">
+                              <text>{{elem.name}}</text>
+                              <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                              <text wx:if="{{elem_index != _attributes.elem.length -1}}">，</text>
+                            </view>
+                          </view>
+                          <block wx:if="{{package.selected_num - package.min_sales_nums > 0}}">
+                            <view class="package-info-title">
+                              <view>
+                                <text class="package-info-name">{{package.title}}</text>
+                              </view>
+                              <view>
+                                <text class="package-info-add_price" wx:if="{{package.added_price > 0}}">+¥{{package.added_price}}</text>
+                                <text class="package-info-num">x{{package.selected_num - package.min_sales_nums}}</text>
+                              </view>
+                            </view>
+                            <view class="package-info-model">
+                                <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                                <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                            </view>
+                            <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                              <text>{{_attributes.name}} : </text>
+                              <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem"  wx:for-index="elem_index" style="display:inline-block;">
+                                <text>{{elem.name}}</text>
+                                <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                                <text wx:if="{{elem_index != _attributes.elem.length -1}}">，</text>
+                              </view>
+                            </view>
+                          </block>
+                        </block>
+                        <block wx:else>
+                          <view class="package-info-title">
+                            <view>
+                              <text class="package-info-require" wx:if="{{package.is_require == 1}}">必</text>
+                              <text class="package-info-require" wx:if="{{package.is_require == 1}}">标配</text>
+                              <text class="package-info-name">{{package.title}}</text>
+                            </view>
+                            <view>
+                              <text class="package-info-add_price" wx:if="{{package.added_price > 0}}">+¥{{package.added_price}}</text>
+                              <text class="package-info-num">x{{package.selected_num}}</text>
+                            </view>
+                          </view>
+                          <view class="package-info-model">
+                            <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                            <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                          </view>
+                          <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                            <text>{{_attributes.name}} : </text>
+                            <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem"  wx:for-index="elem_index" style="display:inline-block;">
+                              <text>{{elem.name}}</text>
+                              <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                              <text wx:if="{{elem_index != _attributes.elem.length -1}}">，</text>
+                            </view>
+                          </view>
+                        </block>
+                      </view>
+                    </view>
+                  </view>
+                  <view class='goods-showMore' style="{{order_index == pageData.diningOrderList.length - 1 ? 'border-bottom:0;':''}}">
+                    <view class='package-info' hidden='{{goods.showPackageInfo}}' data-index='{{order_index}}' data-sub-index='{{key}}' data-child-index='{{index}}' data-status='1' catchtap='showPackageInfoFn' style="{{ 'color:' + storeStyle.theme }}">
+                      展开套餐明细
+                      <text class='ico-moon icon-downarrow package-info-icon'></text>
+                    </view>
+                    <view class='package-info' hidden='{{!goods.showPackageInfo}}' data-index='{{order_index}}' data-sub-index='{{key}}' data-child-index='{{index}}' data-status='0' catchtap='showPackageInfoFn' style="{{ 'color:' + storeStyle.theme }}">
+                      收起
+                      <text class='ico-moon icon-uparrow package-info-icon'></text>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </block>
+          </view>
+        </block>
+      </view>
+    </view>
+    <view class='goods-showMoreGoods' wx:if='{{pageData.goodsSum >3}}'>
+      <view class='goods-more' hidden='{{showMoreGoods}}' catchtap='showMoreGoods'>
+        展开更多
+        <text class='ico-moon icon-downarrow'></text>
+      </view>
+      <view class='goods-more' hidden='{{!showMoreGoods}}' catchtap='showMoreGoods'>
+        点击收起
+        <text class='ico-moon icon-uparrow'></text>
+      </view>
+    </view>
+    <view class='goods-voucher' wx:if="{{ exchangeCouponData.hasSelectGoods && !exchangeCouponData.selectModelInfo.is_refunded }}">
+        <view class='goods-image'>
+          <image src='{{exchangeCouponData.goodsInfo.cover}}' mode='aspectFill'></image>
+        </view>
+        <view class='goods-detail'>
+          <view class='flex-between'>
+            <view style='max-width:400rpx;' class='ellipsis'>
+              <text class='goods-special'>赠品</text>
+              <text class='goods-name'>{{exchangeCouponData.goodsInfo.title}}</text>
+            </view>
+          </view>
+          <view class='goods-type' wx:if='{{goods.model_value_str}}'>
+            <view class='type-taste ellipsis'>{{goods.model_value_str}}</view>
+          </view>
+          <view style='text-align: right;'>x1</view>
+        </view>
+      </view>
+    <view class='other-price-wrapper' style='margin-bottom:{{showBenefitInfo?"20rpx":""}};'>
+      <view class='other-price-item flex-between' hidden='{{pageData.tissue_fee == 0}}'>
+        <text>纸巾费</text>
+        <text>¥{{pageData.tissue_fee}}</text>
+      </view>
+      <view class='other-price-item flex-between' wx:if='{{pageData.ec_dining_data.dining_mode == 1}}'
+        hidden='{{pageData.server_fee == 0}}'>
+        <text>服务费</text>
+        <text>¥{{pageData.server_fee}}</text>
+      </view>
+      <view class='other-price-item flex-between' wx:elif='{{pageData.ec_dining_data.dining_mode == 2}}'
+        hidden='{{pageData.box_fee == 0}}'>
+        <text>包装费</text>
+        <text>¥{{pageData.box_fee}}</text>
+      </view>
+      <view class='discounted-item flex-between' wx:if="{{pageData.orderInfo.has_seckill == 1}}">
+        <view class='discounted-item-detail'>
+          <text style='font-size:24rpx;'>秒杀优惠</text>
+        </view>
+        <text>-¥{{pageData.orderInfo.seckill_cut_price}}</text>
+      </view>
+      <view class='discounted-item flex-between'>
+        <view class='discounted-item-detail'>
+          <text style='font-size:24rpx;'>商品金额</text>
+        </view>
+        <text>¥{{pageData.original_price}}</text>
+      </view>
+      <view class='discounted-item flex-between' wx:if="{{pageData.orderInfo.admin_selected_benefit}}">
+          <view class='discounted-item-detail'>
+            <text style='font-size:24rpx;'>商家优惠</text>
+          </view>
+          <text>-¥{{pageData.orderInfo.admin_selected_benefit.discount_cut_price}}</text>
+        </view>
+      <view class='discounted-item flex-between' wx:if='{{ pageData.orderInfo.status == 0 && pageData.orderInfo.settlement_activity && pageData.orderInfo.settlement_activity.item_price > 0 }}'>
+        <view class='discounted-item-detail'>
+          <text style='font-size:24rpx;'>{{ pageData.orderInfo.settlement_activity.marketing_type == 1 ? '储值充值' : '付费会员卡' }}</text>
+        </view>
+        <text>¥{{ pageData.orderInfo.settlement_activity.item_price }}</text>
+      </view>
+      <block wx:if='{{pageData.account_type==1}}' hidden='{{pageData.orderInfo.status == 7}}'>
+        <view class='discounted-item flex-between' wx:if='{{pageData.show_benefit_info}}'>
+          <view class='discounted-item-detail'>
+            <text class='other-type'>优惠</text>
+            <text style='font-size:24rpx;'>{{pageData.orderInfo.selected_benefit_info.name}}</text>
+          </view>
+          <text style='color:#ff7100;'>-¥{{pageData.orderInfo.discount_cut_price}}</text>
+        </view>
+        <view class='discounted-item flex-between' wx:if='{{pageData.orderInfo.extra_selected_benefit_info.title}}'>
+          <view class='discounted-item-detail'>
+            <text class='other-type'>联盟优惠</text>
+            <text style='font-size:24rpx;max-width: 350rpx;display: inline-block;'>{{pageData.orderInfo.extra_selected_benefit_info.name}}</text>
+          </view>
+          <text style='color:#ff7100;'>-¥{{pageData.orderInfo.extra_discount_cut_price}}</text>
+        </view>
+        <view class='discounted-item flex-between' wx:if='{{ pageData.orderInfo.settlement_activity && pageData.orderInfo.settlement_activity.discount_cut_price > 0 }}'>
+          <view class='discounted-item-detail'>
+            <text class='other-type'>优惠</text>
+            <text style='font-size:24rpx;'>支付有礼</text>
+          </view>
+          <text style='color:#ff7100;'>-¥{{ pageData.orderInfo.settlement_activity.discount_cut_price }}</text>
+        </view>
+        <view class='discounted-item flex-between' wx:if='{{pageData.orderInfo.use_balance>0}}'>
+          <view class='discounted-item-detail'>
+            <text class='other-type'>储值</text>
+            <text style='font-size:24rpx;'>储值优惠</text>
+          </view>
+          <text style='color:#ff7100;'>-¥{{pageData.orderInfo.use_balance}}</text>
+        </view>
+      </block>
+      <block
+        wx:elif='{{pageData.account_type==2&&pageData.orderInfo.status==0||pageData.orderInfo.status==3||pageData.orderInfo.status==6}}'>
+        <view class='discounted-item flex-between' wx:if='{{pageData.show_benefit_info}}'>
+          <view class='discounted-item-detail'>
+            <text class='other-type'>优惠</text>
+            <text style='font-size:24rpx;'>{{pageData.orderInfo.selected_benefit_info.name}}</text>
+          </view>
+          <text style='color:#ff7100;'>-¥{{pageData.orderInfo.selected_benefit_info.discount_price}}</text>
+        </view>
+        <view class='discounted-item flex-between' wx:if='{{pageData.orderInfo.use_balance>0}}'>
+            <view class='discounted-item-detail'>
+              <text class='other-type'>储值</text>
+              <text style='font-size:24rpx;'>储值优惠</text>
+            </view>
+            <text style='color:#ff7100;'>-¥{{pageData.orderInfo.use_balance}}</text>
+          </view>
+      </block>
+      <view class='discounted-item flex-between' wx:if="{{pageData.orderInfo.is_vip_order == 1 && pageData.orderInfo.vip_cut_price != '0.00' && !showBenefitInfo && !pageData.discountList.length}}" style="padding-bottom:0;">
+        <view class='discounted-item-detail'>
+          <text class='other-type'>优惠</text>
+          <text style='font-size:24rpx;'>会员价</text>
+        </view>
+        <text style='color:#ff7100;'>-¥{{pageData.orderInfo.vip_cut_price}}</text>
+      </view>
+      <view class='discounted-item vip_goods_detail' wx:if="{{pageData.orderInfo.is_vip_order == 1 && pageData.orderInfo.vip_cut_price != '0.00' && !showBenefitInfo && !pageData.discountList.length}}" catchtap="showVipGoodsList" style="margin-bottom:20rpx;">
+        <view class="ico-moon icon-rightarrow pull-right"></view>
+        <text class="pull-right select-discount">查看详情</text>
+      </view>
+    </view>
+    <view class='payment-wrapper' wx:if='{{showBenefitInfo}}' hidden='{{!pageData.discountList.length}}'>
+      <view class='discounted-item flex-between' wx:if="{{pageData.orderInfo.is_vip_order == 1 && pageData.orderInfo.vip_cut_price != '0.00'}}" style="padding-bottom:0;padding-top:30rpx;border:none;">
+        <view class='discounted-item-detail'>
+          <text class='other-type'>优惠</text>
+          <text style='font-size:24rpx;'>会员价</text>
+        </view>
+        <text style='color:#ff7100;'>-¥{{pageData.orderInfo.vip_cut_price}}</text>
+      </view>
+      <view class='discounted-item vip_goods_detail' wx:if="{{pageData.orderInfo.is_vip_order == 1 && pageData.orderInfo.vip_cut_price != '0.00'}}" catchtap="showVipGoodsList">
+        <view class="ico-moon icon-rightarrow pull-right"></view>
+        <text class="pull-right select-discount">查看详情</text>
+      </view>
+      <view class='discounts-item flex-between' style='align-items:baseline;' catchtap='showMemberDiscount'>
+        <text>优惠方式</text>
+        <view class='discounts-type'>
+          <view class='discounts-name'>
+            <view class='ellipsis' style='max-width:400rpx;display:inline-block;'>{{pageData.selectDiscountInfo.title}}</view>
+            <text class='ico-moon icon-rightarrow icon-right'></text>
+          </view>
+          <view class='discounts-price'>-¥{{pageData.selectDiscountInfo.discount_cut_price || 0}}</view>
+        </view>
+      </view>
+    </view>
+    <!-- 使用购物卡start -->
+    <view class='payment-wrapper' wx:if='{{can_use_shopping_cards.length > 0 || cant_use_shopping_cards.length > 0}}'>
+      <view class='discounts-item flex-between' style='align-items:baseline;' catchtap='openCardDialog'>
+        <text>购物卡</text>
+        <view class='discounts-type'>
+          <view class='discounts-name'>
+            <view class='ellipsis' style='max-width:400rpx;display:inline-block;'>{{selectCardList.length > 0 ? selectCardList[0].title+'('+selectCardList.length +'张)' : '请选择购物卡'}}</view>
+            <text class='ico-moon icon-rightarrow icon-right'></text>
+          </view>
+          <view class='discounts-price' wx:if="{{selectCardList.length > 0}}">- ¥{{total_discount_cut_price}}</view>
+        </view>
+      </view>
+    </view>
+    <!-- 使用购物卡end -->
+    <view class='discounts-item flex-between' wx:if='{{showBenefitInfo && balance != 0 && !franchisee_id && selectCardList.length == 0}}' style='align-items: flex-start;'>
+      <text class='discounts-name' style='margin-top:14rpx;'>使用储值金</text>
+      <view class='discounts-type'>
+        <switch color='#FF7100' style='transform:scale(.75);margin-right:-20rpx;' checked='{{pageData.useBalance}}'
+          bindchange='useBalanceChange'>
+        </switch>
+        <view hidden="{{ !pageData.useBalance }}" class="balance-price">
+          <text class="pull-right" style="color:#FF7100;">- ¥{{ pageData.deduction }}</text>
+        </view>
+      </view>
+    </view>
+    <view class='discounts-item flex-between' wx:if='{{pageData.orderInfo.price_break_discounts_info.total_discount_price >= 0 && actIdArr.length > 0}}' style='padding: 0 24rpx 20rpx; align-items: center;'>
+      <text class='other-type'>满减满折</text>
+      <view class='discounts-type'>
+        <view class="pull-right" style="color:#FF7100;" bindtap="{{showBenefitInfo ? 'triggerPriceBreakModal' : '' }}">
+          <text wx:if="{{showBenefitInfo}}">- ¥{{ totalCutPrice }}</text>
+          <text wx:else>- ¥{{ totalCutPrice }}</text>
+          <text wx:if="{{showBenefitInfo}}" class="ico-moon icon-rightarrow" style="font-size:22rpx;"></text>
+        </view>
+      </view>
+    </view>
+    <view class='pay-settilement'>
+      <component-paySettlementGift wx:if="{{ isShowSettlementActivity && selectCardList.length == 0 }}"
+                                    bind:selected="selectedPayGift"
+                                    franchisee="{{ franchisee_id }}"
+                                    orderPrice="{{ settlementActivityFreePrice }}" ></component-paySettlementGift>
+    </view>
+    <view class='price-count-box' hidden='{{showBenefitInfo}}'>
+      <view class='price-count'>
+        <text style='color:#999;font-size:26rpx;margin-right:28rpx;'
+          wx:if='{{pageData.orderInfo.total_discount_cut_price > 0 || pageData.orderInfo.extra_discount_cut_price*1 > 0}}'>已优惠¥{{(pageData.orderInfo.total_discount_cut_price*1) + (pageData.orderInfo.extra_discount_cut_price*1 || 0) + (totalCutPrice * 1 || 0)}}元</text>
+        <text style='font-size:28rpx;vertical-align:text-bottom;'>总计:</text>
+        <text style='font-size:40rpx;color:#ff7100;'>¥{{pageData.totalPayment}}</text>
+      </view>
+    </view>
+    <!-- 订单信息 -->
+    <view class='order-baseInfo'>
+      <block wx:if="{{invoiceInfo.invoice_status == 1 || (pageData.totalPayment != 0 && pageData.orderInfo.status != 0 && isOpenInvoice)}}">
+        <view class='baseInfo-item flex-between' wx:if="{{!(pageData.account_type == 2 && (pageData.orderInfo.status == 8 || pageData.orderInfo.status == 16 || (pageData.orderInfo.status == 17 && !changeOrder))) && !hiddenInvoice}}">
+          <text style='color:#666;'>发票</text>
+          <view class="flex-status">
+            <text class="color999" wx:if="{{pageData.orderInfo.status == 7 || ((pageData.orderInfo.status == 3 || pageData.orderInfo.status == 6) && invoiceInfo.invoice_status == -1)}}">本订单未开发票</text>
+            <text class="color999" wx:elif="{{invoiceInfo.invoice_status == -1}}" bindtap="goInvoicePage">{{pageData.orderInfo.status == 8 ? '申请开票' : '不开发票'}}</text>
+            <text class="color999" wx:elif="{{invoiceInfo.invoice_status == 4}}" bindtap="patchInvoicePage" data-is-patch="{{true}}">补开发票</text>
+            <!-- <text class="color999 {{invoiceInfo.invoice_status == 3 ? 'colorF23' : ''}}" wx:elif="{{pageData.orderInfo.status == 3 || pageData.orderInfo.status == 6}}" bindtap="{{invoiceInfo.invoice_status == 1 ? 'checkInvoiceDetail' : ''}}">{{invoiceStatus[invoiceInfo.invoice_status]}}</text> -->
+            <view wx:elif="{{pageData.orderInfo.status == 3 || pageData.orderInfo.status == 6}}">
+              <block wx:if="{{invoiceInfo.invoice_status == 1}}">
+                <block wx:if="{{invoiceInfo.liberal_invoice_type == '007'}}">
+                  <view class="invoice-text">已开纸票，请联系商家领取</view>
+                </block>
+                <block wx:else>
+                  <view class="item-btn save" catchtap="saveInWeChat" data-order-id="{{orderId}}">保存到微信卡包</view>
+                  <view class="item-btn" catchtap="checkInvoice" data-order-id="{{orderId}}" data-invoice-type="{{invoiceInfo.liberal_invoice_type}}">查看发票</view>
+                </block>
+              </block>
+              <block wx:else>
+                <text class="color999 {{invoiceInfo.invoice_status == 3 ? 'colorF23' : ''}}">{{invoiceStatus[invoiceInfo.invoice_status]}}</text>
+              </block>
+            </view>
+            <text class="color999" wx:elif="{{invoiceInfo.invoice_status == 0 || invoiceInfo.invoice_status == 1 || invoiceInfo.invoice_status == 5 || !invoiceInfo.invoice_status}}" bindtap="{{invoiceInfo.invoice_status == 1 ? 'checkInvoiceDetail' : 'goInvoicePage'}}" >电子发票（{{invoiceInfo.invoice_type == 1 ? '个人' : '公司'}}）</text>
+            <text class="color999 {{invoiceInfo.invoice_status == 3 ? 'colorF23' : ''}}" wx:else>{{invoiceStatus[invoiceInfo.invoice_status]}}</text>
+            <text class="colord2d2 ico-moon icon-rightarrow" wx:if="{{invoiceInfo.invoice_status != 3 && invoiceInfo.invoice_status != 1}}"></text>
+          </view>
+        </view>
+      </block>
+      <view class='baseInfo-item flex-between'>
+        <text style='color:#666;'>下单日期</text>
+        <text style='color:#999;'>{{pageData.add_time}}</text>
+      </view>
+      <view class='baseInfo-item flex-between' wx:if='{{pageData.orderInfo.payment_time}}'>
+        <text style='color:#666;'>支付时间</text>
+        <text style='color:#999;'>{{pageData.payment_time}}</text>
+      </view>
+      <view class='baseInfo-item flex-between'>
+        <text style='color:#666;'>订单编号</text>
+        <view>
+          <text style='color:#999;'>{{orderId}}</text>
+          <text style='margin:0 20rpx;width:1px;height:20rpx;background-color:#f1f1f1;display:inline-block;'></text>
+          <text style='color:#ff7100;' catchtap='setClipboardData' data-content='{{orderId}}'>复制</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <template name="exchangeCouponUseDialog">
+    <view class="page-dialog-wrap" hidden="{{ dialogHidden }}">
+      <view class="page-bottom-dialog">
+        <view class="page-bottom-content">
+          <view class="pay-close-dialog page-dialog-close" bindtap="exchangeCouponHideDialog">×</view>
+          <view class="dialog-block-item">
+            <view class="thumb">
+              <view class="thumb-wrap">
+                <image class="pay-goods-cover" src="{{ selectModelInfo.imgurl || goodsInfo.cover }}"></image>
+              </view>
+            </view>
+            <view class="pay-goods-baseinfo">
+              <view class="pay-goods-title ellipsis">
+                <text class="gift-text">赠品</text>
+                <text class="gift-title">{{ goodsInfo.title }}</text>
+              </view>
+              <view wx:if="{{selectModelInfo.models_text}}" class="pay-checked-text clearfix ellipsis">
+                已选：{{ selectModelInfo.models_text }}</view>
+              <text class="gift-price">¥{{ selectModelInfo.price }}</text>
+            </view>
+          </view>
+          <view class="exchange-rules-box">
+            <view class="pay-goods-models">
+              <view wx:for="{{ goodsInfo.model }}" wx:key="index" wx:for-item="model" wx:for-index="modelIndex">
+                <text class="model-title">{{ model.name }}</text>
+                <label class="pills-list">
+                  <label wx:for="{{ model.subModelName }}" wx:for-item="name" wx:key="index"
+                    data-model-index="{{ modelIndex }}" data-submodel-index="{{ index }}"
+                    class="subModel {{ selectModelInfo.models[modelIndex] == model.subModelId[index] ? 'select' : '' }}"
+                    data-submodel-id="{{ model.subModelId[index] }}"
+                    bindtap="exchangeCouponSelectSubModel">{{ name }}</label>
+                </label>
+              </view>
+            </view>
+          </view>
+          <view class="confirm-goods" bindtap="exchangeCouponConfirmGoods">确认</view>
+        </view>
+      </view>
+    </view>
+  </template>
+  <template is="exchangeCouponUseDialog" data="{{ ...exchangeCouponData }}"></template>
+  <block wx:if='{{pageData.account_type == 2}}'>
+    <!-- 修改订单 -->
+    <view class='changeOrder-wrapper all-price-box' wx:if='{{changeOrder&&!showBenefitInfo}}'>
+      <block  wx:if='{{pageData.allow_add_dish && pageData.location_id}}'>
+        <form bindsubmit="turnToAddDish" report-submit="true">
+          <button formType="submit" class='changeOrder add'>
+            <label>加菜</label>
+          </button>
+        </form>
+      </block>
+      <block wx:if="{{pageData.allow_app_account}}">
+        <form bindsubmit="showBenefitInfo" report-submit="true">
+          <button formType="submit" class='changeOrder' style='color:#ff7100;padding:0 25rpx;'>
+            <label>保存并支付</label>
+          </button>
+        </form>
+      </block>
+      <block  wx:if='{{!showBenefitInfo}}'>
+        <form bindsubmit="saveOrderInfo" report-submit="true">
+          <button formType="submit" class='changeOrder save' style='{{!pageData.allow_app_account && !pageData.allow_add_dish ? "flex:1;":""}}'>
+            <label>保存</label>
+          </button>
+        </form>
+      </block>
+    </view>
+    <view class='all-price-box flex-between' wx:if='{{showBenefitInfo}}' hidden='{{!changeOrder}}'>
+      <view class='all-price'>
+        <text style='white-space:nowrap;'>合计：</text>
+        <text class='all-price-now priceNow ellipse' style="{{'color:' + storeStyle.theme}};max-width:200rpx;">¥{{pageData.totalPayment}}</text>
+        <text class='discounted-price'
+          style='background-color:{{storeStyle.theme}};'>已优惠¥{{pageData.total_discount_cut_price * 1 + totalCutPrice * 1}}</text>
+      </view>
+      <view class='flex-between'>
+        <view class='cancel_pay' catchtap='cancelPayment'>取消</view>
+        <form report-submit="true" bindsubmit="confirmPayment">
+          <button formType="submit" class='all-price-calculate'
+            style='background-color:{{storeStyle.theme}}; width:190rpx;border-radius:0;'>去结算
+          </button>
+        </form>
+      </view>
+    </view>
+  </block>
+</view>
+<!-- 会员商品列表 start -->
+<view class="vip_goods_mask" wx:if="{{showVipGoodsList}}" catchtap="hideVipGoodsList">
+  <view class="vipGoodsWarp">
+    <view class='custom-info-wrapper flex-between' wx:if='{{pageData.orderInfo.dining_vip_card_info}}'>
+      <view class='flex-between'>
+        <view class='custom-info'>
+          <image src='{{pageData.orderInfo.dining_vip_card_info.cover_thumb}}'></image>
+        </view>
+        <text class='custom-name'>{{pageData.orderInfo.dining_vip_card_info.title }}</text>
+      </view>
+      <view class="pull-right">
+        <text class="cut_price_tip">优惠</text>
+        <text class="vip_cut_price">-¥{{pageData.orderInfo.vip_cut_price}}</text>
+      </view>
+    </view>
+    <view class='goods-info-wrapper'>
+      <block wx:for='{{vip_goods_list}}' wx:key="index" wx:for-index='index' wx:for-item='goods'>
+        <view class='goods-info-item' wx:if='{{goods.refunded_num}}'
+          style='{{goods.is_package_goods == 1 || goods.attributes_id != 0 || index == 0 &&pageData.goodsSum >3 && !showMoreGoods ? "border-bottom:0;padding-bottom:0;":""}}'>
+          <view class='goods-image'>
+            <image src='{{goods.cover}}' mode='aspectFill'></image>
+          </view>
+          <view class='goods-detail'>
+            <view class='flex-between'>
+              <view style='max-width:400rpx;' class='ellipsis'>
+                <text class='goods-special' wx:if='{{goods.max_can_use_integral > 0}}'>积</text>
+                <text class='goods-special' wx:if='{{goods.is_seckill == 1}}'>秒杀</text>
+                <text class='goods-name' style='text-decoration:line-through;'>{{goods.goods_name}}</text>
+              </view>
+              <text class='goods-status2' wx:if='{{orderData.status == 10}}'>已拒绝</text>
+              <text class='goods-status2' wx:elif='{{orderData.status == 40}}'>已下单</text>
+              <text class='goods-status2' wx:else>已退</text>
+            </view>
+            <view class='goods-type' wx:if='{{goods.model_value_str}}'>
+              <view class='type-size ellipsis'>{{goods.model_value_str}}</view>
+            </view>
+            <view class='goods-price flex-between'>
+              <view class='price-box'>
+                <text class='priceNow'><text style='font-size:20rpx;'>¥</text>{{goods.price}}</text>
+                <text class='dinning_vip_tips' wx:if="{{ pageData.orderInfo.is_vip_order == 1 && goods.is_vip_goods}}">会员{{ goods.flow_price > 0 ?'总':''}}价</text>
+                <text class='priceBefore' style="margin-left:12rpx;font-size:28rpx;text-decoration:none;"><text
+                    style='font-size:20rpx;'>¥</text>{{goods.original_price}}</text>
+              </view>
+              <view style='color:#999;font-size:24rpx;'>
+                x {{goods.refunded_num}}
+              </view>
+            </view>
+          </view>
+        </view>
+        <!-- 餐饮3.0 新增商品属性 -->
+        <view class="goods-attributes-wrap" wx:if="{{goods.is_package_goods != 1 && goods.attributes_id &&goods.attributes_id != 0 && goods.refunded_num}}" >
+          <view class="goods-attributes-item" wx:for="{{goods.attributes}}" wx:key="index" wx:for-item="attributes">
+            <view>
+              <text>{{attributes.name}}：</text>
+              <view wx:for="{{attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="{{elem_index}}" style="display:inline-block;">
+                <text>{{elem.name}}</text><text class="attributes-add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                <text wx:if="{{elem_index != attributes.elem.length -1}}">，</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class='goods-info-item' wx:if='{{goods.count}}'
+          style='{{goods.is_package_goods == 1 || goods.attributes_id != 0 || index == 0 && pageData.goodsSum >3 && !showMoreGoods ? "border-bottom:0;padding-bottom:0;":""}}'>
+          <view class='goods-image'>
+            <image src='{{goods.cover}}' mode='aspectFill'></image>
+          </view>
+          <view class='goods-detail'>
+            <view class='flex-between'>
+              <view style='max-width:400rpx;' class='ellipsis'>
+                <text class='goods-special' wx:if='{{goods.max_can_use_integral > 0}}'>积</text>
+                <text class='goods-special' wx:if='{{goods.is_seckill == 1}}'>秒杀</text>
+                <text class='goods-name'>{{goods.goods_name}}</text>
+              </view>
+              <text class='goods-status3' wx:if='{{orderData.status == 20||orderData.status == 30}}'>已出厨</text>
+            </view>
+            <view class='goods-type' wx:if='{{goods.model_value_str}}'>
+                <view class='type-taste ellipsis' style="max-width:400rpx;">{{goods.model_value_str}}</view>
+            </view>
+            <view class='goods-price flex-between'>
+              <view class='price-box'>
+                <text class='priceNow'><text style='font-size:20rpx;'>¥</text>{{goods.price}}</text>
+                <text class='dinning_vip_tips' wx:if="{{ pageData.orderInfo.is_vip_order == 1 && goods.is_vip_goods}}">会员{{ goods.flow_price > 0 ?'总':''}}价</text>
+                <text class='priceBefore' style="margin-left:12rpx;font-size:28rpx;text-decoration:none;"><text
+                    style='font-size:20rpx;'>¥</text>{{goods.original_price}}</text>
+              </view>
+              <view class='calculate-wrapper' wx:if='{{!pageData.orderInfo}}'>
+                <view class='calculate-sub' catchtap='subGoods' data-key='{{key}}' data-index='{{index}}'
+                  data-value='{{goods.goodsNum}}'>-</view>
+                <view class='calculate-num'>{{goods.goodsNum}}</view>
+                <view class='calculate-add' catchtap='addGoods' data-key='{{key}}' data-index='{{index}}'
+                  data-value='{{goods.goodsNum}}'>+</view>
+              </view>
+              <view style='color:#999;font-size:24rpx;' wx:if='{{pageData.orderInfo}}'>
+                x {{goods.count}}
+              </view>
+            </view>
+          </view>
+        </view>
+        <!-- 餐饮3.0 新增商品属性 -->
+        <view class="goods-attributes-wrap" wx:if="{{goods.is_package_goods != 1 && goods.attributes_id &&goods.attributes_id != 0 && goods.count}}" >
+          <view class="goods-attributes-item" wx:for="{{goods.attributes}}" wx:key="index" wx:for-item="attributes">
+            <view>
+              <text>{{attributes.name}}：</text>
+              <view wx:for="{{attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                <text>{{elem.name}}</text><text class="attributes-add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                <text wx:if="{{elem_index != attributes.elem.length -1}}">，</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>
+<!-- 会员商品列表 end -->
+<!-- 选择购物卡start -->
+<view class="perfect-address-mask" wx:if="{{cardDialog}}">
+  <view class="goods-pick-box shoppingcard">
+    <view class="select-top">
+      <view class="select-title">请选择购物卡</view>
+      <view class="ico-moon icon-closed" catchtap="closeCardDialog"></view>
+    </view>
+    <view class="select-middle">
+      <view class="useful {{uselessCard?'':'active'}}" catchtap="selsctUseful">可用卡（{{can_use_shopping_cards.length}}）
+        <view class="tabLine" wx:if="{{!uselessCard}}"></view>
+      </view>
+      <view class="useless {{uselessCard?'active':''}}" catchtap="selectUseless">不可用卡（{{cant_use_shopping_cards.length}}）
+        <view class="tabLine" wx:if="{{uselessCard}}"></view>
+      </view>
+    </view>
+    <view class="select-content">
+      <view wx:for="{{uselessCard? cant_use_shopping_cards : can_use_shopping_cards}}" wx:key="index">
+        <view class="backgroundOne" style="{{uselessCard? 'background: #D5D5DE;' : ''}}"></view>
+        <view class="cards {{uselessCard ? 'uselesscards' : ''}}">
+          <view class="card {{uselessCard ? 'uselesscards' : ''}}" bindtap="turnToCardDetail">
+            <view class="content">
+              <view class="cover" style="{{uselessCard? 'background:rgba(147,147,153,.08);' : ''}}">
+                <view class="img">
+                  <image src="{{item.covers[0]}}"></image>
+                </view>
+              </view>
+              <view class="title" style="{{uselessCard? 'color:#999;margin-top:25rpx;' : ''}}">{{item.title}}</view>
+              <view class="hasGoods" style="{{uselessCard? 'color:#999' : ''}}">余额：
+                <view style="{{uselessCard? 'color:#999;' : 'color:#FF7100;font-weight:bold;'}}">¥{{item.balance}}</view>
+              </view>
+              <view class="useful-time" wx:if="{{uselessCard}}" >不可用原因：{{item.reason}}</view>
+              <view class="useful-time">有效期：{{item.effect_start_time}} 至 {{item.effect_end_time}}</view>
+              <view></view>
+            </view>
+          </view>
+        </view>
+        <view class="selectButton {{item.selected ? 'ico-moon icon-success-tip' : ''}}" 
+              wx:if="{{!uselessCard && ( item.selected || !shopping_cards_deduct_all)}}" 
+              style="{{item.selected ? 'border:none;' : ''}}"
+              catchtap="selectThisOne"
+              data-id="{{item.id}}"
+              data-index="{{index}}"></view>
+      </view>
+    </view>
+    <view class="select-bottom">
+      <view class="close-card-dialog" catchtap="nonuseCard">不使用购物卡</view>
+      <view class="confirm-card-select" catchtap="confirmCard">确定</view>
+    </view>
+  </view>
+</view>
+<!-- 选择购物卡end -->
+
+<!-- 满减优惠选择 -->
+<block wx:if="{{priceBreakDisModal}}">
+  <view class="priceBreakMask" catchtap="triggerPriceBreakModal"></view>
+  <view class="discount_modal">
+    <view class="discount_title">
+      满减满折<text class="ico-moon icon-closes discount_modal_close" bindtap="triggerPriceBreakModal"></text>
+    </view>
+    <view style="padding: 20rpx;">
+      <block wx:for="{{actIdArrOri}}" wx:for-item="id" wx:for-index="id_index" wx:key="items">
+        <view class="discount_info" style="{{actIdArrOri.length == 1 ? 'margin-bottom: 0;':''}}">
+          <view style="color:#333;">{{newCartList[id].title}}</view>
+          <radio class="pick-detail-item-r" color="{{storeStyle.theme || '#FF7100'}}" data-id="{{id}}" data-checked="{{newCartList[id].checked}}" checked="{{newCartList[id].checked}}" bindtap="selectPriceBreak"></radio>
+        </view>
+      </block>
+    </view>
+    <view class="discount_info_close" bindtap="triggerPriceBreakModal" style="{{'background:'+ storeStyle.theme }}">关闭</view>
+  </view>
+</block>

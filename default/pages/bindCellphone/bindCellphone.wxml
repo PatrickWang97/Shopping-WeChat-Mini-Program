@@ -1,0 +1,73 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view id="bindPhonePage">
+  <view class="page bindPhone-wrap" id="bindPhonePage" data-router="bindPhonePage" style="{{isPageBottom ? 'padding-bottom:600rpx' : ''}}">
+    <view class="header-wrap">
+      <image class="bindphone-header-bg" src="https://cdn.jisuapp.cn/static/webapp/images/xcx-login/login-full-bg.png" mode="aspectFill"></image>
+      <view class="bindphone-header-content">
+        <view class="bindphone-header-title">{{hideBindNewPhone ? "更换手机号" : "绑定手机号"}}</view>
+        <view class="bindphone-header-logo-wrap">
+          <image class="bindphone-header-logo" src="{{appLogo}}" mode="aspectFit"></image>
+        </view>
+      </view>
+    </view>
+    <view class="verify-wrap" hidden="{{ hideVerifyPhone }}">
+      <view class='verify-row getCode'>
+        <label class="verify-item-icon ico-moon icon-news-comment-image"></label>
+        <input placeholder-class="phcolor" class="pic-code-input" bindinput="inputOldPhonePicCode" placeholder='请输入右侧图片验证码'></input>
+        <view class="pic-code-wrap">
+          <image class="pic-code" mode="aspectFit" src="{{ oldPhonePicCodeUrl }}" bindtap="refreshOldPhonePicCode"></image>
+        </view>
+      </view>
+      <view class='verify-row postCode'>
+        <label class="verify-item-icon ico-moon icon-bindphone-code"></label>
+        <input placeholder-class="phcolor" bindinput="inputOldCode" placeholder="请输入手机验证码" />
+        <view class="get-code-btn" bindtap="sendCodeToOldPhone"><text>{{ oldCodeStatus }}</text></view>
+      </view>
+      <view class="option-btn next-step" bindtap="nextStep">下一步</view>
+      <view class="other-way">
+        <text class="new-way">原号码已弃用，使用</text><text class="trun-Page" catchtap="goOtherWay">其他验证方式</text>
+      </view>
+    </view>
+    <view class="bind-new-tel-wrap" hidden="{{ hideBindNewPhone }}">
+      <view class="bindphone-main-wrap">
+        <view class="bind-new-options">
+          <view class="quick-bind {{isQuick ? 'active' : ''}}" data-type="quick" catchtap='changeType'>微信快速授权</view>
+          <view class="message-check {{!isQuick ? 'active' : ''}}" data-type="message" catchtap='changeType'>短信验证</view>
+        </view>
+        <block wx:if="{{isQuick}}">
+          <view class="bind-new-tel-tip">为保证您的账号安全，请设置常用的手机号码</view>
+          <button class="authorization" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">授权手机号</button>
+        </block>
+        <block wx:else>
+          <view class="any-message">
+            <view class='verify-row phonenum'>
+              <picker class="area-collect" bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+                <view class="picker">
+                  <view class="nationCode">+{{nationCode}}</view>
+                  <label class="ico-moon icon-downarrow"></label>
+                </view>
+              </picker>
+              <input placeholder-class="phcolor" type="number" class="code-tel" bindinput="inputPhone" placeholder='请输入手机号' cursor-spacing="200"></input>
+            </view>
+            <view class='verify-row getCode'>
+              <label class="verify-item-icon ico-moon icon-news-comment-image"></label>
+              <input placeholder-class="phcolor" class="pic-code-input" cursor-spacing="140" bindinput="inputNewPhonePicCode" placeholder='请输入右侧图片验证码'></input>
+              <view class="pic-code-wrap">
+                <image class="pic-code" mode="aspectFit" src="{{ newPhonePicCodeUrl }}" bindtap="refreshNewPhonePicCode"></image>
+              </view>
+            </view>
+            <view class='verify-row postCode'>
+              <label class="verify-item-icon ico-moon icon-bindphone-code"></label>
+              <input placeholder-class="phcolor" bindinput="inputNewCode" placeholder="请输入手机验证码" cursor-spacing="80" />
+              <view class="get-code-btn" bindtap="sendCodeToNewPhone"><text>{{ newCodeStatus }}</text></view>
+            </view>
+          </view>
+          <view class="bind-new-tel-tip">为保证您的账号安全，请设置常用的手机号码</view>
+          <view class="option-btn bind-new-tel-btn {{ !newPhone || !newCode ? 'disabled' : '' }}" bindtap="bindNewPhone">登录</view>
+        </block>
+      </view>
+    </view>
+    <view class="back-home-btn icon-back-to-home ico-moon" wx:if="{{showBackHomeButton}}" catchtap="backToHomePage"></view>
+  </view>
+</view>

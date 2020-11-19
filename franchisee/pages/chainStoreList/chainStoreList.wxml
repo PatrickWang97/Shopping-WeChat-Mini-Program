@@ -1,0 +1,157 @@
+<wxs module="FranchiseeChain">
+  var stringLength = function(str) {
+    var len = 0;
+    for (var i = 0; i < str.length; i++) {
+      var a = str.charCodeAt(i);;
+      if (a >= 0 && a <= 128) {
+        len += 1;
+      }else{
+        len += 2;
+      }
+    }
+    return len;
+  }
+  var isEllipsis = function(str, max){
+    var strLength = stringLength(str);
+    return strLength > max;
+  }
+  module.exports.isEllipsis = isEllipsis;
+</wxs>
+<view class="cs-search">
+  <view class="cs-search-bg" wx:if="{{!search_focus}}" bindtap="inputFocus">
+    <label class="cs-search-icon ico-moon icon-search"></label>
+    <text>搜索其他店铺/商品</text>
+  </view>
+  <view class="cs-search-focus" wx:if="{{search_focus}}">
+    <view class="cs-search-input-wrap">
+      <label class="cs-search-icon ico-moon icon-search"></label>
+      <input class="cs-search-input" focus="{{search_focus}}" placeholder="请输入" placeholder-class="cs-search-input-placeholder" confirm-type="earch" value="{{search_value}}" bindconfirm="searchValue" bindinput="searchInput" bindblur="searchBlur" />
+      <label class="cs-search-delete ico-moon icon-close-btn" bindtap="searchClear"></label>
+    </view>
+    <view class="cs-search-cancel" bindtap="searchCancel">取消</view>
+  </view>
+</view>
+<view>
+  <view class="cs-tab">
+    <view class="cs-tab-item {{searchResultNav == 0 ? 'selected' : ''}}" data-index="0" bindtap="searchResultTabSwitch">
+      <text>商家</text>
+    </view>
+    <view class="cs-tab-item {{searchResultNav == 1 ? 'selected' : ''}}" data-index="1" bindtap="searchResultTabSwitch">
+      <text>商品</text>
+    </view>
+  </view>
+  <view class="cs-result-list2-wrapper" wx:if="{{ searchResultNav == 0 }}">
+    <view class="cs-result-list2" wx:if="{{ searchListData.franchiseeList.length > 0 && search_status }}">
+      <view class="cs-item" wx:if="{{ HisId == franchisee.s_his_data.online_his_id }}" wx:for="{{searchListData.franchiseeList}}" wx:for-item="franchisee" wx:key="index">
+        <image class="cs-item-logo" src="{{franchisee.picture}}" mode="aspectFill" lazy-load="true"></image>
+        <view class="cs-item-detail">
+          <view class="cs-item-desc">
+            <view>
+              <view class="cs-item-shop">{{franchisee.name}}</view>
+              <view class="cs-item-other">
+                <text>{{franchisee.industry_type_name}}</text>
+                <text>{{franchisee.order_count}}人消费</text>
+              </view>
+            </view>
+            <view class="cs-item-btn" data-id="{{franchisee.app_id}}" data-index="{{index}}" data-from="search" catchtap="chooseTrading">去逛逛</view>
+          </view>
+          <view class="cs-item-goods" wx:if="{{franchisee.mode_id != 2}}">
+            <view class="goods-item" wx:for="{{franchisee.good_list}}" wx:key="index" data-id="{{item.id}}" data-type="{{item.goods_type}}" data-group="{{item.is_group_buy}}" data-group-id="{{item.group_buy_activity_id}}" data-franchisee-id="{{item.app_id}}" data-cart-goods-num="{{franchisee.cart_goods_num}}" bindtap="turnToGoodsDetail">
+              <image class="goods-img" lazy-load="true" src="{{item.cover}}" mode="aspectFill"></image>
+              <view class="goods-price">¥{{item.price}}</view>
+            </view>
+          </view>
+          <view class="cs-item-coupons" wx:if="{{franchisee.coupon_list[0].type == 0 || franchisee.coupon_list[0].type == 1 || franchisee.coupon_list[0].type == 2}}">
+            <view class="coupons-item" wx:if="{{franchisee.coupon_list[0].type == 0}}">
+              <text class="coupons-mark">减</text>
+              <text class="coupons-name">【{{franchisee.name}}】进店领取{{franchisee.coupon_list[0].value}}元优惠券</text>
+            </view>
+            <view class="coupons-item" wx:if="{{franchisee.coupon_list[0].type == 1}}">
+              <text class="coupons-mark">折</text>
+              <text class="coupons-name">【{{franchisee.name}}】进店领取{{franchisee.coupon_list[0].value}}折优惠券</text>
+            </view>
+            <view class="coupons-item" wx:if="{{franchisee.coupon_list[0].type == 2}}">
+              <text class="coupons-mark">代</text>
+              <text class="coupons-name">【{{franchisee.name}}】进店领取{{franchisee.coupon_list[0].value}}元优惠券</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="cs-result-list-null" wx:if="{{ search_status && searchListData.franchiseeList.length === 0 }}">
+      <image src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/franchisee/no-data.png" mode="aspectFill"></image>
+      <text>暂没有内容</text>
+    </view>
+    <view wx:if="{{!search_status}}">
+      <view class="cs-lately">
+        <view class="cs-head">最近访问</view>
+        <view class="cs-lately-list">
+          <view class="cs-item" bindtap="chooseMainStore">
+            <view class="cs-item-cneter clearfix">
+              <view class="cs-titile">{{mainStore.name}}</view>
+              <view class="cs-business" wx:if="{{!mainStore.in_business || mainStore.is_open == 0}}" style="margin-left:{{FranchiseeChain.isEllipsis(mainStore.name, 23) ? '0' : '20rpx'}};">歇业中</view>
+              <view class="cs-distance">{{mainStore.distance || ''}}</view>
+            </view>
+            <view class="cs-visit-time">{{mainStore.province_name + mainStore.city_name + mainStore.county_name + mainStore.address_detail}}</view>
+          </view>
+          <block wx:for="{{bizLog}}" wx:key="index">
+            <view wx:if="{{HisId == item.s_his_data.online_his_id && item.is_show_chain == 1}}" class="cs-item" data-index="{{index}}" bindtap="chooseTradingbizLog">
+              <view class="cs-item-cneter clearfix">
+                <view class="cs-titile">{{item.name}}</view>
+                <view class="cs-business" wx:if="{{!item.in_business || item.is_open == 0}}" style="margin-left:{{FranchiseeChain.isEllipsis(item.name, 23) ? '0' : '20rpx'}};">歇业中</view>
+                <view class="cs-distance">{{item.distance || ''}}</view>
+              </view>
+              <view class="cs-visit-time">{{item.view_time}}</view>
+            </view>
+          </block>
+        </view>
+      </view>
+      <view class="cs-nearby">
+        <view class="cs-head">附近推荐</view>
+        <view class="cs-nearby-list">
+          <!--<view class="cs-item" bindtap="chooseMainStore">-->
+            <!--<view class="cs-item-cneter clearfix">-->
+              <!--<view class="cs-titile">{{mainStore.name}}</view>-->
+              <!--<view class="cs-business" wx:if="{{!mainStore.in_business || mainStore.is_open == 0}}" style="margin-left:{{FranchiseeChain.isEllipsis(mainStore.name, 23) ? '0' : '20rpx'}};">歇业中</view>-->
+              <!--<view class="cs-distance">{{mainStore.distance || ''}}</view>-->
+            <!--</view>-->
+            <!--<view class="cs-visit-time">{{mainStore.province_name + mainStore.city_name + mainStore.county_name + mainStore.address_detail}}</view>-->
+          <!--</view>-->
+          <block wx:for="{{bizList}}" wx:key="index">
+            <view wx:if="{{HisId == item.s_his_data.online_his_id || item.app_id === item.parent_app_id}}" class="cs-item" data-id="{{item.app_id}}" data-index="{{index}}" data-from="nearby" bindtap="chooseTrading">
+              <view class="cs-item-cneter clearfix">
+                <view class="cs-titile">{{item.name}}</view>
+                <view class="cs-business" wx:if="{{!item.in_business || item.is_open == 0}}" style="margin-left:{{FranchiseeChain.isEllipsis(item.name, 23) ? '0' : '20rpx'}};">歇业中</view>
+                <view class="cs-distance">{{item.distance || ''}}</view>
+              </view>
+              <view class="cs-visit-time">{{item.province_name + item.city_name + item.county_name + item.address_detail}}</view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="cs-result-list1-wrapper" wx:if="{{ searchResultNav == 1}}">
+    <view class="cs-result-list1" wx:if="{{ searchListData.goodsList.length > 0 }}">
+      <view class="cs-item" wx:for="{{searchListData.goodsList}}" wx:for-item="goods" wx:key="index" data-id="{{goods.form_data.id}}" data-type="{{goods.form_data.goods_type}}" data-group="{{goods.form_data.is_group_buy}}" data-group-id="{{goods.form_data.group_buy_activity_id}}" data-franchisee-id="{{goods.form_data.app_id}}" bindtap="turnToGoodsDetail">
+        <image class="cs-item-img" src="{{goods.form_data.cover}}" mode="aspectFill" lazy-load="true"></image>
+        <view class="cs-item-txt">
+          <view class="cs-item-des">
+            <view class="cs-item-goods">{{goods.form_data.title}}</view>
+          </view>
+          <view class="cs-item-data">
+            <view class="cs-item-price">
+              <view class="cs-item-price1"><text>¥</text>{{goods.form_data.price}}</view>
+              <text class="cs-item-price2" wx:if="{{goods.form_data.virtual_price != '0.00'}}">¥{{goods.form_data.virtual_price}}</text>
+            </view>
+            <text class="cs-item-sales">销量: {{goods.form_data.sales}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="cs-result-list-null" wx:else>
+      <image src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/franchisee/no-data.png" mode="aspectFill"></image>
+      <text>暂没有内容</text>
+    </view>
+  </view>
+</view>

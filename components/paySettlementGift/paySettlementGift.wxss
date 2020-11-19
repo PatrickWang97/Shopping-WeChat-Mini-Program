@@ -1,0 +1,334 @@
+@charset 'utf-8';
+@import "/utils/font_icon.wxss";
+.pay-gift{
+  width: 98%;
+  padding: 30rpx 34rpx;
+  position: relative;
+  left: -30rpx;
+}
+.card-block{
+  background: #fff;
+}
+.list-block{
+  background: #FFFBF3;
+}
+.pay-gift .title-wrapper{
+  display: flex;
+  line-height: 1.3;
+  margin-bottom: 30rpx;
+}
+.pay-gift .title-wrapper > .title{
+  color: #333333;
+  font-size: 26rpx;
+  font-weight: bold;
+}
+.pay-gift .title-wrapper > .discount-text{
+  padding: 0 6rpx;
+  margin-left: 10rpx;
+  background-color: #FF7100;
+  color: #fff;
+  font-size: 26rpx;
+  border-radius: 10rpx 10rpx 10rpx 0;
+}
+.pay-gift .card-type .data-wrapper{
+  display: flex;
+  flex-wrap: nowrap;
+}
+.pay-gift .card-type .item{
+  position: relative;
+  border: 1px solid #E6E6E6;
+  border-radius: 10rpx;
+}
+.pay-gift .card-type .price{
+  color: #FF7100;
+  font-size: 60rpx;
+  line-height: 1;
+}
+.pay-gift .card-type .benefit-text{
+  color: #A98961;
+  position: relative;
+  line-height: 1.2;
+}
+.pay-gift .card-type .benefit-text .icon-rightarrow{
+  position: absolute;
+  top: 2rpx;
+  right: 0;
+  font-size: 14rpx;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 4rpx 4rpx 4rpx 6rpx;
+  color: #825C2A;
+  background-color: rgba(172, 147, 86, .2);
+}
+.pay-gift .card-type .marketing-type{
+  padding: 6rpx 26rpx;
+  position: absolute;
+  top: -6rpx;
+  left: -6rpx;
+  background: linear-gradient(24deg,rgba(102,103,101,1),rgba(57,57,57,1));
+  border-radius: 20rpx 2rpx 20rpx 2rpx;
+  color: #FED995;
+  font-size: 22rpx;
+}
+.pay-gift .card-type .selected{
+  border-color: #E2AF57;
+  background-color: #FDF8F0;
+}
+.pay-gift .card-type-1 .item{
+  width: calc(100% - 4rpx) !important;
+  height: 178rpx;
+  padding: 0 30rpx;
+  margin-top: 4rpx;
+  margin-left: 4rpx;
+  box-sizing: border-box;
+  border: 2rpx solid #E6E6E6;
+  background-color: #FFFFFF;
+}
+.pay-gift .card-type-1 .price{
+  position: absolute;
+  top: calc(50% - 14rpx);
+  right: 30rpx;
+  padding-right: 0;
+  display: inline-flex;
+  align-items: center;
+  font-size: 28rpx;
+  color: #333333;
+  font-weight: bold;
+}
+.pay-gift .card-type-1 .month{
+  width: 80rpx;
+  line-height: 32rpx;
+  position: absolute;
+  top: -40rpx;
+  right: calc(50% - 24rpx);
+  background-color: #FF7100;
+  color: #fff;
+  font-size: 20rpx;
+  text-align: center;
+  border-radius: 16rpx;
+  font-weight: normal;
+}
+.pay-gift .card-type-1 .month:after{
+  content: '';
+  position: absolute;
+  top: 32rpx;
+  left: calc(50% - 8rpx);
+  width: 0;
+  height: 0;
+  border: 8rpx solid;
+  border-color: transparent transparent #FF7100;
+  transform: rotate(180deg);
+}
+.pay-gift .card-type-1 .benefit-text{
+  width: 70%;
+}
+.pay-gift .card-type-1 .discount-text{
+  margin: 65rpx 0 16rpx 0;
+  line-height: 1;
+  color: #55350E;
+  font-size: 32rpx;
+}
+.pay-gift .card-type-1 .discount-text .discount-price{
+  color: #FF7100;
+}
+.pay-gift .card-type-1 .icon-success-tip{
+  padding-left: 20rpx;
+  font-size: 34rpx;
+  color: #E5E5E5;
+  font-weight: normal;
+}
+.pay-gift .card-type-1 .selected{
+  border-color: rgba(226, 175, 87, .6);
+  background-color: #FDF8F0;
+}
+.pay-gift .card-type-1 .selected .icon-success-tip{
+  color: #FF7100;
+}
+.pay-gift .card-type-2{
+  width: 100%;
+  white-space: nowrap;
+}
+.pay-gift .card-type-2 .item{
+  border: 2rpx solid rgba(226,175,87,.26);
+  padding: 50rpx 24rpx 100rpx 24rpx;
+  margin-right: 32rpx;
+  display: inline-block;
+  vertical-align: top;
+}
+.pay-gift .card-type-2 .item-2{
+  flex: 0 0 calc(50% - 86rpx);
+  width: calc(50% - 86rpx);
+}
+.pay-gift .card-type-2 .item-3{
+  flex: 0 0 31%;
+  width: 31%;
+}
+.pay-gift .card-type-2 .item:last-child{
+  margin-right: 4rpx;
+}
+.pay-gift .card-type-2 .price{
+  width: 100%;
+  line-height: 56rpx;
+  position: absolute;
+  left: 0;
+  bottom: -2rpx;
+  font-size: 24rpx;
+  background: linear-gradient(90deg,rgba(228,192,130,1),rgba(226,173,80,1));
+  color: #FFF;
+  text-align: center;
+  border-radius: 0 0 10rpx 10rpx;
+}
+.pay-gift .card-type-2 .benefit-text{
+  text-align: center;
+}
+.pay-gift .card-type-2 .discount-text{
+  text-align: center;
+  color: #55350E;
+  font-size: 32rpx;
+  margin-bottom: 22rpx;
+}
+.pay-gift .card-type-2 .icon-success-tip{
+  position: absolute;
+  top: 14rpx;
+  right: 10rpx;
+  font-size: 34rpx;
+  color: #E2AF57;
+}
+.pay-gift .card-type-2 .selected{
+  border-color: rgba(226, 175, 87, .6);
+}
+.pay-gift .list-type .item{
+  display: flex;
+  height: 40rpx;
+  margin-bottom: 30rpx;
+  align-items: center;
+}
+.pay-gift .list-type .item:last-child{
+  margin-bottom: 0;
+}
+.pay-gift .list-type .type-block{
+  flex: 0 0 65rpx;
+  line-height: 30rpx;
+  text-align: center;
+  margin-right: 14rpx;
+  background-color: #FF7100;
+  color: #fff;
+  border-radius: 2rpx;
+}
+.pay-gift .list-type .price{
+  flex: 0 0 70rpx;
+  margin-right: 14rpx;
+  color: #333333;
+  font-size: 28rpx;
+  font-weight: bold;
+}
+.pay-gift .list-type .benefit-text{
+  flex: auto;
+  color: #B2B2B2;
+  font-size: 24rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 30rpx;
+}
+.pay-gift .list-type .icon-success-tip, .pay-gift .list-type .not-selected{
+  flex: 0 0 38rpx;
+}
+.pay-gift .list-type .icon-success-tip{
+  color: #FF7100;
+  font-size: 42rpx;
+}
+.pay-gift .list-type .not-selected{
+  width: 38rpx;
+  height: 38rpx;
+  border-radius: 50%;
+  border: 1px solid #D2D2D2;
+}
+.text-overflow-1{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.text-overflow-2{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  word-wrap: break-word;
+  white-space: normal !important;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.card-benefit-dialog{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 997;
+}
+.card-benefit-dialog .wrapper{
+  width: 100%;
+  min-height: 450rpx;
+  position: fixed;
+  bottom: 0;
+  background-color: #fff;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  box-sizing: border-box;
+  padding: 0 30rpx;
+}
+.card-benefit-dialog .header{
+  display: flex;
+  justify-content: space-between;
+  padding: 42rpx 0;
+}
+.card-benefit-dialog .header .title{
+  color: #333333;
+  font-size: 28rpx;
+  font-weight: bold;
+}
+.card-benefit-dialog .header .icon-closes{
+  color: #B8B8B8;
+  font-size: 24rpx;
+  border-radius: 50%;
+  padding: 8rpx;
+  background: #F3F3F3;
+}
+.card-benefit-dialog .content{
+  padding-bottom: 30rpx;
+}
+.card-benefit-dialog .benefit-wrapper{
+  background-color: #F7F8FC;
+  padding: 30rpx;
+  border-radius: 10rpx;
+}
+.card-benefit-dialog .benefit-wrapper > .item{
+  display: flex;
+  margin-bottom: 22rpx;
+  line-height: 1;
+}
+.card-benefit-dialog .benefit-wrapper > .item:last-child{
+  margin-bottom: 0;
+}
+.card-benefit-dialog .benefit-wrapper .type{
+  flex: 0 0 150rpx;
+  position: relative;
+  color: #333333;
+  font-size: 26rpx;
+  padding-left: 20rpx;
+}
+.card-benefit-dialog .benefit-wrapper .symbol::before{
+  content: '';
+  width: 6rpx;
+  height: 14rpx;
+  position: absolute;
+  top: 6rpx;
+  left: 0;
+  background-color: #FF7100;
+  border-radius: 50rpx;
+}
+.card-benefit-dialog .benefit-wrapper .item-detail{
+  color: #999999;
+  font-size: 26rpx;
+}

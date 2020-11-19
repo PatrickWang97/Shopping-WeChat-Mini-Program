@@ -1,0 +1,183 @@
+.flow-wrapper {
+  padding: 85rpx 70rpx 85rpx;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #FAFAFA;
+}
+.flow-title {
+  color: #303445;
+  font-size: 46rpx;
+  line-height: 46rpx;
+}
+.flow-tips {
+  color: #666666;
+  font-size: 28rpx;
+  line-height: 28rpx;
+  margin-top: 20rpx;
+}
+.flow-picker-title {
+  margin-top: 40rpx;
+  color: #999999;
+  font-size: 20rpx;
+  margin-bottom: 10rpx;
+}
+.flow-picker-wrapper {
+  width: 100%;
+  margin-bottom: 40rpx;
+  height: 73rpx;
+}
+.get-phone-wrapper {
+  margin-bottom: 40rpx;
+}
+.flow-button {
+  width: 100%;
+  background: #3091F2;
+  color: #fff;
+  height: 73rpx;
+  margin-top: 40rpx;
+  line-height: 73rpx;
+  text-align: center;
+  border-radius: 0px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -ms-border-radius: 0px;
+  -o-border-radius: 0px;
+}
+.flow-contact-tab {
+  margin-top: 20rpx;
+  display: flex;
+  justify-content: space-between;
+}
+.flow-contact-tab>view {
+  width: 45%;
+  text-align: center;
+  height: 73rpx;
+  line-height: 73rpx;
+}
+.flow-contact-tab>view:nth-child(1) {
+  border: 1px solid #3091F2;
+  color: #3091F2;
+}
+.flow-contact-tab>view:nth-child(2) {
+  border: 1px solid #50E380;
+  color: #50E380;
+}
+.flow-picker-input {
+  border: 1px solid #ddd;
+  height: 72rpx;
+  padding-left: 30rpx;
+  line-height: 72rpx;
+  background: #fff;
+}
+.dialog-box{
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+.dialog-mask {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+}
+.dialog-container{
+  width: 560rpx;
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #FFF;
+  border-radius: 10rpx;
+  padding: 30rpx;
+}
+.dialog-header{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50rpx 0;
+}
+.dialog-headurl{
+  width: 90rpx;
+  height: 90rpx;
+  margin-right: 30rpx;
+}
+.dialog-header-tip{
+  font-size: 28rpx;
+  line-height: 40rpx;
+  color: #303445;
+  font-weight: bold;
+}
+.dialog-qrcode-box{
+  background: #f5f5f5;
+  text-align: center;
+  padding: 60rpx;
+  border-radius: 10rpx;
+}
+.dialog-qrcode{
+  width: 271rpx;
+  height: 271rpx;
+}
+.dialog-opera-tips{
+  width: 380rpx;
+  color: #59607B;
+  font-size: 26rpx;
+  line-height: 40rpx;
+  margin: 40rpx auto 0 auto;
+}
+.dialog-container .icon-closes{
+  position: absolute;
+  right: 30rpx;
+  top: 30rpx;
+  font-size: 36rpx;
+  color: #D2D0D1;
+  font-weight: bold;
+}
+.picker {
+  height: 73rpx;
+}
+.phone-input {
+  border: 1px solid #ddd;
+  background: #fff;
+  height: 60rpx;
+  padding: 7rpx 20rpx;
+  display: inline-block;
+  width: 450rpx;
+  margin-right: 20rpx;
+}
+.get-phone-wrapper input ::placeholder {
+  color: #9FA5BB;
+}
+.get-phone-button {
+  height: 74rpx;
+  line-height: 74rpx;
+  width: 150rpx;
+  padding: 0rpx;
+  font-size: 24rpx;
+  margin: 0;
+  background: #fff;
+  display: inline-block;
+  color:rgba(48,145,242,1);
+  border: 1px solid rgba(48,145,242,1);
+  border-radius: 0px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -ms-border-radius: 0px;
+  -o-border-radius: 0px;
+}
+.get-phone-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+.icon-style {
+  position: relative;
+  top: 3rpx;
+  left: -4rpx;
+}

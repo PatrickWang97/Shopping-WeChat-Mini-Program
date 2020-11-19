@@ -1,0 +1,70 @@
+page {
+  padding: 60rpx 30rpx 60rpx 50rpx;
+}
+.order-block {
+  position:relative;
+  height: 120rpx;
+  width: 670rpx;
+  font-size: 26rpx;
+}
+.order-block:first-child .order-point {
+  background-color:#ff7100;
+  border:12rpx solid #FFC699;
+  margin-left:0;
+  width:14rpx;
+  height:14rpx;
+  margin-top: 12rpx;
+}
+.order-point {
+  display: inline-block;
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 50%;
+  background-color: #D2D2D2;
+  vertical-align: top;
+  margin-top: 16rpx;
+  margin-left: 12rpx; 
+  z-index:2;
+  position:relative;
+}
+.order-content {
+  margin-left: 44rpx;
+  display: inline-block;
+  width: 562rpx;
+  vertical-align: top;
+}
+.order-block:first-child .order-content{
+  margin-left: 34rpx;
+}
+.order-block:not(:last-child) .order-line {
+  width: 1px;
+  height: 100%;
+  position: absolute;
+  background-color: #EBEBEB;
+  top: 16rpx;
+  left: 18rpx;
+  z-index: 1;
+}
+.order-message {
+  display: inline-block;
+  width: 342rpx;
+  vertical-align: top;
+  color: #999999;
+  font-size: 26rpx;
+}
+.order-block:first-child .order-message {
+  margin-top: 10rpx;
+  color: #333333;
+}
+.order-time {
+  width: 220rpx;
+  vertical-align: top;
+  font-size: 22rpx;
+  color: #999999;
+  float: right;
+  margin-top: 10rpx;
+}
+.order-block:first-child .order-time {
+  color: #666666;
+  margin-top: 20rpx;
+}

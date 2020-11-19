@@ -1,0 +1,280 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-behavior-track></component-behavior-track>
+<view class="balance-wrap page" id="balance">
+  <scroll-view class="balance-content" scroll-y="true" lower-threshold="116" bindscrolltolower="checkMoreMessageData">
+    <view id="balanceContent">
+      <view class="balance-detail">
+        <view class="detail-text">
+          <text>当前储值金（元）</text>
+        </view>
+        <view class="detail-num">
+          <text>{{ currentBalance }}</text>
+        </view>
+        <view class="detail-shops" bindtap="gotoShopsList" wx:if="{{subShopsStr}}">
+          <text class="shops-txt">适用店铺：{{subShopsStr}}</text>
+          <text class="ico-moon icon-rightarrow"></text>
+        </view>
+        <view class="detail-recharge" catchtap="gotoRecharge">
+          <text>去充值</text>
+        </view>
+      </view>
+      <view class="stored-value-filter">
+        <view class="stored-value-name">储值记录</view>
+        <view class="nav-content" catchtap="toggleMoreType" data-name="isHideRecordNav">
+          <text class="active">{{recordsListData.text}}</text>
+          <text class="ico-moon icon-downarrow"></text>
+          <view class="coupons-cate" style="height: {{booleanData.isHideRecordNav ? '0' : '270rpx'}}">
+            <view class="cate-list">
+              <view class="cate-item thin-bd-b" data-index="0" catchtap="selectRecordType">
+                <text class="ico-moon icon-balance-all ico-moon-cover"></text>全部</view>
+              <view class="cate-item thin-bd-b" data-index="1" catchtap="selectRecordType">
+                <text class="ico-moon icon-balance-income ico-moon-cover"></text>充值</view>
+              <view class="cate-item thin-bd-b" data-index="2" catchtap="selectRecordType">
+                <text class="ico-moon icon-balance-spending ico-moon-cover"></text>消费</view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="message-content">
+        <block wx:for="{{ messageData }}" wx:key="index" wx:for-item="message">
+          <view class="message-data">
+            <view class="message-item-header">
+              <view class="message-month-year">
+                <text class="message-month">{{message.month}}</text>/{{message.year}}</view>
+              <view class="message-balance-payment">
+                <view wx:if="{{recordsListData.type != 2}}">
+                  <text class="balance-symbol">+</text> {{message.add}}</view>
+                <view class="message-reduce" wx:if="{{recordsListData.type != 1}}">
+                  <text class="balance-symbol-reduce"></text>
+                  <text class="message-reduce-num">{{message.reduce}}</text>
+                </view>
+              </view>
+            </view>
+            <block wx:for="{{ message.data }}" wx:key="index">
+              <view class="message-item" wx:if="{{ item.type == 1 }}">
+                <view class="message-top">
+                  <view class="message-title">自主充值</view>
+                  <view class="message-num add" style="{{'color:' + storeStyle.theme}}">+{{ item.num }}</view>
+                </view>
+                <view class="message-remark" wx:if="{{item.remark}}">备注：{{ item.remark }}</view>
+                <view class="message-bottom {{item.invoice_status == 1 && item.invoiceType == '026' ? 'flex-center' : ''}}">
+                  <view class="message-time {{item.invoice_status == 1 && item.invoiceType == '026' ? 'mb-15' : ''}}">{{ item.time }}</view>
+                  <view wx:if="{{item.invoice_status == 1}}" class="message-invoice btn-oprate">
+                    <block wx:if="{{item.invoiceType == '007'}}">
+                      <view class="invoice-text">已开纸票，请联系商家领取</view>
+                    </block>
+                    <block wx:else>
+                      <view class="item-btn save" catchtap="saveInWeChat" data-order-id="{{item.order_id}}">保存到微信卡包</view>
+                      <view class="item-btn" catchtap="checkInvoice" data-invoice-type="{{item.invoiceType}}" data-order-id="{{item.order_id}}">查看发票</view>
+                    </block>
+                  </view>
+                  <view wx:elif="{{isOpenInvoice || item.invoice_status != -1}}" class='message-invoice {{invoiceColor[item.invoice_status]}}' catchtap="{{item.invoice_status == -1 ? 'goInvoicePage' : ''}}" data-order-id="{{item.order_id}}">{{invoiceStatus[item.invoice_status]}}<text class="ico-moon icon-rightarrow pull-right" wx:if="{{item.invoice_status == -1}}"></text></view>
+                </view>
+              </view>
+              <view class="message-item" wx:elif="{{ item.type == 2 }}">
+                <view class="message-top">
+                  <view class="message-title">商家充值</view>
+                  <view class="message-num add" style="{{'color:' + storeStyle.theme}}">+{{ item.num }}</view>
+                </view>
+                <view class="message-remark" wx:if="{{item.remark}}">备注：{{ item.remark }}</view>
+                <view class="message-bottom">
+                  <view class="message-time">{{ item.time }}</view>
+                </view>
+              </view>
+              <view class="message-item" wx:elif="{{ item.type == 3 }}">
+                <view class="message-top">
+                  <view class="message-title">{{item.app_shop_name}}</view>
+                  <view class="message-num minus">{{ item.num }}</view>
+                </view>
+                <view class="message-remark" wx:if="{{item.remark}}">备注：{{ item.remark }}</view>
+                <view class="message-bottom">
+                  <view class="message-time">{{ item.time }}</view>
+                </view>
+              </view>
+              <view class="message-item" wx:elif="{{ item.type == 4 }}">
+                <view class="message-top">
+                  <view class="message-title">商品退款</view>
+                  <view class="message-num add" style="{{'color:' + storeStyle.theme}}">+{{ item.num }}</view>
+                </view>
+                <view class="message-remark" wx:if="{{item.remark}}">备注：{{ item.remark }}</view>
+                <view class="message-bottom">
+                  <view class="message-time">{{ item.time }}</view>
+                </view>
+              </view>
+              <view class="message-item" wx:elif="{{ item.type == 5 }}">
+                <view class="message-top">
+                  <view class="message-title">储值券充值</view>
+                  <view class="message-num add" style="{{'color:' + storeStyle.theme}}">+{{ item.num }}</view>
+                </view>
+                <view class="message-remark" wx:if="{{item.remark}}">备注：{{ item.remark }}</view>
+                <view class="message-bottom">
+                  <view class="message-time">{{ item.time }}</view>
+                </view>
+              </view>
+              <view class="message-item" wx:elif="{{ item.type == 6 }}">
+                <view class="message-top">
+                  <view class="message-title">自定义充值</view>
+                  <view class="message-num add" style="{{'color:' + storeStyle.theme}}">+{{ item.num }}</view>
+                </view>
+                <view class="message-remark" wx:if="{{item.remark}}">备注：{{ item.remark }}</view>
+                <view class="message-bottom {{item.invoice_status == 1 && item.invoiceType == '026' ? 'flex-center' : ''}}">
+                    <view class="message-time {{item.invoice_status == 1 && item.invoiceType == '026' ? 'mb-15' : ''}}">{{ item.time }}</view>
+                    <view wx:if="{{item.invoice_status == 1}}" class="message-invoice btn-oprate">
+                      <block wx:if="{{item.invoiceType == '007'}}">
+                        <view class="invoice-text">已开纸票，请联系商家领取</view>
+                      </block>
+                      <block wx:else>
+                        <view class="item-btn save" catchtap="saveInWeChat" data-order-id="{{item.order_id}}">保存到微信卡包</view>
+                        <view class="item-btn" catchtap="checkInvoice" data-invoice-type="{{item.invoiceType}}" data-order-id="{{item.order_id}}">查看发票</view>
+                      </block>
+                    </view>
+                    <view wx:elif="{{isOpenInvoice || item.invoice_status != -1}}" class='message-invoice {{invoiceColor[item.invoice_status]}}' catchtap="{{item.invoice_status == -1 ? 'goInvoicePage' : ''}}" data-order-id="{{item.order_id}}">{{invoiceStatus[item.invoice_status]}}<text class="ico-moon icon-rightarrow pull-right" wx:if="{{item.invoice_status == -1}}"></text></view>
+                </view>
+              </view>
+              <view class="message-item" wx:elif="{{ item.type == 7 }}">
+                <view class="message-top">
+                  <view class="message-title">管理员手动撤回储值金</view>
+                  <view class="message-num minus">{{ item.num }}</view>
+                </view>
+                <view class="message-remark" wx:if="{{item.remark}}">备注：{{ item.remark }}</view>
+                <view class="message-bottom">
+                  <view class="message-time">{{ item.time }}</view>
+                </view>
+              </view>
+              <view class="message-item" wx:elif="{{ item.type == 8}}">
+                <view class="message-top">
+                  <view class="message-title">用户数据合并</view>
+                  <view class="message-num minus">{{ item.num }}</view>
+                </view>
+                <view class="message-remark" wx:if="{{item.remark}}">备注：{{ item.remark }}</view>
+                <view class="message-bottom">
+                  <view class="message-time">{{ item.time }}</view>
+                </view>
+              </view>
+              <view class="message-item" wx:elif="{{ item.type == 9 }}">
+                <view class="message-top">
+                  <view class="message-title">用户数据合并</view>
+                  <view class="message-num minus">{{ item.num }}</view>
+                </view>
+                <view class="message-remark" wx:if="{{item.remark}}">备注：{{ item.remark }}</view>
+                <view class="message-bottom">
+                  <view class="message-time">{{ item.time }}</view>
+                </view>
+              </view>
+              <view class="message-item" wx:elif="{{ item.type == 11 }}">
+                <view class="message-top">
+                  <view class="message-title">三方配送赔付</view>
+                  <view class="message-num add" style="{{'color:' + storeStyle.theme}}">+{{ item.num }}</view>
+                </view>
+                <view class="message-remark" wx:if="{{item.remark}}">备注：{{ item.remark }}</view>
+                <view class="message-bottom">
+                  <view class="message-time">{{ item.time }}</view>
+                </view>
+              </view>
+              <view class="message-item" wx:elif="{{ item.type == 12 }}">
+                <view class="message-top">
+                  <view class="message-title">会员权益赠送</view>
+                  <view class="message-num add" style="{{'color:' + storeStyle.theme}}">+{{ item.num }}</view>
+                </view>
+                <view class="message-remark" wx:if="{{item.remark}}">备注：{{ item.remark }}</view>
+                <view class="message-bottom">
+                  <view class="message-time">{{ item.time }}</view>
+                </view>
+              </view>
+              <view class="message-item" wx:elif="{{ item.type == 13 }}">
+                <view class="message-top">
+                  <view class="message-title">连续签到赠送</view>
+                  <view class="message-num add" style="{{'color:' + storeStyle.theme}}">+{{ item.num }}</view>
+                </view>
+                <view class="message-remark" wx:if="{{item.remark}}">备注：{{ item.remark }}</view>
+                <view class="message-bottom">
+                  <view class="message-time">{{ item.time }}</view>
+                </view>
+              </view>
+              <view class="message-item" wx:elif="{{ item.type == 14 }}">
+                <view class="message-top">
+                  <view class="message-title">累计签到赠送</view>
+                  <view class="message-num add" style="{{'color:' + storeStyle.theme}}">+{{ item.num }}</view>
+                </view>
+                <view class="message-remark" wx:if="{{item.remark}}">备注：{{ item.remark }}</view>
+                <view class="message-bottom">
+                  <view class="message-time">{{ item.time }}</view>
+                </view>
+              </view>
+              <view class="message-item" wx:elif="{{ item.type == 15 }}">
+                <view class="message-top">
+                  <view class="message-title">储值金充值赠送</view>
+                  <view class="message-num add" style="{{'color:' + storeStyle.theme}}">+{{ item.num }}</view>
+                </view>
+                <view class="message-remark" wx:if="{{item.remark}}">备注：{{ item.remark }}</view>
+                <view class="message-bottom">
+                  <view class="message-time">{{ item.time }}</view>
+                </view>
+              </view>
+              <view class="message-item" wx:elif="{{ item.type == 16 }}">
+                <view class="message-top">
+                  <view class="message-title">分享赠送</view>
+                  <view class="message-num add" style="{{'color:' + storeStyle.theme}}">+{{ item.num }}</view>
+                </view>
+                <view class="message-remark" wx:if="{{item.remark}}">备注：{{ item.remark }}</view>
+                <view class="message-bottom">
+                  <view class="message-time">{{ item.time }}</view>
+                </view>
+              </view>
+              <view class="message-item" wx:elif="{{ item.type == 17 }}">
+                <view class="message-top">
+                  <view class="message-title">分享拉新赠送</view>
+                  <view class="message-num add" style="{{'color:' + storeStyle.theme}}">+{{ item.num }}</view>
+                </view>
+                <view class="message-remark" wx:if="{{item.remark}}">备注：{{ item.remark }}</view>
+                <view class="message-bottom">
+                  <view class="message-time">{{ item.time }}</view>
+                </view>
+              </view>
+              <view class="message-item" wx:elif="{{ item.type == 18 }}">
+                <view class="message-top">
+                  <view class="message-title">收藏赠送</view>
+                  <view class="message-num add" style="{{'color:' + storeStyle.theme}}">+{{ item.num }}</view>
+                </view>
+                <view class="message-remark" wx:if="{{item.remark}}">备注：{{ item.remark }}</view>
+                <view class="message-bottom">
+                  <view class="message-time">{{ item.time }}</view>
+                </view>
+              </view>
+              <view class="message-item" wx:elif="{{ item.type == 19 }}">
+                <view class="message-top">
+                  <view class="message-title">支付有礼</view>
+                  <view class="message-num add" style="{{'color:' + storeStyle.theme}}">+{{ item.num }}</view>
+                </view>
+                <view class="message-remark" wx:if="{{item.remark}}">备注：{{ item.remark }}</view>
+                <view class="message-bottom">
+                    <view class="message-time">{{ item.time }}</view>
+                </view>
+              </view>
+              <view class="message-item" wx:elif="{{ item.type == 20 }}">
+                <view class="message-title">新人有礼</view>
+                <view class="message-num add" style="{{'color:' + storeStyle.theme}}">+{{ item.num }}</view>
+                <view class="message-time">{{ item.time }}</view>
+                <view class="message-remark" wx:if="{{item.remark}}">备注：{{ item.remark }}</view>
+                <view class="message-bottom">
+                    <view class="message-time">{{ item.time }}</view>
+                </view>
+              </view>
+              <view class="message-item" wx:elif="{{ item.type == 21 }}">
+                <view class="message-title">拉新有礼</view>
+                <view class="message-num add" style="{{'color:' + storeStyle.theme}}">+{{ item.num }}</view>
+                <view class="message-time">{{ item.time }}</view>
+                <view class="message-remark" wx:if="{{item.remark}}">备注：{{ item.remark }}</view>
+              </view>
+            </block>
+          </view>
+        </block>
+        <view wx:if="{{!earlyTime}}" class="recharge-no-data">
+          <image class="no-data-image" src="http://cdn.jisuapp.cn/static/webapp/images/stored-value/none-stored-record.png"></image>
+          <view>无相关数据</view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

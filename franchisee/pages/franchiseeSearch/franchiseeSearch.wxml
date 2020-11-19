@@ -1,0 +1,91 @@
+<view class="ta-search">
+  <view class="ta-search-bg" wx:if="{{!search_focus}}" bindtap="inputFocus">
+    <label class="ta-search-icon ico-moon icon-search"></label>
+    <text>搜索更多店铺/商品</text>
+  </view>
+  <view class="ta-search-focus" wx:if="{{search_focus}}">
+    <view class="ta-search-input-wrap">
+      <label class="ta-search-icon ico-moon icon-search"></label>
+      <input class="ta-search-input" focus="{{search_focus}}" placeholder="请输入" confirm-type="earch" value="{{search_value}}" bindconfirm="searchValue" bindinput="searchInput" bindblur="searchBlur" />
+      <label class="ta-search-delete ico-moon icon-close-btn" bindtap="searchClear"></label>
+    </view>
+    <view class="ta-search-cancel" bindtap="searchCancel">取消</view>
+  </view>
+</view>
+<view>
+  <view class="ta-tab">
+    <view class="ta-tab-item {{searchResultNav == 0 ? 'selected' : ''}}" data-index="0" bindtap="searchResultTabSwitch">
+      <text>商家</text>
+    </view>
+    <view class="ta-tab-item {{searchResultNav == 1 ? 'selected' : ''}}" data-index="1" bindtap="searchResultTabSwitch">
+      <text>商品</text>
+    </view>
+  </view>
+  <view class="ta-result">
+    <view class="ta-result-list2-wrapper" wx:if="{{ searchResultNav == 1 }}">
+      <view class="ta-result-list1" wx:if="{{ searchListData.goodsList.length > 0 }}">
+        <view class="ta-item" wx:for="{{searchListData.goodsList}}" wx:for-item="goods" wx:key="index" data-id="{{goods.form_data.id}}" data-type="{{goods.form_data.goods_type}}"
+  data-group="{{goods.form_data.is_group_buy}}" data-group-id="{{goods.form_data.group_buy_activity_id}}" data-franchisee-id="{{goods.form_data.app_id}}" bindtap="turnToGoodsDetail">
+          <image class="ta-item-img" src="{{goods.form_data.cover}}" mode="aspectFill" lazy-load="true"></image>
+          <view class="ta-item-txt">
+            <view class="ta-item-des">
+              <view class="ta-item-shop">{{goods.form_data.store_name}}</view>
+              <view class="ta-item-goods">【{{goods.form_data.store_name}}】{{goods.form_data.title}}</view>
+            </view>
+            <view class="ta-item-data">
+              <view class="ta-item-price">
+                <view class="ta-item-price1"><text>¥</text>{{goods.form_data.price}}</view>
+                <text class="ta-item-price2" wx:if="{{goods.form_data.virtual_price != '0.00'}}">¥{{goods.form_data.virtual_price}}</text>
+              </view>
+              <text class="ta-item-sales">销量: {{goods.form_data.sales}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="ta-result-list-null" wx:else>
+        <image src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/franchisee/no-data.png" mode="aspectFill"></image>
+        <text>暂没有内容</text>
+      </view>
+    </view>
+    <view class="ta-result-list2-wrapper" wx:if="{{ searchResultNav == 0 }}">
+      <view class="ta-result-list2" wx:if="{{ searchListData.franchiseeList.length > 0 }}">
+        <view class="ta-item" wx:for="{{searchListData.franchiseeList}}" wx:for-item="franchisee" wx:key="index">
+          <image class="ta-item-logo" src="{{franchisee.picture}}" mode="aspectFill" lazy-load="true"></image>
+          <view class="ta-item-detail">
+            <view class="ta-item-desc">
+              <view>
+                <view class="ta-item-shop">{{franchisee.name}}</view>
+                <view class="ta-item-other"><text>{{franchisee.industry_type_name}}</text><text>{{franchisee.order_count}}人消费</text></view>
+              </view>
+              <view class="ta-item-btn" data-appid="{{franchisee.app_id}}" data-mode="{{franchisee.mode_id}}" data-audit="{{franchisee.is_audit}}" data-id="{{franchisee.id}}" data-newpage="{{franchisee.sub_app_bar['homepage-router'] || ''}}" data-newmode="{{franchisee.sub_app_bar.mode_id || ''}}" catchtap="turnToFranchiseeDetail">去逛逛</view>
+            </view>
+            <view class="ta-item-goods" wx:if="{{franchisee.mode_id != 2}}">
+              <view class="goods-item" wx:for="{{franchisee.good_list}}" wx:key="index" data-id="{{item.id}}" data-type="{{item.goods_type}}" data-group="{{item.is_group_buy}}" data-group-id="{{item.group_buy_activity_id}}" data-franchisee-id="{{item.app_id}}" data-cart-goods-num="{{franchisee.cart_goods_num}}" bindtap="turnToGoodsDetail">
+                <image class="goods-img" lazy-load="true" src="{{item.cover}}" mode="aspectFill"></image>
+                <view class="goods-price">¥{{item.price}}</view>
+              </view>
+            </view>
+            <view class="ta-item-coupons" wx:if="{{franchisee.coupon_list[0].type == 0 || franchisee.coupon_list[0].type == 1 || franchisee.coupon_list[0].type == 2}}">
+              <view class="coupons-item" wx:if="{{franchisee.coupon_list[0].type == 0}}">
+                <text class="coupons-mark">减</text>
+                <text class="coupons-name">【{{franchisee.name}}】进店领取{{franchisee.coupon_list[0].value}}元优惠券</text>
+              </view>
+              <view class="coupons-item" wx:if="{{franchisee.coupon_list[0].type == 1}}">
+                <text class="coupons-mark">折</text>
+                <text class="coupons-name">【{{franchisee.name}}】进店领取{{franchisee.coupon_list[0].value}}折优惠券</text>
+              </view>
+              <view class="coupons-item" wx:if="{{franchisee.coupon_list[0].type == 2}}">
+                <text class="coupons-mark">代</text>
+                <text class="coupons-name">【{{franchisee.name}}】进店领取{{franchisee.coupon_list[0].value}}元优惠券</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="ta-result-list-null" wx:else>
+        <image src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/franchisee/no-data.png" mode="aspectFill"></image>
+        <text>暂没有内容</text>
+      </view>
+    </view>
+  </view>
+</view>

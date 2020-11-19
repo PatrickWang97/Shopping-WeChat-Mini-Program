@@ -1,0 +1,8 @@
+{
+    "navigationBarTitleText":"举报",
+    "usingComponents":{
+        "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+        "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+        "component-sinkingModal": "/components/sinkingModal/sinkingModal"
+    }
+}

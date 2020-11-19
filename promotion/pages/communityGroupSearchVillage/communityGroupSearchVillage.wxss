@@ -1,0 +1,216 @@
+page {
+  background-color: #f3f3f3;
+  height: 100%;
+  font-size: 26rpx;
+}
+.search-content {
+  background: #fff;
+  padding-top: 20rpx;
+}
+.search-input {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start;
+  width: 690rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+  margin: 0 auto 10rpx;
+  background: #f0f0f0;
+  border-radius: 30rpx;
+  overflow: hidden;
+  font-size: 28rpx;
+  position: relative;
+}
+.search-input text.icon-search {
+  color: #b3b3b3;
+}
+.search-input input {
+  color: #999;
+  min-height: 70rpx;
+  margin-left: 20rpx;
+  width: calc(100% - 120rpx);
+}
+.search-input-closed {
+  position: absolute;
+  right: 20rpx;
+  top: 0;
+  padding: 0 20rpx;
+  z-index: 9;
+}
+.single-search-result {
+  padding: 30rpx;
+  background-color: #fff;
+}
+.single-search-result:not(:last-child) {
+  border-bottom: 1px solid #ececec;
+}
+.single-search-title {
+  color: #333;
+}
+.single-search-detail {
+  font-size: 24rpx;
+  color: #999;
+  line-height: 40rpx;
+}
+.community-group-location {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  height: 92rpx;
+  background-color: #fff;
+  color: #333;
+  padding: 0 30rpx;
+  font-size: 28rpx;
+}
+.community-group-location .location-name {
+  padding-left: 20rpx;
+  width: 670rpx;
+}
+.community-group-location .arrow-down {
+  width: 0;
+  height: 0;
+  border-width: 4px;
+  border-style: solid;
+  border-color: #999 transparent transparent transparent;
+}
+.community-list {
+  padding: 0 30rpx;
+}
+.community-list .community-list-title {
+  color: #666;
+  background-color: #f3f3f3;
+  font-size: 28rpx;
+  text-align: center;
+  margin: 30rpx 0;
+}
+.community-list .community-list-content {
+  padding: 30rpx;
+  margin-bottom: 24rpx;
+  background-color: #fff;
+  border-radius: 12rpx;
+}
+.community-list .community-list-content:nth-child(2),
+.community-list .community-list-content:last-child {
+  margin-bottom: 0;
+}
+.avatar {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 20rpx;
+}
+.list-content-item {
+  margin-bottom: 10rpx;
+}
+.list-content-item .nick-name {
+  max-width: 400rpx;
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 28rpx;
+}
+.list-content-item .distance-name {
+  color: #999;
+  float:right;
+  margin-top:20rpx;
+  font-size: 26rpx;
+}
+.list-content-item>text {
+  color: #333333;
+}
+.list-content-item text.ico-moon {
+  margin-right: 12rpx;
+  color: #999;
+}
+.community-search {
+  position: fixed;
+  top: 182rpx;
+  left: 0;
+  background-color: #fff;
+}
+.community-apply {
+  text-align: center;
+  color: #999;
+  line-height: 32rpx;
+  padding: 28rpx 0;
+  margin-bottom: 40rpx;
+}
+.list-address-item {
+  display: -webkit-flex;
+  display: flex;
+  min-height: 40rpx;
+  padding-top: 18rpx;
+}
+.list-address-item>view:nth-child(1) {
+  flex: 0 0 170rpx;
+  color: #666;
+  align-self: flex-start;
+}
+.list-address-item>view:nth-child(1) .ico-moon {
+  margin-right: 10rpx;
+  color:#999999;
+  font-size:28rpx;
+  vertical-align: middle;
+  margin-left:2rpx;
+}
+.list-address-item>view:nth-child(1) label {
+  width: 130rpx;
+  word-break: break-all;
+  vertical-align: middle;
+}
+.now-distance-name {
+  background: #FFEEE0;
+  color: #ff7100;
+  font-size: 24rpx;
+  padding: 0 9rpx;
+  height: 32rpx;
+  line-height: 42rpx;
+  border-radius: 10rpx 10rpx 10rpx 0;
+  margin-left: 25rpx;
+  font-weight: 500;
+}
+.now-nick-name {
+  text-align: center;
+  font-size: 30rpx;
+  color: #333;
+  font-weight: 600;
+  margin-top: 20rpx;
+}
+.now-avatar {
+  display: block;
+  width: 100rpx;
+  height: 100rpx;
+  border: 6rpx solid #FFEAD9;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+.current-community {
+  position: absolute;
+  width: 154rpx;
+  color: #fff;
+  background: #ff7100;
+  text-align: center;
+  height: 56rpx;
+  line-height: 56rpx;
+  border-radius: 0 28rpx 28rpx 0;
+  left: -14rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+.current-community::after {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-width: 0 10rpx 10rpx;
+  border-style: solid;
+  border-color: transparent transparent #CB6412;
+  transform: rotate(45deg);
+  position: absolute;
+  left: 0rpx;
+  top: 54rpx;
+}

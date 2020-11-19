@@ -1,0 +1,243 @@
+<view class="goods-detail-dialog" hidden="{{ !isVisibled }}">
+  <view class="goods-detail-dialog mask" hidden="{{ !isVisibled }}" bindtap="hideDialog"></view>
+  <block wx:if="{{detailtype == 0}}">
+    <view class="goods-detail-contain" style="{{isShowBottom ? 'bottom:100rpx;' : ''}}">
+      <view class="ico-moon icon-closes" bindtap="hideDialog"></view>
+      <view class="goods-detail-header">
+        <image class="goods-cover" src="{{ selectGoodsModelInfo.imgurl || goodsInfo.cover }}"></image>
+        <view class="select-goods-info">
+          <view class="goods-price">
+            <block wx:if="{{selectGoodsModelInfo.is_vip_goods != 1}}">
+              <text style="{{'color:' + storeStyle.theme }}">¥{{ selectGoodsModelInfo.price || (goodsInfo.max_price > goodsInfo.min_price && goodsInfo.min_price != 0 ? (goodsInfo.min_price+' ~ ¥'+goodsInfo.max_price) : goodsInfo.price)  }}</text>
+              <!-- <text style="{{'color:' + storeStyle.theme }}" wx:if="{{selectGoodsModelInfo.price != '0.00'}}">¥{{ selectGoodsModelInfo.price }}</text>
+            <text style="{{'color:' + storeStyle.theme }}" wx:if="{{selectGoodsModelInfo.price != '0.00' && selectGoodsModelInfo.max_can_use_integral != 0}}">+</text>
+            <text style="{{'color:' + storeStyle.theme }}" wx:if="{{selectGoodsModelInfo.max_can_use_integral != 0}}">{{ selectGoodsModelInfo.max_can_use_integral }}积分</text> -->
+              <text class="virtualPrice" wx:if="{{ showVirtualPrice && selectGoodsModelInfo.virtual_price != 0 && selectGoodsModelInfo.models_text}}">¥{{selectGoodsModelInfo.virtual_price || (goodsInfo.max_virtual_price > goodsInfo.min_virtual_price && goodsInfo.min_virtual_price != 0 ? (goodsInfo.min_virtual_price+' ~ ¥'+goodsInfo.max_virtual_price) : goodsInfo.virtual_price)}}</text>
+            </block>
+            <block wx:else>
+              <view class="pay-current-price member-status">
+                <view class="member-price memeber-item" style="display:inline-block;">
+                  <text>¥</text>
+                  <text>{{selectGoodsModelInfo.vipprice || (goodsInfo.vip_max_price > goodsInfo.vip_min_price && goodsInfo.vip_min_price != 0 ? (goodsInfo.vip_min_price+' ~ ¥'+goodsInfo.vip_max_price) : goodsInfo.vip_min_price)}}</text>
+                </view>
+                <view class="member-logo memeber-item" wx:if="{{selectGoodsModelInfo.vipprice != selectGoodsModelInfo.price}}">
+                  会员价
+                </view>
+                <view class="memebr-origin-price memeber-item" style="color:#999;display:inline-block;">
+                  <text class="virtualPrice" style="margin-left:0;" wx:if="{{ showVirtualPrice && selectModelInfo.virtualPrice != 0 && selectGoodsModelInfo.models_text}}">¥{{selectGoodsModelInfo.virtual_price || (goodsInfo.max_virtual_price > goodsInfo.min_virtual_price && goodsInfo.min_virtual_price != 0 ? (goodsInfo.min_virtual_price+' ~ ¥'+goodsInfo.max_virtual_price) : goodsInfo.virtual_price)}}</text>
+                </view>
+              </view>
+            </block>
+          </view>
+          <view class="goods-stock">库存{{ selectGoodsModelInfo.stock || allStock}}</view>
+          <view wx:if="{{!selectGoodsModelInfo.models_text && goodsInfo.model.length > 0}}" class="select-model">请选择
+            <text wx:for="{{goodsInfo.model}}" wx:key="index" wx:if="{{selectGoodsModelInfo.models[index] == ''}}">{{item.name}} </text>
+          </view>
+          <view wx:if="{{selectGoodsModelInfo.models_text}}" class="select-model">已选：{{ selectGoodsModelInfo.models_text }}</view>
+        </view>
+      </view>
+      <view class="goods-detail-content">
+        <view class="goods-dialog-content">
+          <view class="goods-model" hidden="{{ !goodsInfo.model_items.length }}" wx:for="{{ goodsInfo.model }}" wx:key="index" wx:for-item="model" wx:for-index="modelIndex">
+            <view class="model-title">{{ model.name }}(必选)</view>
+            <view class="sub-model">
+              <text wx:for="{{ model.subModelName }}" wx:for-item="name" wx:key="index" data-model-index="{{ modelIndex }}" data-submodel-index="{{ index }}" class="subModel {{ selectGoodsModelInfo.models[modelIndex] == model.subModelId[index] ? 'select' : '' }}" data-submodel-id="{{ model.subModelId[index] }}"
+                bindtap="selectGoodsSubModel" style="{{ selectGoodsModelInfo.models[modelIndex] == model.subModelId[index] ? 'background:' + storeStyle.theme + '33;color:' + storeStyle.theme + ';border-color:' + storeStyle.theme : '' }}">{{ name }}</text>
+            </view>
+          </view>
+          <view class="pay-goods-attrs" hidden="{{ !goodsInfo.attributes.length }}">
+            <view wx:for="{{ goodsInfo.attributes }}" wx:for-item="attr" wx:for-index="attrIndex" wx:key="index">
+              <view class="model-title">{{ attr.name }}</view>
+              <label class="sub-model">
+                <label wx:for="{{ attr.elem }}" wx:for-item="elem" wx:key="index" data-attr-index="{{ attrIndex }}" data-subattr-index="{{ index }}" data-status="{{ selectAttrInfo.attrs[attrIndex][index].is_selected && selectAttrInfo.attrs[attrIndex][index].attributes_id == attr.id ? '1' : '0' }}"
+                  class="subModel {{ selectAttrInfo.attrs[attrIndex][index].is_selected && selectAttrInfo.attrs[attrIndex][index].attributes_id == attr.id ? 'select' : '' }}" bindtap="selectSubAttrs" style="background:{{ selectAttrInfo.attrs[attrIndex][index].is_selected && selectAttrInfo.attrs[attrIndex][index].attributes_id == attr.id ? storeStyle.theme + '33;color:' + storeStyle.theme + ';border-color:' + storeStyle.theme : ''  }}">{{ elem.name }} {{elem.price > 0 ? '+¥'+ elem.price : ''}}
+                </label>
+              </label>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="goods-num-contain" wx:if="{{selectGoodsModelInfo.is_package_goods != 1}}">
+        <text class="goods-num-title">购买数量：</text>
+        <text class="goods-num-title" wx:if="{{selectGoodsModelInfo.min_sales_nums > 1}}">（起卖数 {{selectGoodsModelInfo.min_sales_nums}}）</text>
+        <view class="good-number-box pull-right">
+          <view class="goods-minus" catchtap="clickGoodsMinusButton">-</view>
+          <input class="goods-count" type="number" value="{{ selectGoodsModelInfo.buyCount }}" bindblur="inputBuyCount" />
+          <view class="goods-plus" catchtap="clickGoodsPlusButton">+</view>
+        </view>
+      </view>
+      <view class="goods-shopping-bottom">
+        <block wx:if="{{selectGoodsModelInfo.stock == 0 && selectGoodsModelInfo.stock}}">
+          <view style="background:#E0E0E0" class="add-shoppingcart" wx:if="{{goodsInfo.integral != '2'}}">商品库存不足</view>
+        </block>
+        <block wx:else>
+          <view style="{{'background:' + storeStyle.secondary + ';color:' + (storeStyle.secondary == '#ACD3FA' || storeStyle.secondary == '#FFCFDF' || storeStyle.secondary == '#ffffff' || storeStyle.secondary == '#DFF3ED' || storeStyle.secondary == '#FAF7ED' ? storeStyle.theme : '')}}"
+          class="add-shoppingcart" bindtap="{{selectGoodsModelInfo.is_package_goods == 1 ? 'turnToSetMeal':'sureAddToShoppingCart'}}">{{selectGoodsModelInfo.is_package_goods == 1 ? '选择套餐商品': '加入购物车'}}</view>
+         <view wx:if="{{ showBuyNow }}" style="{{'background:' + storeStyle.theme }}" class="now-buy" bindtap="goPreviewGoodsOrder">立即购买</view>
+        </block>
+      </view>
+    </view>
+  </block>
+  <block wx:elif="{{detailtype == 1}}">
+    <view class="goods-detail-contain two" style="{{isShowBottom ? 'bottom:100rpx;' : ''}}">
+      <view class="ico-moon icon-closes" bindtap="hideDialog"></view>
+      <view class="goods-detail-header">
+        <image class="goods-cover" src="{{ selectGoodsModelInfo.imgurl || goodsInfo.cover }}"></image>
+        <view class="select-goods-info">
+          <view class="goods-price">
+            <block wx:if="{{goodsInfo.is_vip_goods != 1}}">
+              <text style="margin-right:30rpx;{{'color:' + storeStyle.theme }}">¥{{ selectGoodsModelInfo.price || (goodsInfo.max_price > goodsInfo.min_price && goodsInfo.min_price != 0 ? (goodsInfo.min_price+' ~ ¥'+goodsInfo.max_price) : goodsInfo.price)  }}</text>
+              <text class="virtualPrice" wx:if="{{ showVirtualPrice && selectGoodsModelInfo.models_text }}">¥{{selectGoodsModelInfo.virtual_price || (goodsInfo.max_virtual_price > goodsInfo.min_virtual_price && goodsInfo.min_virtual_price != 0 ? (goodsInfo.min_virtual_price+' ~ ¥'+goodsInfo.max_virtual_price) : goodsInfo.virtual_price)}}</text>
+            </block>
+            <block wx:else>
+              <view class="pay-current-price member-status">
+                <view class="member-price memeber-item" style="display:inline-block;">
+                  <text>¥</text>
+                  <text>{{selectGoodsModelInfo.vipprice || (goodsInfo.vip_max_price > goodsInfo.vip_min_price && goodsInfo.vip_min_price != 0 ? (goodsInfo.vip_min_price+' ~ ¥'+goodsInfo.vip_max_price) : goodsInfo.vip_min_price)}}</text>
+                </view>
+                <view class="member-logo memeber-item" wx:if="{{goodsInfo.is_vip_user == 1}}">
+                  会员价
+                </view>
+                <view class="memebr-origin-price memeber-item" style="color:#999;display:inline-block;">
+                  <text class="virtualPrice" style="margin-left:0;" wx:if="{{ showVirtualPrice && selectGoodsModelInfo.models_text}}">¥{{selectGoodsModelInfo.virtual_price || (goodsInfo.max_virtual_price > goodsInfo.min_virtual_price && goodsInfo.min_virtual_price != 0 ? (goodsInfo.min_virtual_price+' ~ ¥'+goodsInfo.max_virtual_price) : goodsInfo.virtual_price)}}</text>
+                </view>
+              </view>
+            </block>
+          </view>
+          <view class="goods-stock" wx:if="{{showStock == 1}}">库存{{ selectGoodsModelInfo.stock || allStock}}</view>
+          <view wx:if="{{!selectGoodsModelInfo.models_text && goodsInfo.model.length > 0}}" class="select-model">请选择
+            <text wx:for="{{goodsInfo.model}}" wx:key="index" wx:if="{{selectGoodsModelInfo.models[index] == ''}}">{{item.name}} </text>
+          </view>
+          <view wx:if="{{selectGoodsModelInfo.models_text}}" class="select-model">已选：{{ selectGoodsModelInfo.models_text }}</view>
+        </view>
+      </view>
+      <view class="goods-detail-content">
+        <view class="goods-dialog-content">
+          <view class="goods-model" hidden="{{ !goodsInfo.model_items.length }}" wx:for="{{ goodsInfo.model }}" wx:key="index" wx:for-item="model" wx:for-index="modelIndex">
+            <view class="model-title">{{ model.name }}</view>
+            <view class="sub-model">
+              <text wx:for="{{ model.subModelName }}" 
+                    wx:for-item="name" wx:key="index" 
+                    data-model-index="{{ modelIndex }}" 
+                    data-submodel-index="{{ index }}"
+                    class="subModel {{ selectGoodsModelInfo.models[modelIndex] == model.subModelId[index] ? 'select' : '' }}" 
+                    data-submodel-id="{{ model.subModelId[index] }}"
+                    bindtap="selectGoodsSubModel" 
+                    style="{{ selectGoodsModelInfo.models[modelIndex] == model.subModelId[index] ? 'background:' + storeStyle.theme + '33;color:' + storeStyle.theme + ';border-color:' + storeStyle.theme : '' }}">{{ name }}</text>
+            </view>
+          </view>
+          <view class="pay-goods-attrs" hidden="{{ !goodsInfo.attributes.length }}">
+            <view wx:for="{{ goodsInfo.attributes }}" wx:for-item="attr" wx:for-index="attrIndex" wx:key="index">
+              <view class="model-title">{{ attr.name }}</view>
+              <label class="sub-model">
+                <label wx:for="{{ attr.elem }}" wx:for-item="elem" wx:key="index" data-attr-index="{{ attrIndex }}" data-subattr-index="{{ index }}" data-status="{{ selectAttrInfo.attrs[attrIndex][index].is_selected && selectAttrInfo.attrs[attrIndex][index].attributes_id == attr.id ? '1' : '0' }}"
+                  class="subModel {{ selectAttrInfo.attrs[attrIndex][index].is_selected && selectAttrInfo.attrs[attrIndex][index].attributes_id == attr.id ? 'select' : '' }}" bindtap="selectSubAttrs" style="background:{{ selectAttrInfo.attrs[attrIndex][index].is_selected && selectAttrInfo.attrs[attrIndex][index].attributes_id == attr.id ? storeStyle.theme + '33;color:' + storeStyle.theme + ';border-color:' + storeStyle.theme : ''  }}">{{ elem.name }} {{elem.price > 0 ? '+¥'+ elem.price : ''}}
+                </label>
+              </label>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="goods-num-contain" wx:if="{{selectGoodsModelInfo.is_package_goods != 1}}">
+        <text class="goods-num-title">数量：</text>
+        <text class="goods-num-title" wx:if="{{selectGoodsModelInfo.min_sales_nums > 1}}">（起卖数 {{selectGoodsModelInfo.min_sales_nums}}）</text>
+        <view class="good-number-box pull-right">
+          <view class="goods-minus {{selectModelInfo.buyCount <= selectModelInfo.min_sales_nums || selectModelInfo.buyCount <= 1 ? 'disabled' : ''}}" catchtap="clickGoodsMinusButton">-</view>
+          <input class="goods-count" type="number" value="{{ selectGoodsModelInfo.buyCount }}" bindblur="inputBuyCount" />
+          <view class="goods-plus {{selectModelInfo.buyCount >= selectModelInfo.stock ? 'disabled' : ''}}" catchtap="clickGoodsPlusButton">+</view>
+        </view>
+      </view>
+      <view class="goods-shopping-bottom">
+        <block wx:if="{{selectGoodsModelInfo.stock == 0 && selectGoodsModelInfo.stock}}">
+          <view style="background:#E0E0E0" class="add-shoppingcart shoppingcart" wx:if="{{goodsInfo.integral != '2'}}">商品库存不足</view>
+        </block>
+        <block wx:else>
+          <view style="{{ 'background:' + storeStyle.secondary + ';color:' + (storeStyle.secondary == '#ACD3FA' || storeStyle.secondary == '#FFCFDF' || storeStyle.secondary == '#ffffff' || storeStyle.secondary == '#DFF3ED' || storeStyle.secondary == '#FAF7ED' ? storeStyle.theme : '') }}"
+          class="add-shoppingcart {{showBuyNow ? '' : 'shoppingcart'}}" bindtap="{{selectGoodsModelInfo.is_package_goods == 1 ? 'turnToSetMeal':'sureAddToShoppingCart'}}">{{selectGoodsModelInfo.is_package_goods == 1 ? '选择套餐商品': '加入购物车'}}</view>
+         <view wx:if="{{ showBuyNow }}" style="{{'background:' + storeStyle.theme }}" class="now-buy" bindtap="goPreviewGoodsOrder">立即购买</view>
+        </block>
+      </view>
+    </view>
+  </block>
+  <block wx:else>
+    <view class="goods-detail-contain three" style="{{isShowBottom ? 'bottom:100rpx;' : ''}}">
+      <view class="ico-moon icon-closes" bindtap="hideDialog"></view>
+      <view class="goods-detail-header">
+        <image class="goods-cover" src="{{ selectGoodsModelInfo.imgurl || goodsInfo.cover }}"></image>
+        <view class="select-goods-info">
+          <view class="goods-price">
+            <block wx:if="{{goodsInfo.is_vip_goods != 1}}">
+              <text style="margin-right:30rpx;{{'color:' + storeStyle.theme }}">¥{{ selectGoodsModelInfo.price || (goodsInfo.max_price > goodsInfo.min_price && goodsInfo.min_price != 0 ? (goodsInfo.min_price+' ~ ¥'+goodsInfo.max_price) : goodsInfo.price)  }}</text>
+              <text class="virtualPrice" wx:if="{{ showVirtualPrice && selectGoodsModelInfo.models_text }}">¥{{selectGoodsModelInfo.virtual_price || (goodsInfo.max_virtual_price > goodsInfo.min_virtual_price && goodsInfo.min_virtual_price != 0 ? (goodsInfo.min_virtual_price+' ~ ¥'+goodsInfo.max_virtual_price) : goodsInfo.virtual_price)}}</text>
+            </block>
+            <block wx:else>
+              <view class="pay-current-price member-status">
+                <view class="member-price memeber-item" style="display:inline-block;">
+                  <text>¥</text>
+                  <text>{{selectGoodsModelInfo.vipprice || (goodsInfo.vip_max_price > goodsInfo.vip_min_price && goodsInfo.vip_min_price != 0 ? (goodsInfo.vip_min_price+' ~ ¥'+goodsInfo.vip_max_price) : goodsInfo.vip_min_price)}}</text>
+                </view>
+                <view class="member-logo memeber-item" wx:if="{{goodsInfo.is_vip_user == 1}}">
+                  会员价
+                </view>
+                <view class="memebr-origin-price memeber-item" style="color:#999;display:inline-block;">
+                  <text class="virtualPrice" style="margin-left:0;" wx:if="{{ showVirtualPrice && selectGoodsModelInfo.models_text}}">¥{{selectGoodsModelInfo.virtual_price || (goodsInfo.max_virtual_price > goodsInfo.min_virtual_price && goodsInfo.min_virtual_price != 0 ? (goodsInfo.min_virtual_price+' ~ ¥'+goodsInfo.max_virtual_price) : goodsInfo.virtual_price)}}</text>
+                </view>
+              </view>
+            </block>
+          </view>
+          <view class="goods-stock" wx:if="{{showStock == 1}}">库存{{ selectGoodsModelInfo.stock || allStock}}</view>
+          <view wx:if="{{!selectGoodsModelInfo.models_text && goodsInfo.model.length > 0}}" class="select-model">请选择
+            <text wx:for="{{goodsInfo.model}}" wx:key="index" wx:if="{{selectGoodsModelInfo.models[index] == ''}}">{{item.name}} </text>
+          </view>
+          <view wx:if="{{selectGoodsModelInfo.models_text}}" class="select-model">已选：{{ selectGoodsModelInfo.models_text }}</view>
+        </view>
+      </view>
+      <view class="goods-detail-content">
+        <view class="goods-dialog-content">
+          <view class="goods-model" hidden="{{ !goodsInfo.model_items.length }}" wx:for="{{ goodsInfo.model }}" wx:key="index" wx:for-item="model" wx:for-index="modelIndex">
+            <view class="model-title">{{ model.name }}</view>
+            <view class="sub-model">
+              <text wx:for="{{ model.subModelName }}" 
+                    wx:for-item="name" wx:key="index" 
+                    data-model-index="{{ modelIndex }}" 
+                    data-submodel-index="{{ index }}"
+                    class="subModel {{ selectGoodsModelInfo.models[modelIndex] == model.subModelId[index] ? 'select' : '' }}" 
+                    data-submodel-id="{{ model.subModelId[index] }}"
+                    bindtap="selectGoodsSubModel" 
+                    style="{{ selectGoodsModelInfo.models[modelIndex] == model.subModelId[index] ? 'background:' + storeStyle.theme + '33;color:' + storeStyle.theme + ';border-color:' + storeStyle.theme : '' }}">{{ name }}</text>
+            </view>
+          </view>
+          <view class="pay-goods-attrs" hidden="{{ !goodsInfo.attributes.length }}">
+            <view wx:for="{{ goodsInfo.attributes }}" wx:for-item="attr" wx:for-index="attrIndex" wx:key="index">
+              <view class="model-title">{{ attr.name }}</view>
+              <label class="sub-model">
+                <label wx:for="{{ attr.elem }}" wx:for-item="elem" wx:key="index" data-attr-index="{{ attrIndex }}" data-subattr-index="{{ index }}" data-status="{{ selectAttrInfo.attrs[attrIndex][index].is_selected && selectAttrInfo.attrs[attrIndex][index].attributes_id == attr.id ? '1' : '0' }}"
+                  class="subModel {{ selectAttrInfo.attrs[attrIndex][index].is_selected && selectAttrInfo.attrs[attrIndex][index].attributes_id == attr.id ? 'select' : '' }}" bindtap="selectSubAttrs" style="background:{{ selectAttrInfo.attrs[attrIndex][index].is_selected && selectAttrInfo.attrs[attrIndex][index].attributes_id == attr.id ? storeStyle.theme + '33;color:' + storeStyle.theme + ';border-color:' + storeStyle.theme : ''  }}">{{ elem.name }} {{elem.price > 0 ? '+¥'+ elem.price : ''}}
+                </label>
+              </label>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="goods-num-contain" wx:if="{{selectGoodsModelInfo.is_package_goods != 1}}">
+        <text class="goods-num-title">数量：</text>
+        <text class="goods-num-title" wx:if="{{selectGoodsModelInfo.min_sales_nums > 1}}">（起卖数 {{selectGoodsModelInfo.min_sales_nums}}）</text>
+        <view class="good-number-box pull-right">
+          <view class="goods-minus {{selectModelInfo.buyCount <= selectModelInfo.min_sales_nums || selectModelInfo.buyCount <= 1 ? 'disabled' : ''}}" catchtap="clickGoodsMinusButton">-</view>
+          <input class="goods-count" type="number" value="{{ selectGoodsModelInfo.buyCount }}" bindblur="inputBuyCount" />
+          <view class="goods-plus {{selectModelInfo.buyCount >= selectModelInfo.stock ? 'disabled' : ''}}" catchtap="clickGoodsPlusButton">+</view>
+        </view>
+      </view>
+      <view class="goods-shopping-bottom">
+        <block wx:if="{{selectGoodsModelInfo.stock == 0 && selectGoodsModelInfo.stock}}">
+          <view style="background:#E0E0E0" class="add-shoppingcart shoppingcart" wx:if="{{goodsInfo.integral != '2'}}">商品库存不足</view>
+        </block>
+        <block wx:else>
+          <view style="{{ 'background:' + storeStyle.secondary + ';color:' + (storeStyle.secondary == '#ACD3FA' || storeStyle.secondary == '#FFCFDF' || storeStyle.secondary == '#ffffff' || storeStyle.secondary == '#DFF3ED' || storeStyle.secondary == '#FAF7ED' ? storeStyle.theme : '') }}"
+          class="add-shoppingcart {{showBuyNow ? '' : 'shoppingcart'}}" bindtap="{{selectGoodsModelInfo.is_package_goods == 1 ? 'turnToSetMeal':'sureAddToShoppingCart'}}">{{selectGoodsModelInfo.is_package_goods == 1 ? '选择套餐商品': '加入购物车'}}</view>
+         <view wx:if="{{ showBuyNow }}" style="{{'background:' + storeStyle.theme }}" class="now-buy" bindtap="goPreviewGoodsOrder">立即购买</view>
+        </block>
+      </view>
+    </view>
+  </block>
+</view>

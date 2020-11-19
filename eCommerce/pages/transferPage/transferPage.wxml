@@ -1,0 +1,262 @@
+<component-getUserInfo showGetUserInfo="{{ showGetUserInfo }}"></component-getUserInfo>
+<component-topNavBar topNavBarData="{{topNavBarData}}"></component-topNavBar>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<franchiseeTabbar franchiseeInfo="{{franchiseeIdInfo}}"></franchiseeTabbar>
+<component-behavior-track></component-behavior-track>
+<component-memberDiscount 
+  id="component-memberDiscount"
+  discountType="{{ memberDiscount }}"
+  franchisee="{{ franchisee }}"
+  themeColor="{{ transferConfig.background_color }}"
+  bind:afterSelectedDiscount="afterSelectedBenefit"></component-memberDiscount>
+<view class="transfer-wrap">
+  <view class="transfer-header">
+    <view class="transfer-name">
+      付款给
+      <text class="account">{{appTitle}}</text>
+    </view>
+    <view class="coupon-desc" wx:if="{{ storeBenefitActivityList.length }}" bindtap="goToCouponDesc" style="color: {{ transferConfig.background_color }}">
+      优惠说明
+    </view>
+  </view>
+
+  <view class="transfer-input consumption-block">
+    <view class="space-between">
+      <view class="input-text">消费金额</view>
+      <view class="input-price-block">
+        <input type="digit"
+               value="{{ inputPrice !== '' ? '¥' + inputPrice : '' }}" 
+               class="input-price {{ transferConfig.scan_mode == 1 ? 'm-r-40' : '' }}"  
+               bindinput="inputPrice"
+               bindblur="priceBlur" 
+               data-type="price"
+               placeholder-class="input-price-placeholder" 
+               placeholder="{{ transferConfig.input_mode === '0' ? '' : '请输入金额' }}" 
+               disabled="{{ inputState === 1 || inputState === 2 || inputState === 3 || transferConfig.input_mode === '0' }}"/>
+        <text class="ico-moon icon-shopping-scan" catchtap="scanPaymentCode" wx:if="{{ transferConfig.scan_mode == 1 }}"></text>
+      </view>
+    </view>
+    <view class="price-limit" wx:if="{{ isShowPriceLimitTip }}">价格区间仅支持0.01~99999.99元</view>
+  </view>
+  <view class="scan-tip-block" wx:if="{{ transferConfig.scan_mode == 1 }}">
+    <text class="scan-tip">扫码可快速填充</text>
+  </view>
+
+  <view class="transfer-input no-join-block" wx:if="{{ transferConfig.least_cost == 1 && inputState !== 2 }}" >
+    <view class="input-text">不参与金额</view>
+    <view class="input-price-block">
+      <input value="{{ noJoinPrice !== '' ? '¥' + noJoinPrice : '' }}" 
+              class="input-price" 
+              style="font-size: 32rpx" 
+              type="digit" 
+              placeholder-class="input-price-placeholder" 
+              placeholder="{{ transferConfig.input_mode === '0' ? '' : '请输入金额' }}" 
+              bindinput="noJoinPriceInput" bindblur="priceBlur" 
+              disabled="{{ inputState === 1 || inputState === 2 || inputState === 3 || transferConfig.input_mode === '0' }}"
+              data-type="no-join-price"/>
+    </view>
+  </view>
+
+  <view class="discount-block" wx:if="{{ inputState !== 2 }}">
+    <view class="item space-between store-discount" wx:if="{{ currentStoreBenefitInfo.activity_title && transferConfig.store_benefit_enable == 1 }}">
+      <text class="store-title">店铺满减</text>
+      <view>
+        <view class="discount-text" hidden="{{ inputPrice }}">
+          <text wx:for="{{ currentStoreBenefitInfo.rule_titles }}" wx:key="index">{{ index === 0 ? item : ', ' + item }}</text>
+        </view>
+        <block wx:if="{{ inputPrice }}">
+          <switch checked="{{ storeState }}" bindchange="updateStoreState"/>
+          <view class="discount-price" wx:if="{{ storeBenefitInfo.discount_price && storeBenefitInfo.discount_price != 0 && storeState }}" style="color: {{ transferConfig.background_color }}">
+            -¥{{  storeBenefitInfo.discount_price }}
+          </view>
+          <view class="store-tip" wx:if="{{ storeBenefitInfo.discount_price == 0 && storeState }}">
+            不满足满减条件
+          </view>
+        </block>
+      </view>
+    </view>
+    <block wx:if="{{ otherBenefit.length }}" wx:key="index">
+      <view class="item member-discount" wx:for="{{ otherBenefit }}">
+        <view style="font-size: 28rpx">{{ item.label }}</view>
+        <view class="member-discount-detail">
+          <view class="price" style="color: {{ transferConfig.background_color }}">
+            -¥{{ item.discount }}
+          </view>
+        </view>
+      </view>      
+    </block>
+    <view class="item vip-card-block" wx:if="{{ vipCardInfo.isShow }}">
+      <view class="vip-card">
+        <image class="card-img" src="{{ vipCardInfo.logo }}" />
+        <view class="card-info">
+          <view class="card-name">{{ vipCardInfo.app_name  + ' ' + vipCardInfo.title }}</view>
+          <view class="card-mess" wx:if="{{ vipCardInfo.discount != 0 }}">免费开卡享 {{ vipCardInfo.discount }}折</view>
+          <view class="card-mess" wx:elif="{{ vipCardInfo.coupon_list && vipCardInfo.coupon_list != '' }}">免费开卡享 赠送优惠券</view>
+          <view class="card-mess" wx:elif="{{ vipCardInfo.integral != 0 }}">免费开卡享 赠送{{ vipCardInfo.integral }}积分</view>
+        </view>
+        <view class="card-btn" bindtap="handleVipCard">立即开卡</view>
+      </view>
+    </view>
+    <!-- 唯一会员优惠 -->
+    <view class="item space-between member-discount" bindtap="showMemberDiscount" wx:if="{{ aloneBenefitState }}">
+      <view style="font-size: 28rpx">会员优惠</view>
+      <view class="member-discount-detail">
+        <view class="price" wx:if="{{ selectedBenefit.discount_cut_price && selectedBenefit.discount_cut_price !== '0.00' }}" style="color: {{ transferConfig.background_color }}">
+          -¥{{ selectedBenefit.discount_cut_price }}
+        </view>
+        <view class="price" wx:if="{{ selectedBenefit.discount_cut_price && selectedBenefit.discount_cut_price === '0.00' }}" style="color: {{ transferConfig.background_color }}">
+          未使用
+        </view>
+        <view class="ico-moon icon-rightarrow"></view>
+      </view>
+    </view>
+    <!-- 自定义会员优惠 -->
+    <view class="item member-discount" data-type="vip" bindtap="showMemberDiscount" wx:if="{{ combineState.vip && transferConfig.vip_card_benefit_enable == 1  }}">
+      <view style="font-size: 28rpx">会员卡优惠</view>
+      <view class="member-discount-detail">
+        <view class="price" wx:if="{{ combineBenefit.vip_benefit && combineBenefit.vip_benefit_discount_price !== '0.00' }}" style="color: {{ transferConfig.background_color }}">
+          -¥{{ combineBenefit.vip_benefit_discount_price }}
+        </view>
+        <view class="price" wx:if="{{ combineBenefit.vip_benefit && combineBenefit.vip_benefit_discount_price === '0.00' }}" style="color: {{ transferConfig.background_color }}">
+          未使用
+        </view>
+        <view class="ico-moon icon-rightarrow"></view>
+      </view>
+    </view>
+    <view class="item member-discount" data-type="coupon" bindtap="showMemberDiscount" wx:if="{{ combineState.coupon && transferConfig.combine_benefit_enable == 1 }}">
+      <view style="font-size: 28rpx">优惠券减免</view>
+      <view class="member-discount-detail">
+        <block wx:if="{{ combineState.coupon === 1 }}">
+          <view class="price" wx:if="{{ combineBenefit.coupon_benefit_discount_price && combineBenefit.coupon_benefit_discount_price !== '0.00' }}" style="color: {{ transferConfig.background_color }}">
+            -¥{{ combineBenefit.coupon_benefit_discount_price }}
+          </view>
+          <view class="price" wx:if="{{ combineBenefit.coupon_benefit_discount_price && combineBenefit.coupon_benefit_discount_price === '0.00' }}" style="color: {{ transferConfig.background_color }}">
+            未使用
+          </view>
+        </block>
+        <block wx:if="{{ combineState.coupon === 0 }}">
+          <view class="price" style="color: {{ transferConfig.background_color }}">
+            无可用优惠券
+          </view>
+        </block>
+        <view class="ico-moon icon-rightarrow"></view>
+      </view>
+    </view>
+    <view class="item member-discount" data-type="integral" bindtap="showMemberDiscount" wx:if="{{ combineState.integral && transferConfig.integral_benefit_enable == 1 }}">
+      <view style="font-size: 28rpx">积分抵扣</view>
+      <view class="member-discount-detail">
+        <view class="price" wx:if="{{ combineBenefit.integral_benefit && combineBenefit.integral_benefit.discount_price !== '0.00' }}" style="color: {{ transferConfig.background_color }}">
+          -¥{{ combineBenefit.integral_benefit.discount_price }}
+        </view>
+        <view class="price" wx:if="{{ combineBenefit.integral_benefit && combineBenefit.integral_benefit.discount_price === '0.00' }}" style="color: {{ transferConfig.background_color }}">
+          未使用
+        </view>
+        <view class="ico-moon icon-rightarrow"></view>
+      </view>
+    </view>
+    <view class="item space-between stored-value-discount" wx:if="{{ transferConfig.use_balance_enable !== '0' && userInfo.balance && userInfo.balance != 0 && (!franchisee || balanceData.is_open == 1) }}">
+      <text style="font-size: 28rpx; padding-top: 12rpx;">储值抵扣（余额：¥{{ userInfo.balance }}）</text>
+      <view class="stored-value-block">
+        <switch checked bindchange="updateBalanceState" checked="{{ balanceState }}"/>
+        <view class="stored-value-price" hidden="{{ !balanceState || useBalancePrice == 0 }}" style="color: {{ transferConfig.background_color }}">
+          -¥{{ useBalancePrice }}
+        </view>
+      </view>
+    </view>
+    <component-paySettlementGift bind:selected="selectedPayGift" 
+                                 franchisee="{{ franchisee }}"
+                                 orderPrice="{{ settlementActivityFreePrice }}" 
+                                 usageScene="5"
+                                 bind:paySetting="getPaySettingInfo"></component-paySettlementGift>
+  </view>
+
+  <!-- 展示关联订单的相关优惠 -->
+  <view class="discount-block" wx:if="{{ inputState === 2 }}">
+    <block wx:if="{{ otherBenefit.length }}" wx:key="index">
+      <view class="item member-discount" wx:for="{{ otherBenefit }}">
+        <view style="font-size: 28rpx">{{ item.label }}</view>
+        <view class="member-discount-detail">
+          <view class="price" style="color: {{ transferConfig.background_color }}">
+            -¥{{ item.discount }}
+          </view>
+        </view>
+      </view>      
+    </block>
+
+    <view class="item member-discount" wx:if="{{ relatedOrderInfo.selected_benefit_info.discount_type }}">
+      <view style="font-size: 28rpx">{{ benefitType[relatedOrderInfo.selected_benefit_info.discount_type] }}优惠</view>
+      <view class="member-discount-detail">
+        <view class="price" style="color: {{ transferConfig.background_color }}">
+          -¥{{ relatedOrderInfo.selected_benefit_info.discount_price }}
+        </view>
+      </view>
+    </view>
+    <view class="item member-discount" wx:if="{{ relatedOrderInfo.use_balance !== '0.00' }}">
+      <view style="font-size: 28rpx">储值抵扣</view>
+      <view class="member-discount-detail">
+        <view class="price" style="color: {{ transferConfig.background_color }}">
+          -¥{{ relatedOrderInfo.use_balance }}
+        </view>
+      </view>
+    </view>
+    <view class="item member-discount" wx:if="{{ relatedOrderInfo.coupon_fee !== '0.00' }}">
+      <view style="font-size: 28rpx">社交立减金</view>
+      <view class="member-discount-detail">
+        <view class="price" style="color: {{ transferConfig.background_color }}">
+          -¥{{ relatedOrderInfo.coupon_fee }}
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 其他信息 -->
+  <view class="further-info" wx:if="{{ (inputState === 0) && transferConfig.further_info_config.length }}">
+    <view class="item" wx:for="{{ transferConfig.further_info_config }}" wx:key="index" wx:for-index="furtherIdx">
+      <text class="{{ item.is_must == 1 ? 'necessary' : '' }}">{{ item.category_name }}{{ item.type == 2 && item.value ? '：' + item.value : '' }}</text>
+      <view class="content">
+        <block wx:if="{{ item.type == 1 }}">
+          <input style="font-size: 28rpx; text-overflow: ellipsis;" bindinput="changeFurtherInfo" data-index="{{ furtherIdx }}" value="{{ item.value }}" maxlength="30" placeholder-class="input-price-placeholder" placeholder="请输入信息"/>
+        </block>
+        <block wx:else>
+          <picker bindchange="changeFurtherInfo" data-index="{{ furtherIdx }}" value="{{ index }}" range="{{ item.further_info }}">
+            <view class="picker">
+              {{ item.value ? '重新选择' : '请选择' }}
+              <view class="ico-moon icon-rightarrow"></view>
+            </view>
+          </picker>
+        </block>
+      </view>
+    </view>
+  </view>
+
+  <view class="further-info" wx:if="{{ (inputState === 1 || inputState === 2 || inputState === 3) && transferConfig.further_info_config.length }}">
+    <block wx:for="{{ transferConfig.further_info_config }}" wx:key="index" wx:for-index="furtherIdx">
+      <view class="item" wx:if="{{ item.value }}">
+        <text>{{ item.category_name }}</text>
+        <view class="content">{{ item.value }}</view>
+      </view>
+    </block>
+  </view>
+
+  <view class="transfer-input remark">
+    <view class="input-text">备注</view>
+    <input style="font-size: 28rpx; text-overflow: ellipsis;" value="{{ remark }}" maxlength="30" placeholder-class="input-price-placeholder" placeholder="请填写备注信息" bindinput="inputRemark"/>
+  </view>
+
+  <view class="transfer-input remark" wx:if="{{isOpenInvoice && totalPayment != '0.00' && !hiddenInvoice}}">
+    <view class="input-text">发票</view>
+    <view class="input-oprate" bindtap="goInvoicePage">
+      <view wx:if="{{!invoiceInfo.buyer_name}}">申请开票</view>
+      <text wx:else>电子发票（{{invoiceInfo.invoice_type == 1 ? '个人' : '公司'}}）</text>
+      <view class="ico-moon icon-rightarrow pull-right"></view>
+    </view>
+  </view>
+
+  <view class="transfer-text" wx:if="{{isOpenInvoice && payGiftStatus}}">
+    <text>注：{{payGiftType == 1 ? "充值储值" : "购买会员"}}订单发票需要到个人中心-{{payGiftType == 1 ? "储值" : "购卡订单"}}中开具</text>
+  </view>
+
+  <button class="submit-btn" disabled="{{ totalPayment === '' || requesting }}" bindtap="confirmPay" style="background: {{ transferConfig.background_color || '#FF7100' }}; margin-bottom: {{isShowBottom ? '100' : '0'}}rpx;">
+    {{ totalPayment === '' ? '' : totalPayment + '元  ' }}确认支付
+  </button>
+</view>

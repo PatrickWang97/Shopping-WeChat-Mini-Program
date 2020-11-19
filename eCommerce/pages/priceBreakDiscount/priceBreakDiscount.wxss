@@ -1,0 +1,20 @@
+.discount_page {
+  padding: 20rpx 30rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+.discount_title {
+  font-weight: bold;
+}
+.discount_time {
+  padding: 30rpx 0;
+}
+.discount_info {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-bottom: 40rpx;
+}
+.discount_item {
+  margin-bottom: 10rpx;
+}

@@ -1,0 +1,90 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-behavior-track></component-behavior-track>
+<view class="recharge-wrap page" id="recharge">
+  <view class="recharge-wrap-content">
+    <view class="stored-value-header">
+      <view class='stored-value-content'>
+        <view class="stored-value-num">{{currentBalance }}</view>
+        <view class="stored-value-describe">当前储值金 (元)</view>
+      </view>
+      <view class="stored-value-record" catchtap="turnToRecords">充值记录</view>
+    </view>
+    <view class="select-area" wx:if="{{ itemList.length > 0 || customItemInfo.status == 1 }}">
+      <view class="select-list">
+        <block wx:for="{{ itemList }}" wx:key="index">
+          <view class="select-item {{ ( type == 1 && selectedItem.index == index ) ? 'active' : '' }}" data-index="{{ index }}" catchtap="selectActiveItem">
+            <view class="recharge-money {{ ( type == 1 && selectedItem.index == index ) ? 'active' : '' }}">{{ item.rechargeMoney }}元</view>
+            <view class="give-money {{ ( type == 1 && selectedItem.index == index ) ? 'active' : '' }}">{{item.instructions}}</view>
+          </view>
+        </block>
+      </view>
+      <view wx:if="{{ customItemInfo.status == 1 }}" class="custom-item {{ type == 6  ? 'active': '' }}" catchtap="selectCustomItem">
+        <view class="item-title">自定义金额</view>
+        <view class="item-price-block">
+          <text class="item-price-symbol">¥</text>
+          <input class="item-price-input" type="digit" placeholder="请输入金额" placeholder-style="color: #999999;" bindfocus="selectCustomItem" bindblur="confirmCustomPrice" bindinput="confirmCustomPrice"></input>
+        </view>
+        <view class="item-tip" wx:if="{{ customItemInfo.tip }}">{{ customItemInfo.tip }}</view>
+      </view>
+    </view>
+    <view wx:if="{{ type == 1 && selectedItem.description != '' }}" class="instruction-area" style="{{customItemInfo.status != 1 ?'padding-top:34rpx':''}}">
+      <view class="area-title">储值说明</view>
+      <text class="area-content" wx:if="{{selectedItem.description_type == '1'}}">{{ selectedItem.description }}</text>
+      <image class="area-image" src="{{ selectedItem.description }}"  wx:if="{{selectedItem.description_type == '2'}}"></image>
+    </view>
+    <view class="shops-area thin-bd-t" wx:if="{{subShopsList.length}}">
+      <view class="shopsList-wrapper">
+        <view class="shops-title thin-bd-b" bindtap="turnToShopsList">
+          <text class="title-txt">适用店铺</text>
+          <text class="ico-moon icon-rightarrow"></text>
+        </view>
+        <view class="shops-list">
+          <view class="shops-item thin-bd-b" wx:for="{{subShopsList}}" wx:key="" wx:for-item="shop">
+            <view class="item-name-distance">
+              <text class="item-name">{{shop.name}}</text>
+              <text class="item-distance">{{shop.distance}}</text>
+            </view>
+            <view class="item-address">
+              <text>{{shop.province_name}}{{shop.city_name}}{{shop.county_name}}{{shop.address_detail}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="shopsList-more" bindtap="turnToShopsList" wx:if="{{subShopsCount > 2}}">
+        <text>查看更多</text>
+        <text class="ico-moon icon-uparrow"></text>
+      </view>
+    </view>
+    <view wx:if="{{ couponItemList.length > 0 }}" class="coupon-area">
+      <view class="area-title">储值券充值</view>
+      <view class="coupon-list">
+        <block wx:for="{{ couponItemList }}" wx:key="index">
+          <view class="coupon-item {{ ( type == 5 && selectedCouponItem.index == index ) ? 'active' : '' }}" data-index="{{ index }}" catchtap="selectActiveCouponItem">
+            <view class="item-title">¥
+              <text class="price">{{ item.price }}</text> 储值券</view>
+            <view class="division-line">
+              <view class="left-semicircle"></view>
+              <view class="right-semicircle"></view>
+            </view>
+            <view class="bottom-section">
+              <view class="date-duration">{{ item.dateDuration }}</view>
+              <view class="other-case">{{ item.otherCase }}</view>
+              <view class="time-duration">{{ item.timeDuration }}</view>
+            </view>
+          </view>
+        </block>
+      </view>
+    </view>
+    <view wx:if="{{itemList.length == 0 && customItemInfo.status != 1}}" class="recharge-no-data">
+      <image class="no-data-image" src="http://cdn.jisuapp.cn/static/webapp/images/stored-value/none-stored-record.png"></image>
+      <view>暂无可充值选项</view>
+    </view>
+  </view>
+  <view class="recharge-bottom" wx:if="{{itemList.length>0 || customItemInfo.status == 1 ||couponItemList.length > 0}}">
+    <form catchsubmit="gotoRecharge" report-submit="true" class="stored-value-form">
+      <button class="recharge-btn" formType="submit" catchtap="stopPropagation">充值</button>
+    </form>
+  </view>
+
+</view>

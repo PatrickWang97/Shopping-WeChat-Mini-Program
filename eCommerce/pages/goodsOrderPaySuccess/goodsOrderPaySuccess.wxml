@@ -1,0 +1,194 @@
+<wxs module="toFixedModule">
+  var toFixed = function(num,t) {
+    num = +num;
+    return num.toFixed(t);
+  }
+  module.exports.toFixed = toFixed;
+</wxs>
+<component-reward-point rewardPointObj="{{rewardPointObj}}" shareGiftsObj="{{shareGiftsObj}}" collectGiftsObj="{{collectGiftsObj}}" collectGetObj="{{collectGetObj}}"></component-reward-point>
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="content-block">
+  <view wx:if="{{ hasRecommendConfig && card_type != 1 && card_type != 2 }}" class="normal-area">
+    <view class="order-price-box" style="{{'background:' + storeStyle.theme}}">
+      <!-- 行业预约  不用支付 或者线下支付 只显示预约成功 -->
+      <block wx:if="{{trade_style == 5}}"> 
+        <view class="order-success" style="margin-bottom:80rpx;"><image class="goods-complete-succes" src="http://cdn.jisuapp.cn/static/webapp/images/xcx-goods/goods-complete-success.png"></image><text>预约成功</text></view>
+      </block>
+      <block wx:else>
+        <view class="order-success"><image class="goods-complete-succes" src="http://cdn.jisuapp.cn/static/webapp/images/xcx-goods/goods-complete-success.png"></image><text>支付成功</text></view>
+        <view class="order-price" wx:if="{{orderInfo.price_break_discounts_info}}">¥{{ toFixedModule.toFixed(orderInfo.order_total_price - orderInfo.price_break_discounts_info.total_discount_price,2) }}</view>
+        <view class="order-price" wx:else>¥{{ orderInfo.order_total_price }}</view>
+      </block>
+      <view class="btn-area">
+        <view bindtap="goToHomepage">继续购物</view>
+        <view bindtap="goToOrderDetail" data-type='{{orderInfo.pick_up_type}}'>查看订单</view>
+      </view>
+    </view>
+    <image class="goods-complete-bg" src="http://cdn.jisuapp.cn/static/webapp/images/xcx-goods/goods-complete-bg.png"></image>
+  </view>
+  <block wx:if="{{ !hasRecommendConfig && card_type != 1 && card_type != 2 }}">
+    <view class="no-recommend-box">
+      <view class="normal-area" style="{{'background:' + storeStyle.theme}}">
+        <image class="goods-complete-succes" src="http://cdn.jisuapp.cn/static/webapp/images/xcx-goods/big-goods-complete-success.png"></image>
+        <image class="goods-complete-bg" src="http://cdn.jisuapp.cn/static/webapp/images/xcx-goods/goods-complete-bg.png"></image>
+      </view>
+      <!-- 行业预约  不用支付 或者线下支付 只显示预约成功 -->
+      <block wx:if="{{trade_style == 5}}"> 
+         <view class="goods-complete-title" style="margin-bottom:80rpx;{{'color:' + storeStyle.theme}}">预约成功</view>
+      </block>
+      <block wx:else>
+        <view class="goods-complete-title" style="{{'color:' + storeStyle.theme}}" wx:if="{{orderInfo.price_break_discounts_info}}">¥{{ toFixedModule.toFixed(orderInfo.order_total_price - orderInfo.price_break_discounts_info.total_discount_price,2) }}</view>
+        <view class="goods-complete-title" style="{{'color:' + storeStyle.theme}}" wx:else>¥{{ orderInfo.order_total_price }}</view>
+        <view class="slogan">支付成功</view>
+      </block>
+      <view class="btn-area">
+        <view class="go-on-shopping" bindtap="goToHomepage" style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}">继续购物</view>
+        <view bindtap="goToOrderDetail" data-type='{{orderInfo.pick_up_type}}'>查看订单</view>
+      </view>
+    </view>
+  </block>
+  <!-- 礼品卡购物卡的订单 -->
+  <block wx:if="{{ card_type == 1 || card_type == 2 }}">
+    <view class="no-recommend-box">
+      <view class="normal-area" style="{{'background:' + storeStyle.theme}}">
+        <image class="goods-complete-succes" src="http://cdn.jisuapp.cn/static/webapp/images/xcx-goods/big-goods-complete-success.png"></image>
+        <image class="goods-complete-bg" src="http://cdn.jisuapp.cn/static/webapp/images/xcx-goods/goods-complete-bg.png"></image>
+      </view>
+      <view class="goods-complete-title" style="{{'color:' + storeStyle.theme}}">¥{{ total_price }}</view>
+      <view class="slogan">支付成功</view>
+      <view class="btn-area">
+        <view class="go-on-shopping" bindtap="trunToCardDetail" wx:if="{{card_type == 1}}">查看礼品卡</view>
+        <view class="go-on-shopping" bindtap="trunToCardDetail" wx:if="{{card_type == 2}}">查看购物卡</view>
+        <view class="goToOrderDetail" bindtap="sendCard" wx:if="{{is_present == '1'}}">赠送给好友</view>
+      </view>
+    </view>
+  </block>
+  <view class="settlement-activity" wx:if="{{ settlement_activity }}">
+    <view class="balance-item" wx:if="{{ settlement_activity.marketing_type == 1 }}">
+      <view class="row">
+        <text class="title">充值成功</text>
+        <text class="price">+{{  settlement_activity.item_price }}</text>
+      </view>
+      <view class="row">
+        <text class="time">{{ settlement_activity.payment_time }}</text>
+        <navigator class="navigate" open-type="navigate" path="{{ settlement_activity.path }}" url="{{ settlement_activity.path }}">
+          查看储值
+          <label class="ico-moon icon-rightarrow"></label>
+        </navigator>
+      </view>
+    </view>
+    <block wx:if="{{ settlement_activity.marketing_type == 2 }}">
+      <view class="card-title">
+        获得以下会员卡
+      </view>
+      <view class="card-item">
+        <view class="card-detail">
+          <image class="cover-thumb" src="{{ userInfo.cover_thumb }}"></image>
+          <view class="title-warpper">
+            <view class="nickname">{{ userInfo.nickname }}</view>
+            <view class="card-name">{{ settlement_activity.card_title }}</view>
+          </view>
+          <navigator class="card-navigate" open-type="navigate" path="{{ settlement_activity.path }}" url="{{ settlement_activity.path }}">
+            查看权益
+          </navigator>
+        </view>
+        <view class="row">
+          <text class="number">NO.{{ settlement_activity.card_no }}</text>
+          <text class="extra-date">{{ settlement_activity.expired_time }}</text>
+        </view>
+      </view>
+    </block>
+  </view>
+  <component-payFinishGift orderId="{{ orderId }}" franchisee="{{ franchiseeId }}"></component-payFinishGift>
+  <view wx:if="{{ status == 1 }}" class="collect-benefit-area">
+    <view class="activity-box">
+      <view class="line"></view>
+      <view class="activity-title">活动</view>
+      <view class="line"></view>
+    </view>
+    <view class="collect-item">
+      <view class="star-num">集集乐个数: {{ collectBenefitData.star_num }}</view>
+      <view class="star-list">
+        <block wx:for="{{ starData }}" wx:key="index">
+          <image class="star-item" wx:if="{{ item == 'light' }}" src="{{ collectBenefitData.light_img }}"></image>
+          <image class="star-item" wx:elif="{{ item== 'dark' }}" src="{{ collectBenefitData.dark_img }}"></image>
+        </block>
+      </view>
+      <view class="star-full" wx:if="{{ collectBenefitData.star_num == collectBenefitData.collect_num }}">
+        <view class="star-full-text">满</view>
+      </view>
+    </view>
+    <view class="tip-item">
+      <view wx:if="{{ collectBenefitData.star_num == collectBenefitData.collect_num }}">
+        获得一张{{ collectBenefitData.coupon_title }}
+      </view>
+      <view wx:elif="{{ collectBenefitData.star_num != collectBenefitData.collect_num }}">
+        消费{{collectBenefitData.play_type == 0 ? '每满':'超过'}}{{ collectBenefitData.value }}元，累计一颗星，集满可获得{{ collectBenefitData.coupon_title }}一张
+      </view>
+    </view>
+  </view>
+  <!-- 刮刮乐 -->
+  <view class='scratchWhole' hidden='{{isWhole}}'>
+    <view class="activity-box scratch-activity">
+      <view class="line"></view>
+      <view class="activity-title">活动</view>
+      <view class="line"></view>
+    </view>
+    <view class="scratchArea">
+      <!-- 未中奖 -->
+      <view class="scratchFail" hidden='{{isFail}}'>
+        <image src="http://cdn.jisuapp.cn/static/webapp/images/scratchFail.png"></image>
+        <view class="failTitle">
+        <button class='failShare' open-type="share">分享</button>
+        <view class="failText">很遗憾没有中奖哦</view>
+        </view>
+      </view>
+      <!-- 中奖 -->
+      <view class="scratchWinning" hidden='{{isWinning}}'>
+        <image src="http://cdn.jisuapp.cn/static/webapp/images/scratchPrize.png"></image>
+        <view class="winningTitle">
+          <button class='winningShare' open-type="share">分享</button>
+          <view class="winningText">恭喜你获得了</view>
+          <view class="winningText winningValue">{{winingTitle}}</view>
+        </view>
+      </view>
+      <!-- 安慰奖 -->
+      <view class="scratchComfort" hidden='{{isComfort}}'>
+        <image src="http://cdn.jisuapp.cn/static/webapp/images/scratchComfort.png"></image>
+        <view class="comfortTitle">
+            <button class='comfortShare' open-type="share">分享</button>
+            <view wx:if="{{ifGetComfort}}" class="comfortText">已领取，在微信卡包中查看哦~</view>
+            <view wx:else class="comfortText" class="comfortText">又没中奖，送你一个小礼品</view>
+            <view wx:if="{{!ifWxCoupon && !ifGetComfort}}" class="comfortText">>在优惠券卡包进行查收哦~</view>
+        </view>
+      </view>
+      <view class="scratch_wp" hidden='{{hideCanvas}}' style="width: {{scratch.width}}px; height: {{scratch.height}}px;" >
+        <canvas class="scratch-canvas" style="width: {{scratch.width}}px;height: {{scratch.height}}px;" canvas-id="scratch" bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd" disable-scroll ="{{!isScroll}}">
+          <cover-view class="showArea" wx:if='{{isShowteam}}'>
+            <cover-view class="showTitle">赢取优惠大奖</cover-view>
+            <cover-view class="showBtn" bindtap='showAreaClick'>点我刮奖</cover-view>
+          </cover-view>
+        </canvas>
+      </view>
+    </view>
+  </view>
+  <!-- 拉新有礼 -->
+  <view class="invite-wrap" wx:if="{{showInviteModal}}">
+    <view class="newcomer-mask" catchtouchmove="stopPropagation" bindtap="closeInviteModal"></view>
+    <view class="invite-model-wrap">
+      <view class="newcomer-banner">
+        <image src="https://develop.zhichiwangluo.com/zhichi_frontend/static/webapp/images/xcx-newcomer/newcomer-banner.png"></image>
+      </view>
+      <view class="invite-model-text">
+        <view style="text-align:center;">邀请好友，参与拉新</view>
+        <view>您可获得额外的奖励呦~</view>
+      </view>
+      <view class="invite-model-button">
+        <view class="check-acitvity" bindtap="checkActivity">查看活动</view>
+        <button class="invite-friend" open-type="share">邀请好友</button>
+      </view>
+    </view> 
+  </view>
+</view>
+<component-recommend id="component-recommend" franchiseeId="{{franchiseeId}}"></component-recommend>

@@ -1,0 +1,23 @@
+<!--eCommerce/pages/balanceShopsList/balanceShopsList.wxml-->
+<view class="shopsList-container">
+  <view class="shopsList-wrapper">
+    <view class="shops-list" wx:if="{{subShopsList.list.length}}">
+      <view class="shops-item" wx:for="{{subShopsList.list}}" wx:key="" wx:for-item="shop" data-app-id="{{shop.app_id}}" data-mode="{{shop.mode_id}}" data-newpage="{{shop.sub_bar['homepage-router'] || ''}}" catchtap="turnToFranchisee">
+        <view class="item-name-distance">
+          <text class="item-name">{{shop.name}}</text>
+          <text class="item-distance">{{shop.distance}}</text>
+        </view>
+        <view class="item-address">
+          <text>{{shop.province_name}}{{shop.city_name}}{{shop.county_name}}{{shop.address_detail}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="shops-list-null" wx:else>
+      <image src="{{subShopsList.listNull.tipImg}}" mode="aspectFill"/>
+      <text>{{subShopsList.listNull.tipTxt}}</text>
+    </view>
+  </view>
+  <view class="shopsList-num" wx:if="{{subShopsList.list.length && !subShopsList.loadingData.isMore}}">
+    <text>共{{subShopsList.list.length}}家适用店铺</text>
+  </view>
+</view>

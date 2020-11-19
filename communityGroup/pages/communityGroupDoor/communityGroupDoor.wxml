@@ -1,0 +1,36 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="top-section" wx:if="{{ promoterRequirement === true }}">
+  <view wx:if="{{ canApply === true }}">
+    <view class="status-tip">已达标</view>
+    <view class="progress-section">
+      <view class="notice">注：消费金额只算实付金额部分，储值金抵扣金额不算在内。</view>
+      <view class="progress-bar">
+        <view class="inner-progress-bar" style="width:100%;"></view>
+      </view>
+      <view class="progress-tip"><text>0</text><text class="pull-right">{{ requirementCount || 100 }} (元)</text></view>
+    </view>
+    <view class="status-detail-section">
+      <view>您的消费金额 <text style="color: #fff;">{{ consumption || 0 }}</text> (元)</view>
+      <view>恭喜您已达标!</view>
+    </view>
+  </view>
+  <view wx:else>
+    <view class="status-tip">未达标</view>
+    <view class="progress-section">
+      <view class="notice">注：消费金额只算实付金额部分，储值金抵扣金额不算在内。</view>
+      <view class="progress-bar">
+        <view class="inner-progress-bar" style="width:{{ completePercent || 0 }}%;"></view>
+      </view>
+      <view class="progress-tip"><text>0</text><text class="pull-right">{{ requirementCount || 100 }} (元)</text></view>
+    </view>
+    <view class="status-detail-section">
+      <view>您的消费金额 <text style="color: #fff;">{{ consumption || 0 }}</text> (元)</view>
+      <view>还需消费金额 <text style="color: #fff;">{{ consumptionGap || 50 }}</text> (元)</view>
+    </view>
+  </view>
+</view>
+<view class="bottom-section">
+  <view class="promotion-btn" bindtap="toApply">{{canApply ? '去申请' : '去购物'}}</view>
+</view>
+

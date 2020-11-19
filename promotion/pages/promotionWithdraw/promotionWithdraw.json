@@ -1,0 +1,7 @@
+{
+    "navigationBarTitleText":"我要提现",
+    "usingComponents":{
+        "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+        "component-newcomer-gift": "/components/newcomerGift/newcomerGift"
+    }
+}

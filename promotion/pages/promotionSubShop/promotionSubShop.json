@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "可分销子店",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "usingComponents":{
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift"
+  },
+  "enablePullDownRefresh": true
+}

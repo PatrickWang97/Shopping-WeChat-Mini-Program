@@ -1,0 +1,137 @@
+<!--eCommerce/pages/setMeal/setMeal.wxml-->
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="setMeal-warp {{listType == 'drink' ? 'drink-wrap' : ''}}">
+  <view class="setMeal-cover">
+    <image src="{{goodsDetail.cover}}"></image>
+  </view>
+  <view class="setMeal-info">
+    <view class="goods-title">{{goodsDetail.title}}</view>
+    <view class="goods-info">
+      <view class="sale">销量：{{goodsDetail.sales}}</view>
+      <view class="price">
+        套餐价：<text>¥<text>{{goodsDetail.price}}</text></text>
+      </view>
+    </view>
+  </view>
+  <view class="container">
+    <block wx:for="{{goodsDetail.package}}" wx:for-index="package_index" wx:for-item="package_item" wx:key="index">
+      <view class="meal-info">
+        <view class="groupName">{{package_item.name}}</view>
+        <view class="selectedNum">可选商品数量 {{package_item.min_sales_num}}~{{package_item.max_sales_num}}</view>
+      </view>
+      <block wx:for="{{package_item.sku_id_list}}" wx:for-index="id_index" wx:for-item="id_item" wx:key="index">
+        <view class="goodsItem">
+          <view class="item-pic">
+            <image src="{{package_item.goods_list[id_item].cover}}"></image>
+          </view>
+          <view class="item-info">
+            <view class="item-title"><text class="require" wx:if="{{package_item.goods_list[id_item].is_require == 1}}">必</text>{{package_item.goods_list[id_item].title}}</view>
+            <view class="item-sale">
+              <text class="item-price" wx:if="{{package_item.goods_list[id_item].price}}">原价:¥{{package_item.goods_list[id_item].price}}</text>
+              <text class="item-addPrice" wx:if="{{package_item.goods_list[id_item].added_price > 0}}">加价:¥{{package_item.goods_list[id_item].added_price}}/份</text>
+            </view>
+            <view class="item-modle" wx:if="{{package_item.goods_list[id_item].model_id}}">
+              <text>{{package_item.goods_list[id_item].model_name}}</text>
+            </view>
+          </view>
+          <view class="number-change">
+            <label class="item-count-minus" catchtap="minus" data-package="{{package_index}}" data-id="{{id_item}}" data-addprice="{{package_item.goods_list[id_item].added_price}}" wx:if="{{package_item.goods_list[id_item].num > 0 && package_item.goods_list[id_item].attributes.length == 0}}"></label>
+            <label class="item-count-minus" catchtap="minusGoods" data-package="{{package_index}}" data-id="{{id_item}}" data-addprice="{{package_item.goods_list[id_item].added_price}}" wx:if="{{package_item.goods_list[id_item].num > 0 && package_item.goods_list[id_item].attributes.length > 0}}"></label>
+            <label class="item-count-num" wx:if="{{package_item.goods_list[id_item].num > 0}}">{{package_item.goods_list[id_item].num}}</label>
+            <label class="item-count-plus {{package_item.totleNum >= package_item.max_sales_num ? 'disable' : ''}}" data-package="{{package_index}}" data-id="{{id_item}}" data-addprice="{{package_item.goods_list[id_item].added_price}}" catchtap="plus" wx:if="{{package_item.goods_list[id_item].attributes.length == 0}}" data-stock="{{package_item.goods_list[id_item].stock}}"></label>
+            <label class="item-select-modle}} {{package_item.totleNum >= package_item.max_sales_num ? 'disable' : ''}}" catchtap="showMask" data-package="{{package_index}}" data-id="{{id_item}}" data-addprice="{{package_item.goods_list[id_item].added_price}}" wx:if="{{package_item.goods_list[id_item].attributes.length > 0}}" data-stock="{{package_item.goods_list[id_item].stock}}">选规格</label>
+          </view>
+        </view>
+      </block>
+    </block>
+  </view>
+  <view class="cart-warp">
+    <view class="meal-price">
+      套餐价格：<text>¥<text>{{totalPrice}}</text></text>
+    </view>
+    <view class="addCart" catchtap="addCart">{{status ? '立即购买' : '加入购物车'}}</view>
+  </view>
+</view>
+<view class="setMeal-mask {{listType == 'drink' ? 'drink-mask' : ''}}" wx:if="{{isShowMask}}" catchtap="closeMask">
+  <view class="modle-choose" catchtap="stopPropagation">
+    <view class="goods-title">
+      {{attrGoodsTitle}}
+    </view>
+    <view class="item-warp">
+      <block wx:for="{{attributes}}" wx:for-item="item" wx:for-index="index" wx:key="index">
+        <view class="modle-item">
+          <view class="modle-title">
+            {{item.name}}
+          </view>
+          <view class="modle-option">
+            <block wx:for="{{item.elem}}" wx:for-item="elem" wx:for-index="elemIndex" wx:key="index">
+              <view class="option {{elem.id == attrData[item.id + '_' + elem.id].id ? 'select' :'' }}" style="width:calc(50% - 12rpx)" data-pindex="{{index}}" data-elemindex="{{elemIndex}}" data-price="{{elem.price || 0}}" catchtap="chooseAttr">
+                <text class="pullLeft">{{elem.name}}</text>
+                <text class="pullRight">+¥{{elem.price}}</text>
+              </view>
+            </block>
+          </view>
+        </view>
+      </block>
+    </view>
+    <view class="bot">
+      <view class="model-price">¥{{attrPrice || '0.00'}}</view>
+      <view class="addCartBtn" catchtap="addAttr" wx:if="{{attrNum == 0}}">添加</view>
+      <view class="number-change" wx:if="{{attrNum > 0}}">
+        <label class="item-count-minus" catchtap="minusAttr"></label>
+        <label class="item-count-num">{{attrNum}}</label>
+        <label class="item-count-plus" catchtap="addAttr"></label>
+      </view>
+    </view>
+    <view class="model-close" catchtap="closeMask">
+      <text class="ico-moon icon-closes"></text>
+    </view>
+  </view>
+</view>
+
+<view class="setMeal-mask setMeal-warp attr-goods {{listType == 'drink' ? 'drink-mask' : ''}}" catchtap="closeAttrMask" wx:if="{{showAttrGoods}}">
+  <view class="modle-choose" catchtap="stopPropagation">
+    <view class="modle-warp">
+      <view class="goods-title">
+        已选商品
+      </view>
+      <view class="goods-warp">
+        <block wx:for="{{attrGoods}}" wx:for-item="item" wx:for-index="index" wx:key="index">
+          <view class="goodsItem">
+            <view class="item-pic">
+              <image src="{{item.cover}}"></image>
+            </view>
+            <view class="item-info">
+              <view class="item-title">{{item.title}}</view>
+              <view class="item-modle" wx:if="{{item.model_id}}">
+                <text>{{item.model_name}}</text>
+              </view>
+              <view class="item-sale">
+                <text class="item-price" wx:if="{{item.price}}">原价:¥{{item.price}}</text>
+                <text class="item-addPrice" wx:if="{{item.added_price > 0}}">加价:¥{{item.added_price}}/份</text>
+              </view>
+            </view>
+            <view class="number-change">
+              <label class="item-count-minus" catchtap="attrMinus" data-goods="{{item}}" wx:if="{{item.num > 0}}" data-index="{{index}}"></label>
+              <label class="item-count-num" wx:if="{{item.num > 0}}">{{item.num || 0}}</label>
+              <label class="item-count-plus {{package_item.totleNum >= package_item.max_sales_num ? 'disable' : ''}}" data-goods="{{item}}" catchtap="attrPlus" data-stock="{{item.stock}}" data-index="{{index}}"></label>
+            </view>
+            <view class="attr">
+              <block wx:for="{{item.attrArr}}" wx:for-item="attrItem" wx:for-index="attrIndex" wx:key="index">
+                <view class="attrItem">
+                  <text class="pName">{{attrItem.pName}} : </text>
+                  <text class="name"> {{attrItem.name}}</text>
+                  <text class="price" style="color:#FC4D43;" wx:if="{{attrItem.price > 0}}"> +¥{{attrItem.price}}</text>
+                </view>
+              </block>
+            </view>
+          </view>
+        </block>
+      </view>
+    </view>
+    <view class="model-close" catchtap="closeAttrMask">
+      <text class="ico-moon icon-closes"></text>
+    </view>
+  </view>
+</view>

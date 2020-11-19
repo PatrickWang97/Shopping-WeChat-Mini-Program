@@ -1,0 +1,9 @@
+{
+    "navigationBarTitleText":"推广商品",
+    "navigationBarBackgroundColor": "#ff7700",
+    "navigationBarTextStyle": "white",
+    "usingComponents":{
+        "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+        "component-newcomer-gift": "/components/newcomerGift/newcomerGift"
+    }
+}

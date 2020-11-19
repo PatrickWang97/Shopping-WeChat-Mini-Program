@@ -1,0 +1,298 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-reward-point rewardPointObj="{{rewardPointObj}}" shareGiftsObj="{{shareGiftsObj}}" collectGiftsObj="{{collectGiftsObj}}" collectGetObj="{{collectGetObj}}"></component-reward-point>
+<view class="order-contain">
+  <view class="orderDetail-goto-homepage" bindtap="goToHomepage" wx:if="{{ isFromTemplateMsg }}">返回首页</view>
+  <view class="seller-shipped">
+    <view wx:if="{{ orderInfo.status != 4 }}">
+      <text class="order-icon ico-moon icon-{{orderIcon[orderInfo.status]}}"></text>
+      <text>{{ orderStatus[orderInfo.status] }}</text>
+      <text class='buyer-delgoods' wx:if="{{deliveryDate && orderInfo.status == 1}}">{{deliveryDate}}后开始安排发货，请耐心等待</text>
+    </view>
+    <view wx:else>
+      <text class="order-icon ico-moon icon-{{refundIcon[orderInfo.refund_apply.status]}}"></text>
+      <text>{{ orderInfo.is_pay_on_delivery == 1 ? '审核中' : refundStatus[orderInfo.refund_apply.status] }}</text>
+    </view>
+  </view>
+  <view class="order-prompt" wx:if="{{ orderInfo.status == 0 && orderInfo.expire }}">请尽快完成付款，还剩
+    <text>{{ orderInfo.expire }}</text>（超时按
+    <text>取消订单</text>处理）</view>
+  <view class="order-prompt" wx:if="{{ orderInfo.status == 1 && orderInfo.expire }}">付款成功，请耐心等待商家发货</view>
+  <view class="order-prompt" wx:if="{{ orderInfo.status == 2 }}">商品配送中，到货后团长将{{disNotice.ship_type == 1 ? '配送到您的收货地址' : '通知您上门提货哦~'}}</view>
+  
+  <view class="order-prompt" wx:if="{{ orderInfo.status == 10 && orderInfo.expire }}">商品已到货，快去提货吧~(距自动收货还剩
+    <text>{{ orderInfo.expire }}</text>)
+  </view>
+
+  <view class="order-prompt" wx:if="{{ orderInfo.status == 4 && orderInfo.refund_apply.status == 0 }}">你已成功发起退款申请，请耐心等待商家处理，还剩
+    <text>{{ orderInfo.refund_apply.expire }}</text>（超时按
+    <text>{{ orderInfo.is_pay_on_delivery == 1 ? '拒绝取消订单' : '拒绝退款'}}</text>处理）
+  </view>
+  <view class="order-prompt" wx:if="{{ orderInfo.status == 4 && orderInfo.refund_apply.status == 3 }}">商家已同意退货退款申请，请及时退货，还剩
+    <text>{{ orderInfo.refund_apply.expire }}</text>（超时按
+    <text>买家撤销退货</text>处理）
+  </view>
+  <view class="order-prompt" wx:if="{{ orderInfo.status == 4 && orderInfo.refund_apply.status == 4 }}">请耐心等待商家收货，收货完成后将会进行退款</view>
+  <block wx:if="{{ orderInfo.status == 4 && orderInfo.refund_apply.refund_type == 2 && orderInfo.is_pay_on_delivery != 1 }}">
+    <view class="refund-address-box">
+      <view class="refund-address-title">
+        <text>退货地址</text>
+        <text class="pull-right">{{ refundAdress.brand_name }} {{ refundAdress.phone }}</text>
+      </view>
+      <view class="pull-right refund-address">{{ refundAdress.region_info[2].name + refundAdress.region_info[1].name + refundAdress.region_info[0].name + refundAdress.detail_address }}</view>
+    </view>
+  </block>
+  <block wx:if="{{ orderInfo.status != 4}}">
+    <!-- <view class="buyer-information" wx:if="{{leaderInfo.is_audit == 1}}">
+      <text class="ico-moon icon-goods-location"></text>
+      <view class="buyer-box">
+        <view class="buyer-name-box">
+          <text class="cash-delivery shipping-type">自提</text>
+          <text class="buyer-name ellipsis">{{leaderInfo.nick_name}}</text>
+          <text>{{ leaderInfo.phone }}</text>
+        </view>
+        <view class="buyer-address">{{leaderInfo.region_address + leaderInfo.housing_estate + leaderInfo.address_detail}}</view>
+        <view class="buyer-phone" data-phone="{{ leaderInfo.phone }}" bindtap="callPhone">
+          <text class="icon-fn-phone ico-moon"></text>
+        </view>
+      </view>
+    </view> -->
+    <view class='group-captain-box'>
+      <image class='group-captain-avatar' src='{{leaderInfo.logo}}' />
+      <view class='group-captain-content'>
+        <view class='group-captain-Community'>{{leaderInfo.nick_name}}-{{leaderInfo.housing_estate}}</view>
+        <view class='group-captain-address'>自提地址：{{ leaderInfo.region_address + leaderInfo.housing_estate + leaderInfo.address_detail }}</view>
+      </view>
+      <view class='group-captain-phone' data-phone="{{ leaderInfo.phone }}" catchtap='callPhone'><text class='ico-moon icon-takeout-cellphone'></text></view>
+    </view>
+    <view class='notice-group-contain' wx:if="{{formGroup == '' && orderInfo.status == 1}}">
+      <view class='notice-group-box'>
+        <button open-type="share" class="notice-group">转发到群，通知团长接单</button>
+        <text class="pull-right color999 ico-moon icon-rightarrow"></text>
+      </view>
+    </view>
+    <view class='group-info'>
+      <view>
+        <text>配送方式</text>
+        <text class='pull-right'>{{disNotice.ship_type == 1 ? '团长配送' : '自提'}}</text>
+      </view>
+      <view wx:if="{{disNotice.ship_type == 1}}" class='buyer-express-box'>
+        <view class='buyer-info'><text class='pull-left'>收货信息</text><text class='buyer-nick-name'>{{disNotice.nick_name}}</text> {{disNotice.phone}}</view>
+        <view class='buyer-express-address'>
+          <view class='pull-right buyer-address-info'>{{disNotice.address_info}}</view>
+        </view>
+      </view>
+      <block wx:else>
+        <view>
+          <text>提货人</text>
+          <text class='pull-right'>{{disNotice.nick_name}}</text>
+        </view>
+        <view>
+          <text>提货手机号</text>
+          <text class='pull-right'>{{disNotice.phone}}</text>
+        </view>
+      </block>
+    </view>
+    <!-- <view class="buyer-information">
+      <text class="ico-moon icon-goods-location"></text>
+      <view class="buyer-box">
+        <view class="buyer-name-box">
+          <text class="buyer-name ellipsis">{{ orderInfo.address_info.name }} </text>
+          <text>{{ orderInfo.address_info.contact }}</text>
+        </view>
+        <view class="buyer-address">{{ orderInfo.address_info.province.text + orderInfo.address_info.city.text + orderInfo.address_info.district.text + orderInfo.address_info.housing_estate + orderInfo.address_info.detailAddress }}</view>
+      </view>
+    </view> -->
+  </block>
+  <block wx:if="{{ orderInfo.status != 4 }}">
+    <view class="app-box">
+      <view>
+        <image class="app-logo" src="{{ appLogo }}"></image>
+        <text class="app-name">{{ appName }}</text>
+        <view class='contact-service pull-right' wx:if="{{formGroup == ''}}">
+          <text>联系客服</text>
+          <text class="ico-moon icon-goods-customer-service"></text>
+          <button open-type="contact"></button>
+        </view>
+      </view>
+    </view>
+    <block wx:for="{{ orderInfo.goods_info }}" wx:key="index" wx:for-item="goods" wx:for-index="goodsIndex">
+      <view class="goods-detail-box" wx:if="{{ goods.num - (goods.refunded_num || 0) > 0 }}">
+        <image src="{{ goods.cover }}"></image>
+        <view>
+          <view class="goods-name">
+            <text class="is-seckill" wx:if="{{ orderInfo.is_group_buy_order != 0 }}">拼团</text>
+            <text class="is-seckill" wx:if="{{ goods.is_seckill == 1 }}">秒杀</text>
+            <text class="is-seckill" wx:if="{{ goods.is_benefit_goods == 1 }}">赠品</text>{{ goods.goods_name }}</view>
+          <view wx:if="{{ goods.model_value }}" class="goods-rules">{{ goods.model_value }}</view>
+          <view class="goods-price">
+            <text class="colorff7">¥{{ goods.price }}</text>
+            <text class="pull-right">x {{ goods.num - (goods.refunded_num || 0) }}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+    <view class="goods-amount">
+      <text>商品金额</text>
+      <text class="pull-right color999">¥{{ orderInfo.original_price }}</text>
+    </view>
+    <view class="spike-offer" wx:if="{{orderInfo.has_seckill == 1}}">
+      <text>活动优惠</text>
+      <text class="pull-right color999">秒杀  - ¥{{ orderInfo.seckill_cut_price }}</text>
+    </view>
+    <view class="promotion-method" wx:if="{{ orderInfo.selected_benefit_info }}">
+      <view>
+        <text>优惠方式</text>
+        <text class="pull-right promotion-method-title color999">{{ orderInfo.selected_benefit_info.title }}</text>
+      </view>
+      <view class="pull-right color999">- ¥{{ discount_cut_price }}</view>
+    </view>
+    <view class="freight">
+      <text>团长配送费</text>
+      <text class="pull-right color999">¥ {{ express_fee }}</text>
+    </view>
+    <view class="total-order-price">
+      <text>订单总价</text>
+      <text class="pull-right color999">¥{{ orderInfo.order_total_price }}</text>
+    </view>
+    <view class="stored-value-deduction" wx:if="{{ useBalance > 0 }}">
+      <text>储值抵扣</text>
+      <text class="pull-right color999">- ¥{{ useBalance }}</text>
+    </view>
+    <view wx:if="{{orderInfo.coupon_fee }}">社交立减金
+      <text class="pull-right">- ¥{{ orderInfo.coupon_fee }}</text>
+    </view>
+  </block>
+  <block wx:else>
+    <view class="app-box">
+      <view>
+        <text class="app-name">退货信息</text>
+      </view>
+    </view>
+    <view class="goods-detail-box" wx:for="{{ orderInfo.refund_apply.refund_goods }}" wx:key="index">
+      <image src="{{ item.cover }}"></image>
+      <view>
+        <view class="goods-name">
+          <text class="is-seckill" wx:if="{{ orderInfo.is_group_buy_order != 0 }}">拼团</text>
+          <text class="is-seckill" wx:if="{{ item.is_seckill == 1 }}">秒杀</text>{{ item.title }}</view>
+        <view wx:if="{{ item.model_name }}" class="goods-rules">{{ item.model_name }}</view>
+        <view class="goods-price">
+          <text class="colorff7">¥{{ item.price }}</text>
+          <text class="pull-right">x {{ item.num }}</text>
+        </view>
+      </view>
+    </view>
+    <view class="goods-amount" hidden="{{orderInfo.is_pay_on_delivery == 1}}">
+      <text>退货原因</text>
+      <text class="pull-right color999">{{ refundReason[orderInfo.refund_apply.refund_reason] }}</text>
+    </view>
+    <view class="goods-amount">
+      <text>退款金额</text>
+      <text class="pull-right color999">¥{{ orderInfo.refund_apply.refund_price }}</text>
+    </view>
+    <view class="goods-amount refund-apply-time">
+      <text>申请时间</text>
+      <text class="pull-right color999">{{ orderInfo.refund_apply.add_time }}</text>
+    </view>
+  </block>
+  <view class="actual-payment">
+    <view>
+      <text>实际付款</text>
+      <text class="pull-right colorff7">¥{{ orderInfo.total_price }}</text>
+    </view>
+  </view>
+  <view class="buyer-message" wx:if="{{ orderInfo.remark }}">
+    <text>买家留言</text>
+    <text class="pull-right">{{ orderInfo.remark }}</text>
+  </view>
+  <view class="addition-info" wx:if="{{ hasAdditionalInfo && formGroup == '' }}" bindtap="seeAdditionalInfo">
+    <view>
+      <text>补充信息</text>
+      <text class="pull-right color999 ico-moon icon-rightarrow"></text>
+    </view>
+  </view>
+  <view class="addition-info no-border" bindtap="goOrderProgress" wx:if="{{formGroup == ''}}">
+    <view>
+      <text>订单进度</text>
+      <text class="pull-right color999 ico-moon icon-rightarrow"></text>
+    </view>
+  </view>
+  <view wx:if="{{ hasAlreadyGoods && formGroup == '' }}" class="addition-info no-border already-refund-goods" bindtap="goAlreadyGoodsPage">
+    <view>
+      <text>已退商品</text>
+      <text class="pull-right color999 ico-moon icon-rightarrow"></text>
+    </view>
+  </view>
+  <view class="order-number">
+    <view>
+      <text>订单编号</text>
+      <text>{{ orderInfo.order_id }}</text>
+      <text class="pull-right" catchtap="copyOrderId">复制</text>
+    </view>
+    <view>
+      <text>下单时间</text>
+      <text>{{ orderInfo.add_time }}</text>
+    </view>
+  </view>
+  <view class="order-bottom" wx:if="{{formGroup == ''}}">
+    <block wx:if="{{ orderInfo.status == 0 }}">
+      <text class="apply-refund" bindtap="showEventDialog" data-type="cancelOrder">取消订单</text>
+      <text class="btn btn-orange orderDetail-pay-directly" bindtap="payOrder">立即支付</text>
+    </block>
+    <block wx:if="{{ orderInfo.status == 1 }}">
+      <text class="apply-refund" wx:if="{{isShowRefund != 1 && orderInfo.is_pay_on_delivery != 1 && ( isFullRefund == 1 || ( refundWithGoods == 1 && orderInfo.status != 1) )}}" bindtap="applyDrawback">申请退款</text>
+    </block>
+    <block wx:if="{{ orderInfo.status == 2 }}">
+      <text class="apply-refund" wx:if="{{isShowRefund != 1 && orderInfo.is_pay_on_delivery != 1 && ( isFullRefund == 1 || ( refundWithGoods == 1 && orderInfo.status != 1) )}}" bindtap="applyDrawback">申请退款</text>
+      <text class="btn" bindtap="checkLogistics" wx:if="{{orderInfo.is_self_delivery == 0}}">查看物流</text>
+    </block>
+    <block wx:if="{{ orderInfo.status == 3 }}">
+      <text class="apply-refund" bindtap="showEventDialog" data-type="orderDelete">删除订单</text>
+      <text class="btn" bindtap="getWriteOffCodeBox">核销码</text>
+      <text class="btn" bindtap="checkLogistics" wx:if="{{orderInfo.is_self_delivery == 0}}">查看物流</text>
+      <text class="btn btn-orange" bindtap="makeComment">去评价</text>
+    </block>
+    <block wx:if="{{ orderInfo.status == 4 }}">
+      <text class="btn" bindtap="cancelRefund">{{ orderInfo.refund_apply.status == 3 ||  orderInfo.refund_apply.status == 4 ? '撤销退货' : '撤销申请' }}</text>
+      <text wx:if="{{ orderInfo.is_pay_on_delivery != 1 }}" class="btn" bindtap="editorRefund">修改申请</text>
+      <text wx:if="{{ orderInfo.refund_apply.status  == 3 }}" class="btn btn-orange" bindtap="returnInfor">填写退货信息</text>
+    </block>
+    <block wx:if="{{ orderInfo.status == 5 }}">
+      <text class="btn" bindtap="showEventDialog" data-type="receiveDrawback">收到退款</text>
+    </block>
+    <block wx:if="{{ orderInfo.status == 6 }}">
+      <text class="btn" bindtap="checkLogistics" wx:if="{{orderInfo.is_self_delivery == 0}}">查看物流</text>
+      <text class="apply-refund" bindtap="showEventDialog" data-type="orderDelete">删除订单</text>
+    </block>
+    <block wx:if="{{ orderInfo.status == 7 }}">
+      <text class="apply-refund" bindtap="showEventDialog" data-type="orderDelete">删除订单</text>
+    </block>
+    <block wx:if="{{ orderInfo.status == 10 }}">
+      <text class="apply-refund" wx:if="{{isShowRefund != 1 && orderInfo.is_pay_on_delivery != 1 && ( isFullRefund == 1 || ( refundWithGoods == 1 && orderInfo.status != 1) )}}" bindtap="applyDrawback">申请退款</text>
+      <text class="btn" bindtap="getWriteOffCodeBox">核销码</text>
+      <text class="btn" bindtap="checkLogistics" wx:if="{{orderInfo.is_self_delivery == 0}}">查看物流</text>
+      <text class="btn btn-orange" bindtap="showEventDialog" data-type="sureReceipt">确认收货</text>
+    </block>
+  </view>
+</view>
+
+<write-off-code showWriteOffCodeBox="{{ showWriteOffCodeBox }}" codeStatus="{{ codeStatus }}" codeImgUrl="{{codeImgUrl}}" codeNum="{{ codeNum }}" verifiTimeInterval="{{ verifiTimeInterval }}"></write-off-code>
+
+<view class="event-dialog-mask" wx:if="{{ showEventDialog }}">
+  <view class="event-dialog">
+    <view class="event-dialog-title" wx:if="{{ eventType == 'cancelOrder' }}">确认取消订单？</view>
+    <view class="event-dialog-title" wx:if="{{ eventType == 'orderDelete' }}">订单删除后不可找回，确认删除？</view>
+    <view class="event-dialog-title" wx:if="{{ eventType == 'receiveDrawback' }}">确定已收到退款？</view>
+    <view class="event-dialog-title" wx:if="{{ eventType == 'sureReceipt' }}">确定已收到货物？</view>
+    <view class="event-dialog-title" wx:if="{{ eventType == 'deliveryDrawback' }}">确认取消订单？</view>
+    <view class="event-dialog-bottom">
+      <text class="event-cancel" catchtap="hideEventDialog">取消</text>
+      <text wx:if="{{ eventType == 'cancelOrder' }}" class="event-sure" catchtap="cancelOrder">确认</text>
+      <text wx:if="{{ eventType == 'orderDelete' }}" class="event-sure" catchtap="orderDelete">确认</text>
+      <text wx:if="{{ eventType == 'receiveDrawback' }}" class="event-sure" catchtap="receiveDrawback">确认</text>
+      <text wx:if="{{ eventType == 'sureReceipt' }}" class="event-sure" catchtap="sureReceipt">确认</text>
+      <text wx:if="{{ eventType == 'deliveryDrawback' }}" class="event-sure" catchtap="deliveryDrawback">确认</text>
+    </view>
+  </view>
+</view>
+<canvas style="width: 422px; height: 338px;position: absolute;top: -2000px;" canvas-id='shareCanvas'></canvas>

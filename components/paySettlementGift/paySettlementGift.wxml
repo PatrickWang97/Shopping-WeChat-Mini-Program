@@ -1,0 +1,80 @@
+<view class="pay-gift {{ style === 1 ? 'card-block' : 'list-block' }}" wx:if="{{ !!marketingData.length }}">
+  <view class="title-wrapper">
+    <view class="title">
+      {{ marketingType === 1 ? '储值并支付' : '付费会员' }}
+    </view>
+    <view class="discount-text" wx:if="{{ marketingData[selectedIndex].discountText && style === 2 }}">
+      {{ marketingData[selectedIndex].discountText }}
+    </view>
+  </view>
+  <scroll-view scroll-x wx:if="{{ style === 1 }}" class="card-type card-type-{{ marketingData.length === 1 ? '1' : '2' }}">
+    <view class="data-wrapper">
+      <block wx:for="{{ marketingData }}" wx:key="index">
+        <view class="item {{ selectedIndex === index ? 'selected' : '' }} {{ marketingData.length === 2 ? 'item-2' : '' }} {{ marketingData.length > 2 ? 'item-3' : '' }}" 
+              bindtap="selectItem" 
+              data-index="{{ index }}" >
+          <view class="discount-text">
+            <text wx:if="{{ marketingData.length === 1 }}">{{ marketingType === 1 ? '充值后' : '开通后' }}</text>
+            <text class="discount-price">{{ item.discountText }}</text>
+          </view>
+          <view class="price" wx:if="{{ marketingData.length === 1 }}">
+            ¥{{ item.price }}
+            <text class="month" wx:if="{{ marketingType === 2 }}">{{ item.month }}个月</text>
+            <label class="ico-moon icon-success-tip" wx:if="{{ marketingData.length === 1 }}"></label>
+          </view>
+          <view wx:if="{{ item.benefitText }}" class="benefit-text text-overflow-1" catchtap="showCardBenefit" data-index="{{ index }}" style="padding-right: 20rpx;">
+            {{ item.benefitText }}
+            <label class="ico-moon icon-rightarrow"></label>
+          </view>
+          <view wx:elif="{{ !item.benefitText && item.condition }}" class="benefit-text">
+            {{ '充值' + item.condition + '倍，享免单'}}
+          </view>
+          <view wx:else class="benefit-text">/</view>
+          <view class="marketing-type" wx:if="{{ marketingData.length === 1 }}">
+            {{ marketingType === 1 ? '储值优惠' : '会员优惠' }}
+          </view>
+          <view class="price" wx:if="{{ marketingData.length > 1 }}">
+            ¥{{ item.price }}<text class="month" wx:if="{{ marketingType === 2 && marketingData.length > 1 }}">/{{ item.month }}个月</text>
+          </view>
+          <label class="ico-moon icon-success-tip" wx:if="{{ marketingData.length > 1 && selectedIndex === index }}"></label>
+        </view>
+      </block>
+    </view>
+  </scroll-view>
+  <view class="list-type" wx:if="{{ style === 2 }}">
+    <block wx:for="{{ marketingData }}" wx:key="index">
+      <view class="item" bindtap="selectItem" data-index="{{ index }}">
+        <view wx:if="{{ item.benefitText }}" class="benefit-text">
+          {{ item.benefitText }}
+        </view>
+        <view wx:elif="{{ !item.benefitText && item.condition }}" class="benefit-text">
+          {{ '充值' + item.condition + '倍，享免单' }}
+        </view>
+        <view wx:else class="benefit-text">/</view>
+        <view class="price">
+          <text class="symbol">¥</text>{{ item.price }}
+        </view>
+        <view class="ico-moon icon-success-tip" wx:if="{{ selectedIndex === index }}"></view>
+        <view class="not-selected" wx:if="{{ selectedIndex !== index }}"></view>
+      </view>
+    </block>
+  </view>
+</view>
+
+<!-- 会员权益弹窗 -->
+<view class="card-benefit-dialog" wx:if="{{ isShowCardBenefit }}" catchtap="showCardBenefit">
+  <view class="wrapper">
+    <view class="header">
+      <text class="title">会员权益</text>
+      <view catchtap="showCardBenefit" class="ico-moon icon-closes"></view>
+    </view>
+    <view class="content" catchtap="stopPropagation">
+      <view class="benefit-wrapper">
+        <view class="item" wx:for="{{ marketingData[benefitIndex].benefits }}" wx:key="index">
+          <view class="type {{ item.type ? 'symbol' : '' }}">{{ item.type }}</view>
+          <view class="item-detail">{{ item.text }}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,193 @@
+page {
+  background: #F3F3F3;
+}
+.commission-search {
+  padding: 20rpx 30rpx;
+  background: #fff;
+}
+.commission-search input{
+  display: inline-block;
+  vertical-align: middle;
+  height: 60rpx;
+  line-height: 60rpx;
+  font-size: 26rpx;
+  width: 500rpx;
+}
+.commission-search .icon-search {
+  display: inline-block;
+  height: 60rpx;
+  line-height: 60rpx;
+  margin: 0 20rpx 0 30rpx;
+  vertical-align: middle;
+  color: #B3B3B3;
+  font-size: 28rpx;
+}
+.commission-search-contain {
+  background: #F0F0F0;
+  border-radius: 8rpx;
+}
+.status-column {
+  height: 72rpx;
+  line-height: 72rpx;
+  font-size: 26rpx;
+  color: #999;
+  margin-bottom: 10rpx;
+  padding: 0 30rpx;
+  background: #fff;
+}
+.order-status-box {
+  width: 140rpx;
+  position: relative;
+}
+.order-status-mask {
+  position: fixed;
+  top: 174rpx;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+.order-status {
+  background: #fff;
+  padding: 30rpx 30rpx 10rpx 30rpx;
+}
+.order-status > view {
+  display: inline-block;
+  width: 216rpx;
+  border: 1px solid #f3f3f3;
+  line-height: 64rpx;
+  background: #f3f3f3;
+  text-align: center;
+  font-size: 26rpx;
+  color: #333;
+  margin-right: 14rpx;
+  margin-bottom: 20rpx;
+}
+.order-status > view:nth-child(3n){
+  margin-right: 0;
+}
+.order-status > view.selected {
+  border-color: #FF7100;
+  background: #FFF7F0;
+  color: #ff7100;
+}
+.triangle {
+  position: absolute;
+  right: 10rpx;
+  top: 34rpx;
+  border-top: 10rpx solid #999;
+  border-left: 8rpx solid transparent;
+  border-right: 8rpx solid transparent;
+}
+.commission-content {
+  background: #fff;
+}
+.commission-time-box {
+  color: #999;
+  font-size: 24rpx;
+  height: 86rpx;
+  line-height: 86rpx;
+  padding: 0 30rpx;
+}
+.commission-goods-cover {
+  background: #fafafa;
+  padding: 10rpx 30rpx;
+}
+.commission-money,
+.commission-subshop {
+  font-size: 26rpx;
+  color: #666;
+  padding: 0 30rpx;
+  padding-top: 40rpx;
+}
+.commission-from {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 60rpx;
+  padding: 0 30rpx;
+  padding-bottom: 10rpx;
+}
+.commission-from .pull-right,
+.commission-money .pull-right,
+.commission-subshop .pull-right{
+ font-size: 22rpx;
+ color: #999;
+}
+.commission-order-box {
+  height: 86rpx;
+  line-height: 86rpx;
+  border-top: 1px solid #ebebeb;
+  font-size: 24rpx;
+  color: #666;
+  padding: 0 30rpx;
+  margin-bottom: 20rpx;
+}
+.commission-status {
+  color: #ff7100;
+}
+.copy-order {
+  width: 100rpx;
+  border: 1px solid #d2d2d2;
+  line-height: 34rpx;
+  display: inline-block;
+  border-radius: 16rpx;
+  text-align: center;
+  color: #999;
+  margin-top: 28rpx;
+  font-size: 22rpx;
+}
+.goods-detail {
+  width: 140rpx;
+  height: 140rpx;
+  display: inline-block;
+  position: relative;
+}
+.commission-goods-cover image {
+  width: 140rpx;
+  height: 140rpx;
+  display: block;
+  background: #fff;
+}
+.goods-num {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: inline-block;
+  width: 40rpx;
+  line-height: 24rpx;
+  text-align: center;
+  font-size: 20rpx;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.4);
+}
+.order-id {
+  margin-left: 28rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 430rpx;
+}
+.commission-order-box > text {
+  display: inline-block;
+  vertical-align: middle;
+}
+.promotion-tab {
+  -webkit-display: flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  height: 88rpx;
+  margin-bottom: 16rpx;
+  background-color: #fff;
+  text-align: center;
+  line-height: 88rpx;
+  font-size: 28rpx;
+}
+.promotion-tab .tab-item {
+  -webkit-flex: auto;
+  flex: auto;
+}
+.promotion-tab .tab-active {
+  color: #ff7100;
+  border-bottom: 1rpx solid #ff7100;
+}

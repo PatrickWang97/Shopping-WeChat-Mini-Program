@@ -1,0 +1,191 @@
+page {
+  background-color: #f3f3f3;
+}
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.refund-wrapper {
+  margin: 0 20rpx;
+  font-size: 26rpx;
+  color: #333;
+}
+.refund-head {
+  padding: 30rpx 0;
+  color: #999; 
+}
+.refund-goods-wrapper {
+  background-color: #fff;
+  border-radius: 20rpx;
+  border-bottom: 1rpx solid #fff;
+}
+.refund-title {
+  color: #666;
+  padding: 20rpx 0;
+  margin: 0 30rpx;
+  border-bottom: 1rpx solid #e3e3e3;
+}
+.goods-info-item {
+  display: flex;
+  padding: 30rpx 0;
+  margin: 0 30rpx;
+  box-sizing: border-box;
+  border-bottom: 1rpx solid #f5f6f7;
+}
+.goods-image {
+  height: 160rpx;
+  width: 160rpx;
+}
+.goods-image image {
+  border-radius: 4rpx;
+  width: 100%;
+  height: 100%;
+}
+.goods-detail {
+  margin-left: 20rpx;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  min-height: 140rpx;
+}
+.goods-special {
+  background-color: #f2303e;
+  border-radius: 2rpx;
+  color: #fff;
+  padding: 0 4rpx;
+  margin-right: 10rpx;
+  font-size: 20rpx;
+  line-height: 28rpx;
+}
+.goods-name {
+  font-size: 28rpx;
+}
+.goods-type {
+  display: flex;
+  font-size: 22rpx;
+  line-height: 22rpx;
+  height: 22rpx;
+}
+.priceNow {
+  color: #ff7100;
+  margin-right: 10rpx;
+}
+.refunds-price-wrapper {
+  margin: 0 30rpx;
+  padding: 15rpx 0;
+}
+.refund-info-item {
+  padding: 15rpx 0;
+}
+#refund-price {
+  position: relative;
+}
+#refund-price::before {
+  content:'*';
+  position: absolute;
+  left: -16rpx;
+  top: -2rpx;
+  color: #F2303E;
+  font-weight: bold;
+}
+.dinning_vip_tips {
+  margin-right:8rpx;
+  border:1px solid #FF6500;
+  font-size:20rpx;
+  padding:0 4rpx;
+  color:#FF7100;
+}
+.package-info-wrap {
+  overflow: hidden;
+  text-align: center;
+  margin-top: 20rpx;
+}
+.package-info {
+  margin: 0;
+  font-size: 24rpx;
+}
+.package-info-icon {
+  margin-left: 12rpx;
+  opacity: .5;
+  vertical-align: middle;
+}
+.package-info-content {
+  background-color: #fff;
+  border-radius: 4rpx;
+  color: #333;
+  box-sizing: border-box;
+}
+.package-info-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 26rpx;
+  background: #f9f9f9;
+  padding: 6rpx 28rpx 10rpx;
+}
+.package-info-item:last-child {
+  margin-bottom: 6rpx;
+}
+.package-info-l {
+  text-align: left;
+  width: 100%;
+}
+.package-info-attr {
+  padding-top: 8rpx;
+  font-size: 22rpx;
+  color: #999;
+}
+.package-info-name {
+  overflow: hidden;
+  max-width: 400rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: text-top;
+  font-size: 28rpx;
+}
+.package-info-require {
+  color:#f2303e;
+  background-color:rgba(248, 229, 230);
+  border-radius: 2rpx;
+  padding: 4rpx;
+  margin-right: 10rpx;
+  font-size: 20rpx;
+}
+.package-info-model {
+  margin-top: 4rpx;
+  color: #999;
+  font-size: 22rpx;
+  text-align: left;
+}
+.attributes-add_price {
+  color:#f2303e;
+}
+.package-info-add_price {
+  color:#f2303e;
+  font-size: 24rpx;
+  margin-right: 40rpx;
+}
+.package-info-model_add_price {
+  color:#f2303e;
+}
+.package-info-num {
+  font-size: 24rpx;
+}
+.goods-attributes-wrap {
+  font-size: 22rpx;
+  color: #666;
+  margin: 10rpx 20rpx;
+  padding: 20rpx;
+  background: #f9f9f9;
+}
+.package-info-title {
+  padding: 10rpx 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.goods-showMoreGoods {
+  padding: 10rpx 0 30rpx;
+}

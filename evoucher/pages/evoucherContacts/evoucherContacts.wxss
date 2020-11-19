@@ -1,0 +1,96 @@
+page {
+  color: #333;
+  background-color: #f3f3f3;
+}
+.gray {
+  color: #999;
+}
+.flex {
+  display: flex;
+  align-items: center;
+}
+.self-start {
+  align-self: flex-start;
+}
+.self-end {
+  align-self: flex-end;
+}
+.row-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.row-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.column-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.add-contact-container {
+  padding: 20rpx 24rpx;
+  font-size: 26rpx;
+}
+.contact-info {
+  border-radius: 12rpx;
+  background-color: #fff;
+}
+.info-item {
+  height: 88rpx;
+  padding: 0 28rpx;
+}
+.contact-info input {
+  text-align: right;
+  font-weight: bold;
+}
+.contact-info .placeholder {
+  font-weight: normal;
+  color: #999;
+}
+.contact-default {
+  margin-top: 20rpx;
+  border-radius: 12rpx;
+  background-color: #fff;
+}
+.contact-default switch {
+  transform: scale(0.7);
+}
+.contact-btns {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 124rpx;
+  background-color: #fff;
+}
+.contact-btns .delete-btn {
+  width: 170rpx;
+  text-align: center;
+  font-size: 30rpx;
+  color: #ff7100;
+}
+.contact-btns .icon-delete {
+  font-size: 32rpx;
+  padding-right: 12rpx;
+}
+.contact-btns button {
+  width: 520rpx;
+  height: 88rpx;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  line-height: 88rpx;
+  color: #fff;
+  background:linear-gradient(90deg,rgba(255,150,0,1) 0%,rgba(255,114,0,1) 100%);
+}
+.contact-btns button.long {
+  width: 690rpx;
+}

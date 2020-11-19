@@ -1,0 +1,40 @@
+.swiper-view swiper{
+  width: 100%;
+  height: 100%;
+}
+.carousel-video-play{
+  position:absolute;
+  width:75rpx;
+  height:75rpx;
+  line-height:75rpx;
+  font-size:42.12rpx;
+  color:#fff;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  text-align:center;
+  background-color:rgba(0,0,0,.5);
+  border-radius:50%;
+  border:5rpx solid #fff;
+}
+.carouselVideoPlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width:100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 21;
+}
+.carouselVideoPlay-inner{
+  background-color: #fff;
+}
+.carouselVideoPlay video{
+  width: 100%;
+}
+.carouselVideoPlay-close{
+  float: right;
+  text-align: right;
+  font-size: 46.8rpx;
+  margin: 11.7rpx 23.4rpx;
+}

@@ -1,0 +1,258 @@
+page {
+  background-color: #faf8ee;
+}
+.background {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.scoring {
+  width: 97vw;
+  height: 290rpx;
+  display: flex;
+  flex-direction: column;
+}
+.top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.scor {
+  padding-top: 35rpx;
+  display: flex;
+  flex-direction: row;
+  width: 320rpx;
+  justify-content: space-between;
+  margin: 0 auto;
+}
+.topic {
+  font-size: 160rpx;
+  font-weight: bold;
+}
+.score {
+  width: 200rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.score_title {
+  font-size: 25rpx;
+}
+.score_num {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 140rpx;
+  margin-top: 30rpx;
+  font-size: 36rpx;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.start {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20rpx 0;
+  margin: 0 auto;
+}
+.summary {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 15rpx;
+}
+.summary_image {
+  width: 40rpx;
+  height: 40rpx;
+}
+.summary_text {
+  font-size: 24rpx;
+  color: #999;
+}
+.restart {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 50rpx;
+}
+.restart_text {
+  font-weight: bold;
+}
+.restart_image {
+  width: 40rpx;
+  height: 40rpx;
+  margin-left: 10rpx;
+}
+.array {
+  background: #bbada0;
+  border-radius: 6px;
+  width: 93vw;
+  height: 93vw;
+  box-sizing: border-box;
+  padding: 20rpx 15rpx;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.clum {
+  width: 19vw;
+  height: 19vw;
+  box-sizing: border-box;
+  background: rgba(238, 228, 218, 0.35);
+  margin: 10rpx;
+  border-radius: 10rpx;
+}
+.cell {
+  width: 19vw;
+  height: 19vw;
+  line-height: 19vw;
+  font-size: 35px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 10rpx;
+}
+.cell-2 {
+  background: #eee4da;
+}
+.cell-4 {
+  background: #ede0c8;
+}
+.cell-8 {
+  color: #f9f6f2;
+  background: #f2b179;
+}
+.cell-16 {
+  color: #f9f6f2;
+  background: #f59563;
+}
+.cell-32 {
+  color: #f9f6f2;
+  background: #f67c5f;
+}
+.cell-64 {
+  color: #f9f6f2;
+  background: #f65e3b;
+}
+.cell-128 {
+  color: #f9f6f2;
+  background: #edcf72;
+  font-size: 30px;
+}
+.cell-256 {
+  color: #f9f6f2;
+  font-size: 30px;
+  background: #edcc61;
+}
+.cell-512 {
+  color: #f9f6f2;
+  font-size: 30px;
+  background: #edc850;
+}
+.cell-1024 {
+  color: #f9f6f2;
+  font-size: 25px;
+  background: #edc53f;
+}
+.cell-2048 {
+  color: #f9f6f2;
+  font-size: 25px;
+  background: #edc22e;
+}
+.cell {
+	animation-duration: 1s;
+	animation-fill-mode: both;
+}
+.cell.infinite {
+	animation-iteration-count: infinite;
+}
+.cell.hinge {
+	animation-duration: 2s;
+}
+.cell.flipOutX,
+.cell.flipOutY,
+.cell.bounceIn,
+.cell.bounceOut {
+	animation-duration: .75s;
+}
+@keyframes flipInX {
+  from {
+    transform: perspective(800rpx) rotate3d(1, 0, 0, 90deg);
+    animation-timing-function: ease-in;
+    opacity: 0;
+  }
+  40% {
+    transform: perspective(800rpx) rotate3d(1, 0, 0, -20deg);
+    animation-timing-function: ease-in;
+  }
+  60% {
+    transform: perspective(800rpx) rotate3d(1, 0, 0, 10deg);
+    opacity: 1;
+  }
+  80% {
+    transform: perspective(800rpx) rotate3d(1, 0, 0, -5deg);
+  }
+  to {
+    transform: perspective(800rpx);
+  }
+}
+.flipInX {
+  -webkit-backface-visibility: visible !important;
+  backface-visibility: visible !important;
+  animation-name: flipInX;
+}
+@keyframes flipInX1 {
+  from {
+    transform: perspective(800rpx) rotate3d(1, 0, 0, 90deg);
+    animation-timing-function: ease-in;
+    opacity: 0;
+  }
+  40% {
+    transform: perspective(800rpx) rotate3d(1, 0, 0, -20deg);
+    animation-timing-function: ease-in;
+  }
+  60% {
+    transform: perspective(800rpx) rotate3d(1, 0, 0, 10deg);
+    opacity: 1;
+  }
+  80% {
+    transform: perspective(800rpx) rotate3d(1, 0, 0, -5deg);
+  }
+  to {
+    transform: perspective(800rpx);
+  }
+}
+.flipInX1 {
+  -webkit-backface-visibility: visible !important;
+  backface-visibility: visible !important;
+  animation-name: flipInX;
+}
+@keyframes flipInY {
+  from {
+    transform: perspective(800rpx) rotate3d(0, 1, 0, 90deg);
+    animation-timing-function: ease-in;
+    opacity: 0;
+  }
+  40% {
+    transform: perspective(800rpx) rotate3d(0, 1, 0, -20deg);
+    animation-timing-function: ease-in;
+  }
+  60% {
+    transform: perspective(800rpx) rotate3d(0, 1, 0, 10deg);
+    opacity: 1;
+  }
+  80% {
+    transform: perspective(800rpx) rotate3d(0, 1, 0, -5deg);
+  }
+  to {
+    transform: perspective(800rpx);
+  }
+}
+.flipInY {
+  -webkit-backface-visibility: visible !important;
+  backface-visibility: visible !important;
+  animation-name: flipInY;
+}

@@ -1,0 +1,531 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-share pageQRCodeData="{{pageQRCodeData}}"></component-share>
+<view class="collage-orderInfo">
+  <view class="collage-section goods-infor">
+    <view class="goods-detail">
+      <view class="image-wrap">
+        <image src="{{myTeams.goods_cover}}"></image>
+      </view>
+      <view class="content-wrap">
+        <view class="title">
+          <view class="classify-type">
+            <view>
+              <icon class="ico-moon icon-number-people"></icon>
+            </view>
+            <text>{{myTeams.activity_type== 0 ?  myTeams.max_user_num + '人团' : (myTeams.activity_type == 1 ? '新人团' : (myTeams.activity_type == 2 ? '阶梯团' : (myTeams.activity_type ==  3 ? '帮帮团' :  '抽奖团')))}}</text>
+          </view>{{goodsDetail.goods_name}}
+        </view>
+        <view class="price">
+          <text class="min-price">¥<text>{{myTeams.group_buy_price}}</text></text>
+          <text class="origin-price">¥{{originPrice}}</text>
+        </view>
+        <view class="num">
+          已团{{myTeams.goods_count}}件
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="collage-section collage-infor">
+    <block wx:if="{{myTeams.activity_type != 4}}">
+      <view class="loading-stand" wx:if="{{myTeams.current_status == 2}}">
+        <view class="tip {{(myTeams.member.length > 3 && myTeams.max_user_num > 5) || (myTeams.activity_type == 2 && myTeams.member.length > 3) ? 'moreMember' : ''}}">
+          <view>
+            <block wx:if="{{myTeams.activity_type != '2'}}">
+              还差
+              <text class="needNum"> {{needNum}}人</text>拼购成功, 剩余
+            </block>
+            <block wx:else>
+              人数越多, 价格越低, 剩余
+            </block>
+          </view>
+          <view class="countDown">
+            <block wx:if="{{myTeams.downCount.days != '00' || myTeams.downCount.days != '0'}}">
+              <text>{{myTeams.downCount.days}} </text>
+              <text>天</text>
+            </block>
+            <text>{{myTeams.downCount.hours}} </text>
+            <text>:</text>
+            <text style="width:48rpx;">{{myTeams.downCount.minutes}} </text>
+            <text>:</text>
+            <text style="width:48rpx;">{{myTeams.downCount.seconds}}</text>
+          </view>
+        </view>
+        <view class="member-cover {{(myTeams.member.length > 3 && myTeams.max_user_num > 5) || (myTeams.activity_type == 2 && myTeams.member.length > 3) ? 'moreMember' : ''}}">
+          <block wx:if="{{myTeams.member.length <= 3 || (myTeams.max_user_num <= 5 && myTeams.activity_type != 2) || (myTeams.member.length <= 3 && myTeams.activity_type == 2)}}">
+            <view wx:for="{{member}}" wx:key="index">
+              <image src="{{item.image}}" style="border: {{item.isNum == 1 ? '2rpx solid #ff7100' : ''}}"></image>
+              <view class="leader-logo" wx:if="{{index == 0}}">团长</view>
+            </view>
+          </block>
+          <block wx:else>
+            <view wx:for="{{memberList}}" wx:key="index" class="moreMember">
+              <image src="{{myTeams.member[index]}}" style="border: 2rpx solid #ff7100"></image>
+              <view class="leader-logo" wx:if="{{index == 0}}">团长</view>
+            </view>
+            <view class="moreMember">
+              <image src="http://cdn.jisuapp.cn//zhichi_frontend/static/webapp/images/group/missing-head.png"></image>
+            </view>
+            <text catchtap="allMember">
+              <text>查看全部成员</text>
+               <text class="ico-moon icon-rightarrow" style="font-size:20rpx;margin-left:8rpx;"></text>
+            </text>
+          </block>
+        </view>
+        <view class="btn-wrap">
+          <view class="open-new  isRelative" bindtap="inviteFriends">邀请好友参团
+            <form bindsubmit="formSubmit_collect" report-submit="true" class="getFormId" data-id="{{goodsInfo.id}}" data-orderid="{{goodsInfo.order_id}}" data-bargainid="{{goodsInfo.bargain_id}}">
+              <button formType="submit" hover-class="none" class='invisibleclass'>
+              </button>
+            </form>
+          </view>
+        </view>
+      </view>
+      <view class="success-stand" wx:if="{{myTeams.current_status == 3}}">
+        <view class="tip {{(myTeams.member.length > 3 && myTeams.max_user_num > 5) || (myTeams.activity_type == 2 && myTeams.member.length > 3) ? 'moreMember' : ''}}">
+          <block wx:if="{{myTeams.activity_type == 3}}">
+            <text style="color:#ff7100;">拼团成功，</text>商家将给团长发货
+          </block>
+          <block wx:else>
+            <text style="color:#ff7100;">拼团成功，</text>请耐心等待商家发货
+          </block>
+        </view>
+        <view class="member-cover {{(myTeams.member.length > 3 && myTeams.max_user_num > 5) || (myTeams.activity_type == 2 && myTeams.member.length > 3) ? 'moreMember' : ''}}">
+          <block wx:if="{{myTeams.member.length <= 3 || (myTeams.max_user_num <= 5 && myTeams.activity_type != 2) || (myTeams.member.length <= 3 && myTeams.activity_type == 2)}}">
+            <view wx:for="{{member}}" wx:key="index">
+              <image src="{{item.image}}" style="border: {{item.isNum == 1 ? '2rpx solid #ff7100' : ''}}"></image>
+              <view class="leader-logo" wx:if="{{index == 0}}">团长</view>
+            </view>
+          </block>
+          <block wx:else>
+            <view wx:for="{{memberList}}" wx:key="index" class="moreMember">
+              <image src="{{myTeams.member[index]}}" style="border: 2rpx solid #ff7100"></image>
+              <view class="leader-logo" wx:if="{{index == 0}}">团长</view>
+            </view>
+            <view class="moreMember">
+              <image src="http://cdn.jisuapp.cn//zhichi_frontend/static/webapp/images/group/loading-portrait.png"></image>
+            </view>
+            <text catchtap="allMember" class="allMemberBt">
+              <text>查看全部成员</text>
+               <text class="ico-moon icon-rightarrow" style="font-size:20rpx;margin-left:8rpx;"></text>
+            </text>
+          </block>
+        </view>
+        <view class="btn-wrap">
+          <view class="open-new isRelative" bindtap="openNewGroup">开启新团
+            <form bindsubmit="formSubmit_collect" report-submit="true" class="getFormId" data-id="{{goodsInfo.id}}" data-orderid="{{goodsInfo.order_id}}" data-bargainid="{{goodsInfo.bargain_id}}">
+              <button formType="submit" hover-class="none" class='invisibleclass'>
+              </button>
+            </form>
+          </view>
+        </view>
+      </view>
+      <view class="fail-stand" wx:if="{{myTeams.current_status == 4 || myTeams.current_status == 5}}">
+        <view class="tip {{(myTeams.member.length > 3 && myTeams.max_user_num > 5) || (myTeams.activity_type == 2 && myTeams.member.length > 3) ? 'moreMember' : ''}}">来迟一步，这个团已经拼完啦～</view>
+        <view class="member-cover {{(myTeams.member.length > 3 && myTeams.max_user_num > 5) || (myTeams.activity_type == 2 && myTeams.member.length > 3) ? 'moreMember' : ''}}">
+          <block wx:if="{{myTeams.member.length <= 3 || (myTeams.max_user_num <= 5 && myTeams.activity_type != 2) || (myTeams.member.length <= 3 && myTeams.activity_type == 2)}}">
+            <view wx:for="{{member}}" wx:key="index">
+              <image src="{{item.image}}" style="border: {{item.isNum == 1 ? '2rpx solid #ff7100' : ''}}"></image>
+              <view class="leader-logo" wx:if="{{index == 0}}">团长</view>
+            </view>
+          </block>
+          <block wx:else>
+            <view wx:for="{{memberList}}" wx:key="index" class="moreMember">
+              <image src="{{myTeams.member[index]}}" style="border: 2rpx solid #ff7100"></image>
+              <view class="leader-logo" wx:if="{{index == 0}}">团长</view>
+            </view>
+            <view class="moreMember">
+              <image src="http://cdn.jisuapp.cn//zhichi_frontend/static/webapp/images/group/loading-portrait.png"></image>
+            </view>
+           <text catchtap="allMember" class="allMemberBt">
+              <text>查看全部成员</text>
+               <text class="ico-moon icon-rightarrow" style="font-size:20rpx;margin-left:8rpx;"></text>
+            </text>
+          </block>
+        </view>
+        <view class="btn-wrap">
+          <view class="open-new isRelative" bindtap="openNewGroup">开启新团
+            <form bindsubmit="formSubmit_collect" report-submit="true" class="getFormId" data-id="{{goodsInfo.id}}" data-orderid="{{goodsInfo.order_id}}" data-bargainid="{{goodsInfo.bargain_id}}">
+              <button formType="submit" hover-class="none" class='invisibleclass'>
+              </button>
+            </form>
+          </view>
+        </view>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="loading-draw" wx:if="{{myTeams.current_status == 2}}">
+        <view class="progress">
+          <view class="success" style="width:{{progress}}%;">
+            <view class="inner">
+              已抢{{myTeams.current_user_count}}件
+            </view>
+          </view>
+          <view class="percent">{{progress}}%</view>
+        </view>
+        <view class="tip">
+          <view>已有
+            <text class="needNum">{{myTeams.current_user_count}}</text>人参与，满{{myTeams.max_user_num}}人开奖，快去邀请小伙伴吧～</view>
+          <view>剩余
+            <view class="countDown">
+              <block wx:if="{{myTeams.downCount.days != '00' || myTeams.downCount.days != '0'}}">
+                <text>{{myTeams.downCount.days}} </text>
+                <text>天</text>
+              </block>
+              <text>{{myTeams.downCount.hours}} </text>
+              <text>:</text>
+              <text style="width:48rpx;">{{myTeams.downCount.minutes}} </text>
+              <text>:</text>
+              <text style="width:48rpx;">{{myTeams.downCount.seconds}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="btn-wrap">
+          <view class="open-new isRelative" bindtap='inviteFriends'>邀请好友
+            <form bindsubmit="formSubmit_collect" report-submit="true" class="getFormId" data-id="{{goodsInfo.id}}" data-orderid="{{goodsInfo.order_id}}" data-bargainid="{{goodsInfo.bargain_id}}">
+              <button formType="submit" hover-class="none" class='invisibleclass'>
+              </button>
+            </form>
+          </view>
+        </view>
+      </view>
+      <view class="success-draw" wx:if="{{myTeams.current_status == 3 && myTeams.is_winner == 1}}">
+        <view class="tip">
+          <view>运气爆棚！
+            <text>中奖啦</text>～</view>
+        </view>
+        <view class="member-cover">
+          <view>
+            <image src="{{myTeams.winner}}" style="border: 2rpx solid #ff7100"></image>
+          </view>
+        </view>
+        <view class="btn-wrap" bindtap='gotoOrderDetail'>
+          <view class="open-new">查看订单</view>
+        </view>
+      </view>
+      <view class="loading-draw" wx:if="{{myTeams.current_status == 4 || myTeams.current_status == 5 || myTeams.is_winner == 0}}">
+        <view class="tip">
+          <block wx:if="{{myTeams.is_winner == 0}}">很遗憾，您未中奖</block>
+          <block wx:else>很遗憾，本次活动未达到开奖门槛</block>
+        </view>
+        <view class="member-cover" style="padding:40rpx 0 50rpx;margin:0 auto;width:165rpx;height:165rpx;">
+          <image src="http://cdn.jisuapp.cn//zhichi_frontend/static/webapp/images/group/draw-fail.png"></image>
+        </view>
+      </view>
+    </block>
+  </view>
+  <view class="collage-section detail-infor" wx:if="{{(myTeams.activity_type == 3 ? isLeader : true ) && (myTeams.activity_type !=4 || (myTeams.activity_type == 4 && myTeams.current_status == 3 && myTeams.is_winner==1))}}">
+    <block wx:if="{{goodsDetail.goods_type == 10 }}">
+      <view class="collage-section apt-info" wx:if='{{ orderInfo.status != 4 && orderInfo.status != 5 && orderInfo.status != 7 && orderInfo.status != 0 && orderInfo.transaction_id != "seller_order" && myTeams.current_status >= 3}}' bindtap='toSeeQrcode'>
+        <view class="new-verification-image-box {{ codeStatus == 1 ? 'used' : ''}}">
+          <view class="new-code-title">
+            <text>{{ codeStatus == 1 ? '已消费' : '待消费'}}</text>
+            <text>{{ codeNum }}</text>
+          </view>
+          <view class="trade-line"></view>
+          <view class="new-verification-code-box">
+            <image class="new-verification-code-img" src="{{ codeImgUrl }}"></image>
+            <view class="used-shade ico-moon icon-new-appointment-used"></view>
+          </view>
+          <view class="new-verification-code-tip">
+            <view class="new-code-tip">向商家出示以上券码即可消费</view>
+          </view>
+        </view>
+      </view>
+      <view class="collage-section apt-info">
+        <view class='tradeApt-title trade-omits' bindtap="goToGoodsDetail">
+          <image src='{{ orderInfo.goods_info[0].cover }}'></image>
+          <view class="tradeApt-tech">
+            {{orderInfo.goods_info[0].goods_name}}
+          </view>
+        </view>
+        <view class='beauty-std-section'>
+          <view class='beauty-std-item' wx:for="{{aptData.serveInfo}}" wx:key='index'>
+            <text>{{item.label}}</text>
+            <view class="stdVal">{{item.value}}</view>
+          </view>
+          <view class='beauty-std-item'>
+            <text>预约人</text>
+            <view class="stdVal">{{aptData.nickname}}</view>
+          </view>
+          <view class='beauty-std-item' wx:if="{{aptData.home_address}}">
+            <text>服务地址</text>
+            <view class="stdVal">{{aptData.home_address}}</view>
+          </view>
+          <view class='beauty-std-item'>
+            <text>电话</text>
+            <view class="stdVal">{{aptData.phone}}</view>
+          </view>
+          <view class='beauty-std-item' wx:if="{{aptData.remark}}">
+            <text>备注</text>
+            <view class="stdVal">{{aptData.remark}}</view>
+          </view>
+        </view>
+      </view>
+    </block>
+    <view wx:else class="mutual-infor">
+      <view class="custom">
+        <view class="app-box">
+          <image class="app-logo" src="{{ appLogo }}"></image>
+          <text class="app-name">{{ appName }}</text>
+        </view>
+        <view class="goods-opt-item">
+          <contact-button type="default-dark" size="20" session-from="goodsDetail" class="contact"></contact-button>
+          <view>联系客服</view>
+        </view>
+      </view>
+      <view class="buyer-information">
+        <text class="ico-moon icon-goods-location"></text>
+        <block wx:if="{{ myTeams.order_info.pick_up_type == 1 }}">
+          <view class="buyer-box">
+            <view class="buyer-name-box">
+              <text class="cash-delivery shipping-type" style="{{'background:' + storeStyle.theme}}">快递</text>
+              <text class="cash-delivery" wx:if="{{myTeams.order_info.is_pay_on_delivery == 1}}" style="{{'background:' + storeStyle.theme}}">到付</text>
+              <text class="buyer-name">{{ myTeams.order_info.address_info.name }}</text>
+              <text>{{ myTeams.order_info.address_info.contact }}</text>
+            </view>
+            <view class="buyer-address">{{ myTeams.order_info.address_info.province.text + myTeams.order_info.address_info.city.text + myTeams.order_info.address_info.district.text + myTeams.order_info.address_info.detailAddress }}</view>
+          </view>
+        </block>
+        <block wx:if="{{ myTeams.order_info.pick_up_type == 2 }}">
+          <view class="buyer-box">
+            <view class="buyer-name-box">
+              <text class="cash-delivery shipping-type" style="{{'background:' + storeStyle.theme}}">同城</text>
+              <text class="cash-delivery" wx:if="{{myTeams.order_info.is_pay_on_delivery == 1}}" style="{{'background:' + storeStyle.theme}}">到付</text>
+              <text class="buyer-name">{{ myTeams.order_info.address_info.name }}</text>
+              <text>{{ myTeams.order_info.address_info.contact }}</text>
+            </view>
+            <view class="buyer-address">{{ myTeams.order_info.address_info.province.text + myTeams.order_info.address_info.city.text + myTeams.order_info.address_info.district.text + myTeams.order_info.address_info.detailAddress }}</view>
+          </view>
+        </block>
+        <block wx:elif="{{ myTeams.order_info.pick_up_type == 3 }}">
+          <view class="buyer-box">
+            <view class="buyer-name-box">
+              <text class="cash-delivery shipping-type" style="{{'background:' + storeStyle.theme}}">自提</text>
+              <text class="cash-delivery" wx:if="{{myTeams.order_info.is_pay_on_delivery == 1}}" style="{{'background:' + storeStyle.theme}}">到付</text>
+              <text class="buyer-name">{{ myTeams.order_info.self_delivery_info.contact_name}}</text>
+              <text>{{ myTeams.order_info.self_delivery_info.contact_phone }}</text>
+            </view>
+            <view class="buyer-address">{{ myTeams.order_info.self_delivery_info.address }}</view>
+          </view>
+          <view class="delivery-navigation" style="{{'color:' + storeStyle.theme}}" catchtap="goDeliveryNavigation">导航</view>
+        </block>
+      </view>
+    </view>
+    <view class="price-statis">
+      <view class="incidental-pay">
+        <view>
+          <text class="name">商品拼团价</text>
+          <text class="price">¥{{myTeams.order_info.original_price}}</text>
+        </view>
+        <view wx:if="{{goodsDetail.goods_type != 10}}">
+          <text class="name">优惠抵扣</text>
+          <view class="price">
+            <view> {{myTeams.order_info.selected_benefit_info.discount_title}}</view>
+            <view>¥{{myTeams.order_info.discount_cut_price}}</view>
+          </view>
+        </view>
+        <view wx:if="{{myTeams.order_info.box_fee != 0}}">
+          <text class="name">包装费</text>
+          <text class="price">¥{{myTeams.order_info.box_fee}}</text>
+        </view>
+        <view wx:if="{{goodsDetail.goods_type != 10}}">
+          <text class="name">运费</text>
+          <text class="price">¥{{myTeams.order_info.express_fee}}</text>
+        </view>
+        <view>
+          <text class="name">订单总价</text>
+          <text class="price">¥{{myTeams.order_info.order_total_price}}</text>
+        </view>
+        <view wx:if="{{ myTeams.order_info.settlement_activity && myTeams.order_info.settlement_activity.discount_cut_price }}">
+          <text class="name">支付有礼</text>
+          <text class="price">-¥{{myTeams.order_info.settlement_activity.discount_cut_price}}</text>
+        </view>
+        <view>
+          <text class="name">储值抵扣</text>
+          <text class="price">-¥{{myTeams.order_info.use_balance}}</text>
+        </view>
+
+      </view>
+      <view class="actual-pay">
+        <text>实际付款</text>
+        <text class="price">¥{{myTeams.order_info.total_price}}</text>
+      </view>
+    </view>
+    <view class="custom-remark" wx:if="{{goodsDetail.goods_type != 10}}">
+      <text class="name">买家留言</text>
+      <text class="remark">{{myTeams.order_info.remark}}</text>
+    </view>
+    <view class="addition-info" wx:if="{{ hasAdditionalInfo }}" bindtap="seeAdditionalInfo">
+      <view>
+        <text>补充信息</text>
+        <text class="pull-right colord2d2 ico-moon icon-rightarrow"></text>
+      </view>
+    </view>
+    <view class="list-infor">
+      <block wx:if="{{myTeams.activity_type != 4}}">
+        <view class="hasBtn">
+          <view>
+            <view class="name">团号</view>
+            <view class="msg">{{team_token}}</view>
+          </view>
+          <view class="copy-btn isRelative" catchtap='copyOrderId'>复制
+            <form bindsubmit="formSubmit_collect" report-submit="true" class="getFormId" data-id="{{goodsInfo.id}}" data-orderid="{{goodsInfo.order_id}}" data-bargainid="{{goodsInfo.bargain_id}}">
+              <button formType="submit" hover-class="none" class='invisibleclass'>
+              </button>
+            </form>
+          </view>
+        </view>
+        <view wx:if="{{goodsDetail.goods_type == 10}}">
+          <view class="name">订单号</view>
+          <view class="msg">{{orderId}}</view>
+        </view>
+        <view>
+          <view class="name">下单时间</view>
+          <view class="msg">{{myTeams.order_info.add_time}}</view>
+        </view>
+        <view wx:if="{{myTeams.current_status  == 3}}">
+          <view class="name">成团时间</view>
+          <view class="msg">{{myTeams.success_time}}</view>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="hasBtn">
+          <view>
+            <view class="name ">下单时间</view>
+            <view class="msg ">{{myTeams.order_info.add_time}}</view>
+          </view>
+        </view>
+        <view>
+          <view class="name ">开奖时间</view>
+          <view class="msg ">{{myTeams.seckill_end_time}}</view>
+        </view>
+      </block>
+      <block wx:if="{{myTeams.order_info.ecommerce_info.dispatch_use_pick_up_type == 2}}">
+        <view>
+          <view class="name">到达时间</view>
+          <view class="price">{{myTeams.order_info.ecommerce_info.intra_city_data.intra_city_appointment_arrive_time}}</view>
+        </view>
+      </block>
+      <block wx:elif="{{myTeams.order_info.ecommerce_info.dispatch_use_pick_up_type == 3}}">
+        <view>
+          <view class="name">取货时间</view>
+          <view class="price">{{myTeams.order_info.ecommerce_info.ec_tostore_data.ec_tostore_appointment_time}}</view>
+        </view>
+        <view>
+          <view class="name">手机号码</view>
+          <view class="price">{{myTeams.order_info.ecommerce_info.ec_tostore_data.ec_tostore_buyer_phone}}</view>
+        </view>
+        <view wx:if="{{myTeams.order_info.ecommerce_info.ec_tostore_data.ec_tostore_location_name}}">
+          <view class="name">店内位置</view>
+          <view class="price">{{myTeams.order_info.ecommerce_info.ec_tostore_data.ec_tostore_location_name}}</view>
+        </view>
+      </block>
+    </view>
+  </view>
+  <view class="collage-section collage-more" wx:if="{{goodsData.goods_list.length > 0}}">
+    <view class="title ">
+      更多精彩拼团
+    </view>
+    <view>
+      <view class="goods-list opposite">
+        <view class="goods-item  isRelative" wx:for="{{goodsData.goods_list}}" wx:key="index" data-goods-type="{{item.goods_type}}" data-goodsId="{{item.goods_id}}" data-activityId="{{item.activity_id}}" bindtap='gotoDetail'>
+          <view class="image-wrap">
+            <image src='{{item.cover}}'></image>
+          </view>
+          <view class="content-wrap">
+            <view class="title">
+              <view class="classify-type">
+                <view>
+                  <icon class="ico-moon icon-number-people"></icon>
+                </view>
+                <text>{{item.activity_type== 0 ? (item.num_of_people.length > 1 ? '多人团' : item.num_of_people[0] + '人团') : (item.activity_type == 1 ? '新人团' : (item.activity_type == 2 ? '阶梯团' : (item.activity_type ==  3 ? '帮帮团' :  '抽奖团')))}}</text>
+              </view>{{item.title}}
+            </view>
+            <view class="hava-sales" wx:if="{{item.salesnum}}">
+              <view class="price">
+                <text class="min-price">¥<text>{{item.group_buy_price}}</text></text>
+                <text class="origin-price"> ¥{{item.original_price}}</text>
+              </view>
+              <view class="status">
+                <view class="sales">
+                  已团{{item.salesnum}}件
+                </view>
+                <view class="to-join">
+                  <block wx:if="{{item.status == 0}}">
+                    <button class="ready">即将开团</button>
+                  </block>
+                  <block wx:elif="{{item.status == 1}}">
+                    <button class="remain">提醒我</button>
+                  </block>
+                  <block wx:elif="{{item.status == 2}}">
+                    <button class="reminded">已提醒</button>
+                  </block>
+                  <block wx:elif="{{item.status == 3}}">
+                    <button class="go">去拼团</button>
+                  </block>
+                  <block wx:elif="{{item.status == 4}}">
+                    <button class="over">已结束</button>
+                  </block>
+                </view>
+              </view>
+            </view>
+            <view class="no-sales" wx:else>
+              <view class="price">
+                <view class="min-price">
+                  ¥
+                  <text>{{item.group_buy_price}}</text>
+                </view>
+                <view class="origin-price">
+                  ¥{{item.original_price}}
+                </view>
+              </view>
+              <view class="to-join">
+                <block wx:if="{{item.status == 0}}">
+                  <button class="ready">即将开团</button>
+                </block>
+                <block wx:elif="{{item.status == 1}}">
+                  <button class="remain">提醒我</button>
+                </block>
+                <block wx:elif="{{item.status == 2}}">
+                  <button class="reminded">已提醒</button>
+                </block>
+                <block wx:elif="{{item.status == 3}}">
+                  <button class="go">去拼团</button>
+                </block>
+                <block wx:elif="{{item.status == 4}}">
+                  <button class="over">已结束</button>
+                </block>
+              </view>
+            </view>
+          </view>
+          <form bindsubmit="formSubmit_collect" report-submit="true" class="getFormId" data-id="{{goodsInfo.id}}" data-orderid="{{goodsInfo.order_id}}" data-bargainid="{{goodsInfo.bargain_id}}">
+            <button formType="submit" hover-class="none" class='invisibleclass'>
+            </button>
+          </form>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+
+<!-- 全部拼团人员查看 -->
+<view class="cover" wx:if="{{showAll}}">
+  <view class="allMemberList">
+    <view class="cover-title">所有拼团成员</view>
+    <view class="cover-number-people" wx:if="{{myTeams.activity_type != 2 && myTeams.current_status != 4 && myTeams.current_status != 5 && myTeams.current_status != 3}}">
+      <text>已拼{{myTeams.current_user_count}}人，还差</text>
+      <text style="color:#FF7100">{{needNum}}人</text>
+      <text>拼购成功</text>
+    </view>
+    <scroll-view class="cover-memberList" scroll-y="true" bindscrolltolower="getMore">
+      <view class="cover-member-img" wx:for="{{myTeams.member}}" wx:key="index">
+        <image src="{{item}}"></image>
+      </view>
+    </scroll-view>
+  </view>
+  <view class="qrcode-close" bindtap="allMember">
+    <view class="ico-moon icon-closes close"></view>
+  </view>
+</view>

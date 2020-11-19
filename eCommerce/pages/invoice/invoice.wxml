@@ -1,0 +1,32 @@
+<view class='invoice-container'>
+  <view class='title'>电子发票开票信息</view>
+  <view class='invoice-type sub-view'>
+    <text>发票类型</text>
+    <view class='type-radio' wx:for="{{invoiceTypeArr}}" wx:key="index" bindtap='changeInvoiceType' data-type="{{item.value}}">
+      <label class="{{item.value == invoiceInfo.invoice_type ? 'checked' : ''}}"></label>{{item.name}}
+    </view>
+  </view>
+  <view class='sub-view'>
+    <text>发票抬头</text>
+    <text wx:if="{{invoiceInfo.invoice_type == 2}}" class='select-invoice-head' bindtap="selectInvoiceHead">选择抬头</text>
+    <input type='text' value='{{invoiceInfo.buyer_name}}' bindinput='inputInvoiceInfor' data-name="buyer_name" placeholder='请输入发票抬头' />
+  </view>
+  <view class='sub-view' wx:if="{{invoiceInfo.invoice_type == 2}}">
+    <text>公司税号</text>
+    <input type='text' value='{{invoiceInfo.buyer_taxpayer_num}}' bindinput='inputInvoiceInfor' data-name="buyer_taxpayer_num" placeholder='请输入公司税号' />
+  </view>
+  <view class='sub-view'>
+    <text>邮箱（选填）</text>
+    <input type='text' value='{{invoiceInfo.taker_email}}' bindinput='inputInvoiceInfor' data-name="taker_email" placeholder='请输入邮箱' />
+  </view>
+</view>
+<view class='invoice-container'>
+  <view class='title'>温馨提示</view>
+  <view class='invoice-tips'>
+    <view>1.下单时可申请开票，订单交易完成后（待评价/已完成状态）可在订单详情页查看电子发票。交易完成3个月内，可在订单详情页申请补开发票。</view>
+    <view>2.全额退款订单不支持开发票；如有部分退款，开票金额会自动扣除退款金额。</view>
+    <view>3.储值订单可单独开具发票，订单中储值抵扣部分不再开具电子发票。</view>
+    <view wx:if="{{isDiningAudit}}">4.堂食点餐订单需由商家确认开票，请在用餐后提醒商家确认。</view>
+  </view>
+</view>
+<view catchtap='saveInvoice' class='save'>保存</view>

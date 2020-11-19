@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "招募说明",
+  "usingComponents": {
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift"
+  }
+}

@@ -1,0 +1,98 @@
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<view class="invite-wrap" wx:if="{{!no_activity}}">
+  <view class="invite-rule" bindtap="checkRule" wx:if="{{describe_switch == 1}}">活动规则</view>
+  <view class="invite-main-bg"></view>
+  <view class="invite-content">
+    <view class="invite-nums-wrap">
+      <view class="invite-nums-box">
+        <view class="invite-first">
+          <view class="invite-nums">{{inviteData.invite_num || 0}}</view>
+          <view class="invite-title">邀请人数</view>
+        </view>
+        <view class="invite-first">
+          <view class="invite-nums">{{inviteData.first_num || 0}}</view>
+          <view class="invite-title">1级拉新人数</view>
+        </view>
+        <view class="invite-first">
+          <view class="invite-nums">{{inviteData.second_num || 0}}</view>
+          <view class="invite-title">2级拉新人数</view>
+        </view>
+      </view>
+      <view class="invite-check-detail" bindtap="checkInviteDetail">查看详情</view>
+    </view>
+    <view class="invite-rewards-tips" wx:if="{{total_chance_num > 0}}">
+      <view class="flex-between">
+        <view class="invite-get-box">
+          <image src="https://develop.zhichiwangluo.com/zhichi_frontend/static/webapp/images/xcx-inviteNew/get.png"></image>
+        </view>
+        <text class="invite-tips">您有奖励尚未领取，请前去领取！</text>
+      </view>
+      <label class="invite-get-button" bindtap="getInviterActivity">领取</label>
+    </view>
+    <view class="invite-count-rewards" wx:if="{{hadRewards}}">
+      <image src="https://develop.zhichiwangluo.com/zhichi_frontend/static/webapp/images/xcx-inviteNew/countRewards.png"></image>
+    </view>
+    <view class="invite-rewards-wrap" wx:if="{{hadRewards}}">
+      <view class="invite-rewards-item" wx:if="{{inviteData.stored_num > 0}}">
+        <view class="invite-rewards-value"><text class="invite-rewards-coin">¥</text>{{inviteData.stored_num}}</view>
+        <view class="invite-rewards-type">储值</view>
+        <view class="invite-rewards-badge">储值</view>
+      </view>
+      <view class="invite-rewards-item" wx:if="{{inviteData.coupon_num > 0}}">
+        <view class="invite-rewards-value">{{inviteData.coupon_num}} <text style="font-size:26rpx;">张</text></view>
+        <view class="invite-rewards-type">全场通用</view>
+        <view class="invite-rewards-badge">优惠券</view>
+      </view>
+      <view class="invite-rewards-item" wx:if="{{inviteData.collection_num > 0}}">
+        <view class="invite-rewards-value">{{inviteData.collection_num}}<text style="font-size:26rpx;">颗星</text></view>
+        <view class="invite-rewards-type">全场通用</view>
+        <view class="invite-rewards-badge">集集乐</view>
+      </view>
+      <view class="invite-rewards-item" wx:if="{{inviteData.integral_num > 0}}">
+        <view class="invite-rewards-value">{{inviteData.integral_num}}<text style="font-size:26rpx;"></text></view>
+        <view class="invite-rewards-type">全场通用</view>
+        <view class="invite-rewards-badge">积分</view>
+      </view>
+      <view class="invite-rewards-item" wx:if="{{inviteData.vip_card_num > 0 || inviteData.paid_vip_card_num > 0}}">
+        <view class="invite-rewards-value">{{(inviteData.vip_card_num - 0) + (inviteData.paid_vip_card_num -0) }}<text style="font-size:26rpx;">张</text></view>
+        <view class="invite-rewards-type">全场通用</view>
+        <view class="invite-rewards-badge">会员卡</view>
+      </view>
+      <view class="invite-rewards-item" wx:if="{{inviteData.scratch_card_num > 0}}">
+        <view class="invite-rewards-value">{{inviteData.scratch_card_num}} <text style="font-size:26rpx;">次</text></view>
+        <view class="invite-rewards-type">全场通用</view>
+        <view class="invite-rewards-badge">刮刮乐</view>
+      </view>
+      <view class="invite-rewards-item" wx:if="{{inviteData.golden_eggs_num > 0}}">
+        <view class="invite-rewards-value">{{inviteData.golden_eggs_num}}<text style="font-size:26rpx;">次</text></view>
+        <view class="invite-rewards-type">全场通用</view>
+        <view class="invite-rewards-badge">砸金蛋</view>
+      </view>
+      <view class="invite-rewards-item" wx:if="{{inviteData.lucky_wheel_num > 0}}">
+        <view class="invite-rewards-value">{{inviteData.lucky_wheel_num}}<text style="font-size:26rpx;">次</text></view>
+        <view class="invite-rewards-type">全场通用</view>
+        <view class="invite-rewards-badge">大转盘</view>
+      </view>
+      <view class="invite-check-records" bindtap="checkInviteRecord">奖励记录 <text class="ico-moon icon-rightarrow icon-arrow-records"></text></view>
+    </view>
+    <view class="invite-friends-wrap">
+      <button class="invite-friends-button" open-type="share">邀请好友  获取奖励</button>
+    </view>
+    <view class="invite-mycode-title">
+      <image src="https://develop.zhichiwangluo.com/zhichi_frontend/static/webapp/images/xcx-inviteNew/my2code.png"></image>
+    </view>
+    <view class="invite-my2code" bindtap="previewImage">
+      <image src="{{tempFilePath}}"></image>
+    </view>
+    <view class="invite-newcomers-wrap">
+      <view class="invite-newcomers-tips">通过此二维码成为的新人用户有（名）</view>
+      <view class="invite-newcomers-num">{{QRCoderNum}}</view>
+    </view>
+  </view>
+</view>
+<view class="no-activity" wx:else>
+  <image src="https://develop.zhichiwangluo.com/zhichi_frontend/static/webapp/images/xcx-inviteNew/no-activity.png"></image>
+  <view class="no-activity-tip"> 暂无活动 </view>
+</view>
+<canvas class="canvas" canvas-id="shareCanvas" style="width:354px;height:354px;margin:0 auto;"></canvas>

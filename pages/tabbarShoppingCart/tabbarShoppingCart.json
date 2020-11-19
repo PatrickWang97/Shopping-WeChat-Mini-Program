@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText":"购物车",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "usingComponents":{
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+    "component-goodsShoppingCart": "/components/goodsShoppingCart/goodsShoppingCart",
+    "component-sinkingModal": "/components/sinkingModal/sinkingModal",
+    "component-behavior-track": "/components/behaviorTrack/behaviorTrack"
+  }
+}

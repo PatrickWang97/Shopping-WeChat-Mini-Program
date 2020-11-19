@@ -1,0 +1,52 @@
+<view class="page">
+  <block  wx:if="{{franchiseeInfo.is_audit == 2}}">
+    <view class="status-wrap">
+      <view>
+        <image class="banner" mode="aspectFill" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/franchisee/enter-status-during.png"></image>
+      </view>
+      <view class="status-title">店铺申请正在审核中，请耐心等待~</view>
+      <view class="status-tip">亲，登录官网后台完善店铺信息通过率更高哦！</view>
+      <view class="btn-wrap"><button class="btn-hollow" bindtap="turnToFranchiseePerfect">重新编辑</button><button class="btn-solid" bindtap="turnToFranchiseeDetail">预览店铺</button></view>
+    </view>
+  </block>
+  <block  wx:elif="{{franchiseeInfo.is_audit == 1}}">
+    <view class="status-wrap status-success">
+      <view>
+        <image class="banner" mode="aspectFill" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/franchisee/enter-status-success.png"></image>
+      </view>
+      <view class="status-title">恭喜，您的店铺入驻成功!</view>
+      <view class="status-tip">登录官网后台可以管理您的店铺啦~</view>
+      <view class="btn-wrap"><button class="btn-hollow" bindtap="turnToFranchiseePerfect">重新编辑</button><button class="btn-solid" bindtap="turnToFranchiseeDetail">查看店铺</button></view>
+    </view>
+    <view class="qrcode-wrap">
+      <image mode="aspectFill" src="{{franchiseeInfo.sub_qr_code}}"></image>
+      <view>店铺推广二维码</view>
+    </view>
+  </block>
+  <block  wx:elif="{{franchiseeInfo.is_audit == 3}}">
+    <view class="status-wrap status-fail">
+      <view>
+        <image class="banner" mode="aspectFill" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/franchisee/enter-status-fail.png"></image>
+      </view>
+      <view class="status-title">对不起，您的入驻未通过审核!</view>
+      <view class="status-tip">亲，登录官网后台设置店铺入驻通过率更高哦！</view>
+      <view class="btn-wrap"><button class="btn-solid" bindtap="franchiseeReEnter">重新入驻</button></view>
+    </view>
+  </block>
+  <view class="tip">
+    <view class="tip-title">升级门店小程序，解锁更多功能功能</view>
+    <view class="tip-droit-title tip-droit">升级店铺门店享有以下特权：</view>
+    <view class="tip-droit">1.商品上下架</view>
+    <view class="tip-droit">2.门店会员卡</view>
+    <view class="tip-droit">3.门店优惠券</view>
+    <view class="tip-droit">4.店铺小程序二维码等等更多权限等你发现......</view>
+    <view class="tip-acount">店铺账号是验证手机号码，密码为手机号后6位。</view>
+    <view class="tip-website">店铺后台官网： http://www.jisuapp.cn <text data-url="http://www.jisuapp.cn" bindtap="copyUrl">（点击可复制）</text></view>
+  </view>
+  <view class="sidebar">
+    <view wx:if="{{appShopInfo.phone}}" class="ico-moon icon-telephone" data-phone="{{appShopInfo.phone}}" bindtap="makePhoneCall"></view>
+    <view class="ico-moon icon-service2">
+      <contact-button class="sidebar-service-btn" type="default-light" size="0" session-from="franchisee-status"></contact-button>
+    </view>
+  </view>
+</view>

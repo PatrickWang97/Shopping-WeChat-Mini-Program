@@ -1,0 +1,109 @@
+<component-behavior-track></component-behavior-track>
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="collectStar-container">
+  <view class="collect-type-wrapper" wx:if="{{ collectStarsData.togetherNum == undefined }}">
+    <view class="type-selected" catchtap="toggleMoreType">
+      <text>{{selectedCollectType}}</text>
+      <text class="ico-moon icon-{{ isHideTypeNav ? 'downarrow' : 'uparrow'}}"></text>
+    </view>
+    <view class="type-list-wrapper" style="height: {{isHideTypeNav ? '0' : 'auto'}};">
+      <view class="type-list" bindtap="selectCollectType">
+        <text data-type="0">电商</text>
+        <text data-type="1">到店</text>
+        <text data-type="2">当面付</text>
+        <text data-type="3">分享赠送</text>
+        <text data-type="4">拉新赠送</text>
+        <text data-type="5">收藏赠送</text>
+        <text data-type="6">支付有礼</text>
+        <text data-type="7">新人有礼</text>
+        <text data-type="8">拉新有礼</text>
+      </view>
+    </view>
+  </view>
+  <view class="collect-info-wrapper" style="margin-top:{{ collectStarsData.countMethod == 0 ? '10rpx' : '0' }};">
+    <view class="info-num">
+      <text>集集乐个数：{{ collectStarsData.collectedNum }}个</text>
+    </view>
+    <view class="info-star info-star-{{ collectStarsData.collectNum }}">
+      <view class="star-item" wx:for="{{ collectStarsData.starStyleArr }}" wx:key="index">
+        <image class="star-item" wx:if="{{ item == 'light' }}" src="{{ collectStarsData.light_img }}"
+          mode="aspectFill" />
+        <image class="star-item" wx:if="{{ item == 'dark' }}" src="{{ collectStarsData.dark_img }}" mode="aspectFill" />
+      </view>
+    </view>
+    <view class="info-desc" wx:if="{{ collectStarsData.status == 1 }}">
+      <text
+        class="info-desc-condition">消费{{ collectStarsData.playType == 0 ? '每满' : '超过' }}{{ collectStarsData.value }}元，累计1颗星，集满可获{{ collectStarsData.coupon }}一张</text>
+      <text class="info-desc-time" wx:if="{{collectStarsData.isReset == 1}}">活动结束星数清空</text>
+      <text class="info-desc-time" wx:else>活动结束星数保留</text>
+    </view>
+    <view class="info-desc" wx:else>
+      <text>当前暂无活动</text>
+    </view>
+  </view>
+  <view class="collect-record-wrapper">
+    <view class="record-tab">
+      <view class="{{ recordTabType == 0 ? 'active' : '' }}" data-record-type="0" catchtap="recordTabSwitch">
+        <text>集星记录</text>
+        <text class="line"></text>
+      </view>
+      <view class="{{ recordTabType == 1 ? 'active' : '' }}" data-record-type="1" catchtap="recordTabSwitch">
+        <text>奖励记录</text>
+        <text class="line"></text>
+      </view>
+    </view>
+    <view class="record-content">
+      <view class="record-star" wx:if="{{ recordTabType == 0 }}">
+        <view class="record-star-title">
+          <text class="time">集星时间</text>
+          <text class="origin">集星来源</text>
+          <text class="num">集星数量</text>
+        </view>
+        <view class="record-star-list" wx:if="{{starRecordList.list && starRecordList.list.length > 0}}">
+          <view class="record-star-item" wx:for="{{starRecordList.list}}" wx:key="index">
+            <text class="time">{{item.collect_time}}</text>
+            <text class="origin">{{item.collect_type}}</text>
+            <text class="num">{{item.collect_num}}</text>
+          </view>
+        </view>
+        <view class="loading-wrap" wx:if="{{starRecordList.loadingData.isLoading}}">
+          <view class="loading-view">
+            <view class="loading-dot1"></view>
+            <view class="loading-dot2"></view>
+          </view>
+        </view>
+        <view class="record-list-null" wx:if="{{starRecordList.isNull}}">
+          <image src="http://cdn.jisuapp.cn/static/webapp/images/request-none.png" />
+          <text>~ 暂无集星记录 ~</text>
+        </view>
+      </view>
+      <view class="record-award" wx:if="{{ recordTabType == 1 }}">
+        <view class="record-award-list" wx:if="{{!awardRecordList.isNull}}">
+          <view class="record-award-item" wx:for="{{awardRecordList.list}}" wx:key="index">
+            <text class="item-title">{{item.coupon_title}}</text>
+            <view class="item-use-time">
+              <text>使用时间：</text>
+              <text class="item-itme-txt">{{item.start_use_date}}至{{item.end_use_date}}</text>
+            </view>
+            <text class="item-award-time">中奖时间：{{item.recv_time}}</text>
+            <text wx:if="{{item.status == 1}}" class="ico-moon icon-winning-record-nouse"></text>
+            <text wx:if="{{item.status == 2}}" class="ico-moon icon-winning-record-used"></text>
+            <text wx:if="{{item.status == 3}}" class="ico-moon icon-winning-record-invalid"></text>
+          </view>
+        </view>
+        <!-- 加载loading -->
+        <view class="loading-wrap" wx:if="{{awardRecordList.loadingData.isLoading}}">
+          <view class="loading-view">
+            <view class="loading-dot1"></view>
+            <view class="loading-dot2"></view>
+          </view>
+        </view>
+        <view class="record-list-null" wx:if="{{awardRecordList.isNull}}">
+          <image src="http://cdn.jisuapp.cn/static/webapp/images/request-none.png" />
+          <text>~ 暂无奖励记录 ~</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

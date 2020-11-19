@@ -1,0 +1,135 @@
+<component-behavior-track></component-behavior-track>
+<view>
+  <view class="goods-customer-contain" wx:for="{{ orderInfo }}" wx:key="index">
+    <view class="goods-customer-header">
+      <view>
+        <text class="customer-add-time">{{ item.add_time }}</text>
+        <text class="pull-right {{ (item.status == 0 || item.status == 4) ? 'waiting-color' : ''}}">{{ orderStatus[item.status] }}</text>
+      </view>
+    </view>
+    <view catchtap="toGoodsOrderDetail" data-apply-id="{{ item.id }}" data-order-id="{{ item.order_id }}" data-franchisee-id="{{ item.app_id }}" class="goods-customer-content" wx:for="{{ item.refund_goods_info }}" wx:for-item="goods" wx:key="index" wx:for-index="goodsIndex">
+      <image src="{{ goods.cover }}"></image>
+      <view class="goods-detail-box">
+        <view class="goods-title">{{ goods.title }}</view>
+        <view class="goods-model" wx:if="{{ goods.model_name }}">{{ goods.model_name }}</view>
+        <view class="goods-price-box">
+          <text>¥{{ goods.price }}</text>
+          <text class="pull-right goods-num">x{{ goods.num }}</text>
+        </view>
+      </view>
+      <!-- 餐饮3.0 新增商品属性 -->
+      <view class="goods-attributes-wrap" wx:if="{{goods.is_package_goods != 1 && goods.attributes_id &&goods.attributes_id != 0}}" style="padding-top:{{goods.is_package_goods == 1 ? '20rpx':'0'}};">
+        <view class="goods-attributes-item" wx:for="{{goods.attributes}}" wx:key="index" wx:for-item="attributes">
+          <view>
+            <text>{{attributes.name}}：</text>
+            <view wx:for="{{attributes.elem}}" wx:key="index" wx:for-item="elem">
+              <text>{{elem.name}}</text><text class="attributes-add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <!-- 餐饮3.0 新增套餐 -->
+      <view class="package-info-wrap" wx:if="{{goods.is_package_goods == 1}}"  style="max-height:{{goods.showPackageInfo?'auto':''}};">
+        <view class="package-info-content" hidden='{{!goods.showPackageInfo}}'>
+          <view class="package-info-item" wx:for="{{goods.package_goods}}" wx:key="index" wx:for-item="package">
+            <view class="package-info-l">
+              <block wx:if="{{package.is_require == 1 && package.is_multi_select == 1 && package.selected_num >= package.min_sales_nums && package.selected_num > 1}}">
+                <view class="package-info-title">
+                  <view style="display:flex;">
+                    <text class="package-info-require" wx:if="{{package.is_require == 1}}">必</text>
+                    <text class="package-info-require" wx:if="{{package.is_require == 1}}">标配</text>
+                    <text class="package-info-name">{{package.title}}</text>
+                  </view>
+                  <view>
+                    <text class="package-info-num">x{{package.min_sales_nums}}</text>
+                  </view>
+                </view>
+                <view class="package-info-model">
+                  <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                  <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                </view>
+                <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                  <text>{{_attributes.name}} : </text>
+                  <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem">
+                    <text>{{elem.name}}</text>
+                    <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                  </view>
+                </view>
+                <block wx:if="{{package.selected_num - package.min_sales_nums > 0}}">
+                  <view class="package-info-title">
+                    <view>
+                      <text class="package-info-name">{{package.title}}</text>
+                    </view>
+                    <view>
+                      <text class="package-info-add_price" wx:if="{{package.added_price > 0}}">+¥{{package.added_price}}</text>
+                      <text class="package-info-num">x{{package.selected_num - package.min_sales_nums}}</text>
+                    </view>
+                  </view>
+                  <view class="package-info-model">
+                    <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                    <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                  </view>
+                  <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                    <text>{{_attributes.name}} : </text>
+                    <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem">
+                      <text>{{elem.name}}</text>
+                      <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                    </view>
+                  </view>
+                </block>
+              </block>
+              <block wx:else>
+                <view class="package-info-title">
+                  <view style="display: flex;">
+                    <text class="package-info-require" wx:if="{{package.is_require == 1}}">必</text>
+                    <text class="package-info-require" wx:if="{{package.is_require == 1}}">标配</text>
+                    <text class="package-info-name">{{package.title}}</text>
+                  </view>
+                  <view>
+                    <text class="package-info-add_price" wx:if="{{package.added_price > 0}}">+¥{{package.added_price}}</text>
+                    <text class="package-info-num">x{{package.selected_num}}</text>
+                  </view>
+                </view>
+                <view class="package-info-model">
+                  <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                  <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                </view>
+                <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                  <text>{{_attributes.name}} : </text>
+                  <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem">
+                    <text>{{elem.name}}</text>
+                    <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                  </view>
+                </view>
+              </block>
+            </view>
+          </view>
+        </view>
+        <view class='goods-showMore'>
+          <view class='goods-more package-info' hidden='{{goods.showPackageInfo}}' data-index='{{index}}' data-status='1' data-sub-index="{{goodsIndex}}" catchtap='showPackageInfoFn' style="{{ 'color:' + storeStyle.theme }}">
+            展开套餐明细
+            <text class='ico-moon icon-downarrow package-info-icon'></text>
+          </view>
+          <view class='goods-more package-info' hidden='{{!goods.showPackageInfo}}' data-index='{{index}}' data-status='0' data-sub-index="{{goodsIndex}}" catchtap='showPackageInfoFn' style="{{ 'color:' + storeStyle.theme }}">
+            收起
+            <text class='ico-moon icon-uparrow package-info-icon'></text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="goods-customer-bottom">
+      <view class="order-refund-box">
+        <view class="order-status-explain"><text class="ico-moon icon-refunds"></text><text>{{ refundType[item.refund_type] }}</text></view>
+        <text wx:if="{{ item.status == 1 || item.status == 2 || item.status == 5 || item.status == 7 }}" class="pull-right order-refund-price">{{ orderReason[item.status] }}</text>
+        <text wx:if="{{ item.status == 3 }}" class="pull-right order-refund-price">等待商家发货，还剩{{ item.expire }}</text>
+        <text wx:if="{{ item.status == 6 }}" class="pull-right order-refund-price">退款金额 ¥{{ item.refund_price }}</text>
+      </view>
+      <view class="customer-btn-box">
+        <text wx:if="{{ item.status == 0 }}" class="customer-btn" catchtap="cancelRefund" data-order-id="{{ item.order_id }}" data-apply-id="{{ item.id }}" data-franchisee-id="{{ item.app_id }}">撤销申请</text>
+        <text wx:if="{{ item.status == 1 || item.status == 2 || item.status == 5 || item.status == 6 }}" class="customer-btn" catchtap="deleteAfterSale" data-order-id="{{ item.order_id }}" data-apply-id="{{ item.id }}" data-index="{{ index }}">删除记录</text>
+        <text wx:if="{{ item.status == 1 }}" class="customer-btn" catchtap="refuseReason" data-reason="{{ item.refuse_msg }}">拒绝原因</text>
+        <text class="customer-btn" catchtap="toGoodsOrderDetail" data-apply-id="{{ item.id }}" data-order-id="{{ item.order_id }}" data-franchisee-id="{{ item.app_id }}">查看订单</text>
+      </view>
+    </view>
+  </view>
+</view>

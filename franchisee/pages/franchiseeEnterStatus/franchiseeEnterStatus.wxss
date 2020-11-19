@@ -1,0 +1,121 @@
+page {
+  background-color: #f3f3f3;
+}
+.status-wrap{
+  text-align: center;
+  background-color: #fff;
+}
+.banner{
+  width: 100%;
+  height: 410rpx;
+}
+.status-title{
+  color: #333;
+  font-size: 30rpx;
+  margin-top: 15rpx;
+}
+.status-tip{
+  color: #999;
+  font-size: 26rpx;
+  margin-top: 25rpx;
+}
+.btn-wrap{
+  padding-top: 60rpx;
+  padding-bottom: 40rpx;
+}
+.btn-hollow{
+  display: inline-block;
+  width: 335rpx;
+  height: 80rpx;
+  margin: 0 10rpx;
+  border: 1px solid #ccc;
+  color: #333;
+  font-size: 30rpx;
+  background-color: #fff;
+  border-radius: 4rpx;
+}
+.btn-solid{
+  display: inline-block;
+  width: 335rpx;
+  height: 80rpx;
+  margin: 0 10rpx;
+  border: none;
+  color: #fff;
+  font-size: 30rpx;
+  background-color: #3091F2;
+  border-radius: 4rpx;
+}
+.status-success .btn-solid{
+  background-color: #FF7100;
+}
+.status-fail .btn-solid{
+  width: 690rpx;
+  background-color: #FF3B49;
+}
+.qrcode-wrap{
+  margin-top: 10rpx;
+  text-align: center;
+  padding: 38rpx 0;
+  background-color: #fff;
+}
+.qrcode-wrap image{
+  width: 180rpx;
+  height: 180rpx;
+}
+.qrcode-wrap view{
+  color: #666;
+  font-size: 24rpx;
+  padding-top: 20rpx;
+}
+.tip{
+  padding: 20rpx 40rpx;
+  background-color: #fff;
+  margin-top: 10rpx;
+}
+.tip-title{
+  color: #333;
+  font-size: 26rpx;
+}
+.tip-droit{
+  color: #666;
+  font-size: 24rpx;
+  margin-bottom: 10rpx;
+}
+.tip-droit-title{
+  margin-top: 40rpx;
+}
+.tip-acount,
+.tip-website{
+  color: #666;
+  font-size: 22rpx;
+  margin-bottom: 10rpx;
+}
+.tip-acount{
+  margin-top: 36rpx;
+}
+.sidebar{
+  position: fixed;
+  width: 82rpx;
+  right: 0;
+  bottom: 130rpx;
+}
+.sidebar > view{
+  position: relative;
+  width: 82rpx;
+  height: 82rpx;
+  color: #fff;
+  font-size: 44rpx;
+  text-align: center;
+  line-height: 82rpx;
+  background-color: rgba(0, 0, 0, .4);
+  border-radius: 4rpx;
+  margin-top: 1px;
+}
+.sidebar-service-btn{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}

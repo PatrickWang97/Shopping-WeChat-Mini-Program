@@ -1,0 +1,22 @@
+<component-behavior-track></component-behavior-track>
+<view class="attention">
+  <block wx:for="{{attentionList}}" wx:key="index">
+    <view class="attention-item" data-appid="{{item.app_id}}" data-parentappid="{{item.parent_app_id}}" data-newpage="{{item.sub_bar['homepage-router']}}" catchtap="goToFranchiseeDetail">
+      <view class="attention-item-left">
+        <view class="attention-item-pic">
+          <image src="{{item.logo}}" mode="aspectFill"/>
+        </view>
+        <view class="attention-div">
+          <view class="attention-item-name">{{item.name}}</view>
+          <view class="attention-item-price">¥ {{item.per_capita}}/人</view>
+          <view class="attention-item-industry">{{item.industry_type_name}}</view>
+        </view>
+      </view>
+      <view class="attention-item-right {{item.status == '1' ? 'franchisee-attention-has' : 'franchisee-attention-no'}}" data-index="{{index}}" data-appid="{{item.app_id}}" data-parentappid="{{item.parent_app_id}}" catchtap="changeShopFavorite">{{item.status == '1' ? '已关注' : '关注'}}</view>
+    </view>
+  </block>
+  <view class="attention-none" wx:if="{{attentionList.length === 0}}">
+    <image src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-goods/order-null.png" alt="图片"/>
+    <view class="tips">还没有已关注的店铺</view>
+  </view>
+</view>

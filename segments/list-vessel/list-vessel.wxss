@@ -1,0 +1,21 @@
+.app .list-vessel-wrap .text{
+  white-space: normal;
+}
+.app .list-vessel-wrap.mode-1 .list-vessel{
+  width: 50%;
+  display: inline-block;
+  vertical-align: top;
+}
+.app .list-vessel-wrap.mode-3 .list-vessel{
+  width: 33.3%;
+  float: left;
+}
+.app .list-vessel-wrap.mode-2 .list-vessel{
+  width: 300rpx;
+  display: inline-block;
+}
+.app .list-vessel-wrap.mode-2 .js-list-container{
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: middle;
+}

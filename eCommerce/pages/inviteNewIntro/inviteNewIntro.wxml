@@ -1,0 +1,66 @@
+<!-- 活动说明 -->
+<view class="page-wrap">
+  <view class="intro-box">
+    <view class="intro-title">拉新成功条件：</view>
+    <view class="intro-detail" wx:if="{{activeData.condition == 1}}">邀请的新用户点击分享链接</view>
+    <view class="intro-detail" wx:elif="{{activeData.condition == 2}}">邀请的新用户绑定手机号后</view>
+    <view class="intro-detail" wx:elif="{{activeData.condition == 3}}">邀请的新用户成为会员后</view>
+    <view class="intro-detail" wx:elif="{{activeData.condition == 4}}">邀请的新用户首次支付满{{activeData.condition_value}}元后</view>
+    <view class="intro-detail" wx:elif="{{activeData.condition == 5}}">邀请的新用户首次完成满{{activeData.condition_value}}元的订单后</view>
+  </view>
+  <view class="intro-box" wx:if="{{activeData['new']}}">
+    <view class="intro-title">拉新奖励：</view>
+    <view class="intro-detail">拉新成功您可获得
+    <block wx:for="{{activeData['new'].rewards}}" wx:key="index" wx:for-index="index">
+      {{item.title}}{{index < activeData['new'].rewards.length - 1 ? ',':''}}
+    </block>
+    {{(activeData['new'].get_limit == 1 && activeData['new'].rewards.length > 1) ? ('(' + activeData['new'].rewards.length + '选1)') : ''}}
+    </view>
+    <view wx:if="{{activeData['new'].get_time_value > 0}}" class="intro-detail">奖励限制：每个用户<block wx:if="{{activeData['new'].get_time == 3}}">每天</block>有{{activeData['new'].get_time_value}}次领取奖励的机会</view>
+  </view>
+  <view class="intro-box" wx:if="{{activeData['second']}}">
+    <view class="intro-title">次级拉新奖励：</view>
+    <view class="intro-detail">您邀请的用户在{{activeData['second'].value}}天内继续拉新,拉新成功您可获得
+    <block wx:for="{{activeData['second'].rewards}}" wx:key="index" wx:for-index="index">
+      {{item.title}}{{index < activeData['second'].rewards.length - 1 ? ',':''}}
+    </block>
+    {{(activeData['second'].get_limit == 1 && activeData['second'].rewards.length > 1) ? ('(' + activeData['second'].rewards.length + '选1)') : ''}}
+    </view>
+    <view wx:if="{{activeData['second'].get_time_value > 0}}" class="intro-detail">奖励限制：每个用户<block wx:if="{{activeData['second'].get_time == 3}}">每天</block>有{{activeData['second'].get_time_value}}次领取奖励的机会</view>
+  </view>
+  <view class="intro-box" wx:if="{{activeData['consume']}}">
+    <view class="intro-title">新用户消费对拉新者奖励：</view>
+    <view class="intro-detail">拉新成功后,新用户继续完成前{{activeData['consume'].num}}笔满{{activeData['consume'].price}}元的订单,每次完成您可获得
+    <block wx:for="{{activeData['consume'].rewards}}" wx:key="index">
+      {{item.title}}{{index < activeData['consume'].rewards.length - 1 ? ',':''}}
+    </block>
+    {{(activeData['consume'].get_limit == 1 && activeData['consume'].rewards.length > 1) ? ('(' + activeData['consume'].rewards.length + '选1)') : ''}}
+    </view>
+    <view wx:if="{{activeData['consume'].get_time_value > 0}}" class="intro-detail">奖励限制：每个用户<block wx:if="{{activeData['consume'].get_time == 3}}">每天</block>有{{activeData['consume'].get_time_value}}次领取奖励的机会</view>
+  </view>
+  <view class="intro-box" wx:if="{{activeData['add_up'] && activeData['add_up'].type == 1}}">
+    <view class="intro-title">拉新累计奖励：</view>
+    <view class="intro-detail">您每成功拉新{{activeData['add_up'].prize[0].value}}位用户，您<block wx:if="{{activeData['add_up'].get_time == 3}}">每天</block>可获得<block wx:for="{{activeData['add_up'].prize[0].rewards}}" wx:key="index" wx:for-index="index">{{item.title}}{{index < activeData['add_up'].prize[0].rewards.length - 1 ? ',':''}}</block>
+    {{(activeData['add_up'].prize[0].get_limit == 1 && activeData['add_up'].prize[0].rewards.length > 1) ? ('(' + activeData['add_up'].prize[0].rewards.length + '选1)') : ''}}
+    </view>
+    <view wx:if="{{activeData['add_up'].get_time_value > 0}}" class="intro-detail">奖励限制：每个用户    
+    <block wx:if="{{activeData['add_up'].get_time == 3}}">每天</block>有{{activeData['add_up'].get_time_value}}次领取奖励的机会</view>
+  </view>
+  <view class="intro-box" wx:if="{{activeData['add_up'] && activeData['add_up'].type == 2}}">
+    <view class="intro-title">拉新累计奖励：</view>
+    <view class="intro-detail">
+    <!-- 遍历奖励内容 -->
+      <block wx:for="{{activeData['add_up'].prize}}" wx:key="index" wx:for-index="index">
+        拉新的用户总计达到{{item.value || 1}}名时,可获得<block wx:for="{{item.rewards}}" wx:key="subIndex" wx:for-index="subIndex" wx:for-item="subItem">{{subItem.title}}{{subIndex < item.rewards.length - 1 ? ',':''}}</block>{{(item.get_limit == 1 && item.rewards.length > 1) ? ('(' + item.rewards.length + '选1)') : ''}}
+        <block hidden="{{index == activeData['add_up'].prize.length - 1}}">;</block>
+      </block>
+    </view>
+    <view wx:if="{{activeData['add_up'].get_time_value > 0}}" class="intro-detail">奖励限制：每个用户<block wx:if="{{activeData['add_up'].get_time == 3}}">每天</block>有{{activeData['add_up'].get_time_value}}次领取奖励的机会</view>
+  </view>
+  <view class="intro-box">
+    <view class="intro-title">活动时间：</view>
+    <view class="intro-detail">
+      {{activeData['activity_time'] == 1 ? '长期' : (activeData['start_time'] + '到 ' + activeData['end_time'])}}
+    </view>
+  </view>
+</view>

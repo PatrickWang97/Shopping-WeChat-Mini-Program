@@ -1,0 +1,203 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-behavior-track></component-behavior-track>
+<view class="franchisee-enter page">
+  <view>
+    <image class="banner" mode="aspectFill" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/franchisee/enter-banner.png"></image>
+  </view>
+  <form bindsubmit="enterSubmit">
+    <view class="form-box">
+      <view class="form-item">
+        <label class="form-title necessary">店铺名称</label>
+        <view class="form-item-right">
+          <input hidden="{{showIndustryPickView || showRegionPickView || showCategoryPickView}}" class="form-input" type="text" placeholder="请输入店铺名称" name="name" />
+        </view>
+      </view>
+      <view class="form-item">
+        <label class="form-title necessary">店铺logo</label>
+        <view class="form-item-right shop-logo-wrap">
+          <view class="upload-img" bindtap="uploadLogo">
+            <block wx:if="{{shopLogo}}">
+              <image class="shop-logo" mode="aspectFill" src="{{shopLogo}}"></image>
+              <label class="upload-mask">更换图片</label>
+            </block>
+            <block wx:else>
+              <label class="ver-line"></label>
+              <label class="hor-line"></label>
+            </block>
+          </view>
+        </view>
+      </view>
+      <view class="form-item">
+        <label class="form-title necessary">手机号码</label>
+        <view class="form-item-right">
+          <view class="dis-flex">
+            <picker bindchange="bindAPPreFixChange" value="{{aPPreFixValue}}" range="{{countryPreFix}}" name="accountPhonePreFix" range-key="name" class="mr-20" style="width: 110rpx">
+              <view class="picker-view">{{countryPreFix[aPPreFixValue[0]].text}} ></view>
+            </picker>
+            <view class="pos-rel">
+              <input hidden="{{showIndustryPickView || showRegionPickView || showCategoryPickView}}" class="form-input phone-input" type="number" placeholder="请输入登录手机号" name="account_phone" bindinput="bindPhoneInput" value="{{phone}}" bindblur="bindPhoneBlur" style="width: 280rpx;" />
+              <block wx:if="{{!hasGetPhoneNumber}}">
+                <button hidden="{{showIndustryPickView || showRegionPickView || showCategoryPickView}}" class="get-phone-btn" open-type="getPhoneNumber"  bindgetphonenumber="getPhoneNumber">获取</button>
+                <button hidden="{{showIndustryPickView || showRegionPickView || showCategoryPickView}}" class="code-btn">获取</button>
+              </block>
+            </view>
+            <view wx:if="{{!isGetPhoneNumber}}" class="code-btn" bindtap="getPhoneCode">{{codeBtnText}}</view>
+          </view>
+        </view>
+      </view>
+      <view class="form-item" wx:if="{{!isGetPhoneNumber}}">
+        <label class="form-title necessary">验证码</label>
+        <view class="form-item-right">
+          <input hidden="{{showIndustryPickView || showRegionPickView || showCategoryPickView}}" class="form-input" type="number" placeholder="请输入短信验证码" name="code" />
+        </view>
+      </view>
+    </view>
+    <view class="form-box">
+      <view class="form-item form-address">
+        <label class="form-title necessary">店铺位置</label>
+        <view class="form-item-right">
+          <view class="from-area">
+            <!-- <picker class="form-picker form-region" mode="multiSelector" bindcolumnchange="bindRegionColumnChange" range="{{regionList}}" value="{{region}}" range-key="name" name="area">
+              <view class="picker-view">
+                {{regionList[0][region[0]].name}} {{regionList[1][region[1]].name}} {{regionList[2][region[2]].name}} {{regionList[3][region[3]].name}}
+              </view>
+            </picker> -->
+            <view class="picker-view" bindtap="showRegionPickerTap">
+              {{regionList[0][region[0]].name}} {{regionList[1][region[1]].name}} {{regionList[2][region[2]].name}} {{regionList[3][region[3]].name}}
+            </view>
+            <view class="get-location" bindtap="chooseLocation"><label class="ico-moon icon-relocate"></label><text>定位</text></view>
+          </view>
+          <view>
+            <textarea class="address-textarea" placeholder="请填写详细地址" value="{{address}}" name="address_detail" cursor-spacing="20" hidden="{{!successPop || showIndustryPickView || showRegionPickView || showCategoryPickView}}" bindblur="updateLatAndLng" />
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="form-box">
+      <view class="form-item form-category">
+        <label class="form-title necessary">行业分类</label>
+        <view class="form-item-right industry-type-item">
+          <view wx:if="{{selectedIndustry.length > 0}}" class="picker-view" bindtap="tapSelectIndustryType"><text wx:for="{{industryNames}}" wx:key="index" wx:for-index="i">{{(i > 0 ? '/' : '') + item}}</text></view>
+          <view wx:else class="picker-placeholder" bindtap="tapSelectIndustryType">请选择行业分类</view>
+        </view>
+      </view>
+      <view class="form-item" wx:if="{{categoryList.length > 0}}">
+        <label class="form-title necessary">店铺分类</label>
+        <view class="form-item-right">
+          <view wx:if="{{isOperateShopCate}}" class="picker-view" bindtap="tapSelectShopCategory"><text wx:for="{{categoryNames}}" wx:key="index" wx:for-index="i">{{(i > 0 ? '、' : '') + item}}</text></view>
+          <view wx:else class="picker-placeholder" bindtap="tapSelectShopCategory">请选择店铺分类</view>
+        </view>
+      </view>
+    </view>
+    <view class="form-box">
+      <view class="form-item" wx:if="{{isUser}}">
+        <label class="form-title">选择</label>
+        <view class="form-item-right">
+          <view>
+            <radio-group class="form-radio-group" bindchange="appRadioChange">
+              <label class="radio-label" wx:if="{{appList.length > 0}}">
+                <radio value="1" color="#FF7100" checked="{{appType == 1}}" />关联已有小程序
+              </label>
+              <label class="radio-label">
+                <radio value="2"  color="#FF7100" checked="{{appType == 2}}" />创建新的小程序
+              </label>
+            </radio-group>
+          </view>
+          <view class="choose-app" hidden="{{appType != 1}}">
+            <picker class="form-picker" bindchange="bindAppChange" value="{{appIndex}}" range="{{appList}}" name="app" range-key="app_name">
+              <view class="picker-view">
+                {{appList[appIndex].app_name || '请选择关联小程序'}}
+              </view>
+              <view wx:if="{{appIndex != -1}}" class="choose-btn">更换</view>
+              <view wx:else class="choose-btn">选择</view>
+            </picker>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="form-box" wx:if="{{paid_config.switch}}">
+      <view class="shop-enter-pay">
+        <label class="form-title">入驻费用</label>
+        <text>¥ {{paid_config.price}}</text>
+      </view>
+    </view>
+    <view class="form-btn-pay" wx:if="{{paid_config.switch}}">
+      <view class="btn-pay-price">入驻需支付：<text style="color: #FF8307;font-size: 40rpx;">¥ {{paid_config.price}}</text></view>
+      <button class="btn-pay-submit" formType="submit">提交</button>
+    </view>
+    <button class="form-btn" formType="submit" wx:if="{{!paid_config.switch}}">提交申请</button>
+  </form>
+  <view class="sidebar">
+    <view wx:if="{{appShopInfo.phone}}" class="ico-moon icon-telephone" data-phone="{{appShopInfo.phone}}" bindtap="makePhoneCall"></view>
+    <view class="ico-moon icon-service2">
+      <contact-button class="sidebar-service-btn" type="default-light" size="0" session-from="franchisee-enter"></contact-button>
+    </view>
+  </view>
+  <view class="success-pop" hidden="{{successPop}}">
+    <view class="success-pop-inner">
+      <view class="success-pop-close ico-moon icon-closes" bindtap="successPopHidden"></view>
+      <image class="success-pop-img" mode="aspectFill" src="{{cdnUrl + '/static/webapp/images/franchisee/enter-success.png'}}"></image>
+      <view class="success-pop-tip">{{paid_config.enterAudit ? '提交成功，等待审核！' : '入驻成功！'}}</view>
+      <view class="success-pop-p">您现在可以马上去预览店铺</view>
+      <button class="success-pop-btn" bindtap="turnToFranchiseeDetail">去预览</button>
+    </view>
+  </view>
+</view>
+
+<view wx:if="{{showIndustryPickView}}" class="industry-type-mult-picker" catchtouchmove="stoppropgation">
+  <view class="industry-type-upper-mask" catchtap="cancelIndustryType"></view>
+  <view class="picker-view-header">
+    <view class="cancel-btn" catchtap="cancelIndustryType">取消</view>
+    <view class="confirm-btn" catchtap="confirmIndustryType">确定</view>
+  </view>
+  <picker-view
+    indicator-style="height: 50px;"
+    bindchange="bindIndustryColumnChange"
+    bindpickerstart="bindIndustryPickerStart"
+    bindpickerend="bindIndustryPickerEnd"
+    value="{{industry}}"
+  >
+    <picker-view-column wx:for="{{industryList}}" wx:key="index" style="width: {{100 / industryList.length}}%">
+      <view wx:for="{{item}}" wx:key="index" style="line-height: 50px">{{item.name}}</view>
+    </picker-view-column>
+  </picker-view>
+</view>
+
+<view wx:if="{{showRegionPickView}}" class="industry-type-mult-picker" catchtouchmove="stoppropgation">
+  <view class="industry-type-upper-mask" catchtap="cancelRegionSelect"></view>
+  <view class="picker-view-header">
+    <view class="cancel-btn" catchtap="cancelRegionSelect">取消</view>
+    <view class="confirm-btn" catchtap="confirmRegionSelect">确定</view>
+  </view>
+  <picker-view
+    indicator-style="height: 50px;"
+    bindchange="bindRegionColumnChange"
+    bindpickerstart="bindRegionPickerStart"
+    bindpickerend="bindRegionPickerEnd"
+    value="{{region}}"
+  >
+    <picker-view-column wx:for="{{regionList}}" wx:for-item="regionListItem" wx:key="index">
+      <view wx:for="{{regionListItem}}" wx:key="index" style="line-height: 50px;">{{item.name}}</view>
+    </picker-view-column>
+  </picker-view>
+</view>
+
+<view wx:if="{{showCategoryPickView}}" class="industry-type-mult-picker" catchtouchmove="stoppropgation">
+  <view class="industry-type-upper-mask" catchtap="cancelCategorySelect"></view>
+  <view class="picker-view-header">
+    <view class="cancel-btn" catchtap="cancelCategorySelect">取消</view>
+    <view class="confirm-btn" catchtap="confirmCategorySelect">确定</view>
+  </view>
+  <picker-view
+    indicator-style="height: 50px;"
+    bindchange="bindCategoryColumnChange"
+    bindpickerstart="bindCategoryPickerStart"
+    bindpickerend="bindCategoryPickerEnd"
+    value="{{categoryIdxs}}"
+  >
+    <picker-view-column wx:for="{{categoryList}}" wx:for-item="catrgotyListItem" wx:key="index">
+      <view wx:for="{{catrgotyListItem}}" wx:key="index" style="line-height: 50px;">{{item.name}}</view>
+    </picker-view-column>
+  </picker-view>
+</view>

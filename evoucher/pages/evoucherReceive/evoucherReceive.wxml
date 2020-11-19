@@ -1,0 +1,40 @@
+<component-reward-point rewardPointObj="{{rewardPointObj}}" shareGiftsObj="{{shareGiftsObj}}" collectGiftsObj="{{collectGiftsObj}}" collectGetObj="{{collectGetObj}}"></component-reward-point>
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-sinkingModal></component-sinkingModal>
+
+<view class="my-evoucher-container">
+  <view class="evoucher-list">
+    <view class="evoucher-item">
+      <view class="evoucher-tip flex">
+        <text class="ico-moon icon-notify"></text>
+        <text class="tip-txt">“{{buyerInfo.nickname}}”赠送{{goodsInfo.num}}份电子卡券给你，请及时领取</text>
+      </view>
+      <view class="flex">
+        <view class="item-img">
+          <image src="{{goodsInfo.cover}}" mode="apectFill"></image>
+          <text class="item-num">×{{goodsInfo.num}}</text>
+        </view>
+        <view class="item-content flex-column">
+          <view class="row-between">
+            <text class="item-name">{{goodsInfo.goods_name}}</text>
+          </view>
+          <text class="item-species gray">{{goodsInfo.model_value_str}}</text>
+          <view class="row-between">
+            <text class="gray">有效期 {{goodsInfo.valid_date_str}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="receive-btn">
+    <button bindtap="recevieEvoucher" disabled="{{status == 1}}">{{status == 0 ? '领取卡券' : '已领取'}}</button>
+  </view>
+</view>
+
+<view class="receive-dialog" wx:if="{{isShowReceiveFailModal}}" bindtap="hideModal">
+  <view class="receive">
+    <text class="receive-txt">{{tipStr}}</text>
+    <button bindtap="turnToHomePage">返回首页</button>
+  </view>
+</view>

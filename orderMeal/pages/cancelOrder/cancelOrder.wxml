@@ -1,0 +1,52 @@
+<component-reward-point rewardPointObj="{{rewardPointObj}}" shareGiftsObj="{{shareGiftsObj}}" collectGiftsObj="{{collectGiftsObj}}" collectGetObj="{{collectGetObj}}"></component-reward-point>
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class='contain'>
+  <view class='takeoutFeedback'>
+    <view class='selectFeedback feedbackItem'>
+      <text> <text style='color: #F2303E;font-size:28rpx;'>*</text> 请选择取消原因</text>
+    </view>
+    <block wx:for="{{ cancelReason }}" wx:for-item="item" wx:key="index">
+      <view class='feedbackItem' bindtap="chooseReason" data-reason-index="{{index}}" data-reason-str="{{item}}">
+        <text>{{item}}</text>
+        <icon type="success" color="#FF7100" class='fr' wx:if="{{index == reasonIndex}}"/>
+        <lable class='circle fr' wx:if="{{index != reasonIndex}}"></lable>
+      </view>
+    </block>
+  </view>
+  <view class='takeoutFeedback' style='margin-bottom:40rpx;'>
+    <view style='padding: 30rpx 0;'>
+      上传凭证（最多上传3张）
+    </view>
+    <view class='feedbackInfo'>
+      <textarea placeholder='其他补充信息' bindinput="commentInput" wx:if="{{isShowText}}"></textarea>
+    </view>
+    <view class="makeCom-pic-container">
+      <view wx:for="{{ submitData.img_url }}" wx:key="index" wx:for-item="imgUrl" class="makeCom-pic-wrap">
+        <image src="{{ imgUrl }}" mode="aspectFit"></image>
+        <label class="makeCom-remove-pic" bindtap="removePic"  data-pic-index="{{ index }}">×</label>
+      </view>
+      <view  class="makeCom-upload-pic" bindtap="chooseImage" wx:if="{{submitData.img_url.length < 3}}"><view class="ico-moon icon-fn-camera" style="display:block; font-size: 60rpx;"></view><text>添加图片</text></view>
+    </view>
+  </view>
+  <view class="bottom-container" bindtap="applyDrawback">
+    <label class="make-comment">提交</label>
+  </view>
+  <!-- <view class='instruction-warp' wx:if="{{isShowInstruction}}"> -->
+  <view class='instruction-warp' wx:if="{{isShowInstruction}}">
+    <view class='instruction-container'>
+      <view>
+        <view class='instruction-container'>
+          <view style="padding: 0 27px;">
+            <view class='instruction-title'>
+              <icon type="success" color="#FF7100"/>
+              <text>退款申请已提交</text>
+            </view>
+            <text class='instruction-item' style='text-align:center;font-size:26rpx;'>商家同意后退款将原路退回到您的支付账户,详情请查看订单进度</text>
+          </view>
+          <text class='instruction-close' catchtap='hideInstruction'>知道了</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

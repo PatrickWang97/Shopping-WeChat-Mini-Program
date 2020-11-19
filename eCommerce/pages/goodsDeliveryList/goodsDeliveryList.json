@@ -1,0 +1,10 @@
+{
+    "navigationBarTitleText": "选择门店",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "usingComponents":{
+        "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+        "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+        "component-behavior-track": "/components/behaviorTrack/behaviorTrack"
+    }
+}

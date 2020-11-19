@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "订单跟踪",
+  "usingComponents": {
+    "component-behavior-track": "/components/behaviorTrack/behaviorTrack"
+  }
+}

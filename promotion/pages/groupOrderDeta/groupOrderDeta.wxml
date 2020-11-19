@@ -1,0 +1,80 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="myOrder-wrap page">
+  <view class="tostore-list-submenu myOrder-tab-list">
+    <view class="tostore-sub-box {{ currentTabIndex == 0 ? 'active' : '' }}" bindtap="clickOrderTab" data-index="0"><text class="bottom-line"></text>全部</view>
+    <view class="tostore-sub-box {{ currentTabIndex == 1 ? 'active' : '' }}" bindtap="clickOrderTab" data-index="1"><text class="bottom-line"></text>待付款</view>
+    <view class="tostore-sub-box {{ currentTabIndex == 2 ? 'active' : '' }}" bindtap="clickOrderTab" data-index="2"><text class="bottom-line"></text>待发货</view>
+    <view class="tostore-sub-box {{ currentTabIndex == 3 ? 'active' : '' }}" bindtap="clickOrderTab" data-index="3"><text class="bottom-line"></text>配送中</view>
+    <view class="tostore-sub-box {{ currentTabIndex == 4 ? 'active' : '' }}" bindtap="clickOrderTab" data-index="4"><text class="bottom-line"></text>待提货</view>
+    <view class="tostore-sub-box {{ currentTabIndex == 5 ? 'active' : '' }}" bindtap="clickOrderTab" data-index="5"><text class="bottom-line"></text>待评价</view>
+    <view class="tostore-sub-box {{ currentTabIndex == 6 ? 'active' : '' }}" bindtap="clickOrderTab" data-index="6"><text class="bottom-line"></text>退款中</view>
+    <view class="tostore-sub-box {{ currentTabIndex == 7 ? 'active' : '' }}" bindtap="clickOrderTab" data-index="7"><text class="bottom-line"></text>已关闭</view>
+  </view>
+  <view class="activity">
+    <text class="ellipsis">总订单状态</text>
+    <text style="float:right">{{parentStatus[status]}}</text>
+  </view>
+  <view class="myOrder-content-body">
+    <view class="scrollContainer">
+      <scroll-view lower-threshold="10" scroll-y="true">
+        <view class="myOrder-list-item" wx:for="{{ orderList }}" wx:key="index"  catchtap='checkGoupOrderDetail' data-index="{{index}}">
+          <view class="myOrder-list-title">
+            <text class="delivery-type-icon">{{item.form_data.dis_group_info.dis_notice.ship_type == 0 ? '上门自提' : '团长配送'}}</text>
+            <!-- <text class="icon-comTime ico-moon" style="float:left;color: #d2d2d2;margin-right:12rpx"></text> -->
+            <text class="title-time"><text>{{statusOrder[item.form_data.status]}}</text></text>
+          </view>
+          <view class="myOrder-list-content">
+            <view class="myOrder-list-goods">
+              <view wx:for="{{orderList[index].form_data.goods_info}}" wx:key="index">
+                <view class="goods-item">
+                  <view class="goods-img">
+                    <image src="{{item.cover}}"></image>
+                  </view>
+                  <view class="goods-describe">
+                    <text class="goods-describe-title">{{item.goods_name}}</text>
+                    <text class="goods-describe-model">{{item.model_value || ''}}</text>
+                    <!-- <text class="goods-describe-price">¥{{item.price}}<text>x{{item.num}}</text></text> -->
+                    <view class="goods-describe-price">¥{{item.price}}
+                      <view class="refunded">
+                        <view>x{{item.num}}</view>
+                        <view class="refunded_num" wx:if="{{item.refunded_num > 0 && (item.num - item.refunded_num == 0)}}">已退款</view>
+                        <view class="refunded_num" wx:elif="{{item.refunded_num > 0 && (item.num - item.refunded_num > 0)}}">已退{{item.refunded_num}}件</view>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+          <view class="myOrder-list-footer">
+            <view class="list-footer-label">
+              <label>共{{item.form_data.goods_num || 0}}件商品</label>
+              <label style="margin-left:20rpx">合计：</label>
+              <label class="origin" style="font-size:28rpx;">¥{{item.form_data.total_price}}</label>
+            </view>
+            <view class="list-footer-buyerInfo">
+              <view class="buyerInfo">
+                <label style="color:#666666;">买家信息：</label>
+                <label style="color:#333333;margin: 0 12rpx;">{{item.form_data.dis_group_info.dis_notice.nick_name}}</label>
+                <label style="color:#FF7100;">{{item.form_data.dis_group_info.dis_notice.phone}}</label>
+                <text class="icon-takeout-cellphone-left ico-moon" catchtap="makePhoneCall" data-phone="{{item.form_data.dis_group_info.dis_notice.phone}}"></text>
+              </view>
+              <view class="detailAddress" wx:if="{{item.form_data.dis_group_info.dis_notice.ship_type != 0}}">
+                {{item.form_data.dis_group_info.dis_notice.address_info}}
+              </view>
+            </view>
+            <view class="list-footer-btn" wx:if="{{item.form_data.status == 1 && status == 3}}">
+              <text data-franchisee="{{ item.form_data.app_id }}" data-id="{{ item.form_data.order_id }}" bindtap="getWriteOffCodeBox">订单核销</text>
+            </view>
+          </view>
+        </view>
+        <view hidden="{{ noMore }}" class="noMoreNewDataTip">{{isMore}}已经没有新数据了</view>
+      </scroll-view>
+    </view>
+  </view>
+</view>
+
+<!-- 核销码 -->
+<!-- <write-off-code showWriteOffCodeBox="{{ showWriteOffCodeBox }}" codeStatus="{{ codeStatus }}" codeImgUrl="{{codeImgUrl}}" codeNum="{{ codeNum }}" verifiTimeInterval="{{ verifiTimeInterval }}"></write-off-code> -->
+

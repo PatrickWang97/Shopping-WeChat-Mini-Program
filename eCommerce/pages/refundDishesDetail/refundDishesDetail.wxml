@@ -1,0 +1,301 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class='refund-wrapper' wx:if='{{account_type == 1}}'>
+  <block wx:for='{{diningOrderList}}' wx:key="index" wx:for-item='item' wx:for-index="order_index">
+    <view class='refund-head flex-between'>
+      <view>第{{order_index+1}}次退款</view>
+      <view>申请时间：{{add_time}}</view>
+    </view>
+    <view class='refund-goods-wrapper' style='margin-bottom:10rpx;'>
+      <view class='refund-title' hidden='{{order_index>0}}'>退款商品</view>
+      <block wx:for='{{item.form_data.refund_goods}}' wx:key="index" wx:for-item='goods' wx:for-index="key">
+        <view class='goods-info-item' style="{{(goods.is_package_goods == 1 || goods.attributes_id != 0) ? 'padding-bottom:0;border-bottom:0;':''}}">
+          <view class='goods-image'>
+            <image src='{{goods.cover}}' mode='aspectFill'></image>
+          </view>
+          <view class='goods-detail'>
+            <view class='flex-between'>
+              <view style='display:flex;align-items:center;'>
+                <text class='goods-special' wx:if='{{goods.max_can_use_integral>0}}'>积</text>
+                <text class='goods-special' wx:if='{{goods.is_seckill == 1}}'>秒杀</text>
+                <text class='goods-name ellipsis' style='max-width:400rpx;'>{{goods.title}}</text>
+              </view>
+            </view>
+            <view class='goods-type'>
+              <view class='type-size' wx:if='{{goods.model_name}}'>{{goods.model_name}}</view>
+            </view>
+            <view class='goods-price flex-between'>
+              <view class='price-box'>
+                <text class='priceNow'><text style='font-size:30rpx;'>¥</text>{{goods.is_vip_goods ? goods.vip_price : (goods.original_price || goods.price)}}</text>
+                <text class='dinning_vip_tips' wx:if="{{goods.is_vip_goods}}">会员价</text>
+                <text wx:if="{{goods.is_vip_goods}}" style="color:#999;font-size:26rpx;">¥{{goods.original_price}}</text>
+              </view>
+              <view class='calculate-wrapper' style='color:#999;'>
+                x{{goods.num}}
+              </view>
+            </view>
+          </view>
+        </view>
+        <!-- 餐饮3.0 新增商品属性 -->
+        <view class="goods-attributes-wrap" wx:if="{{goods.is_package_goods != 1 && goods.attributes_id &&goods.attributes_id != 0}}" >
+          <view class="goods-attributes-item" wx:for="{{goods.attributes}}" wx:key="index" wx:for-item="attributes">
+            <view>
+              <text>{{attributes.name}}：</text>
+              <view wx:for="{{attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                <text>{{elem.name}}</text><text class="attributes-add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                <text wx:if="{{elem_index != attributes.elem.length -1}}">，</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <!-- 餐饮3.0 新增套餐 -->
+        <view class="package-info-wrap" wx:if="{{goods.is_package_goods == 1}}"  style="max-height:{{goods.showPackageInfo?'auto':''}};">
+          <view class="package-info-content" hidden='{{!goods.showPackageInfo}}'>
+            <view class="package-info-item" wx:for="{{goods.package_goods}}" wx:key="index" wx:for-item="package">
+              <view class="package-info-l">
+                <block wx:if="{{package.is_require == 1 && package.is_multi_select == 1 && package.selected_num >= package.min_sales_nums && package.selected_num > 1}}">
+                  <view class="package-info-title">
+                    <view style="display:flex;">
+                      <text class="package-info-require" wx:if="{{package.is_require == 1}}">必</text>
+                      <text class="package-info-require" wx:if="{{package.is_require == 1}}">标配</text>
+                      <text class="package-info-name">{{package.title}}</text>
+                    </view>
+                    <view>
+                      <text class="package-info-num">x{{package.min_sales_nums}}</text>
+                    </view>
+                  </view>
+                  <view class="package-info-model">
+                    <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                    <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                  </view>
+                  <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                    <text>{{_attributes.name}} : </text>
+                    <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                      <text>{{elem.name}}</text>
+                      <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                      <text wx:if="{{elem_index != _attributes.elem.length -1}}">，</text>
+                    </view>
+                  </view>
+                  <block wx:if="{{package.selected_num - package.min_sales_nums > 0}}">
+                    <view class="package-info-model">
+                      <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                      <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                    </view>
+                    <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                      <text>{{_attributes.name}} : </text>
+                      <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                        <text>{{elem.name}}</text>
+                        <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                        <text wx:if="{{elem_index != _attributes.elem.length -1}}">，</text>
+                      </view>
+                    </view>
+                  </block>
+                  <view class="package-info-title">
+                    <view>
+                      <text class="package-info-name">{{package.title}}</text>
+                    </view>
+                    <view>
+                      <text class="package-info-add_price" wx:if="{{package.added_price > 0}}">+¥{{package.added_price}}</text>
+                      <text class="package-info-num">x{{package.selected_num - package.min_sales_nums}}</text>
+                    </view>
+                  </view>
+                </block>
+                <block wx:else>
+                  <view class="package-info-title">
+                    <view style="display: flex;">
+                      <text class="package-info-require" wx:if="{{package.is_require == 1}}">必</text>
+                      <text class="package-info-require" wx:if="{{package.is_require == 1}}">标配</text>
+                      <text class="package-info-name">{{package.title}}</text>
+                    </view>
+                    <view>
+                      <text class="package-info-add_price" wx:if="{{package.added_price > 0}}">+¥{{package.added_price}}</text>
+                      <text class="package-info-num">x{{package.selected_num}}</text>
+                    </view>
+                  </view>
+                  <view class="package-info-model">
+                    <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                    <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                  </view>
+                  <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                    <text>{{_attributes.name}} : </text>
+                    <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                      <text>{{elem.name}}</text>
+                      <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                      <text wx:if="{{elem_index != _attributes.elem.length -1}}">，</text>
+                    </view>
+                  </view>
+                </block>
+              </view>
+            </view>
+          </view>
+          <view class='goods-showMore'>
+            <view class='package-info' hidden='{{goods.showPackageInfo}}' data-index='{{order_index}}' data-sub-index='{{key}}' data-child-index='{{index}}' data-status='1' catchtap='showPackageInfoFn' style="{{ 'color:' + storeStyle.theme }}">
+              展开套餐明细
+              <text class='ico-moon icon-downarrow package-info-icon'></text>
+            </view>
+            <view class='package-info' hidden='{{!goods.showPackageInfo}}' data-index='{{order_index}}' data-sub-index='{{key}}' data-child-index='{{index}}' data-status='0' catchtap='showPackageInfoFn' style="{{ 'color:' + storeStyle.theme }}">
+              收起
+              <text class='ico-moon icon-uparrow package-info-icon'></text>
+            </view>
+          </view>
+        </view>
+      </block>
+      <view class='refunds-price-wrapper'>
+        <view class='refund-info-item flex-between'>
+          <text id='refund-price' style='color:#999;'>退款金额</text>
+          <text>¥{{item.refund_price}}</text>
+        </view>
+        <view class='refund-info-item flex-between'>
+          <text style='color:#999;'>退款方式</text>
+          <text>原付款方式退回</text>
+        </view>
+        <view class='refund-info-item flex-between'>
+          <text style='color:#999;'>退款说明</text>
+          <text>{{item.form_data.refund_reason_info}}</text>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>
+<view class='refund-wrapper' style='padding-top:30rpx;' wx:elif='{{account_type == 2}}'>
+  <block wx:for='{{diningOrderList}}' wx:key="index" wx:for-item='item' wx:for-index="order_index">
+    <view class='refund-head flex-between'>
+      <view>第{{order_index+1}}次退菜{{item.from_admin == 1 ? "（商家）":""}}</view>
+      <view>申请时间：{{item.apply_time}}</view>
+    </view>
+    <view class='refund-goods-wrapper' style='margin-bottom:10rpx;'>
+      <view class='refund-title'>退菜商品</view>
+      <block wx:for='{{item.form_data.apply_goods}}' wx:key="index" wx:for-item='goods' wx:for-index="key">
+        <view class='goods-info-item' style="{{(goods.is_package_goods == 1 || goods.attributes_id != 0) ? 'padding-bottom:0;border-bottom:0;':''}}">
+          <view class='goods-image'>
+            <image src='{{goods.cover}}' mode='aspectFill'></image>
+          </view>
+          <view class='goods-detail'>
+            <view class='flex-between'>
+              <view style='display:flex;align-items:center;'>
+                <text class='goods-special' wx:if='{{goods.max_can_use_integral>0}}'>积</text>
+                <text class='goods-special' wx:if='{{goods.is_seckill == 1}}'>秒杀</text>
+                <text class='goods-name ellipsis' style='max-width:400rpx;'>{{goods.goods_name}}</text>
+              </view>
+            </view>
+          <view class='goods-type' wx:if='{{goods.model_value_str}}'>
+            <view class='type-size ellipsis'>{{goods.model_value_str}}</view>
+          </view>
+            <view class='goods-price flex-between'>
+              <view class='price-box'>
+                <text class='priceNow'><text style='font-size:30rpx;'>¥</text>{{goods.is_vip_goods ? goods.vip_price : (goods.original_price || goods.price)}}</text>
+                <text class='dinning_vip_tips' wx:if="{{goods.is_vip_goods}}">会员价</text>
+                <text wx:if="{{goods.is_vip_goods}}" style="color:#999;font-size:26rpx;">¥{{goods.original_price}}</text>
+              </view>
+              <view class='calculate-wrapper' style='color:#999;'>
+                x{{goods.num}}
+              </view>
+            </view>
+          </view>
+        </view>
+        <!-- 餐饮3.0 新增商品属性 -->
+        <view class="goods-attributes-wrap" wx:if="{{goods.is_package_goods != 1 && goods.attributes_id &&goods.attributes_id != 0}}" >
+          <view class="goods-attributes-item" wx:for="{{goods.attributes}}" wx:key="index" wx:for-item="attributes">
+            <view>
+              <text>{{attributes.name}}：</text>
+              <view wx:for="{{attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                <text>{{elem.name}}</text><text class="attributes-add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                <text wx:if="{{elem_index != attributes.elem.length -1}}">，</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <!-- 餐饮3.0 新增套餐 -->
+        <view class="package-info-wrap" wx:if="{{goods.is_package_goods == 1}}"  style="max-height:{{goods.showPackageInfo?'auto':''}};">
+          <view class="package-info-content" hidden='{{!goods.showPackageInfo}}'>
+            <view class="package-info-item" wx:for="{{goods.package_goods}}" wx:key="index" wx:for-item="package">
+              <view class="package-info-l">
+                <block wx:if="{{package.is_require == 1 && package.is_multi_select == 1 && package.selected_num >= package.min_sales_nums && package.selected_num > 1}}">
+                  <view class="package-info-title">
+                    <view style="display:flex;">
+                      <text class="package-info-require" wx:if="{{package.is_require == 1}}">必</text>
+                      <text class="package-info-require">标配</text>
+                      <text class="package-info-name">{{package.title}}</text>
+                    </view>
+                    <view>
+                      <text class="package-info-num">x{{package.min_sales_nums}}</text>
+                    </view>
+                  </view>
+                  <view class="package-info-model">
+                    <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                    <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                  </view>
+                  <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                    <text>{{_attributes.name}} : </text>
+                    <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                      <text>{{elem.name}}</text>
+                      <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                      <text wx:if="{{elem_index != _attributes.elem.length -1}}">，</text>
+                    </view>
+                  </view>
+                  <block wx:if="{{package.selected_num - package.min_sales_nums > 0}}">
+                    <view class="package-info-title">
+                      <view>
+                        <text class="package-info-name">{{package.title}}</text>
+                      </view>
+                      <view>
+                        <text class="package-info-add_price" wx:if="{{package.added_price > 0}}">+¥{{package.added_price}}</text>
+                        <text class="package-info-num">x{{package.selected_num - package.min_sales_nums}}</text>
+                      </view>
+                    </view>
+                    <view class="package-info-model">
+                      <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                      <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                    </view>
+                    <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                      <text>{{_attributes.name}} : </text>
+                      <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                        <text>{{elem.name}}</text>
+                        <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                        <text wx:if="{{elem_index != _attributes.elem.length -1}}">，</text>
+                      </view>
+                    </view>
+                  </block>
+                </block>
+                <block wx:else>
+                  <view class="package-info-title">
+                    <view>
+                      <text class="package-info-require" wx:if="{{package.is_require == 1}}">必</text>
+                      <text class="package-info-name">{{package.title}}</text>
+                    </view>
+                    <view>
+                      <text class="package-info-add_price" wx:if="{{package.added_price > 0}}">+¥{{package.added_price}}</text>
+                      <text class="package-info-num">x{{package.selected_num}}</text>
+                    </view>
+                  </view>
+                  <view class="package-info-model">
+                    <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                    <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                  </view>
+                  <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                    <text>{{_attributes.name}} : </text>
+                    <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                      <text>{{elem.name}}</text>
+                      <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                      <text wx:if="{{elem_index != _attributes.elem.length -1}}">，</text>
+                    </view>
+                  </view>
+                </block>
+              </view>
+            </view>
+          </view>
+          <view class='goods-showMoreGoods'>
+            <view class='package-info' hidden='{{goods.showPackageInfo}}' data-index='{{order_index}}' data-sub-index='{{key}}' data-child-index='{{index}}' data-status='1' catchtap='showPackageInfoFn' style="{{ 'color:' + storeStyle.theme }}">
+              展开套餐明细
+              <text class='ico-moon icon-downarrow package-info-icon'></text>
+            </view>
+            <view class='package-info' hidden='{{!goods.showPackageInfo}}' data-index='{{order_index}}' data-sub-index='{{key}}' data-child-index='{{index}}' data-status='0' catchtap='showPackageInfoFn' style="{{ 'color:' + storeStyle.theme }}">
+              收起
+              <text class='ico-moon icon-uparrow package-info-icon'></text>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "navigationBarTitleText": "奖励记录",
+  "navigationBarTextStyle": "black",
+  "navigationBarBackgroundColor": "#ffffff",
+  "usingComponents": {}
+}

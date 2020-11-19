@@ -1,0 +1,64 @@
+<!--orderMeal/pages/indemnityOrder/indemnityOrder.wxml-->
+<component-reward-point rewardPointObj="{{rewardPointObj}}" shareGiftsObj="{{shareGiftsObj}}" collectGiftsObj="{{collectGiftsObj}}" collectGetObj="{{collectGetObj}}"></component-reward-point>
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class='container'>
+  <view wx:for="{{ indemnityOrderData }}" wx:for-item="item" wx:key="index" class='indemnityItem'>
+    <view wx:if="{{item.status == 1}}" class='tips'>
+      <view>耐心等待商家处理，一般处理时间在1-3天内</view>
+      <view>如果对方长时间不处理，可以拨打电话{{indemnityExplain.contact_phone}}</view>
+    </view>
+    <view wx:if="{{item.status == 2  || item.status == 3}}" class='tips'>
+      <view>此单投诉历史记录</view>
+    </view>
+    <view class='complaints'>
+      <view class='complaintsItem'>
+        <text style='font-size:30rpx;'>投诉详情</text>
+      </view>
+      <view class='complaintsItem'>
+        <text>反馈项</text>
+        <text class='fr'>{{item.complaint_data.complaint_reason}}</text>
+      </view>
+      <view class='complaintsItem' wx:if="{{item.complaint_data.complaint_pics}}">
+        <text>凭证</text>
+        <view class='imageContain'>
+          <block wx:for="{{ item.complaint_data.complaint_pics }}" wx:for-item="imgUrl" wx:key="index">
+            <image src="{{imgUrl}}" catchtap="previewImage" data-src="{{imgUrl}}" data-preview-imgarr="{{item.complaint_data.complaint_pics}}"></image>
+          </block>
+        </view>
+      </view>
+      <view class='complaintsItem' wx:if="{{item.complaint_data.complaint_additional_reason}}">
+        <text>补充信息</text>
+        <text class='fr' style='max-width:500rpx;text-align:right;white-space:pre-line;word-break:break-all;'>{{item.complaint_data.complaint_additional_reason}}</text>
+      </view>
+      <view class='complaintsItem'>
+        <text>提交时间</text>
+        <text class='fr'>{{item.add_time}}</text>
+      </view>
+    </view>
+    <view class='complaints'>
+      <view  class='complaintsItem'>
+        <text>处理情况</text>
+      </view>
+      <view  class='complaintsItem'>
+        <text>状态</text>
+        <text class='fr'>{{item.status == 1 ? '待处理' : item.status == 2 ? '已拒绝' : '已赔付'}}</text>
+      </view>
+      <view  class='complaintsItem' wx:if="{{item.handle_data.description}}">
+        <text>原因</text>
+        <text class="fr" style='max-width:276px;text-align:right;white-space:pre-line;word-break:break-all;'>{{item.handle_data.description}}</text>
+      </view>
+      <view  class='complaintsItem' wx:if="{{item.status == 3}}">
+        <text>赔付金额</text>
+        <view class='fr'>¥{{item.indemnity_fee}}，请到<text style='color: #FF7100;' bindtap='toBalance'>交易记录</text>查看</view>
+      </view>
+      <view  class='complaintsItem' wx:if="{{item.status != 1}}">
+        <text>处理时间</text>
+        <text class='fr'>{{item.update_time}}</text>
+      </view>
+    </view>
+  </view>
+  <view class='indemnityBtn' bindtap='indemnity' wx:if="{{isShowBtn}}">
+    <text>继续反馈</text>
+  </view>
+</view>

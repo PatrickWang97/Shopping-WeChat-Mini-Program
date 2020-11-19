@@ -1,0 +1,356 @@
+<view class="app">
+<component-reward-point rewardPointObj="{{rewardPointObj}}" shareGiftsObj="{{shareGiftsObj}}" collectGiftsObj="{{collectGiftsObj}}" collectGetObj="{{collectGetObj}}"></component-reward-point>
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-sinkingModal></component-sinkingModal>
+<franchiseeTabbar franchiseeInfo="{{franchiseeIdInfo}}"></franchiseeTabbar>
+<component-behavior-track></component-behavior-track>
+<view class="order-navigation" style="height: {{topNavHeight}}px;padding-top: {{topNavPaddingTop}}px;">
+  <view class="nav-title" catchtap="selectGoodsType">
+    <text class='ico-moon icon-leftarrow' catchtap="turnToBack"></text>
+    <text class="nav-title-content">{{currentGoodsType == '-2' ? '我的' : existGoodsType[currentGoodsType]}}订单</text>
+    <text class="nav-title-icon ico-moon icon-downarrow {{showGoodsTypeBox ? 'rotate' : ''}}"></text>
+  </view>
+  <block wx:if="{{showGoodsTypeBox}}">
+    <view class="mask" catchtap="selectGoodsType"></view>
+    <view class="goods-type-box">
+      <text class="goods-type {{currentGoodsType == '-2' ? 'selected' : ''}}" catchtap="clickMeanTab" data-index="-2" style="{{currentGoodsType == -2 ? ('color: #fff;background:' + storeStyle.theme) : ''}}">全部</text>
+      <text wx:for="{{existGoodsType}}" wx:key="index" class="goods-type {{currentGoodsType == index ? 'selected' : ''}}" catchtap="clickMeanTab" data-index="{{index}}" style="{{currentGoodsType == index ? ('color: #fff;background:' + storeStyle.theme) : ''}}">{{existGoodsType[index]}}</text>
+    </view>
+  </block>
+</view>
+<view class="order-noLogin" wx:if="{{ !hasLogin }}">
+  <image src="http://cdn.jisuapp.cn/static/webapp/images/xcx-goods/order-null.png"></image>
+  <view class="order-noLogin-status">您还没有登录</view>
+  <view class="order-noLogin-tip">请登录获取订单信息</view>
+  <view class="order-noLogin-btn" style="{{'background:' + storeStyle.theme }}" bindtap="shoppingCartGoLogin">登录/注册</view>
+</view>
+<view wx:else class="myOrder-wrap page" id="myOrder" style="padding-top: {{topNavHeight + topNavPaddingTop}}px;">
+  <view class="order-list-header">
+    <view class="order-list-search">
+      <text class="ico-moon icon-search"></text>
+      <input type="text" bindconfirm="searchOrderId" bindinput="inputOrderId" placeholder="请输入订单号或商品名称" value="{{searchOrderId}}" placeholder-class="placehoder-class" />
+      <text wx:if="{{searchOrderId}}" class="ico-moon icon-closes" catchtap="deleteInputOrderId"></text>
+    </view>
+    <view class="myOrder-tab-list">
+      <view wx:if="{{ currentGoodsType == 0 }}" class="tab-list-submenu goods-list-submenu" bindtap="clickSubmenuTab">
+        <view wx:for="{{submenuTab[currentGoodsType]}}" wx:key="index" class="{{ currentTabIndex == index ? 'active' : '' }}" style="color: {{ currentTabIndex == index ? storeStyle.theme : '' }}" data-index="{{index}}"><text class="bottom-line" style="{{'background:' + storeStyle.theme}}"></text>{{item}}</view>
+        <view catchtap="showGoodsPick" class="filter-goods-pick">{{selectGoodsPickIndex == '0' ? '取货' : (selectGoodsPickIndex == '1' ? '快递' : (selectGoodsPickIndex == '2' ? '同城' : selectGoodsPickIndex == '3'?'自提':''))}} <text class="trangel"></text>
+        </view>
+      </view>
+      <view class="tab-list-submenu" wx:else bindtap="clickSubmenuTab">
+        <view wx:for="{{submenuTab[currentGoodsType]}}" wx:key="index" class="{{ currentTabIndex == index ? 'active' : '' }}" style="color: {{ currentTabIndex == index ? storeStyle.theme : '' }}" data-index="{{index}}"><text class="bottom-line" style="{{'background:' + storeStyle.theme}}"></text>{{item}}</view>
+      </view>
+    </view>
+  </view>
+  <view class="myOrder-content-body">
+    <scroll-view class="myOrder-content-container" lower-threshold="10" scroll-y="true" bindscrolltolower="scrollToListBottom">
+      <block wx:for="{{ orderLists }}" wx:key="index">
+        <!-- 过滤掉没有商品的订单 主要是先吃后付退菜后-->
+        <view wx:if="{{item.goods_info.length}}" class="myOrder-list-wrap" bindtap="goToOrderDetail" data-index="{{index}}">
+          <view class="goods-order-header">
+            <text class="goods-type-name ico-moon {{goodsTypeIcon[item.goods_type]}}"></text>
+            <text class="cash-delivery" wx:if="{{(item.goods_type == 0 || item.goods_type == 40) && item.is_pay_on_delivery == 1}}">货到付款</text>
+            <text class="goods-order-time" wx:elif="{{item.pick_up_type == 2}}">编号 : {{ item.ecommerce_info.intra_city_data.serial_number }}</text>
+            <text class="goods-order-time" wx:elif="{{item.pick_up_type == 3}}">流水号 : {{ item.ecommerce_info.ec_tostore_data.formatted_queue_num }}</text>
+            <text class="goods-order-time" wx:elif="{{item.pick_up_type == 6}}">{{ item.goods_info[0].valid_date_str }}</text>
+            <text class="goods-order-time" wx:else>{{ item.add_time }}</text>
+            <!-- 外卖第三方配送接单后的处理状态 -->
+            <text class="pull-right myOrder-order-status" wx:if="{{item.goods_type == 2 && item.status == 2 && (item.take_out_info.deliver_type == 3 || item.take_out_info.deliver_type == 1)}}" style="{{'color:' + storeStyle.theme }}">orderStatusName[20][item.take_out_transport_order.status]</text>
+            <!-- 电子卡券 -->
+            <text class="pull-right myOrder-order-status" wx:elif="{{item.goods_type == 0 && item.pick_up_type == 6}}" style="{{'color:' + storeStyle.theme }}">{{orderStatusName['evoucher'][item.status]}}</text>
+            <!-- 普通订单状态 -->
+            <text class="pull-right myOrder-order-status" wx:else style="{{'color:' + storeStyle.theme }}">{{orderStatusName[item.goods_type][item.status]}}</text>
+          </view>
+          <view class="myOrder-franchisee-name" wx:if="{{ item.sub_shop_info.name }}">{{ item.sub_shop_info.name }}</view>
+          <block wx:if="{{item.goods_type != 6}}">
+            <view class="goods-order-content" wx:for="{{ item.goods_info }}" wx:for-item="goods" wx:key="index">
+              <view class="myOrder-goods-tips" wx:if="{{goods.use_integral}}">
+                <view class="myOrder-goods-tips-top">积</view>
+                <view class="myOrder-goods-tips-left"></view>
+                <view class="myOrder-goods-tips-right"></view>
+              </view>
+              <image class="cover" src="{{ goods.cover }}"></image>
+              <view class="goods-order-detail">
+                <view class="title">
+                  <text wx:if="{{ goods.is_seckill == 1 }}" class="goods-seckill">秒杀</text>
+                  <text wx:if="{{ item.is_presell_order == 1 }}" class="goods-presell">预售</text>
+                  <text wx:if="{{ item.is_group_buy_order == 1 || item.is_group_buy_order == 2 }}" class="goods-group">拼团</text>
+                  <text wx:if="{{ goods.is_benefit_goods }}" class="goods-gift">赠品</text>
+                  <text wx:if="{{ goods.is_vip_goods }}" class="goods-gift">会员价</text>
+                  {{ goods.goods_name }}
+                </view>
+                <view class="model-value-box">
+                  <text class="model-value" wx:if="{{goods.model_value}}">{{goods.model_value}}</text>
+                  <text class="model-num pull-right" wx:if="{{item.goods_type != 5}}">×{{ goods.num }}</text>
+                </view>
+                <view class="myOrder-goods-price">¥{{ item.is_gift_card_order == 1 ? goods.original_price : goods.price }}</view>
+              </view>
+            </view>
+          </block>
+          <view wx:else>
+            <view class="row-num-content"><text class="ico-moon icon-mine-row-number"></text>我的排号：{{ item.line_up_data.queue_num_name }}</view>
+            <view class="row-num-content"><text class="ico-moon icon-community-category"></text>排号类型：{{ item.line_up_data.line_up_type_data.name }}</view>
+            <view class="row-num-content"><text class="ico-moon icon-row-number-wait"></text>预计等待：{{ item.line_up_data.prepare_wait_time > 0 ? (item.line_up_data.prepare_wait_time > toStoreSetting.max_display_time ? '>' + toStoreSetting.max_display_time : item.line_up_data.prepare_wait_time) + '分钟' : '无需等待' }}</view>
+          </view>
+          <view class="order-content-list" wx:if="{{(item.goods_type == 8 || item.goods_type == 14 || item.goods_type == 15) && item.status != 0 }}">
+            <view>订单编号</view>
+            <view>{{ item.order_id }}</view>
+          </view>
+          <view class="goods-order-bottom">
+            <text class="myOrder-list-count" wx:if="{{item.goods_type != 1 && item.goods_type != 5 && item.goods_type != 6 && item.goods_type != 8 && item.goods_type != 9}}">共{{ item.goods_num }}件 </text>{{item.status == 0 ? '待付款' : '实付'}}：
+            <text class="total-price" style="{{'color:' + storeStyle.theme }}">¥{{ item.is_gift_card_order == 1 ? item.total_original_price : item.total_price }}</text>
+          </view>
+          <template wx:if="{{item.goods_type == 0 && item.pick_up_type != 6}}" is="goods" data="{{item, index, storeStyle}}"></template>
+          <template wx:if="{{item.goods_type == 40}}" is="dine" data="{{item, index, storeStyle}}"></template>
+          <template wx:if="{{item.goods_type == 1}}" is="appoinment" data="{{item, index, storeStyle}}"></template>
+          <template wx:if="{{item.goods_type == 2}}" is="takeaway" data="{{item, index, storeStyle}}"></template>
+          <template wx:if="{{item.goods_type == 5}}" is="transfer" data="{{item, index, storeStyle}}"></template>
+          <template wx:if="{{item.goods_type == 9}}" is="redeemVoucher" data="{{item, index, storeStyle}}"></template>
+          <template wx:if="{{item.goods_type == 10}}" is="industryAppointment" data="{{item, index, storeStyle}}"></template>
+          <template wx:if="{{item.goods_type == 14}}" is="timecard" data="{{item, index, storeStyle}}"></template>
+          <template wx:if="{{item.goods_type == 15}}" is="rechargeCard" data="{{item, index, storeStyle}}"></template>
+          <template wx:if="{{item.goods_type == 21}}" is="commnunityGroup" data="{{item, index, storeStyle}}"></template>
+          <template wx:if="{{item.goods_type == 12}}" is="giftCard" data="{{item, index, storeStyle}}"></template>
+          <template wx:if="{{item.goods_type == 0 && item.pick_up_type == 6}}" is="evoucher" data="{{item, index, storeStyle}}"></template>
+        </view>
+      </block>
+      <view wx:if="{{ !orderLists.length }}" class="noMoreNewDataTip">暂无数据</view>
+      <view wx:elif="{{ noMore }}" class="noMoreNewDataTip">已经没有新数据了</view>
+    </scroll-view>
+  </view>
+</view>
+</view>
+<!-- 核销码 -->
+<write-off-code showWriteOffCodeBox="{{ showWriteOffCodeBox }}" codeStatus="{{ codeStatus }}" codeImgUrl="{{codeImgUrl}}" codeNum="{{ codeNum }}" verifiTimeInterval="{{ verifiTimeInterval }}"></write-off-code>
+
+<view class="filter-goods-pick-mask" style="top: {{topNavPaddingTop + topNavHeight + 84}}px;" catchtap="hideGoodsPick" catchtouchmove="stopPropagation" wx:if="{{showGoodsPickBox}}">
+  <view class="filter-goods-pick-box" catchtap="stopPropagation">
+  <view catchtap="selectGoodsPick" data-type="0" class="{{selectGoodsPickIndex == '0' ? 'selected' : ''}}" style="color: {{selectGoodsPickIndex == '0' ? storeStyle.theme : ''}}">全部<text wx:if="{{selectGoodsPickIndex == '0'}}" class="pull-right ico-moon icon-gou"></text></view>
+    <view catchtap="selectGoodsPick" data-type="1" class="{{selectGoodsPickIndex == '1' ? 'selected' : ''}}" style="color: {{selectGoodsPickIndex == '1' ? storeStyle.theme : ''}}" wx:if="{{express == 1}}">快递<text wx:if="{{selectGoodsPickIndex === '1'}}" class="pull-right ico-moon icon-gou"></text></view>
+    <view catchtap="selectGoodsPick" data-type="2" class="{{selectGoodsPickIndex == '2' ? 'selected' : ''}}" style="color: {{selectGoodsPickIndex == '2' ? storeStyle.theme : ''}}" wx:if="{{intra_city == 1}}">同城配送<text wx:if="{{selectGoodsPickIndex === '2'}}" class="pull-right ico-moon icon-gou"></text></view>
+    <view catchtap="selectGoodsPick" data-type="3" class="{{selectGoodsPickIndex == '3' ? 'selected' : ''}}" style="color: {{selectGoodsPickIndex == '3' ? storeStyle.theme : ''}}" wx:if="{{is_self_delivery == 1}}">上门自提<text wx:if="{{selectGoodsPickIndex === '3'}}" class="pull-right ico-moon icon-gou"></text></view>
+  </view>
+</view>
+<modal hidden="{{hiddenmodalput}}" title="请输入本次核销次数" confirm-text="确认" cancel-text="取消" bindcancel="cancel" bindconfirm="confirm" catchtouchmove='true'>
+​    <input type='number' placeholder="请输入本次核销次数" maxlength='6' bindinput="addLabelInput" value="{{addLabelText}}" focus="{{labelFocus}}" cursor-spacing="80" style="background:#F5F5F5;height:76rpx;border-radius:10rpx;padding: 10rpx 10rpx"/>
+</modal>
+
+<!-- 电子卡券核销码 start -->
+<view class="qr-code-dialog column-center" wx:if="{{isShowQRCode}}">
+  <view class="qr-code column-center">
+    <text class="code-title">请向商家出示核销码</text>
+    <image class="code-img" src="{{codeImgUrl}}" mode="aspectFit"></image>
+    <view class="column-center">
+      <text class="code-num">{{codeNum}}</text>
+      <text class="code-copy" catchtap="copyCodeNum" data-code="{{codeNum}}">复制</text>
+    </view>
+  </view>
+  <view class="qr-code-close" catchtap="hideQRCode">
+    <text class="ico-moon icon-closes"></text>
+  </view>
+</view>
+<!-- 电子卡券核销码 end -->
+
+<!-- 电商 0 -->
+<template name="goods">
+<view class="goods-btn-box" wx:if="{{ item.status == 0 }}">
+  <text class="btn" catchtap="cancelOrder" data-index="{{index}}">取消订单</text>
+  <form bindsubmit="goToOrderDetail" report-submit="true" data-index="{{index}}">
+    <button formType="submit" style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}" class="btn myOrder-pay-directly">
+      <label>支付</label>
+    </button>
+  </form>
+</view>
+<view class="goods-btn-box" wx:elif="{{ item.status == 1 }}">
+  <text wx:if="{{ item.is_pay_on_delivery == 1 }}" class="btn" catchtap="applyDrawback" data-index="{{index}}">取消订单</text>
+</view>
+<view class="goods-btn-box" wx:elif="{{ item.status == 2 }}">
+  <text wx:if="{{ item.is_pay_on_delivery == 1 }}" class="btn" catchtap="applyDrawback" data-index="{{index}}">取消订单</text>
+  <text class="btn" catchtap="checkLogistics" data-index="{{index}}" wx:if="{{(item.pick_up_type != 3 && !item.wx_local_express_order) || item.ecommerce_info.dispatch_use_pick_up_type == '1'}}">{{item.pick_up_type == 1?'查看物流':'配送信息'}}</text>
+  <text style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}" class="btn" catchtap="sureReceipt" data-index="{{index}}">确认收货</text>
+</view>
+<view class="goods-btn-box" wx:elif="{{ item.status == 3 }}">
+  <text style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}" class="btn" catchtap="makeComment" data-index="{{index}}">去评价</text>
+</view>
+</template>
+<!-- 堂食 40 -->
+<template name="dine">
+<view class="goods-btn-box" wx:if="{{ item.status == 0 }}">
+  <form bindsubmit="goToOrderDetail" report-submit="true" data-index="{{index}}">
+    <button formType="submit" style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}" class="btn myOrder-pay-directly">
+      <label>支付</label>
+    </button>
+  </form>
+</view>
+<view class="goods-btn-box" wx:elif="{{ item.status == 1 }}">
+  <text wx:if="{{ item.is_pay_on_delivery == 1 }}" class="btn" catchtap="applyDrawback" data-index="{{index}}">取消订单</text>
+</view>
+<view class="goods-btn-box" wx:elif="{{ item.status == 2 }}">
+  <text wx:if="{{ item.is_pay_on_delivery == 1 }}" class="btn" catchtap="applyDrawback" data-index="{{index}}">取消订单</text>
+  <text class="btn" catchtap="checkLogistics" data-index="{{index}}" wx:if="{{(item.pick_up_type != 3 && !item.wx_local_express_order) || item.ecommerce_info.dispatch_use_pick_up_type == '1'}}">{{item.pick_up_type == 1?'查看物流':'配送信息'}}</text>
+  <text style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}" class="btn" catchtap="sureReceipt" data-index="{{index}}">确认收货</text>
+</view>
+<view class="goods-btn-box" wx:elif="{{ item.status == 3 }}">
+  <text style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}" class="btn" catchtap="makeComment" data-index="{{index}}">去评价</text>
+</view>
+</template>
+<!-- 预约 1 -->
+<template name="appoinment">
+<view class="goods-btn-box" wx:if="{{ item.status == 0 }}">
+  <text class="btn" catchtap="cancelOrder" data-index="{{index}}">取消订单</text>
+  <form bindsubmit="goToOrderDetail" report-submit="true" data-compid="{{ data.compId }}" data-index="{{index}}">
+    <button formType="submit" style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}" class="btn myOrder-pay-directly">
+      <label>支付</label>
+    </button>
+  </form>
+</view>
+<view class="goods-btn-box" wx:elif="{{ item.status == 1 }}">
+  <text class="btn" catchtap="getWriteOffCodeBox" data-index="{{index}}">核销码</text>
+  <text class="btn" catchtap="applyDrawback" data-index="{{index}}" wx:if="{{!item.timeDiff}}">申请退款</text>
+</view>
+<view class="goods-btn-box" wx:elif="{{ item.status == 2 }}">
+  <text class="btn" catchtap="applyDrawback" data-index="{{index}}" wx:if="{{!item.timeDiff}}">申请退款</text>
+  <text class="btn" catchtap="sureReceipt" data-index="{{index}}" style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}">确认消费</text>
+</view>
+<view class="goods-btn-box" wx:elif="{{ item.status == 3 }}">
+  <text class="btn" catchtap="makeComment" data-index="{{index}}" style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}">去评价</text>
+</view>
+</template>
+<!-- 外卖 2 -->
+<template name="takeaway">
+<view class="goods-btn-box" wx:if="{{ item.status == 0 }}">
+  <text class="btn" catchtap="cancelOrder" data-index="{{index}}">取消订单</text>
+  <text class="btn" catchtap="payOrder" data-index="{{index}}" style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}">去支付</text>
+</view>
+<view class="goods-btn-box" wx:if="{{ (item.status == 1 && !item.take_out_info.transport_shop_id) || item.status == 8}}">
+  <text class="btn" catchtap="toCancelOrder" data-index="{{index}}">取消订单</text>
+</view>
+<view class="goods-btn-box" wx:if="{{ item.status == 3 }}">
+  <text class="btn" catchtap="orderDelete" data-index="{{index}}">删除订单</text>
+  <text  class="btn" catchtap="makeComment" data-index="{{index}}" style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}">去评价</text>
+</view>
+<view class="goods-btn-box" wx:if="{{ item.status == 4 }}">
+  <text class="btn" catchtap="cancelRefund" data-index="{{index}}">撤销申请</text>
+</view>
+<view class="goods-btn-box" wx:if="{{ item.status == 5 }}">
+  <text class="btn" catchtap="receiveDrawback" data-index="{{index}}">收到退款</text>
+</view>
+<view class="goods-btn-box" wx:if="{{ item.status == 6 || item.status == 7}}">
+  <text class="btn myOrder-apply-drawback" data-index="{{index}}">删除订单</text>
+</view>
+</template>
+<!-- 当面付 5 -->
+<template name="transfer">
+<view class="goods-btn-box" wx:if="{{ item.status == 0 }}">
+  <text class="btn" catchtap="cancelOrder" data-index="{{index}}">取消订单</text>
+  <form bindsubmit="goToOrderDetail" report-submit="true" data-index="{{index}}">
+    <button class="btn myOrder-pay-directly" formType="submit" style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}">
+      <label>支付</label>
+    </button>
+  </form>
+</view>
+<view class="goods-btn-box" wx:elif="{{ item.status == 1 }}">
+  <text class="btn" catchtap="getWriteOffCodeBox" data-index="{{index}}">核销码</text>
+  <text class="btn" catchtap="applyDrawback" data-index="{{index}}" wx:if="{{!item.timeDiff}}">申请退款</text>
+</view>
+<view class="goods-btn-box" wx:elif="{{ item.status == 2 }}">
+  <text class="btn" catchtap="applyDrawback" data-index="{{index}}" wx:if="{{!item.timeDiff}}">申请退款</text>
+  <text class="btn" catchtap="sureReceipt" data-index="{{index}}" style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}">确认消费</text>
+</view>
+<view class="goods-btn-box" wx:elif="{{ item.status == 3 }}">
+  <text  class="btn" catchtap="makeComment" data-index="{{index}}" style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}">去评价</text>
+</view>
+</template>
+<!-- 兑换券 9 -->
+<template name="redeemVoucher">
+<view class="goods-btn-box" wx:if="{{ item.status == 0 }}">
+  <text class="btn" catchtap="cancelOrder" data-index="{{index}}">取消订单</text>
+  <form bindsubmit="goToOrderDetail" report-submit="true" data-index="{{index}}">
+    <button class="btn myOrder-pay-directly" formType="submit" style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}" >
+      <label>支付</label>
+    </button>
+  </form>
+</view>
+<view class="goods-btn-box" wx:if="{{ item.status == 1 && item.coupon_type == 6 && item.un_verify_times != 0}}">
+  <text class="btn" catchtap="goToUseStamps" data-index="{{index}}">核销码</text>
+</view>
+</template>
+<!-- 行业预约 -->
+<template name="industryAppointment">
+<view class="goods-btn-box" wx:if="{{item.status == 0}}">
+  <text class="btn" catchtap="goToOrderDetail" data-index="{{index}}">支付</text>
+</view>
+<view class="goods-btn-box" wx:if="{{item.status == 1 || item.status == 2}}">
+  <text class="btn" catchtap="toSeeQrcode" data-index="{{index}}">查看券码</text>
+</view>
+<view class="goods-btn-box" wx:elif="{{ item.status == 3 }}">
+  <text class="btn" catchtap="makeComment" data-index="{{index}}">评分</text>
+</view>
+</template>
+<!-- 服务卡 -->
+<template name="timecard">
+<view class="goods-btn-box" wx:if="{{item.status == 0}}">
+  <text class="btn" catchtap="payOrder" data-index="{{index}}" price="{{item.times_card_info.price}}">支付</text>
+</view>
+<view class="goods-btn-box" wx:if="{{(item.status == 1 || item.status == 2) && item.times_card_info.is_refund == 2}}">
+  <text class="btn" catchtap="applyDrawback" data-index="{{index}}">退款</text>
+</view>
+</template>
+<template name="rechargeCard">
+<view class="goods-btn-box" wx:if="{{item.status == 0}}">
+  <text class="btn" catchtap="payOrder" data-index="{{index}}" price="{{item.times_card_info.price}}">支付</text>
+</view>
+<view class="goods-btn-box" wx:if="{{(item.status == 1 || item.status == 2) && item.goods_info[0].is_refund_goods}}">
+  <text class="btn" catchtap="applyDrawback" data-index="{{index}}">退款</text>
+</view>
+</template>
+<!-- 社区团购 21 -->
+<template name="commnunityGroup">
+<view class="goods-btn-box" wx:if="{{ item.status == 0 }}">
+  <text class="btn" catchtap="cancelOrder" data-index="{{index}}">取消订单</text>
+  <form bindsubmit="goToOrderDetail" report-submit="true" data-index="{{index}}">
+    <button class="btn myOrder-pay-directly" formType="submit" style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}" >
+      <label>支付</label>
+    </button>
+  </form>
+</view>
+<view class="goods-btn-box" wx:elif="{{ item.status == 3 }}">
+  <text class="btn" catchtap="makeComment" data-index="{{index}}" style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}">去评价</text>
+</view>
+<view class="goods-btn-box" wx:elif="{{ item.status == 10 }}">
+  <text class="btn" catchtap="getWriteOffCodeBox" data-index="{{index}}">核销码</text>
+  <text  class="btn" catchtap="sureReceipt" data-index="{{index}}" style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}">确认收货</text>
+</view>
+</template>
+<!-- 礼品卡 12 -->
+<template name="giftCard">
+<view class="goods-btn-box" wx:if="{{ item.status == 0 }}">
+  <form bindsubmit="goToOrderDetail" report-submit="true" data-index="{{index}}">
+    <button formType="submit" style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}" class="btn myOrder-pay-directly">
+      <label>支付</label>
+    </button>
+  </form>
+</view>
+</template>
+<!-- 电子卡券 -->
+<template name="evoucher">
+  <view class="goods-btn-box" wx:if="{{ item.status == 0 }}">
+    <text class="btn" catchtap="cancelOrder" data-index="{{index}}">取消订单</text>
+    <form bindsubmit="goToOrderDetail" report-submit="true" data-index="{{index}}">
+      <button formType="submit" style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}" class="btn myOrder-pay-directly">
+        <label>支付</label>
+      </button>
+    </form>
+  </view>
+  <view class="goods-btn-box" wx:elif="{{ item.status == 1 }}">
+    <text class="btn" catchtap="getWriteOffCodeBox" data-index="{{index}}" data-is-evoucher="1">核销码</text>
+    <text wx:if="{{ item.is_pay_on_delivery == 1 }}" class="btn" catchtap="applyDrawback" data-index="{{index}}">取消订单</text>
+  </view>
+  <view class="goods-btn-box" wx:elif="{{ item.status == 2 }}">
+    <text wx:if="{{ item.is_pay_on_delivery == 1 }}" class="btn" catchtap="applyDrawback" data-index="{{index}}">取消订单</text>
+  </view>
+  <view class="goods-btn-box" wx:elif="{{ item.status == 3 }}">
+    <text style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}" class="btn" catchtap="makeComment" data-index="{{index}}">去评价</text>
+  </view>
+</template>

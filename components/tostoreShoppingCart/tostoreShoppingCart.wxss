@@ -1,0 +1,252 @@
+@charset 'utf-8';
+@import "/utils/font_icon.wxss";
+.tostorePay-component{
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 21;
+  background-color: rgba(0,0,0,.7);
+}
+.tostorePay-component .pay-goods-title {
+  font-size: 32.76rpx;
+  padding-right: 60rpx;
+  line-height: 46.8rpx;
+  text-align: center;
+}
+.tostorePay-component .pay-checked-text{
+  font-size: 32.76rpx;
+  line-height: 46.8rpx;
+}
+.tostorePay-component .dialog-block-item {
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  border: none;
+}
+.tostorePay-component .quantity .plus {
+  border: none;
+}
+.tostorePay-component .page-bottom-dialog {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding-bottom: 45px;
+  background: #fff;
+}
+.tostorePay-component .quantity .minus:before{
+  background-color: #dedede;
+}
+.tostorePay-component .pay-goods-price {
+  font-size: 32.76rpx;
+  line-height: 46.8rpx;
+  padding: 0 60rpx;
+}
+.tostorePay-component .quantity .minus{
+  border-color: #dedede;
+}
+.tostorePay-component .pills-list .subModel {
+  min-width: 42px;
+  float: left;
+  position: relative;
+  display: block;
+  color: #707070;
+  padding: 3px 12px;
+  border: 1px solid #dedede;
+  border-radius: 15px;
+  margin: 2px 10px;
+  background-color: #f5f5f5;
+}
+.tostorePay-component .pay-goods-price .pay-current-price {
+  color: #ff7223;
+  margin-top: 4px;
+}
+.toStore-bottom-nav {
+  display: block;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  line-height: 110rpx;
+  background-color: #fff;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.bottom-nav-detail {
+  display: inline-block;
+  box-sizing: border-box;
+  width: calc(100% - 200rpx);
+  padding: 0 35rpx;
+  background-color: #3f3f3f;
+  color: #fff;
+}
+.bottom-nav-detail .icon-shoppingcart {
+  float:left;
+  width:40px;
+  font-size:28px;
+  vertical-align: middle;
+}
+.bottom-nav-detail .icon-shoppingcart .toStore-cart-tip {
+  position: absolute;
+  left: 66rpx;
+  top: 13rpx;
+  width: 38rpx;
+  height: 38rpx;
+  font-size: 28rpx;
+  line-height: 33rpx;
+  border-radius: 50%;
+  background-color: #fa332f;
+  text-align: center;
+}
+.bottom-nav-ready {
+  display: inline-block;
+  width: 200rpx;
+  background-color: #ff7100;
+  color: #fff;
+  text-align: center;
+}
+.bottom-nav-ready.disabled {
+  background-color: #a8a8a8;
+  color: #fff;
+}
+.tostorePay-component .pay-goods-models {
+  margin: -10px 0;
+  max-height: 300px;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+.tostorePay-component .pay-goods-models .pills-list {
+  display: inline-block;
+  vertical-align: middle;
+}
+.tostorePay-component .pay-goods-models .model-title{
+  display: block;
+  vertical-align:middle;
+  margin-bottom: 5px;
+}
+.tostorePay-component .pay-goods-models .models-item{
+  margin: 0;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+.tostorePay-component .pay-goods-models .models-item:last-child{
+  border-bottom: none;
+}
+.tostorePay-component .pay-goods-models .models-item {
+  margin: 0;
+  padding: 2px 10px;
+  border-bottom: none;
+}
+.tostorePay-component .pull-left {
+  float: left; 
+}
+.tostorePay-component .pull-right {
+  float: right;
+}
+.tostorePay-component .clearfix:after {
+  content: ".";
+  display: block;
+  visibility: hidden;
+  clear: both;
+  height: 0;
+  font-size: 0;
+}
+.tostorePay-component .pills-list .subModel.select {
+  position: relative;
+  color: #fff;
+  background-color: #ff7100;
+  border-color: #ff7100;
+}
+.tostorePay-component .pills-list .subModel.select:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+}
+.tostorePay-component .pay-goods-stock {
+  margin-right: 15px;
+}
+.tostorePay-component .minus:before,
+.tostorePay-component .plus:before,
+.tostorePay-component .plus:after {
+  position:absolute;
+  width:8px;
+  height:2px;
+  top:0;
+  left:0;
+  right:0;
+  margin:auto;
+  background-color:#dedede;
+  bottom:0;
+  content:'';
+}
+.tostorePay-component .plus:after {
+  width:2px;
+  height:8px;
+}
+.tostorePay-component .plus:before,
+.tostorePay-component .plus:after {
+  background-color:#fff;
+}
+.tostorePay-component .minus.disabled:before,
+.tostorePay-component .plus.disabled:before,
+.tostorePay-component .plus.disabled:after {
+  background-color: #cacaca;
+}
+.tostorePay-component .page-dialog-close{
+  position: absolute;
+  display: block;
+  width: 40rpx;
+  height: 40rpx;
+  border: 1px solid #d2d2d2;
+  color: #d2d2d2;
+  text-align: center;
+  line-height: 36rpx;
+  border-radius: 50%;
+  font-size: 37.44rpx;
+  top: 23.4rpx;
+  right: 23.4rpx;
+  z-index: 10;
+}
+.tostorePay-component .minus,
+.tostorePay-component .plus {
+  position:relative;
+  display:inline-block;
+  font-size:16px;
+  color:#666;
+  outline:0!important;
+  border:1px solid #999;
+  text-indent:-9999px;
+  overflow:hidden;
+  vertical-align:middle;
+  width:20px;
+  height:20px;
+  line-height:20px;
+  font-weight:normal;
+  background-color:#ff7100;
+  border-color:#ff7100;
+  border-radius:50%;
+}
+.tostorePay-component .minus {
+  background-color:#fff;
+  border-color:#dedede;
+}
+.tostorePay-component .quantity {
+  display: inline-block;
+  position: relative;
+}
+.tostorePay-component .quantity .response-area {
+  width: 80rpx;
+  height: 89rpx;
+  top: -7px;
+  position: absolute;
+}
+.tostorePay-component .quantity .response-area-minus {
+  left: -5px;
+}
+.tostorePay-component .quantity .response-area-plus {
+  right: -5px;
+}

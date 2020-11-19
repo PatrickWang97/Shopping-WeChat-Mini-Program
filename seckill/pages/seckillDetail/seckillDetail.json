@@ -1,0 +1,14 @@
+{
+  "navigationBarTitleText":"秒杀详情",
+  "navigationBarTextStyle":"black",
+  "navigationBarBackgroundColor": "#ffffff",
+  "usingComponents":{
+    "component-share": "/components/pageQRCode/pageQRCode",
+    "component-reward-point": "/components/rewardPointModal/rewardPointModal",
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+    "component-behavior-track": "/components/behaviorTrack/behaviorTrack",
+    "component-sinkingModal": "/components/sinkingModal/sinkingModal",
+    "component-share-timeline": "/components/shareTimeline/shareTimeline"
+  }
+}

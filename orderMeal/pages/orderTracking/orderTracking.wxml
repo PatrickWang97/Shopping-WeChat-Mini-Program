@@ -1,0 +1,7 @@
+<component-behavior-track></component-behavior-track>
+<view class='order-block' wx:for="{{orderFlow}}" wx:key="index">
+  <label class='order-point'></label><view class='order-content'>
+    <text class='order-message'>{{item.content.msg}}</text><text class='order-time'>{{item.op_time}}</text>
+    <view ></view>
+  </view><text class='order-line'></text>
+</view>

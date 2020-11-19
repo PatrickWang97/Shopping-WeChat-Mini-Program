@@ -1,0 +1,67 @@
+<!--communityGroup/pages/communityShoppingCart/communityShoppingCart.wxml-->
+<view class="cart-head" wx:if="{{goodsList.length || unableGoodsList.length || hasData}}">
+  <image class="cart-avatar" src="{{leaderInfo.logo}}"></image>
+  <view class='cart-detail-box'>
+    <view class="cart-name">{{leaderInfo.nick_name?(leaderInfo.nick_name + '-') : '暂无团长'}}{{leaderInfo.housing_estate}}</view>
+    <view class="cart-address">自提地址：{{leaderInfo.address_detail || "暂未设置"}}</view>
+  </view>
+</view>
+<!-- 商品列表 -->
+<view class="cart-goodsList {{ (goodsList.length && !unableGoodsList.length) ? 'height' : '' }}">
+  <view class="cart-goodList ">
+  <view class="cart-good" wx:for="{{goodsList}}" wx:key="index">
+    <label class="cart-check-box {{ item.selected ? 'checked ico-moon icon-success-tip' : '' }}" bindtap="selected" data-index="{{index}}"></label>
+    <view class="cart-good-conten">
+      <view class="cart-good-cover">
+        <image src="{{item.cover}}"></image>
+      </view>
+      <view class="good-content-box">
+        <view class="good-title">{{item.title}}</view>      
+          <view class="good-detail"  wx:for="{{item.model_value}}" wx:for-item="items" wx:key="index">{{items}}{{index == item.model_value.length - 1 ? '' : '/'}}</view>
+        <view class="cart-price-box">
+          <text class="real-price">¥{{item.price}}</text>
+          <view class="good-number-box">
+            <view class="goods-num-sub" bindtap="subGoodsNum" data-goods-id="{{item.goods_id}} " data-model-id="{{item.model_id}}" data-goods-num="{{item.num}}" data-group-id="{{item.form_data.dis_group_id}}" data-leader-token="{{item.form_data.leader_token}}" data-index="{{index}}"
+              data-type="sub">-</view>
+            <input class="goods-num-box" value="{{item.num}}" bindinput="inputGoodsCount" data-goods-id="{{item.goods_id}} " data-model-id="{{item.model_id}}" data-goods-num="{{item.num}}" data-group-id="{{item.form_data.dis_group_id}}" data-leader-token="{{item.form_data.leader_token}}"
+              data-index="{{index}}"></input>
+            <view class="goods-num-add" bindtap="addGoodsNum" data-goods-id="{{item.goods_id}} " data-model-id="{{item.model_id}}" data-goods-num="{{item.num}}" data-group-id="{{item.form_data.dis_group_id}}" data-leader-token="{{item.form_data.leader_token}}" data-index="{{index}}"
+              data-type="add">+</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="cart-good-line " wx:if="{{ goodsList.length > 1 && index + 1 < goodsList.length}}"></view>
+  </view>
+</view>
+</view>
+
+<!-- 失效商品 -->
+<view class="cart-failure-goodsList " wx:if="{{unableGoodsList.length> 0}}">
+  <view class="cart-failure-title">失效商品</view>
+  <view class="cart-failure-good-line"></view>
+  <view class="cart-failure-good"></view>
+</view>
+
+<!-- 结算 -->
+<view class="cart-calculator" wx:if="{{goodsList.length || unableGoodsList.length || hasData}}">
+  <view class="cart-checkAll">
+    <label class="cart-check-box {{ selectAll ? 'checked ico-moon icon-success-tip' : '' }}" bindtap="selectAll"></label>
+    全选
+  </view>
+  <view class="cart-goods-total-price">合计 ：
+    <text class="price-count">¥{{priceToPay}}</text>
+    <view class="cart-cal-button" bindtap="goToPay">
+      <view class="cal-button">去结算({{goodsCountToPay}})</view>
+    </view>
+  </view>
+</view>
+
+<!-- 购物车为空 -->
+<block wx:if="{{!goodsList.length && !unableGoodsList.length && !hasData}}">
+  <view class="shoppingCart-null">
+    <image src="http://cdn.jisuapp.cn/static/webapp/images/xcx-goods/shopping-cart-null.png"></image>
+    <view class="shoppingCart-null-label">购物车空空哒</view>
+    <view class="go-home-page" bindtap="goToHomepage">去逛逛</view>
+  </view>
+</block>

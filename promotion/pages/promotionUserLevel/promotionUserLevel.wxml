@@ -1,0 +1,18 @@
+<view class="top-section"><image src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/promotion/user-level-bg.png"></image></view>
+<view class="level-content">
+  <block wx:for="{{ userLevels }}" wx:key="index">
+    <view class="level-menu" wx:if="{{ index >= currentIndex }}">
+      <view class="level-image-box">
+        <text>V</text>
+        <text>{{ index + 1 }}</text>
+      </view>
+      <view class="level-detail">
+        <view class="level-name">{{ item.level_name }}</view>
+        <view class="level-rules">累计生效佣金达到<text>{{ item.commission_from }}</text>元后，额外增加商品佣金<text>{{ item.extra_percent }}倍</text></view>
+      </view>
+      <view wx:if="{{ index == currentIndex }}" class="now-level">当前</view>
+    </view>
+  </block>
+</view>
+
+

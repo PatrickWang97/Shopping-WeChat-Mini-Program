@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "商品详情",
+  "navigationBarBackgroundColor": "#FFFFFF",
+  "navigationBarTextStyle": "black",
+  "usingComponents": {
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+    "component-share": "/components/pageQRCode/pageQRCode",
+    "component-behavior-track": "/components/behaviorTrack/behaviorTrack"
+  }
+}

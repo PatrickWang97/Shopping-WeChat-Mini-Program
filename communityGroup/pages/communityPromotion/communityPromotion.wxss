@@ -1,0 +1,204 @@
+page {
+  font-size: 28rpx;
+  background-color:rgb(243, 243, 243);
+  overflow: hidden;
+}
+.promotion-tab {
+  -webkit-display: flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  height: 88rpx;
+  margin-bottom: 16rpx;
+  background-color: #fff;
+  text-align: center;
+  line-height: 88rpx;
+  font-size: 28rpx;
+  font-weight:bold;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index:10;
+}
+.promotion-tab .tab-item {
+  -webkit-flex: auto;
+  flex: auto;
+}
+.promotion-tab .tab-item view {
+  display: inline-block;
+}
+.promotion-tab .tab-active view {
+  color: #ff7100;
+  border-bottom: 2rpx solid #ff7100;
+}
+.page-content {
+  padding-top: 88rpx;
+  padding-bottom: 144rpx;
+}
+.top-section {
+  margin: 0 auto;
+  text-align: center;
+  color: #666;
+  background-color: #ffffff;
+  width: 702rpx;
+  margin-top: 20rpx;
+  border-radius:12rpx;
+}
+.top-section .info-section {
+  padding: 30rpx;
+}
+.top-section .info-section .leader-profile {
+  display: flex;
+}
+.info-section  .leader-profile  image {
+  width: 114rpx;
+  height: 114rpx;
+  border-radius: 50%;
+  margin-right: 24rpx;
+  border:6rpx solid rgba(255,113,0,0.15);
+}
+.info-section  .leader-profile .leader-profile-name {
+  text-align: left;
+}
+.info-section .leader-profile .leader-profile-name>view:first-child {
+  padding-top: 10rpx;
+  color: #303445;
+  font-weight:bold;
+  font-size:30rpx;
+}
+.info-section  .leader-profile .leader-profile-name> view:last-child {
+  color:#666666;
+  padding-top:18rpx;
+  font-size:28rpx;
+}
+.top-section .info-section  .leader-address {
+  text-align: left;
+  display: -webkit-flex;
+  display: flex;
+  padding-top: 30rpx;
+  align-items: flex-start;
+  font-size:26rpx;
+  line-height:28rpx;
+}
+.top-section .info-section  .leader-address:last-child {
+  padding-top: 28rpx;
+}
+.info-section  .leader-address .address-name{
+  color: #999999;
+  flex:0 0 170rpx;
+  align-self:flex-start;
+}
+.info-section  .leader-address .address-name label {
+  width:130rpx;
+  word-break:break-all;
+  padding-left:10rpx;
+}
+.leader-address icon {
+  font-size: 26rpx;
+}
+.customer-num {
+  margin-top: 36rpx;
+  font-size: 100rpx;
+  color: #ff7100;
+}
+.bottom-section {
+  width:702rpx;
+  margin:0 auto;
+  margin-top: 26rpx;
+  text-align: center;
+  border: 1px solid #f3f3f3;
+  border-radius:12rpx;
+  background-color:#ffffff;
+  position: relative;
+  z-index: 9;
+}
+.bottom-section image {
+  margin: 70rpx 0 46rpx  0;
+  width: 384rpx;
+  height: 384rpx !important;
+  position:relative;
+  z-index:9;
+}
+.bottom-section image.no-group-code {
+  width: 199rpx;
+  height: 210rpx !important;
+}
+.bottom-title {
+  height: 14rpx;
+  background: #ff7100;
+  border-top-left-radius:12rpx;
+  border-top-right-radius:12rpx;
+}
+.my-promotion-tips {
+  width:500rpx;
+  margin: 0 auto;
+  font-size: 28rpx;
+  color: #333333;
+  padding-bottom:60rpx;
+}
+.my-promotion-tips text {
+  color: #FF7100;
+}
+.my-promotion-tips-grey {
+  color: #666666;
+  padding-bottom:60rpx;
+  font-size: 28rpx;
+}
+.group-code-text {
+  font-size:30rpx;
+  color: #333333;
+  font-weight: bold;
+  padding-top: 60px;
+}
+.bottom-button {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ffffff;
+  height: 124rpx;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index:10;
+}
+.promotion--dash-btn, .promotion-btn {
+  width: 345rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  font-size: 32rpx;
+  text-align: center;
+  border-radius:6rpx;
+}
+.promotion--dash-btn {
+  color: #333333;
+  border:1px solid rgba(235,235,235,1)
+}
+.promotion-btn {
+  color: #fff;
+  background-color: #ff7100;
+}
+.bottom-button .all-btn {
+  width: 710rpx;
+}
+.bottom-section canvas {
+  position: absolute;
+  visibility: hidden;
+  height: 200px;
+  width: 200px;
+  z-index:0;
+  left: 10000px;
+  top: 10000px;
+}
+.icon-comRoom, icon-goods-location {
+  position:relative;
+  top:4rpx;
+}
+#shareCanvas {
+  width: 750rpx;
+  height: 804rpx;
+  position: absolute;
+  left: -9999999999999rpx;
+  top: 0;
+}

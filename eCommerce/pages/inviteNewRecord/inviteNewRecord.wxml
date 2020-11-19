@@ -1,0 +1,35 @@
+<!-- 奖励记录 -->
+<view class="page-wrap">
+  <view class="page-mask" hidden="{{!showFixBread}}" bindtap="showFixBreadFn"></view>
+  <view class="page-head {{showFixBread ? 'fix':''}}">
+    <view class="bread" bindtap="showFixBreadFn">
+      <text class="bread-title">{{name}}</text>
+      <text class="ico-moon icon-{{showFixBread?'up':'down'}}arrow bread-arrow"></text>
+    </view>
+    <view class="bread-crumbs" hidden="{{!showFixBread}}">
+      <label class="crumbs-item {{listType == '0' ? 'active' : ''}}" data-name="全部" data-type="0" bindtap="checkListByType">全部</label>
+      <label class="crumbs-item {{listType == '1' ? 'active' : ''}}" data-name="一级拉新" data-type="1" bindtap="checkListByType" wx:if="{{activity.new}}">一级拉新</label>
+      <label class="crumbs-item {{listType == '2' ? 'active' : ''}}" data-name="次级拉新" data-type="2" bindtap="checkListByType" wx:if="{{activity.second}}">次级拉新</label>
+      <label class="crumbs-item {{listType == '3' ? 'active' : ''}}" data-name="累计拉新" data-type="3" bindtap="checkListByType" wx:if="{{activity.add_up}}">累计拉新</label>
+      <label class="crumbs-item {{listType == '4' ? 'active' : ''}}" data-name="新用户复购" data-type="4" bindtap="checkListByType" wx:if="{{activity.consume}}">新用户复购</label>
+    </view>
+  </view>
+  <view class="record-wrap" style="margin-top:{{showFixBread ? '162':'0'}}rpx;" wx:if="{{rewardsList.length}}">
+    <view class="record-detail" wx:for="{{rewardsList}}" wx:key="index">
+      <view class="record-detail-top">
+        <text class="record-detail-title">{{item.reason}}</text>  
+        <view class="record-detail-name" wx:if="{{item.reward_type == 6}}">集集乐x{{item.reward_num}}</view>
+        <view class="record-detail-name" wx:elif="{{item.reward_type == 7}}">大转盘x{{item.reward_num}}</view>
+        <view class="record-detail-name" wx:elif="{{item.reward_type == 8}}">刮刮乐x{{item.reward_num}}</view>
+        <view class="record-detail-name" wx:elif="{{item.reward_type == 9}}">砸金蛋x{{item.reward_num}}</view>
+        <view class="record-detail-name" wx:else>{{item.get_reward}}</view>
+      </view>
+      <view class="record-detail-timestamp">{{item.add_time}}</view>
+      <label class="record-badge">{{rewards[item.reward_type]}}</label>
+    </view>
+  </view>
+  <view class="user-list-none" wx:else>
+    <image src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-inviteNew/no-activity.png"></image>
+    <view class="user-list-none-tip"> 暂无数据 </view>
+  </view>
+</view>

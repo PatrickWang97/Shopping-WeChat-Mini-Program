@@ -1,0 +1,30 @@
+<component-behavior-track></component-behavior-track>
+<view class="page">
+  <view class="facility-box">
+    <view class="facility-head">营业时间</view>
+    <view class="facility-content">
+      <view class="facility-item"><view class="facility-icon ico-moon icon-about-start"></view> {{franchiseeInfo.business_time_str}}</view>
+    </view>
+  </view>
+  <view class="facility-box" wx:if="{{franchiseeService.length > 0}}">
+    <view class="facility-head">功能服务</view>
+    <view class="facility-content">
+      <block wx:for="{{franchiseeService}}" wx:key="index">
+        <view wx:if="{{item == 1}}" class="facility-item"><view class="facility-icon ico-moon icon-franchisee-wifi"></view>
+          <text wx:if="{{franchiseeInfo.fields_data.shop_facility.wifi_account}}" space="emsp">WIFI账号：{{franchiseeInfo.fields_data.shop_facility.wifi_account}}  密码：{{franchiseeInfo.fields_data.shop_facility.wifi_password}}</text>
+          <text wx:else>WIFI</text>
+        </view>
+        <view wx:if="{{item == 2}}" class="facility-item"><view class="facility-icon ico-moon icon-pack"></view><text>停车位</text></view>
+      </block>
+    </view>
+  </view>
+  <view class="facility-box" wx:if="{{franchiseePay.length > 0}}">
+    <view class="facility-head">支付方式</view>
+    <view class="facility-content facility-pay">
+      <block wx:for="{{franchiseePay}}" wx:key="index">
+        <view wx:if="{{item == 3}}" class="facility-item"><view class="facility-weixin facility-pay-icon ico-moon icon-weixin"></view><text>微信</text></view>
+        <view wx:if="{{item == 4}}" class="facility-item"><view class="facility-alipay facility-pay-icon ico-moon icon-alipay"></view><text>支付宝</text></view>
+      </block>
+    </view>
+  </view>
+</view>

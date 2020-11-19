@@ -1,0 +1,144 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-behavior-track></component-behavior-track>
+<view class="preview-goods-order-wrap" id="preview-goods-order">
+  <view class="preview-goods-order-section preview-address" hidden="{{ is_self_delivery == 1 }}">
+    <block wx:if="{{ selectAddress.id && selectAddress.is_distance != 0}}">
+      <view style="position:relative;margin-left:56rpx;" bindtap="goToMyAddress" data-address-id="{{ selectAddress.id }}">
+        <view class="ico-moon icon-fesadress"></view>
+        <view style="font-size:30rpx;margin-bottom:18rpx;padding-right:40rpx;word-break:break-all;">{{ selectAddress.address_info.province.text + selectAddress.address_info.city.text + selectAddress.address_info.district.text + selectAddress.address_info.detailAddress }}</view>
+        <view style="margin-bottom:30rpx;font-size:26rpx;">{{ selectAddress.address_info.name }} {{ selectAddress.address_info.contact }}</view>
+        <view class="preview-address-options" style='top:20rpx;color:#D2D2D2;'>
+          <view class="pull-right ico-moon icon-rightarrow"></view>
+        </view>
+      </view>
+    </block>
+    <block wx:else>
+      <view style='position:relative;margin-left:50rpx;'>
+        <view class="ico-moon icon-fesadress" style='top:6rpx;'></view>
+        <view class="pull-right ico-moon icon-rightarrow" style='color:#D2D2D2;'></view>
+        <view bindtap="goToMyAddress">新增地址</view>
+      </view>
+    </block>
+    <block wx:if="{{ selectAddress.id && selectAddress.is_distance != 0}}">
+      <view style="position:relative;padding-left:56rpx;padding-top:30rpx;border-top:1px solid #f2f2f2" bindtap="" data-address-id="{{ selectAddress.id }}">
+        <view class="ico-moon icon-business-time"></view>
+        <!-- <view style="font-size:30rpx;">立即送出</view> -->
+        <view>
+          <picker style="font-size:30rpx;" bindchange="timeChange" value="{{ index }}" range="{{ arriveTimeList }}" >
+            <text style="font-size:26rpx;color:#FF7100;">大约{{arriveTime}}送达</text>
+            <view class="preview-address-options" style='top:30rpx;color:#D2D2D2;'>
+              <view class="pull-right ico-moon icon-rightarrow"></view>
+            </view>
+          </picker>
+        </view>
+        <!-- <view wx:else>
+          <text style="font-size:26rpx;color:#FF7100;">大约{{arriveTime}}送达</text>
+        </view> -->
+      </view>
+    </block>
+  </view>
+  <wxs module="price">
+    var price = function(a, b){
+      var c = (a * b).toFixed(2);
+      return c
+    }
+    module.exports.price = price;
+  </wxs>
+  <view class='preview-goods-order-content'>
+    <view class="preview-goods-order-list preview-goods-order-section" style='margin-bottom:0px;'>
+      <view class="preview-shop preview-goods-order-item" bindtap="turnBackPage">
+        <view class='preview-shop-img fl'>
+          <image src="{{takeoutShopImg}}"></image>
+        </view>
+        <view class="preview-shop-name">{{takeoutShopName}}</view>
+        <view class="pull-right ico-moon icon-rightarrow"></view>
+      </view>
+      <block wx:for="{{ goodsList }}" wx:for-item="goods" wx:for-index="goodsIndex" wx:key="index">
+        <view class="preview-goods-order-item">
+          <view class="preview-goods-img">
+            <image src="{{goods.cover}}"></image>
+          </view>
+          <view class="preview-goods-detal">
+            <view class="preview-goods-title">{{goods.title}}</view>
+            <view class="preview-goods-model" wx:if="{{goods.model_value_str.length}}">{{goods.model_value_str}}</view>
+            <view class="preview-goods-num">x{{goods.num }}</view>
+          </view>
+          <view class="preview-goods-price">
+            <text>¥{{price.price(goods.price,goods.num)}}</text>
+          </view>
+        </view>
+      </block>
+      <view class="preview-goods-order-section" style="margin:0 0 1px;padding:30rpx 0;font-size:28rpx;padding-bottom:0;" wx:if="{{box_fee}}">
+        <text class="preview-goods-Change">包装</text>
+        <text style='font-size:24rpx;color:#333333;'>餐盒费</text>
+        <text class="pull-right"><text style="font-size: 24rpx;margin-right: 3px;">¥</text> {{ box_fee }}</text>
+      </view>
+      <view class="preview-goods-order-section" style="margin:0 0 1px;padding:30rpx 0;font-size:28rpx;border-bottom: 1px solid #f3f3f3;" wx:if="{{ selectAddress.id && selectAddress.is_distance != 0}}">
+        <text class="preview-goods-Change">配送费</text>
+        <text class="pull-right"><text style="font-size: 24rpx;margin-right: 3px;">¥</text>{{ express_fee }}</text></view>
+    </view>
+    <view class="preview-goods-order-section" wx:if="{{ discountList.length }}" style='margin-bottom:0px;padding:0 28rpx;line-height:84rpx;'>
+      <view style='border-bottom:1px solid #f3f3f3;'>
+        <view class="preview-section-title" style="font-size:28rpx;display:inline-block;margin-bottom:0;">优惠方式</view>
+        <picker class='discountPicker' bindchange="discountChange" value="{{ selectDiscountIndex }}" range="{{ discountList }}" range-key="title" style="margin-top:20rpx;">
+          <view class="select-discount-title"> （ {{ selectDiscountInfo.name }} ）
+          <text class="pull-right ico-moon icon-rightarrow"></text>
+          <text class="pull-right" style="font-size:24rpx;color:#ff7100;margin-right:14rpx;" hidden="{{ selectDiscountIndex == 0 }}">-<text style="font-size: 22rpx;margin: 0 3px;">¥</text>{{ discount_cut_price }}</text>
+          </view>
+        </picker>
+      </view>
+    </view>
+    <view class="preview-goods-order-section" wx:if="{{ leagueBenefitList.length }}" style='margin-bottom:0px;padding:0 28rpx;line-height:84rpx;'>
+      <view style='border-bottom:1px solid #f3f3f3;'>
+        <view class="preview-section-title" style="font-size:28rpx;display:inline-block;margin-bottom:0;">联盟优惠</view>
+        <picker class='discountPicker' bindchange="leagueDiscountChange" value="{{ selectedLeagueBenefitIndex }}" range="{{ leagueBenefitList }}" range-key="title" style="margin-top:20rpx;">
+          <view class="select-discount-title"> （ {{ selectedLeagueBenefitInfo.name }} ）
+          <text class="pull-right ico-moon icon-rightarrow"></text>
+          <text class="pull-right" style="font-size:24rpx;color:#ff7100;margin-right:14rpx;" hidden="{{ selectedLeagueBenefitIndex == 0 }}">-<text style="font-size: 22rpx;margin: 0 3px;">¥</text>{{ leagueBenefitPrice }}</text>
+          </view>
+        </picker>
+      </view>
+    </view>
+    <view class="preview-goods-order-section" wx:if="{{ balance != 0 && selectAddress.id && selectAddress.is_distance != 0 }}" style='margin-bottom:0px;padding:0;'>
+      <view style='margin:0 28rpx;overflow:hidden;padding:18rpx 0;border-bottom:1px solid #f3f3f3;'>
+        <view class="use-balance-option"><text>使用储值金</text> <switch class="pull-right" checked="true" bindchange="useBalanceChange"/></view>
+        <view hidden="{{ !useBalance }}" class="select-discount-title" style="margin-top:9px;margin-bottom:-12rpx;"> <text class="pull-right" style="color:#ff7100;">- ¥{{ deduction }}</text></view>
+      </view>
+    </view>
+    <view class="preview-goods-order-section h84" bindtap="goToAdditionalInfo" wx:if="{{ !noAdditionalInfo }}">
+      <view>
+        <text>补充信息</text>
+        <view class="ico-moon icon-rightarrow pull-right" style="color:#aaa;"></view>
+      </view>
+    </view>
+    <view class="preview-goods-order-section total-price h84" style="margin-bottom:16px;text-align:right;color:#333;font-size:26rpx"><view style="font-size:28rpx;"><text class="pull-left">优惠总金额</text> ¥{{totalDiscountCutPrice}}</view>
+  </view>
+  <!-- <view style="font-size:28rpx;"><text class="pull-left">待支付</text> <text style="font-size: 32rpx;font-weight: 500;">¥{{totalPayment}}</text></view> -->
+  </view>
+  <view class="preview-goods-order-section preview-goods-words h84">
+    <!-- <textarea bindinput="remarkInput" maxlength="30" placeholder="买家留言"></textarea>
+    <view style="text-align:right;border-radius:0 0 4px 4px;background-color:#eee;">{{orderRemark.length || 0}}/30</view> -->
+   <text class="preview-section-title" style="font-size:28rpx;">备注: </text>
+   <input bindinput="remarkInput" maxlength="30" placeholder='请填写您的备注信息'></input>
+  </view>
+  <view class="preview-goods-order-section" hidden="{{ is_self_delivery == 0 }}">
+    <view bindtap="openStoreLocation">
+      <label class="ico-moon icon-location"></label>{{shopAddress.region_string + shopAddress.shop_location}}
+    </view>
+    <view style="margin:12px 0;" bindtap="makeStorePhoneCall"><label class="ico-moon icon-phone"></label>{{shopAddress.shop_contact}}</view>
+  </view>
+  <view class="bottom-nav">
+    <view class="preview-goods-total-price" wx:if="{{selectAddress.id && selectAddress.is_distance != 0}}">
+      <text class="price-count" style="font-weight: 500;font-size: 30rpx;" ><text style="margin-right: 3px;">¥</text>{{ totalPayment }}</text>
+      <text class='bottom-nav-line'>|</text>
+      <text class='bottom-nav-discount'>已优惠¥{{totalDiscountCutPrice}}</text>
+    </view>
+    <view class="preview-goods-total-price" wx:else>
+      <text class="price-count" style="font-weight: 500;font-size: 30rpx;" >请先选择地址</text>
+    </view>
+    <form report-submit="true" bindsubmit="confirmPayment">
+      <button formType="submit" disabled='{{ disablePay ? false : true }}' style='font-size:30rpx;'>去支付</button>
+    </form>
+  </view>
+</view>

@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "积分兑换优惠券列表",
+  "navigationBarTextStyle": "black",
+  "navigationStyle": "custom",
+  "onReachBottomDistance": 100,
+  "usingComponents": {
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+    "component-topNavBar": "/components/topNavBar/topNavBar"
+  }
+}

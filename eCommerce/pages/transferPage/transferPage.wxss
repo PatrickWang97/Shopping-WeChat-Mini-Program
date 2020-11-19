@@ -1,0 +1,313 @@
+page {
+  background-color: rgba(243, 243, 243, 1);
+  font-size: 28rpx;
+  color: rgba(51, 51, 51, 1);
+}
+.transfer-wrap {
+  padding: 0 30rpx 150rpx 30rpx;
+}
+.space-between {
+  display: flex;
+  justify-content: space-between;
+}
+.transfer-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 30rpx 32rpx 30rpx 26rpx;
+}
+.bg-white {
+  background-color: #fff;
+}
+.transfer-name {
+  max-width: 500rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 28rpx;
+}
+.transfer-name .account {
+  display: inline;
+  margin-left: 14rpx;
+}
+.no-join-price {
+  display: block;
+  display: inline-flex;
+  align-items: center;
+}
+.no-join-price .no-join-text {
+  display: inline;
+}
+.discount-block {
+  border-radius: 12rpx;
+  background-color: #fff;
+  margin-top: 26rpx;
+  padding: 0 34rpx;
+}
+.discount-block>.item:last-child {
+  border-bottom: none;
+}
+.consumption-block {
+  border-radius: 12rpx;
+  margin-bottom: 26rpx;
+  background-color: #fff;
+}
+.consumption-block .icon-shopping-scan {
+  position: absolute;
+  right: 40rpx;
+  padding: 10px 10px 10px 0;
+  margin-left: 16rpx;
+  font-size: 30rpx;
+}
+.coupon-desc {
+  font-size: 28rpx;
+}
+.store-discount {
+  padding: 30rpx 0;
+  border-bottom: 1rpx solid #f3f3f3;
+  text-align: right;
+}
+.store-discount .store-title {
+  font-size: 28rpx;
+  min-width:152rpx;
+  text-align:left;
+}
+.store-discount .discount-text {
+  color: rgba(153, 153, 153, 1);
+}
+.store-discount .discount-text>text {
+  font-size: 28rpx;
+}
+.store-discount .discount-price,
+.stored-value-discount .stored-value-price {
+  margin-top: 20rpx;
+  text-align: right;
+  margin-right: 20rpx;
+  font-size: 28rpx;
+}
+.vip-card-block {
+  padding: 26rpx 0;
+  border-bottom: 1rpx solid #f3f3f3; 
+}
+.vip-card {
+  position: relative;
+  padding: 26rpx 24rpx;
+  border-radius: 10rpx;
+  background-size: 100% 100%;
+  display: flex;
+  align-items: center;
+  padding-bottom: 30rpx;
+  border-bottom: 1rpx solid #f3f3f3;
+  background-image: url(http://www.zhichiwangluo.com/zhichi_frontend/static/webapp/images/transfer/vip-card-small.png);
+}
+.vip-card .card-img {
+  display: inline-block;
+  width: 66rpx;
+  height: 66rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+  border: 2rpx solid #fff;
+  background-color: #fff;
+}
+.vip-card .card-info {
+  display: inline-block;
+  width: 300rpx;
+  color: #fff;
+}
+.vip-card .card-info .card-name {
+  font-size: 24rpx;
+  margin-bottom: 5rpx;
+}
+.vip-card .card-info .card-mess {
+  font-size: 22rpx;
+}
+.vip-card .card-btn {
+  position: absolute;
+  right: 30rpx;
+  display: inline-block;
+  padding: 8rpx 20rpx;
+  text-align: center;
+  font-size: 22rpx;
+  background: rgba(255, 168, 0, 1);
+  border-radius: 23rpx;
+  box-shadow: 1rpx 1rpx 1rpx rgba(255, 157, 18, 1);
+  color: #fff;
+}
+.submit-btn {
+  position: fixed;
+  width: calc(100% - 60rpx);
+  bottom: 0;
+  margin-bottom: 30rpx;
+  line-height: 88rpx;
+  border-radius: 6rpx;
+  color: #fff;
+  font-size: 30rpx;
+  text-align: center;
+  z-index: 10;
+}
+.submit-btn[disabled]:not([type]) {
+  color: rgba(255, 255, 255, 0.6);
+}
+.transfer-input {
+  padding: 26rpx 34rpx;
+}
+.transfer-input .input-price-block {
+  display: inline-flex;
+  align-items: center;
+}
+.transfer-input .input-text {
+  min-width: 160rpx;
+  font-size: 28rpx;
+  flex: 0 0 178rpx;
+  display: inline-flex;
+  align-items: center;
+}
+.transfer-input input {
+  text-align: right;
+  flex: 1;
+}
+.no-join-block {
+  display: flex;
+  justify-content: space-between;
+  background-color: #fff;
+  margin-top: 26rpx;
+  border-radius: 12rpx;
+}
+.member-discount-detail .price {
+  display: inline-block;
+  margin-right: 8rpx;
+  font-size: 28rpx;
+}
+checkbox {
+  margin-left: 30rpx;
+  display: inline-flex;
+  align-items: center;
+}
+checkbox .wx-checkbox-input {
+  width: 25rpx;
+  height: 25rpx;
+}
+.stored-value-discount,
+.member-discount {
+  display: flex;
+  justify-content: space-between;
+  padding: 30rpx 0;
+}
+.member-discount {
+  border-bottom: 1rpx solid #f3f3f3;
+}
+.member-discount .icon-rightarrow {
+  font-size: 12px;
+  color: #d5d5d5;
+}
+.stored-value-block {
+  text-align: right;
+}
+.remark {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 26rpx;
+  background-color: #fff;
+  border-radius: 12rpx;
+}
+.further-info {
+  padding: 0 34rpx;
+  margin-top: 26rpx;
+  border-radius: 12rpx;
+  background-color: #fff;
+}
+.further-info .item {
+  padding: 30rpx 0;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1rpx solid #f3f3f3;
+}
+.further-info .item:last-child {
+  border-bottom: none;
+}
+.further-info .item > text {
+  max-width: 400rpx;
+  font-size: 28rpx;
+}
+.further-info .item .necessary{
+  position: relative;
+}
+.further-info .item .necessary::before{
+  content: '*';
+  position: absolute;
+  top: 0;
+  left: -15rpx;
+  color: #ff0000;
+}
+.further-info .item input {
+  text-align: right;
+}
+.further-info .item .picker {
+  font-size: 28rpx;
+  color: rgba(153, 153, 153, 1);
+}
+.further-info .item .icon-rightarrow {
+  font-size: 24rpx;
+  color: #d5d5d5;
+}
+.input-price {
+  display: inline-block;
+  font-size: 38rpx;
+}
+.input-price-placeholder {
+  font-size: 28rpx;
+  color: #999;
+}
+.input-price-text {
+  font-size: 32rpx;
+}
+.price-limit {
+  text-align: right;
+  color: #999;
+  margin-top: 8rpx;
+}
+.scan-tip-block{
+  margin-bottom: 4rpx;
+  text-align: right;
+}
+.scan-tip{
+  display: inline-block;
+  padding-right: 30rpx;
+  font-size: 24rpx;
+  line-height: 38rpx;
+  color: #999999;
+}
+.store-tip{
+  font-size: 26rpx;
+  color: #999999;
+  margin-top: 20rpx
+}
+.no-join-checkbox{
+  display: flex;
+  justify-content: space-between;
+}
+.m-r-40{
+  margin-right: 40rpx;
+}
+switch {
+  transform: scale(0.8);
+}
+.ico-moon {
+  font-size: 30rpx;
+}
+.icon-rightarrow {
+  font-size: 22rpx;
+  color: #D2D2D2;
+  margin-left: 10rpx;
+}
+.pull-right {
+  color: rgba(210,210,210,1);
+}
+.input-oprate {
+  display: flex;
+  align-items: baseline;
+}
+.transfer-text {
+  margin-top: 20rpx;
+  text-align: right;
+  color: rgba(153,153,153,1);
+}

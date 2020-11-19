@@ -1,0 +1,156 @@
+<view class="leagueVip-main-wrapper">
+  <!-- 会员卡卡片swiper start -->
+  <view class="leagueVip-card-wrapper" wx:if="{{vipCardsList.length}}">
+    <swiper class="card-swiper" previous-margin="42rpx" next-margin="42rpx" current="{{current}}" circular="{{isCircular}}" bindchange="swiperChange">
+      <swiper-item class="card-item" wx:for="{{vipCardsList}}" wx:for-item="card" wx:key="index">
+        <view class="card-info vip{{card.condition_type}} {{current == index ? 'active' : ''}}">
+          <text class="card-mark-txt">{{card.condition_type == 0 ? '免费' : card.condition_type == 1 ? '联盟等级' : '付费'}}</text>
+          <view class="card-name" wx:if="{{card.condition_type != 1}}">
+            <text class="card-name-txt">{{card.title}}</text>
+          </view>
+          <view class="card-name" wx:else>
+            <text class="card-level-txt">Lv{{card.level}}</text>
+            <text class="card-name-txt">/ {{card.title}}</text>
+          </view>
+        </view>
+      </swiper-item>
+    </swiper>
+  </view>
+  <!-- 会员卡卡片swiper start -->
+  <!-- 会员卡信息 start -->
+  <view class="leagueVip-detail-wrapper" wx:if="{{vipCardsList.length}}">
+    <view class="detail-swiper" style="height:{{swiperHeight}}px;">
+      <view class="detail-item">
+        <view class="detail-info-list">
+          <view class="info-item thin-bd-b days" bindtap="gotoMemberDay">
+            <text class="title-txt">会员日</text>
+            <text class="ico-moon icon-rightarrow"></text>
+          </view>
+          <view class="info-item thin-bd-b shops" bindtap="gotoHomePage">
+            <text class="title-txt">附近门店</text>
+            <text class="ico-moon icon-rightarrow"></text>
+          </view>
+          <view class="info-item thin-bd-b condition">
+            <text class="title-txt">获取条件</text>
+            <view class="content-txt">
+              <view class="receive-btn" wx:if="{{userPaidVipCard.vip_id == currentVipCard.id || uesrCommonVipCard.vip_id == currentVipCard.id}}">
+                <text class="receive-txt">已领取</text>
+              </view>
+              <view class="receive-btn not" wx:else>
+                <text class="receive-bd" style="border-color:{{currentVipCard.style_config.condition}};"></text>
+                <text class="receive-bg" style="background-color: {{currentVipCard.style_config.condition}};"></text>
+                <text class="receive-txt" style="color:{{currentVipCard.style_config.condition}};">未领取</text>
+              </view>
+              <text>{{currentVipCard.condition_text}}</text>
+            </view>
+          </view>
+          <!-- 付费套餐 start -->
+          <view class="info-item thin-bd-b package" wx:if="{{currentVipCard.condition_type == 2}}">
+            <text class="title-txt">选择会员套餐</text>
+            <scroll-view class="package-list" scroll-x="{{true}}" scroll-with-animation="{{true}}">
+              <view class="package-item {{packageIndex == 0 ? 'selected' : ''}}" data-index="0" data-price="{{currentVipCard.price}}" bindtap="selectVipCardPackage">
+                <view class="item-info">
+                  <text class="item-month-txt">1个月</text>
+                  <view class="item-price">
+                    <text class="item-mark-txt" style="color:{{currentVipCard.style_config.condition}};">¥</text>
+                    <text class="item-price-txt" style="color:{{currentVipCard.style_config.condition}};">{{currentVipCard.price}}</text>
+                  </view>
+                </view>
+              </view>
+              <view class="package-item {{packageIndex == (index + 1) ? 'selected' : ''}}" wx:for="{{currentVipCard.combo}}" wx:key="index" wx:for-item="package" data-index="{{index + 1}}" data-price="{{package.price}}" bindtap="selectVipCardPackage">
+                <view class="item-info">
+                  <text class="item-month-txt">{{package.num}}个月</text>
+                  <view class="item-price">
+                    <text class="item-mark-txt" style="color:{{currentVipCard.style_config.condition}};">¥</text>
+                    <text class="item-price-txt" style="color:{{currentVipCard.style_config.condition}};">{{package.price}}</text>
+                  </view>
+                  <text class="item-virtual-txt">¥{{package.original_price}}</text>
+                </view>
+              </view>
+            </scroll-view>
+          </view>
+          <!-- 付费套餐 end -->
+          <!-- 会员权益 start -->
+          <view class="info-item rights">
+            <text class="title-txt">会员权益</text>
+            <view class="rights-list">
+              <view class="rights-item" wx:if="{{currentVipCard.discount && currentVipCard.discount != 0}}">
+                <view class="item-title">
+                  <text class="item-mark" style="background-color:{{currentVipCard.style_config.recv_button}};"></text>
+                  <text class="item-title-txt">折扣</text>
+                </view>
+                <text class="item-content-txt">所有商品一律{{currentVipCard.discount}}折</text>
+              </view>
+              <view class="rights-item coupon" wx:if="{{currentVipCard.coupon_list && currentVipCard.coupon_list.length}}">
+                <view class="item-title">
+                  <text class="item-mark" style="background-color:{{currentVipCard.style_config.recv_button}};"></text>
+                  <text class="item-title-txt">优惠券</text>
+                </view>
+                <view class="item-content-txt">
+                  <text wx:for="{{currentVipCard.coupon_list}}" wx:for-item="coupon" wx:key="index">{{coupon.type_txt}}-{{coupon.title}} -{{coupon.num}}张</text>
+                </view>
+              </view>
+              <view class="rights-item" wx:if="{{currentVipCard.integral && currentVipCard.integral != 0}}">
+                <view class="item-title">
+                  <text class="item-mark" style="background-color:{{currentVipCard.style_config.recv_button}};"></text>
+                  <text class="item-title-txt">积分</text>
+                </view>
+                <text class="item-content-txt">开卡赠送{{currentVipCard.integral}}积分</text>
+              </view>
+              <view class="rights-item" wx:if="{{currentVipCard.balance && currentVipCard.balance != 0}}">
+                <view class="item-title">
+                  <text class="item-mark" style="background-color:{{currentVipCard.style_config.recv_button}};"></text>
+                  <text class="item-title-txt">储值</text>
+                </view>
+                <text class="item-content-txt">开卡赠送储值{{currentVipCard.balance}}元</text>
+              </view>
+              <view class="rights-item" wx:if="{{currentVipCard.is_free_postage && currentVipCard.is_free_postage != 0}}">
+                <view class="item-title">
+                  <text class="item-mark" style="background-color:{{currentVipCard.style_config.recv_button}};"></text>
+                  <text class="item-title-txt">包邮</text>
+                </view>
+                <text class="item-content-txt">所有商品包邮</text>
+              </view>
+              <view class="rights-item coupon" wx:if="{{currentVipCard.birthday_coupon_list && currentVipCard.birthday_coupon_list.length}}">
+                <view class="item-title">
+                  <text class="item-mark" style="background-color:{{currentVipCard.style_config.recv_button}};"></text>
+                  <text class="item-title-txt">生日优惠</text>
+                </view>
+                <view class="item-content-txt">
+                  <text wx:for="{{currentVipCard.birthday_coupon_list}}" wx:for-item="coupon" wx:key="index">{{coupon.type_txt}}-{{coupon.title}} -{{coupon.num}}张</text>
+                </view>
+              </view>
+            </view>
+          </view>
+          <!-- 会员权益 end -->
+          <view class="info-items {{(currentVipCard.special_tip || currentVipCard.phone || currentVipCard.description) ? 'thin-bd-t' : ''}} {{currentVipCard.condition_type == 2 ? 'is-pay' : ''}}">
+            <view class="info-item tip" wx:if="{{currentVipCard.condition_type == 2 && currentVipCard.special_tip}}">
+              <text class="title-txt">特别说明</text>
+              <view class="content-txt">
+                <view>{{currentVipCard.special_tip}}</view>
+                <view>付费卡购买成功后不支持退款</view>
+              </view>
+            </view>
+            <view class="info-item contact" wx:if="{{currentVipCard.phone}}">
+              <text class="title-txt">联系我们</text>
+              <text class="content-txt">{{currentVipCard.phone}}</text>
+            </view>
+            <view class="info-item notice" wx:if="{{currentVipCard.description}}">
+              <text class="title-txt">使用须知</text>
+              <text class="content-txt">{{currentVipCard.description}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 会员卡信息 end -->
+  <!-- 付费会员卡购买按钮 start -->
+  <form report-submit="true" bindsubmit="addPaidCardOrder" wx:if="{{currentVipCard.condition_type == 2}}">
+    <button class="buy-btn" disabled="{{isRequesting}}" bindtap="addPaidCardOrder" style="background-color:{{currentVipCard.style_config.recv_button}};">{{userPaidVipCard.vip_id == currentVipCard.id ? '续费会员' : '立即购买'}}</button>
+  </form>
+  <!-- 付费会员卡购买按钮 end -->
+  <view class="leagueVip-nodata-wrapper" wx:if="{{vipCardsList.length == 0}}">
+    <text>暂无多店会员卡</text>
+  </view>
+</view>

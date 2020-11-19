@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "申请退款",
+  "navigationBarTextStyle": "black",
+  "navigationBarBackgroundColor": "#ffffff",
+  "usingComponents": {
+    "component-reward-point": "/components/rewardPointModal/rewardPointModal",
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+    "component-sinkingModal": "/components/sinkingModal/sinkingModal"
+  }
+}

@@ -1,0 +1,59 @@
+page {
+  background-color: #F3F3F3;
+}
+.screenShot image {
+  width: 578rpx;
+  margin-top: 68rpx;
+  background: #fff;
+  height: 578rpx;
+}
+.screenShot {
+  text-align: center;
+}
+.screenTips {
+  margin-top: 50rpx;
+  text-align: center;
+  font-size: 24rpx;
+  color: #406CF9;
+}
+.feedback-dialog {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+.feedback-content {
+  width: 560rpx;
+  background: #fff;
+  border-radius: 10rpx;
+  position: absolute;
+  top: 300rpx;
+  left: 50%;
+  margin-left: -280rpx;
+}
+.feedback-title {
+  height: 100rpx;
+  line-height: 100rpx;
+  text-align: center;
+  font-size: 28rpx;
+  color: #333;
+}
+.feedback-content textarea {
+  width: 394rpx;
+  height: 216rpx;
+  margin: 0 auto;
+  background: #F5F5F5;
+  padding: 20rpx;
+  font-size: 26rpx;
+  color: #666;
+}
+.submit-feedback {
+  line-height: 80rpx;
+  text-align: center;
+  color: #ff7100;
+  font-size: 30rpx;
+  border-top: 1px solid #EBEBEB;
+  margin-top: 50rpx;
+}

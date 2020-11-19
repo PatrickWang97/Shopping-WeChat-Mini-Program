@@ -1,0 +1,9 @@
+{
+    "navigationBarTitleText":"确认订单",
+    "usingComponents":{
+        "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+        "component-memberDiscount": "/components/memberDiscount/memberDiscount",
+        "component-behavior-track": "/components/behaviorTrack/behaviorTrack"
+    }
+}

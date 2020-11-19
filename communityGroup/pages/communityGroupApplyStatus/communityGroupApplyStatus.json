@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "申请社区团长",
+  "usingComponents": {
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift"
+  }
+}

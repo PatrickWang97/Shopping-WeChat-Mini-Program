@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "会员权益",
+  "navigationBarTextStyle":"black",
+  "navigationStyle":"custom",
+  "usingComponents":{
+    "component-topNavBar": "/components/topNavBar/topNavBar",
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+    "component-behavior-track": "/components/behaviorTrack/behaviorTrack"
+  }
+}

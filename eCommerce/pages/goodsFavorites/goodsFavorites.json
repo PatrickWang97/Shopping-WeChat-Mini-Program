@@ -1,0 +1,12 @@
+{
+    "navigationBarTitleText":"收藏夹",
+    "navigationBarTextStyle":"black",
+    "navigationStyle":"custom",
+    "usingComponents":{
+        "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+        "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+        "component-goodsShoppingCart": "/components/goodsShoppingCart/goodsShoppingCart",
+        "component-topNavBar": "/components/topNavBar/topNavBar",
+        "component-behavior-track": "/components/behaviorTrack/behaviorTrack"
+    }
+}

@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText":"店铺信息",
+  "usingComponents": {
+    "component-behavior-track": "/components/behaviorTrack/behaviorTrack"
+  }
+}

@@ -1,0 +1,11 @@
+{
+    "navigationBarTitleText":"商家详情",
+    "navigationBarTextStyle":"black",
+    "navigationStyle":"custom",
+    "usingComponents":{
+        "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+        "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+        "component-topNavBar": "/components/topNavBar/topNavBar",
+        "franchiseeTabbar": "/components/franchiseeTabbar/franchiseeTabbar"
+    }
+}

@@ -1,0 +1,134 @@
+<component-behavior-track></component-behavior-track>
+<wxs module="businessWeekStyleOne">
+  var businessWeekStyleOne = function(data) {
+    var a = '';
+    for (var i = 0; i < data.length; i++) {
+      switch (i) {
+        case 0:
+          a += data[i] == 1 ? '周一  ' : '';
+          break;
+        case 1:
+          a += data[i] == 1 ? '周二  ' : '';
+          break;
+        case 2:
+          a += data[i] == 1 ? '周三  ' : '';
+          break;
+        case 3:
+          a += data[i] == 1 ? '周四  ' : '';
+          break;
+        case 4:
+          a += data[i] == 1 ? '周五  ' : '';
+          break;
+        case 5:
+          a += data[i] == 1 ? '周六  ' : '';
+          break;
+        case 6:
+          a += data[i] == 1 ? '周日  ' : '';
+          break;
+      }
+    }
+    return a;
+  }
+  module.exports.businessWeekStyleOne = businessWeekStyleOne;
+</wxs>
+<view class="tab-list">
+  <block wx:for="{{tabList}}" wx:key="item.value" wx:key="index">
+    <view class="tab-item {{index === currentTab && 'active'}}" style="color: {{currentTab == index && storeStyle.theme}}" data-value="{{item.value}}" catchtap="changeTabItem">
+      <text class="bottom-line" style="background: {{storeStyle.theme}}"></text>
+      {{ item.label }}
+    </view>
+  </block>
+</view>
+<!-- 搜索 -->
+<view class="filter-wrapper" wx:if="{{searchStatus}}">
+  <view class="search">
+    <text class="ico-moon icon-search"></text>
+    <view class="input-wrapper" catchtap="toggleSearchPageStatus">
+      请输入门店地址/名称
+    </view>
+  </view>
+</view>
+<!-- 定位 -->
+<view class="current-location-box" catchtap="selectGoodsSameJourney" wx:if="{{showAddress && !searchStatus}}">
+  <text class="ico-moon icon-goods-location"></text>
+  <text class="ellipsis" style="max-width:500rpx">{{currentLocationData.formatted_addresses.recommend || '暂无地址'}}</text>
+  <text catchtap="getCurrentLocation" class="pull-right renew-position">
+    <text class="ico-moon icon-refresh" style="color:{{storeStyle.theme || '#ff7100'}}"></text>
+    <text style="color:{{storeStyle.theme || '#ff7100'}}">重新定位</text>
+  </text>
+</view>
+<!-- 地图 -->
+<view wx:if="{{ showMap && currentTab === 0 }}">
+  <map longitude="{{ currLng || selfLocation.lng }}" latitude="{{ currLat || selfLocation.lat }}" show-location="true" scale="14" markers="{{ markers }}" circle="{{ mapCircle }}"></map>
+</view>
+<!-- 门店列表 -->
+<view class="delivery-list-box">
+  <template is="deliveryListTmp" data="{{ deliveryList, deliveryId, storeStyle, statusFail, isMore }}"></template>
+  <view class="request-none" wx:if="{{ !deliveryList.length && !loading }}" style="background: #fff;">
+    <image src="http://cdn.jisuapp.cn/static/webapp/images/request-none.png" mode="widthFix"></image>
+    <view>暂无数据~</view>
+  </view>
+</view>
+
+<!-- 搜索页 -->
+<view class="search-page" wx:if="{{ searchPageStatus }}">
+  <view class="search-bar">
+    <view class="filter-wrapper">
+      <view class="search">
+        <text class="ico-moon icon-search"></text>
+        <input value="{{ searchValue }}" bindinput="getLocationByInput" focus="{{ searchPageStatus }}" placeholder="请输入门店地址/名称" placeholder-class="search-input-placeholder"></input>
+        <text class="ico-moon icon-close-btn" catchtap="clearSearchValue"></text>
+      </view>
+    </view>
+    <text class="cancel-search" catchtap="toggleSearchPageStatus">取消</text>
+  </view>
+  <template is="deliveryListTmp" data="{{ deliveryList: searchDeliveryList, deliveryId, storeStyle, statusFail, isMore }}"></template>
+  <view class="request-none" wx:if="{{ !searchDeliveryList.length && !loading && searchValue }}" style="background: #fff;">
+    <image src="http://cdn.jisuapp.cn/static/webapp/images/request-none.png" mode="widthFix"></image>
+    <view>暂无数据~</view>
+  </view>
+</view>
+
+<!-- 门店列表模板 -->
+<template name="deliveryListTmp">
+  <view class="delivery-bottom" wx:if="{{ deliveryList.length }}">
+    <view class="delivery-item" wx:for="{{ deliveryList }}" wx:key="index" catchtap="selectDelivery" data-index="{{ index }}" style="{{deliveryId == item.id && ('border-color:'+ storeStyle.theme || '#ff7100')}}">
+      <view class="delivery-row title-row">
+        <view class="title-wrapper">
+          <view class="title">
+            {{ item.title }}
+          </view>
+          <view class="delivery-tag" wx:if="{{ item.recentlyStore && !statusFail }}">离你最近</view>
+        </view>
+        <view class="distance" wx:if="{{ !statusFail }}">{{ item.distanceText }}</view>
+      </view>
+      <view class="delivery-row time-row">
+        <text class="ico-moon icon-business-time"></text>
+        <!-- 营业时间 -->
+        <view class="business-time-wrapper">
+          <view class="business-time" wx:if="{{item.self_delivery_business_time_rule.type == 1}}">
+            全年
+            <text wx:if="{{item.self_delivery_business_time_rule.exclude_holiday != 0}}">节假日不营业</text>
+          </view>
+          <block wx:else>
+            <block wx:for="{{item.self_delivery_business_time_rule.custom.business_time}}" wx:key="index">
+              <view class="business-time">
+                {{businessWeekStyleOne.businessWeekStyleOne(item.business_week)}}
+                <text wx:for="{{item.business_time_interval}}" wx:for-item="store" wx:key="index">{{store.start_time}}-{{store.end_time}} {{index == item.business_time_interval.length - 1 ? '' : ', '}} </text>
+              </view>
+            </block>
+          </block>
+        </view>
+      </view>
+      <!-- 门店地址 -->
+      <view class="delivery-row">
+        <text class="ico-moon icon-goods-location"></text>
+        <view class="address">{{ item.region_data.region_string + item.address_detail }}</view>
+        <label style="{{deliveryId == item.id && ('color:'+ storeStyle.theme || '#ff7100')}}" class="delivery-check-box ico-moon icon-success-tip"></label>  
+      </view>
+    </view>
+    <view class="delivery-tip">
+      {{ isMore ? '默认展示10个门店，更多门店可通过搜索查找' : '-没有更多了-' }}
+    </view>
+  </view>
+</template>

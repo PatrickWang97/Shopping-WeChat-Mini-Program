@@ -1,0 +1,14 @@
+{
+  "navigationBarTitleText": "资讯详情",
+  "navigationBarTextStyle":"black",
+  "navigationStyle":"custom",
+  "usingComponents": {
+    "component-topNavBar": "/components/topNavBar/topNavBar",
+    "component-share": "/components/pageQRCode/pageQRCode",
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+    "component-canvasShare": "/informationManagement/common/components/canvasShare/canvasShare",
+    "component-sinkingModal": "/components/sinkingModal/sinkingModal",
+    "component-behavior-track": "/components/behaviorTrack/behaviorTrack"
+  }
+}

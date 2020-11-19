@@ -1,0 +1,14 @@
+.shareTimeline-wrap {
+  position: fixed;
+  bottom: 0;
+  z-index: 10000;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.shareTimeline-bc {
+  width: 750rpx;
+  height: 173rpx;
+}
+.shareTimeline-dialog {
+  position: relative;
+}

@@ -1,0 +1,54 @@
+<!--franchisee/pages/viewImgOrVideo/viewImgOrVideo.wxml-->
+<view class="page">
+  <view class="navigator-bar" style="padding-top:{{navigatorBarPaddingTop}}px;">
+    <text wx:if="{{backBtnShow}}" class="ico-moon icon-leftarrow back-btn" bindtap="turnBackTap"></text>
+    <text wx:else decode="true" space="true">&ensp;&ensp;</text>
+    <text>{{index - 0 + 1}}/{{count}}</text>
+  </view>
+  <view class="main" style="height:{{mainRect.height}}px;">
+    <view
+      hidden="{{!playVideo}}">
+      <video
+        id="video-player"
+        src="{{currentVideoUrl}}"
+        controls="{{videoControlsShow}}"
+        show-center-play-btn="{{true}}"
+        bindplay="videoPlay"
+        bindpause="videoPause"
+        bindfullscreenchange="videoFullScreen"
+        bindwating="videoWating"
+        binderror="videoError">
+        <cover-view
+          wx:if="{{videoFullScreenShow}}"
+          class="left-top-exit"
+          catchtap="exitFullScreen">退出</cover-view>
+        <cover-view
+          wx:else
+          class="video-mask"
+          bindtap="tapVideo"
+          bindtouchstart="videoViewTouchEvent"
+          bindtouchend="videoViewTouchEvent">
+        </cover-view>
+        </video>
+    </view>
+    <view hidden="{{playVideo}}">
+    <swiper
+      style="height:{{mainRect.height}}px;"
+      autoplay="{{false}}"
+      current="{{index}}"
+      circular="{{false}}"
+      skip-hidden-item-layout="{{true}}"
+      bindchange="swiperChange">
+      <swiper-item wx:for="{{images}}" wx:key="index">
+        <view class="preview-item" style="height:{{mainRect.height}}px;" bindtap="{{item.type === 'video' ? 'showVideo' : ''}}" data-video-url="{{item.videoUrl || ''}}" data-video-id="{{item.id}}">
+          <view wx:if="{{item.type === 'video'}}" class="play-icon">
+            <image src="https://cdn.jisuapp.cn/static/webapp/images/franchisee/video_play.png" />
+          </view>
+          <image src="{{item.imageUrl}}" bindload="bindImageLoad" data-path="images[{{index}}].style" style="{{item.style}}"></image>
+        </view>
+      </swiper-item>
+    </swiper>
+    </view>
+  </view>
+</view>
+<view class="back-home-btn" catchtap="backHomeAct"><text class='icon-back-to-home ico-moon'></text></view>

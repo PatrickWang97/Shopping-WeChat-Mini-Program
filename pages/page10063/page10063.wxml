@@ -1,0 +1,400 @@
+<import src="/components/wxParse/wxParse.wxml"/>
+<import src="/components/templates/templates.wxml"/>
+<component-share pageQRCodeData="{{pageQRCodeData}}"></component-share>
+<component-reward-point rewardPointObj="{{rewardPointObj}}"  shareGiftsObj="{{shareGiftsObj}}" collectGiftsObj="{{collectGiftsObj}}" collectGetObj="{{collectGetObj}}"></component-reward-point>
+<component-shop-vip shopVipModal="{{shopVipModal}}"></component-shop-vip>
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-sinkingModal></component-sinkingModal>
+<franchiseeTabbar franchiseeInfo="{{franchiseeInfo}}"></franchiseeTabbar>
+<component-vip-card-qr-code id="vip-card-qr-code" vipCardQrCode="{{vipCardQrCode}}"></component-vip-card-qr-code>
+<component-share-polite  id="share-polite" sharePolite="{{sharePolite}}"></component-share-polite>
+<component-newcomer-gift  id="newcomer-gift" newcomer="{{newcomer}}" inviter="{{inviter}}"></component-newcomer-gift>
+<component-behavior-track></component-behavior-track>
+<component-customer-service-modal id="customer-service-modal"></component-customer-service-modal>
+<component-share-timeline wx:if="{{scene === 1154}}"></component-share-timeline>
+
+<component-goodsShoppingCart id="component-goodsShoppingCart" bind:afterSelectedGoods="afterSelectGoods"></component-goodsShoppingCart>
+
+
+<view class="app" hidden="{{page_hidden}}">
+<block wx:if="{{!carousel1.hidden}}">
+  <view class="ele-container">
+    <block wx:if="{{ detail_data && detail_data[carousel1.customFeature.segment] }}">
+      <template is="zcCarousel" data="{{data:carousel1, real_value:detail_data[carousel1.customFeature.segment], parent_form:item.form, detail_data: detail_data}}"></template>
+    </block>
+    <block wx:else>
+      <template is="zcCarousel" data="{{data:carousel1}}"></template>
+    </block>
+  </view>
+  <template is="carouselVideoPlay" data="{{data:carousel1}}"></template>
+</block>
+<template name="zcFreeVessel2">
+  <block wx:if="{{data.customFeature.action == 'turn-to-xcx'}}">
+    <navigator target="miniProgram" open-type="navigate" app-id="{{data.customFeature['xcx-appid']}}" path="{{data.customFeature['xcx-page-url'] || ''}}" version="release">
+      <view class="element free-vessel" style="{{data.style}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+        <block wx:if="{{!!item}}">
+          <template is="zcSubFreeVessel2" data="{{data:data, real_value:real_value, detail_data: detail_data ,index:index,item : item , parentType : parentType , page_form : page_form , form: form, dataId : dataId, sessionFrom: sessionFrom}}"></template>
+        </block>
+        <block wx:else>
+          <template is="zcSubFreeVessel2" data="{{data:data, real_value:real_value, detail_data: detail_data, index:index, item : item, sessionFrom: sessionFrom}}"></template>
+        </block>
+      </view>
+    </navigator>
+  </block>
+  <block wx:else>
+    <view class="element free-vessel" style="{{data.style}}" data-event-params="{{data.customFeature}}" catchtap="{{data.customFeature.action && data.customFeature.action != 'none' ? 'tapEventCommonHandler' : ''}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+      <block wx:if="{{!!item}}">
+        <template is="zcSubFreeVessel2" data="{{data:data, real_value:real_value, detail_data: detail_data ,index:index,item : item , parentType : parentType , page_form : page_form , form: form, dataId : dataId, sessionFrom: sessionFrom}}"></template>
+      </block>
+      <block wx:else>
+        <template is="zcSubFreeVessel2" data="{{data:data, real_value:real_value, detail_data: detail_data, sessionFrom: sessionFrom}}"></template>
+      </block>
+    </view>
+  </block>
+</template>
+<template name="zcSubFreeVessel2">
+  <view class="ele-container" wx:if="{{!data.content[0].hidden}}">
+  <template is="zcPictureBlock" data="{{data:data.content[0], real_value:real_value, item: item, detail_data: detail_data, form: form, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[1].hidden}}">
+  <template is="zcPictureBlock" data="{{data:data.content[1], real_value:real_value, item: item, detail_data: detail_data, form: form, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[2].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[2], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[3].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[3], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[4].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[4], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[5].hidden}}">
+  <template is="zcPictureBlock" data="{{data:data.content[5], real_value:real_value, item: item, detail_data: detail_data, form: form, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[6].hidden}}">
+  <template is="zcPictureBlock" data="{{data:data.content[6], real_value:real_value, item: item, detail_data: detail_data, form: form, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[7].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[7], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+
+</template>
+<view class="ele-container" wx:if="{{!free_vessel2.hidden}}">
+  <block wx:if="{{real_value}}">
+    <template is="zcFreeVessel2" data="{{data:free_vessel2, real_value:real_value, detail_data: detail_data, index:index, item : item, sessionFrom: sessionFrom}}"></template>
+  </block>
+  <block wx:else>
+    <template is="zcFreeVessel2" data="{{data:free_vessel2, real_value:item, detail_data: detail_data ,index:index,item : item , parentType : free_vessel2.parentCompid , page_form : free_vessel2.page_form , form: data.form, dataId : dataId, sessionFrom: sessionFrom}}"></template>
+  </block>
+</view>
+<view class="ele-container" wx:if="{{!announce3.hidden}}">
+  <template is="dqAnnounce" data="{{data:announce3}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!announce4.hidden}}">
+  <template is="dqAnnounce" data="{{data:announce4}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!picture5.hidden}}">
+  <template is="zcPictureBlock" data="{{data:picture5, real_value:real_value, item: item, detail_data: detail_data, form: form, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<template name="zcFreeVessel6">
+  <block wx:if="{{data.customFeature.action == 'turn-to-xcx'}}">
+    <navigator target="miniProgram" open-type="navigate" app-id="{{data.customFeature['xcx-appid']}}" path="{{data.customFeature['xcx-page-url'] || ''}}" version="release">
+      <view class="element free-vessel" style="{{data.style}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+        <block wx:if="{{!!item}}">
+          <template is="zcSubFreeVessel6" data="{{data:data, real_value:real_value, detail_data: detail_data ,index:index,item : item , parentType : parentType , page_form : page_form , form: form, dataId : dataId, sessionFrom: sessionFrom}}"></template>
+        </block>
+        <block wx:else>
+          <template is="zcSubFreeVessel6" data="{{data:data, real_value:real_value, detail_data: detail_data, index:index, item : item, sessionFrom: sessionFrom}}"></template>
+        </block>
+      </view>
+    </navigator>
+  </block>
+  <block wx:else>
+    <view class="element free-vessel" style="{{data.style}}" data-event-params="{{data.customFeature}}" catchtap="{{data.customFeature.action && data.customFeature.action != 'none' ? 'tapEventCommonHandler' : ''}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+      <block wx:if="{{!!item}}">
+        <template is="zcSubFreeVessel6" data="{{data:data, real_value:real_value, detail_data: detail_data ,index:index,item : item , parentType : parentType , page_form : page_form , form: form, dataId : dataId, sessionFrom: sessionFrom}}"></template>
+      </block>
+      <block wx:else>
+        <template is="zcSubFreeVessel6" data="{{data:data, real_value:real_value, detail_data: detail_data, sessionFrom: sessionFrom}}"></template>
+      </block>
+    </view>
+  </block>
+</template>
+<template name="zcSubFreeVessel6">
+  <view class="ele-container" wx:if="{{!data.content[0].hidden}}">
+  <template is="zcPictureBlock" data="{{data:data.content[0], real_value:real_value, item: item, detail_data: detail_data, form: form, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[1].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[1], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[2].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[2], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+
+</template>
+<view class="ele-container" wx:if="{{!free_vessel6.hidden}}">
+  <block wx:if="{{real_value}}">
+    <template is="zcFreeVessel6" data="{{data:free_vessel6, real_value:real_value, detail_data: detail_data, index:index, item : item, sessionFrom: sessionFrom}}"></template>
+  </block>
+  <block wx:else>
+    <template is="zcFreeVessel6" data="{{data:free_vessel6, real_value:item, detail_data: detail_data ,index:index,item : item , parentType : free_vessel6.parentCompid , page_form : free_vessel6.page_form , form: data.form, dataId : dataId, sessionFrom: sessionFrom}}"></template>
+  </block>
+</view>
+<template name="zcFreeVessel7">
+  <block wx:if="{{data.customFeature.action == 'turn-to-xcx'}}">
+    <navigator target="miniProgram" open-type="navigate" app-id="{{data.customFeature['xcx-appid']}}" path="{{data.customFeature['xcx-page-url'] || ''}}" version="release">
+      <view class="element free-vessel" style="{{data.style}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+        <block wx:if="{{!!item}}">
+          <template is="zcSubFreeVessel7" data="{{data:data, real_value:real_value, detail_data: detail_data ,index:index,item : item , parentType : parentType , page_form : page_form , form: form, dataId : dataId, sessionFrom: sessionFrom}}"></template>
+        </block>
+        <block wx:else>
+          <template is="zcSubFreeVessel7" data="{{data:data, real_value:real_value, detail_data: detail_data, index:index, item : item, sessionFrom: sessionFrom}}"></template>
+        </block>
+      </view>
+    </navigator>
+  </block>
+  <block wx:else>
+    <view class="element free-vessel" style="{{data.style}}" data-event-params="{{data.customFeature}}" catchtap="{{data.customFeature.action && data.customFeature.action != 'none' ? 'tapEventCommonHandler' : ''}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+      <block wx:if="{{!!item}}">
+        <template is="zcSubFreeVessel7" data="{{data:data, real_value:real_value, detail_data: detail_data ,index:index,item : item , parentType : parentType , page_form : page_form , form: form, dataId : dataId, sessionFrom: sessionFrom}}"></template>
+      </block>
+      <block wx:else>
+        <template is="zcSubFreeVessel7" data="{{data:data, real_value:real_value, detail_data: detail_data, sessionFrom: sessionFrom}}"></template>
+      </block>
+    </view>
+  </block>
+</template>
+<template name="zcSubFreeVessel7">
+  <view class="ele-container" wx:if="{{!data.content[0].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[0], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[1].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[1], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+
+</template>
+<view class="ele-container" wx:if="{{!free_vessel7.hidden}}">
+  <block wx:if="{{real_value}}">
+    <template is="zcFreeVessel7" data="{{data:free_vessel7, real_value:real_value, detail_data: detail_data, index:index, item : item, sessionFrom: sessionFrom}}"></template>
+  </block>
+  <block wx:else>
+    <template is="zcFreeVessel7" data="{{data:free_vessel7, real_value:item, detail_data: detail_data ,index:index,item : item , parentType : free_vessel7.parentCompid , page_form : free_vessel7.page_form , form: data.form, dataId : dataId, sessionFrom: sessionFrom}}"></template>
+  </block>
+</view>
+<template name="zcFreeVessel8">
+  <block wx:if="{{data.customFeature.action == 'turn-to-xcx'}}">
+    <navigator target="miniProgram" open-type="navigate" app-id="{{data.customFeature['xcx-appid']}}" path="{{data.customFeature['xcx-page-url'] || ''}}" version="release">
+      <view class="element free-vessel" style="{{data.style}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+        <block wx:if="{{!!item}}">
+          <template is="zcSubFreeVessel8" data="{{data:data, real_value:real_value, detail_data: detail_data ,index:index,item : item , parentType : parentType , page_form : page_form , form: form, dataId : dataId, sessionFrom: sessionFrom}}"></template>
+        </block>
+        <block wx:else>
+          <template is="zcSubFreeVessel8" data="{{data:data, real_value:real_value, detail_data: detail_data, index:index, item : item, sessionFrom: sessionFrom}}"></template>
+        </block>
+      </view>
+    </navigator>
+  </block>
+  <block wx:else>
+    <view class="element free-vessel" style="{{data.style}}" data-event-params="{{data.customFeature}}" catchtap="{{data.customFeature.action && data.customFeature.action != 'none' ? 'tapEventCommonHandler' : ''}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+      <block wx:if="{{!!item}}">
+        <template is="zcSubFreeVessel8" data="{{data:data, real_value:real_value, detail_data: detail_data ,index:index,item : item , parentType : parentType , page_form : page_form , form: form, dataId : dataId, sessionFrom: sessionFrom}}"></template>
+      </block>
+      <block wx:else>
+        <template is="zcSubFreeVessel8" data="{{data:data, real_value:real_value, detail_data: detail_data, sessionFrom: sessionFrom}}"></template>
+      </block>
+    </view>
+  </block>
+</template>
+<template name="zcSubFreeVessel8">
+  <view class="ele-container" wx:if="{{!data.content[0].hidden}}">
+  <template is="zcPictureBlock" data="{{data:data.content[0], real_value:real_value, item: item, detail_data: detail_data, form: form, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[1].hidden}}">
+  <template is="zcPictureBlock" data="{{data:data.content[1], real_value:real_value, item: item, detail_data: detail_data, form: form, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[2].hidden}}">
+  <template is="zcPictureBlock" data="{{data:data.content[2], real_value:real_value, item: item, detail_data: detail_data, form: form, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[3].hidden}}">
+  <template is="zcPictureBlock" data="{{data:data.content[3], real_value:real_value, item: item, detail_data: detail_data, form: form, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[4].hidden}}">
+  <template is="zcPictureBlock" data="{{data:data.content[4], real_value:real_value, item: item, detail_data: detail_data, form: form, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[5].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[5], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[6].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[6], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[7].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[7], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[8].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[8], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[9].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[9], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[10].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[10], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[11].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[11], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[12].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[12], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[13].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[13], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+
+</template>
+<view class="ele-container" wx:if="{{!free_vessel8.hidden}}">
+  <block wx:if="{{real_value}}">
+    <template is="zcFreeVessel8" data="{{data:free_vessel8, real_value:real_value, detail_data: detail_data, index:index, item : item, sessionFrom: sessionFrom}}"></template>
+  </block>
+  <block wx:else>
+    <template is="zcFreeVessel8" data="{{data:free_vessel8, real_value:item, detail_data: detail_data ,index:index,item : item , parentType : free_vessel8.parentCompid , page_form : free_vessel8.page_form , form: data.form, dataId : dataId, sessionFrom: sessionFrom}}"></template>
+  </block>
+</view>
+<template name="zcFreeVessel9">
+  <block wx:if="{{data.customFeature.action == 'turn-to-xcx'}}">
+    <navigator target="miniProgram" open-type="navigate" app-id="{{data.customFeature['xcx-appid']}}" path="{{data.customFeature['xcx-page-url'] || ''}}" version="release">
+      <view class="element free-vessel" style="{{data.style}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+        <block wx:if="{{!!item}}">
+          <template is="zcSubFreeVessel9" data="{{data:data, real_value:real_value, detail_data: detail_data ,index:index,item : item , parentType : parentType , page_form : page_form , form: form, dataId : dataId, sessionFrom: sessionFrom}}"></template>
+        </block>
+        <block wx:else>
+          <template is="zcSubFreeVessel9" data="{{data:data, real_value:real_value, detail_data: detail_data, index:index, item : item, sessionFrom: sessionFrom}}"></template>
+        </block>
+      </view>
+    </navigator>
+  </block>
+  <block wx:else>
+    <view class="element free-vessel" style="{{data.style}}" data-event-params="{{data.customFeature}}" catchtap="{{data.customFeature.action && data.customFeature.action != 'none' ? 'tapEventCommonHandler' : ''}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+      <block wx:if="{{!!item}}">
+        <template is="zcSubFreeVessel9" data="{{data:data, real_value:real_value, detail_data: detail_data ,index:index,item : item , parentType : parentType , page_form : page_form , form: form, dataId : dataId, sessionFrom: sessionFrom}}"></template>
+      </block>
+      <block wx:else>
+        <template is="zcSubFreeVessel9" data="{{data:data, real_value:real_value, detail_data: detail_data, sessionFrom: sessionFrom}}"></template>
+      </block>
+    </view>
+  </block>
+</template>
+<template name="zcSubFreeVessel9">
+  <view class="ele-container" wx:if="{{!data.content[0].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[0], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[1].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[1], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+
+</template>
+<view class="ele-container" wx:if="{{!free_vessel9.hidden}}">
+  <block wx:if="{{real_value}}">
+    <template is="zcFreeVessel9" data="{{data:free_vessel9, real_value:real_value, detail_data: detail_data, index:index, item : item, sessionFrom: sessionFrom}}"></template>
+  </block>
+  <block wx:else>
+    <template is="zcFreeVessel9" data="{{data:free_vessel9, real_value:item, detail_data: detail_data ,index:index,item : item , parentType : free_vessel9.parentCompid , page_form : free_vessel9.page_form , form: data.form, dataId : dataId, sessionFrom: sessionFrom}}"></template>
+  </block>
+</view>
+<template name="zcFreeVessel10">
+  <block wx:if="{{data.customFeature.action == 'turn-to-xcx'}}">
+    <navigator target="miniProgram" open-type="navigate" app-id="{{data.customFeature['xcx-appid']}}" path="{{data.customFeature['xcx-page-url'] || ''}}" version="release">
+      <view class="element free-vessel" style="{{data.style}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+        <block wx:if="{{!!item}}">
+          <template is="zcSubFreeVessel10" data="{{data:data, real_value:real_value, detail_data: detail_data ,index:index,item : item , parentType : parentType , page_form : page_form , form: form, dataId : dataId, sessionFrom: sessionFrom}}"></template>
+        </block>
+        <block wx:else>
+          <template is="zcSubFreeVessel10" data="{{data:data, real_value:real_value, detail_data: detail_data, index:index, item : item, sessionFrom: sessionFrom}}"></template>
+        </block>
+      </view>
+    </navigator>
+  </block>
+  <block wx:else>
+    <view class="element free-vessel" style="{{data.style}}" data-event-params="{{data.customFeature}}" catchtap="{{data.customFeature.action && data.customFeature.action != 'none' ? 'tapEventCommonHandler' : ''}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+      <block wx:if="{{!!item}}">
+        <template is="zcSubFreeVessel10" data="{{data:data, real_value:real_value, detail_data: detail_data ,index:index,item : item , parentType : parentType , page_form : page_form , form: form, dataId : dataId, sessionFrom: sessionFrom}}"></template>
+      </block>
+      <block wx:else>
+        <template is="zcSubFreeVessel10" data="{{data:data, real_value:real_value, detail_data: detail_data, sessionFrom: sessionFrom}}"></template>
+      </block>
+    </view>
+  </block>
+</template>
+<template name="zcSubFreeVessel10">
+  <view class="ele-container" wx:if="{{!data.content[0].hidden}}">
+  <template is="zcPictureBlock" data="{{data:data.content[0], real_value:real_value, item: item, detail_data: detail_data, form: form, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[1].hidden}}">
+  <template is="zcPictureBlock" data="{{data:data.content[1], real_value:real_value, item: item, detail_data: detail_data, form: form, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[2].hidden}}">
+  <template is="zcPictureBlock" data="{{data:data.content[2], real_value:real_value, item: item, detail_data: detail_data, form: form, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[3].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[3], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[4].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[4], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[5].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[5], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[6].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[6], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[7].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[7], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+
+</template>
+<view class="ele-container" wx:if="{{!free_vessel10.hidden}}">
+  <block wx:if="{{real_value}}">
+    <template is="zcFreeVessel10" data="{{data:free_vessel10, real_value:real_value, detail_data: detail_data, index:index, item : item, sessionFrom: sessionFrom}}"></template>
+  </block>
+  <block wx:else>
+    <template is="zcFreeVessel10" data="{{data:free_vessel10, real_value:item, detail_data: detail_data ,index:index,item : item , parentType : free_vessel10.parentCompid , page_form : free_vessel10.page_form , form: data.form, dataId : dataId, sessionFrom: sessionFrom}}"></template>
+  </block>
+</view>
+<view class="ele-container" wx:if="{{!text11.hidden}}">
+  <template is="zcTextBlock" data="{{data:text11, real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<block wx:if="{{!suspension12.hidden}}">
+  <template is="zcSuspension" data="{{data:suspension12, sessionFrom: sessionFrom}}"></template>
+</block>
+<template name="zcPopupWindow13">
+  <view class="popup-window" catchtouchmove="stopPropagation" hidden='{{ data.showPopupWindow !== true }}'>
+    <view class="popup-window-mask" style="background-color:{{ data.customFeature.maskBackgroundColor }}; opacity:{{ data.customFeature.maskOpacity }};" data-compdata="{{ data }}" bindtap="tapMaskClosePopupWindow"></view>
+    <view class="popup-window-content" style="{{data.style}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+      <view class="ele-container" wx:if="{{!data.content[0].hidden}}">
+  <template is="zcPictureBlock" data="{{data:data.content[0], real_value:real_value, item: item, detail_data: detail_data, form: form, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[1].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[1], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+<view class="ele-container" wx:if="{{!data.content[2].hidden}}">
+  <template is="zcTextBlock" data="{{data:data.content[2], real_value:real_value,  item: item, detail_data: detail_data, in_dynamic_vessel: in_dynamic_vessel}}"></template>
+</view>
+
+    </view>
+  </view>
+</template>
+<view class="ele-container" wx:if="{{!popup_window13.hidden}}">
+  <block wx:if="{{real_value}}">
+    <template is="zcPopupWindow13" data="{{data:popup_window13, real_value:real_value, detail_data: detail_data}}"></template>
+  </block>
+  <block wx:else>
+    <template is="zcPopupWindow13" data="{{data:popup_window13, real_value:item, detail_data:detail_data, index:index, item:item, parentType:popup_window13.parentCompid, page_form:popup_window13.page_form, dataId:dataId}}"></template>
+  </block>
+</view>
+
+<view style="width:100%;overflow:hidden;margin-top:10px;">
+  <image wx:if="{{techSupport == 'not_vip' }}" style="width:100%;height:130rpx;" src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/tec-support-new.png" mode="aspectFill"></image>
+  <!-- <navigator wx:if="{{techSupport == 'not_vip_make_app'}}" url="/flowPromote/pages/flowSignIn/flowSignIn" hover-class="none">
+    <image style="width:100%;height:293rpx;" src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/tec-support-make.png" mode="aspectFill"></image>
+  </navigator> -->
+  <image wx:if="{{techSupport == 'not_vip_make_app'}}" bindtap="turnToJisuApp" style="width:100%;height:293rpx;" src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/tec-support-make.png" mode="aspectFill"></image>
+</view>
+</view>

@@ -1,0 +1,293 @@
+<!--components/rewardPointModal/rewardPointModal.wxml-->
+<view class="rewardPointModal-wrap" catchtouchmove="stopPropagation" wx:if="{{rewardPointObj.showModal}}" style="z-index:11;">
+  <view class="rewardPointModal-win">
+    <view class="rewardPointModal-bg" style="background-image:{{'url('+cdnUrl+'/static/webapp/images/reward_bg.png),url('+cdnUrl+'/static/webapp/images/reward_coin.png);'}}"><label catchtap="closeModal" class="ico-moon icon-closes rewardPointModal-closes"></label></view>
+    <view class="rewardPointModal-text">
+      <view class="rewardPointModal-p1">恭喜你</view>
+      <view class="rewardPointModal-p2">获得<text class="rewardPointModal-rewardCount">{{rewardPointObj.count}}积分</text></view>
+    </view>
+    <button class="rewardPointModal-button" catchtap="closeModal">知道了</button>
+  </view>
+</view>
+<view class="rewardPointModal-wrap" catchtouchmove="stopPropagation" wx:if="{{shareGiftsObj.showRewardsModal && shareGiftsObj.gifts.rewards.length > 0}}" style="z-index:12;">
+  <view class="share-gifts-wrap share-reward-wrap">
+    <view class="share-main-wrap">
+      <view class="share-top-wrap">
+        <image class="image-wrap" src='http://cdn.jisuapp.cn/static/webapp/images/share-gifts/popup-top.png'>
+        </image>
+      </view>
+      <view class="share-content-wrap">
+        <view class="share-tips">分享有礼</view>
+        <view class="share-method">
+          <view>
+            <block wx:if="{{shareGiftsObj.gifts.recv_limit == 0  || shareGiftsObj.gifts.rewards.length == 1}}">
+              恭喜你获得以下奖励
+            </block>
+            <block wx:elif="{{shareGiftsObj.gifts.recv_limit == 1}}">
+              {{shareGiftsObj.gifts.recv_chance == 0 ? '奖励领取成功' : !(shareGiftsObj.gifts.recv_chance > 1 && shareGiftsObj.gifts.recv_limit == 1 && shareGiftsObj.gifts.rewards.length > 1) ? '以下奖励选一个' : '以下奖励可选'}}
+            </block>
+          </view>
+          <view class="share-method-list">
+            <block wx:for="{{shareGiftsObj.gifts.rewards}}" wx:key="index">
+              <view wx:if="{{!(item.stock == 0)}}" class="list-item" style="width:80%;margin:0 auto;word-break:break-all;">
+                <image wx:if="{{item.type == 1}}" class="image-wrap" src="http://cdn.jisuapp.cn/static/webapp/images/share-gifts/coupon.png"></image>
+                <image wx:elif="{{item.type == 2}}" class="image-wrap" src="http://cdn.jisuapp.cn/static/webapp/images/share-gifts/integral.png"></image>
+                <image wx:elif="{{item.type == 3}}" class="image-wrap" src="http://cdn.jisuapp.cn/static/webapp/images/share-gifts/balance.png"></image>
+                <image wx:elif="{{item.type == 4 || item.type == 5}}" class="image-wrap" src="http://cdn.jisuapp.cn/static/webapp/images/share-gifts/vip-card.png"></image>
+                <image wx:elif="{{item.type == 6}}" class="image-wrap" src="http://cdn.jisuapp.cn/static/webapp/images/share-gifts/collect.png"></image>
+                <image wx:elif="{{item.type == 7}}" class="image-wrap" src="http://cdn.jisuapp.cn/static/webapp/images/share-gifts/lucky-wheel.png"></image>
+                <image wx:elif="{{item.type == 8}}" class="image-wrap" src="http://cdn.jisuapp.cn/static/webapp/images/share-gifts/scratch.png"></image>
+                <image wx:elif="{{item.type == 9}}" class="image-wrap" src="http://cdn.jisuapp.cn/static/webapp/images/share-gifts/golden.png"></image>
+                <text class="list-item-text">{{item.title}}</text>
+              </view>
+            </block>
+          </view>
+        </view>
+        <view wx:if="{{shareGiftsObj.gifts.rewards.length <= 1 || shareGiftsObj.gifts.recv_limit == 0}}" class="share-btn" catchtap='toshareGifts' data-type="{{shareGiftsObj.gifts.rewards[0].type}}">点击前往查看</view>
+        <view wx:else class="share-btn" catchtap='toshareGifts'>点击前往领取</view>
+      </view>
+    </view>
+    <view catchtap="closeShareModal" class="ico-moon icon-closed share-gifts-closes">
+    </view>
+  </view>
+</view>
+<view class="rewardPointModal-wrap" catchtouchmove="stopPropagation" wx:if="{{shareGiftsObj.showExtraRewardModal &&shareGiftsObj.extra_rewards.length > 0 && (shareGiftsObj.immediately == 1 || shareGiftsObj.gifts.rewards.length == 0)}}" style="z-index:11;">
+  <view class="share-gifts-wrap share-extraReward-wrap">
+    <view class="share-main-wrap">
+      <view class="share-top-wrap">
+        <image class="image-wrap" src='http://cdn.jisuapp.cn/static/webapp/images/share-gifts/popup-top.png'>
+        </image>
+      </view>
+      <view class="share-content-wrap">
+        <view class="share-tips">拉新成功</view>
+        <view class="share-method">
+          <view class="share-new_comer">拉新成功：【<text class="new-comer-nickname">{{shareGiftsObj.extra_rewards[0].new_comer}}</text>】{{shareGiftsObj.extra_rewards[0].num > 1 ? '等' : ''}}</view>
+          <view class="extra-text">恭喜你获得以下奖励</view>
+          <view class="share-method-list">
+            <block wx:for="{{shareGiftsObj.extra_rewards}}" wx:key="index">
+              <view style="width:80%;margin:0 auto;word-break:break-all;" class="list-item">
+                <block>
+                  <image class="image-wrap"  src="http://cdn.jisuapp.cn/static/webapp/images/share-gifts/coupon.png"
+                    wx:if="{{shareGiftsObj.extra_rewards[0].type == 1}}"></image>
+                  <image class="image-wrap"  src="http://cdn.jisuapp.cn/static/webapp/images/share-gifts/integral.png"
+                    wx:if="{{shareGiftsObj.extra_rewards[0].type == 2}}"></image>
+                  <image class="image-wrap"  src="http://cdn.jisuapp.cn/static/webapp/images/share-gifts/balance.png"
+                    wx:if="{{shareGiftsObj.extra_rewards[0].type == 3}}"></image>
+                  <image class="image-wrap"  src="http://cdn.jisuapp.cn/static/webapp/images/share-gifts/vip-card.png"
+                    wx:if="{{shareGiftsObj.extra_rewards[0].type == 4 || shareGiftsObj.extra_rewards[0].type == 5}}">
+                  </image>
+                  <image class="image-wrap"  src="http://cdn.jisuapp.cn/static/webapp/images/share-gifts/collect.png"
+                    wx:if="{{shareGiftsObj.extra_rewards[0].type == 6}}"></image>
+                  <image class="image-wrap"  src="http://cdn.jisuapp.cn/static/webapp/images/share-gifts/lucky-wheel.png"
+                    wx:if="{{shareGiftsObj.extra_rewards[0].type == 7}}"></image>
+                  <image class="image-wrap"  src="http://cdn.jisuapp.cn/static/webapp/images/share-gifts/scratch.png"
+                    wx:if="{{shareGiftsObj.extra_rewards[0].type == 8}}"></image>
+                  <image class="image-wrap"  src="http://cdn.jisuapp.cn/static/webapp/images/share-gifts/golden.png"
+                    wx:if="{{shareGiftsObj.extra_rewards[0].type == 9}}"></image>
+                </block>
+                <text class="list-item-text">{{item.reward_title}} {{item.num > 1 ? '*' + item.num : ''}}</text>
+              </view>
+            </block>
+          </view>
+        </view>
+        <view class="share-btn" catchtap='toShowGifts' data-type="{{shareGiftsObj.extra_rewards[0].type}}">点击前往查看</view>
+      </view>
+    </view>
+    <view catchtap="closeExtraGifts" class="ico-moon icon-closed share-gifts-closes">
+    </view>
+  </view>
+</view>
+<view class="rewardPointModal-wrap" catchtouchmove='stopPropagation' wx:if="{{collectGiftsObj.showModal}}"
+  style="z-index:15;{{collectGiftsObj.style.type == 1 || collectGiftsObj.style.type == 2 ? 'background:rgba(0,0,0,.70);' : 'height:450rpx;background:rgba(255,255,255,0);'}};top:{{topNavBarHeight + 'px'}}">
+
+  <view class="collect-gifts-wrap type1" wx:if="{{collectGiftsObj.style.type == 1}}">
+    <view class="type1-arrow">
+    </view>
+    <view class="collect-step">
+      <view class="type1-collect"></view>
+      <view class="section-tips">
+        <view style="color:#ff7100;" class="tips-text">点击
+          <image class="image"
+            src="http://cdn.jisuapp.cn/static/webapp/images/collect-gifts/toast1/bottom-line.png"
+            class="bottom-line"></image>
+        </view>这里，选择添加到我的小程序
+      </view>
+    </view>
+    <image class="section-logo"
+      src="http://cdn.jisuapp.cn/static/webapp/images/collect-gifts/toast1/section-arrow.png"></image>
+    <view class="collect-step">
+      <view class="type1-customer">
+      </view>
+      <view class="section-tips">微信
+        <view class="tips-text" style="color:#ff7100;">下拉
+          <image src="http://cdn.jisuapp.cn/static/webapp/images/collect-gifts/toast1/bottom-line.png"
+            class="bottom-line"></image>
+        </view>，从【我的小程序】进入店铺</view>
+    </view>
+    <image class="section-logo"
+      src="http://cdn.jisuapp.cn/static/webapp/images/collect-gifts/toast1/section-arrow.png"></image>
+    <view class="method-wrap">
+      <view class="method-list method-list-show" style="position:absolute;">
+        <view class="method-item-list" wx:for="{{collectGiftsObj.gifts}}" wx:key="index">
+          <view class="method-item">
+            <image class="image"
+              src="http://cdn.jisuapp.cn/static/webapp/images/collect-gifts/toast1/hook.png" class="image">
+            </image>
+            <view class="title">{{item.title}}</view>
+          </view>
+        </view>
+      </view>
+      <view style="height: {{(50 * collectGiftsObj.gifts.length) + 'rpx'}};margin-bottom:50rpx;">
+      </view>
+      <view class="section-tips" style="font-size:30rpx;">完成后，将获得以上
+        <view class="tips-text" style="color:#ff7100;">奖励
+          <image src="http://cdn.jisuapp.cn/static/webapp/images/collect-gifts/toast1/bottom-line.png"
+            class="bottom-line"></image>
+        </view>
+      </view>
+      <view class="collect-gifts-closes" catchtap="closeGiftsModal">
+        {{collectGiftsObj.manualClose.value}}
+      </view>
+    </view>
+  </view>
+  <view class="collect-gifts-wrap type2" wx:elif="{{collectGiftsObj.style.type == 2}}">
+    <view class="main-wrap">
+      <view class="collect-step">
+        <view class="image-wrap step-item">1. 点击右上角
+          <image class="image"
+            src="http://cdn.jisuapp.cn/static/webapp/images/collect-gifts/toast2/share.png"
+            style="margin-left:10rpx;">
+          </image>
+          按钮</view>
+      </view>
+      <view class="collect-step">
+        <view class="step-item">2. 点击“添加到我的小程序”</view>
+      </view>
+      <view class="collect-step">
+        <view class="step-item">3. 在微信首页下拉打开任务栏，从“我的小程序”进入店铺。</view>
+      </view>
+      <view class="method-wrap">
+        <view class="image-wrap">
+          <image src="http://cdn.jisuapp.cn/static/webapp/images/collect-gifts/toast2/block.png"
+            style="width:26rpx;height:18rpx;margin-right:12rpx;"></image>完成以上步骤你将获得以下奖励
+        </view>
+        <view class="method-list">
+          <view class="method-item image-wrap" wx:for="{{collectGiftsObj.gifts}}" wx:key="index">
+            <image src="http://cdn.jisuapp.cn/static/webapp/images/collect-gifts/toast2/hook.png"
+              style="height:26rpx;width:32rpx;margin-right:17rpx;" class="image"></image>
+            <view class="title">{{item.title}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <label catchtap="closeGiftsModal" class="ico-moon icon-closes rewardPointModal-closes"></label>
+  </view>
+
+  <view class="collect-gifts-wrap type3 mode{{collectGiftsObj.style.default}}"
+    wx:elif="{{collectGiftsObj.style.type == 3}}" style="background:{{collectGiftsObj.style.bg}};">
+    <view>
+      <view class="main-wrap" style="color:{{collectGiftsObj.style.text}};">
+        <view class="header-tips">
+          <view class="logo-tips" style="color:{{collectGiftsObj.style.main}};">
+            <icon class="ico-moon icon-collect-rect-left collect-rect" style="margin-right:-6rpx;"></icon>
+            <icon class="ico-moon icon-collect-rect-right collect-rect" style="opacity:0.2;"></icon>
+          </view>
+          <text style="opacity:0.8;">完成以下步骤有奖励</text>
+        </view>
+        <view class="collect-step">
+          <view class="image-wrap step-item">
+            <text class="step ico-moon icon-collect-first"></text>点击这里
+            <image src="http://cdn.jisuapp.cn/static/webapp/images/collect-gifts/toast2/share.png"
+              catchtap="closeGiftsModal" style="width:87rpx;height:48rpx;margin:0 7rpx;"></image>
+            选择添加到我的小程序
+          </view>
+        </view>
+        <view class="collect-step">
+          <view>
+            <text class="step ico-moon icon-collect-second"></text>微信下拉，从“我的小程序”进入店铺</view>
+        </view>
+        <view class="method-wrap">
+          <view class="gifts-logo">
+            <text class="rewards-tips" style="opacity:0.8;">奖励</text>
+            <icon class="ico-moon icon-collect-line" style="color:{{collectGiftsObj.style.main}}"></icon>
+          </view>
+          <view class="gifts-list">
+            <block wx:for="{{collectGiftsObj.gifts}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+              {{index == collectGiftsObj.gifts.length - 1 ? item.title : item.title + '、' }}</block>
+          </view>
+        </view>
+      </view>
+      <label catchtap="closeGiftsModal" class="ico-moon icon-close-btn rewardPointModal-closes"
+        style="color:{{collectGiftsObj.style.btn}};"></label>
+    </view>
+    <view class="arrow-logo-wrap" wx:if="{{collectGiftsObj.style.type == 3}}">
+      <view class="arrow-logo" style="background:{{collectGiftsObj.style.bg}};">
+      </view>
+    </view>
+  </view>
+
+</view>
+<view class="rewardPointModal-wrap" catchtouchmove='stopPropagation' wx:if="{{collectGetObj.showModal}}"
+  style="z-index:15;background:rgba(0,0,0,.7);">
+  <view class="collect-get-main-wrap">
+    <view class="image-wrap">
+      <image class="image"
+        src="http://cdn.jisuapp.cn/static/webapp/images/collect-gifts/toast-gifts/star.png"></image>
+    </view>
+    <view>
+      <view class="header-tips">欢迎回来 恭喜你获得以下奖励</view>
+      <view class="method-list">
+        <view wx:for="{{collectGetObj.gifts}}" wx:key="index" class="method-item">
+          <view class="methods">
+            <view class="meth">
+              <view class="gifts-logo" wx:if="{{item.type == 1}}" style="background:rgba(255, 129, 45, .1);">
+                <image class="image-wrap"
+                  src="http://cdn.jisuapp.cn/static/webapp/images/collect-gifts/gifts-logo/coupon.png">
+                </image>
+              </view>
+              <view class="gifts-logo" wx:if="{{item.type == 2}}" style="background:rgba(244, 90, 97, .1)">
+                <image class="image-wrap"
+                  src="http://cdn.jisuapp.cn/static/webapp/images/collect-gifts/gifts-logo/intergral.png">
+                </image>
+              </view>
+              <view class="gifts-logo" wx:if="{{item.type == 3}}" style="background:rgba(253, 181, 43, .1);">
+                <image class="image-wrap"
+                  src="http://cdn.jisuapp.cn/static/webapp/images/collect-gifts/gifts-logo/balance.png">
+                </image>
+              </view>
+              <view class="gifts-logo" wx:if="{{item.type == 4 || item.type == 5}}"
+                style="background:rgba(244, 90, 97, .1);">
+                <image class="image-wrap"
+                  src="http://cdn.jisuapp.cn/static/webapp/images/collect-gifts/gifts-logo/vip-card.png">
+                </image>
+              </view>
+              <view class="gifts-logo" wx:if="{{item.type == 6}}" style="background:rgba(112, 212, 94, .1);">
+                <image class="image-wrap"
+                  src="http://cdn.jisuapp.cn/static/webapp/images/collect-gifts/gifts-logo/collect.png">
+                </image>
+              </view>
+              <view class="gifts-logo" wx:if="{{item.type == 7}}" style="background:rgba(63, 145, 230, .1);">
+                <image class="image-wrap"
+                  src="http://cdn.jisuapp.cn/static/webapp/images/collect-gifts/gifts-logo/luckyWheel.png">
+                </image>
+              </view>
+              <view class="gifts-logo" wx:if="{{item.type == 8}}" style="background:rgba(253, 181, 43, .1);">
+                <image class="image-wrap"
+                  src="http://cdn.jisuapp.cn/static/webapp/images/collect-gifts/gifts-logo/scratch.png">
+                </image>
+              </view>
+              <view class="gifts-logo" wx:if="{{item.type == 9}}" style="background:rgba(255, 129, 45, .1);">
+                <image class="image-wrap"
+                  src="http://cdn.jisuapp.cn/static/webapp/images/collect-gifts/gifts-logo/golden.png">
+                </image>
+              </view>
+              <view class="gifts-name">{{item.title}}</view>
+            </view>
+            <view class="show-btn" bindtap="toCollectGifts" data-type="{{item.type}}" data-classify="collect">查看</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <label catchtap="closeGetModal" class="ico-moon icon-closes rewardPointModal-closes"></label>
+  </view>
+</view>

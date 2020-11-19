@@ -1,0 +1,108 @@
+page {
+  background: #f3f3f3;
+}
+.journey-logistics-header {
+  background: #fff;
+  padding: 0 30rpx;
+  margin-bottom: 20rpx;
+}
+.journey-logistics-header map {
+  height: 240rpx;
+  width: 100%;
+}
+.logistic-status {
+  font-size: 32rpx;
+  color: #333;
+  padding-top: 30rpx;
+  margin-bottom: 10rpx;
+}
+.service-time {
+  color: #666;
+  font-size: 26rpx;
+  margin-bottom: 24rpx;
+}
+.service-time text {
+  color: #ff7100;
+}
+.rider-info {
+  font-size: 26rpx;
+  color: #666;
+  margin-top: 30rpx;
+  padding-bottom: 30rpx;
+}
+.contact-rider {
+  color: #FF7100;
+  padding-left: 20rpx;
+  border-left: 1px solid #f3f3f3;
+}
+.rider-name {
+  color: #333;
+  margin-right: 20rpx;
+}
+.logistics-container {
+  background: #fff;
+  font-size: 24rpx;
+  padding: 36rpx 30rpx 0;
+}
+.logistics-item::before {
+  content: '';
+  display: inline-block;
+  width: 14rpx;
+  height: 14rpx;
+  background: #D2D2D2;
+  border-radius: 50%;
+  position: absolute;
+  left: -7rpx;
+  top: 10rpx;
+  z-index: 1;
+}
+.logistics-item:first-child::before {
+  content: '';
+  display: inline-block;
+  width: 14rpx;
+  height: 14rpx;
+  background: #FF7100;
+  border-radius: 50%;
+  border: 6rpx solid #FFC699;
+  position: absolute;
+  left: -12rpx;
+  top: 4rpx;
+}
+.logistics-item::after {
+  content: '';
+  display: inline-block;
+  width: 2rpx;
+  height: 82%;
+  background: #EBEBEB;
+  position: absolute;
+  left: 0;
+  top: 30rpx;
+}
+.logistics-item:last-child::after{
+  display: none;
+}
+.logistics-location {
+  margin-bottom: 12rpx;
+}
+.logistics-item:first-child .logistics-location  {
+  color: #333;
+}
+.logistics-item:first-child .logistics-time  {
+  color: #666;
+}
+.logistics-item {
+  padding-left: 30rpx;
+  position: relative;
+  padding-bottom: 50rpx;
+  color: #999;
+  font-size: 26rpx;
+}
+.express-phone {
+  color: #3091f2;
+}
+.self-express {
+ white-space: pre-line;
+}
+.logistics-time {
+  font-size: 24rpx;
+}

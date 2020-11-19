@@ -1,0 +1,59 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="promotion-tab">
+  <view class="tab-item {{tabIndex == 0 ? 'tab-active' : ''}}" data-index="0" bindtap="changeTab"><view>小程序二维码</view></view>
+  <view class="tab-item {{tabIndex == 1 ? 'tab-active' : ''}}" data-index="1" bindtap="changeTab"><view>群二维码</view></view>
+</view>
+<view class='page-content'>
+	<view class="top-section">
+    <view class="info-section">
+      <view class="leader-profile">
+        <image src="{{ colonelInfo.logo || userInfo.cover_thumb}}"></image>
+        <view class="leader-profile-name">
+          <view>{{ colonelInfo.nick_name || userInfo.nickname }}</view>
+          <view>{{colonelInfo.phone}}</view>
+        </view>
+      </view>
+      <view class="leader-address">
+        <view class="address-name">
+          <text class="icon-comRoom ico-moon"></text>
+          <label>小区名称：</label>
+        </view>
+        <view>{{colonelInfo.housing_estate}}</view>
+      </view>
+      <view class="leader-address">
+        <view class="address-name">
+          <text class="ico-moon icon-goods-location"></text>
+          <label>提货地点：</label>
+        </view>
+        <view>{{colonelInfo.region_address}}{{colonelInfo.address_detail}}</view>
+      </view>
+    </view>
+	</view>
+	<view class="bottom-section" wx:if="{{tabIndex == 0}}">
+	  <view class="bottom-title"></view>
+    <canvas canvas-id="canvasImg"></canvas>
+	  <image src="{{ distributorInfo.shop_qrcode }}" mode="widthFix" bindtap="previewImage" data-src="{{ distributorInfo.shop_qrcode }}"></image>
+    <!-- <view class="my-promotion-tips">已推广<text>{{customer.invited || 0}}</text>人</view> -->
+	</view>
+  <view class="bottom-section" wx:if="{{tabIndex == 1}}">
+	  <view class="bottom-title"></view>
+    <view class="group-code-text">{{groupCode ? '加入团购群，优惠信息随时掌握' : '群二维码未上传'}}</view> 
+	  <image  wx:if="{{groupCode}}" src="{{ groupCode }}" mode="widthFix" bindtap="previewImage" data-src="{{ groupCode }}"></image>
+    <canvas canvas-id="canvasImg"></canvas>
+    <image  wx:if="{{!groupCode}}" src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/community-group/group-qr-code.png" class="no-group-code" mode="widthFix"></image>
+    <view class="my-promotion-tips-grey">提示：群二维码在团长名片与商品详情中也会展示哦</view>
+  </view>
+  <canvas type="2d" id="shareCanvas" canvas-id="shareCanvas"></canvas>
+</view>
+<view class="bottom-button" wx:if="{{tabIndex == 0  && colonelInfo.is_block_up != 1}}">
+  <view  class="promotion-btn all-btn" data-type="0" bindtap="save">生成海报</view>
+</view>
+<view class="bottom-button" wx:if="{{tabIndex == 1 && colonelInfo.is_block_up != 1}}" >
+  <view wx:if="{{!groupCode}}" class="promotion-btn all-btn" bindtap="modifyCode">上传二维码图片</view>
+  <view wx:if="{{groupCode}}" class="promotion--dash-btn" bindtap="deleteCode">删除二维码图片</view>
+  <view wx:if="{{groupCode}}" class="promotion-btn" data-type="1" bindtap="save">生成海报</view>
+</view>
+
+
+

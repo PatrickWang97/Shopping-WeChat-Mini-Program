@@ -1,0 +1,264 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-community-publish communityPublish="{{communityPublish}}"></component-community-publish>
+<component-community-publish-type communityPublishType="{{communityPublishType}}"></component-community-publish-type>
+<component-sinkingModal></component-sinkingModal>
+<component-behavior-track></component-behavior-track>
+<view class="communityUsercenter-wrap" id="communityUsercenter">
+  <view class="communityUsercenter-head">
+    <view class="userinfo-section" id="communityUsercenter-userinfo">
+      <view class="left">
+        <image src="{{userInfo.headimgurl || 'https://cdn.jisuapp.cn/zhichi_frontend/static/pc2/common/images/portrait.jpg'}}" lazy-load="{{true}}" />
+      </view>
+      <view class="right">
+        <view class="right-top">
+          <text class="username">{{userInfo.name}}</text>
+          <text wx:if="{{userInfo.gender == 1 || userInfo.gender == 2}}" class="gender ico-moon icon-gender-{{userInfo.gender == 1 ? '' : 'fe'}}male"></text>
+          <!-- <text class="fire ico-moon icon-news-like"></text>
+          <text class="like-count">10</text> -->
+        </view>
+        <!-- <view class="right-bot">
+          <text class="self-intro">个人介绍</text>
+        </view> -->
+      </view>
+    </view>
+    <view class="communityUsercenter-tab"  id="communityUsercenter-tab">
+      <view class="{{tabActive == 'publish' ? 'active' : ''}}" data-type="publish" catchtap="changeTab" style="color:{{tabActive == 'publish' ? theme_color : ''}};border-color:{{tabActive == 'publish' ? theme_color : ''}};">发布（{{myArticleCount}}）</view>
+      <view class="{{tabActive == 'reply' ? 'active' : ''}}" data-type="reply" catchtap="changeTab" style="color:{{tabActive == 'reply' ? theme_color : ''}};border-color:{{tabActive == 'reply' ? theme_color : ''}};">回帖（{{myCommentCount}}）</view>
+      <block wx:if="{{!userToken}}">
+      <view class="{{tabActive == 'history' ? 'active' : ''}}" data-type="history" catchtap="changeTab" style="color:{{tabActive == 'history' ? theme_color : ''}};border-color:{{tabActive == 'history' ? theme_color : ''}};">浏览记录（{{myHistoryCount}}）</view>
+      </block>
+    </view>
+  </view>
+
+  <view class="communityUsercenter-content" id="communityUsercenter-content"
+  style="{{contentHeight ? ('height:' + contentHeight + 'px') : ''}};overflow:{{tadNeedFixed ? 'auto' : 'hidden'}};">
+    <scroll-view wx:if="{{tabActive === 'publish' }}" class="communityUsercenter-scrollwrap" data-type="publish" scroll-y="{{tadNeedFixed}}" scroll-with-animation="{{false}}" scroll-top="{{publishScrollTop}}" bindscrolltolower="myArticleScroll" bindscroll="bindScrollEvent">
+      <view class="communityUsercenter-mytopic-ul">
+        <view id="publish-item-{{sInd}}" class="communityUsercenter-li" wx:for="{{myArticleList}}" wx:key="publish-item-{{sInd}}" wx:for-index="sInd" data-id="{{item.id}}">
+          <view>
+            <view class="community-li-cover">
+              <image src="{{item.headimgurl}}" lazy-load="{{true}}"></image>
+            </view>
+            <view class="community-li-author">
+              <view><text class="community-li-name">{{item.nickname}}</text><text class="community-stick" wx:if="{{item.top_flag == 1}}">置顶</text><text class="community-hot" wx:if="{{item.hot_flag == 1}}">精品</text></view>
+              <text class="community-li-time">{{item.add_time}}</text>
+            </view>
+            <block wx:if="{{!userToken}}">
+            <view wx:if="{{userInfo.usertoken === item.user_token}}" class="communityUsercenter-myli-audit {{item.article_status == 2 ? 'audit-stop' : item.article_status == 3 ? '' : item.audit_status == 1 ? 'audit-success' : item.audit_status == 2 ? 'audit-fail' : ''}}" catchtap="turnToFailpass" data-id="{{item.id}}" data-audit="{{item.audit_status}}"><label class="ico-moon icon-community-stop" wx:if="{{item.article_status == 2}}"></label>{{item.article_status == 2 ? '屏蔽' : item.article_status == 3 ? '申诉中' : item.audit_status == 0 ? '待审核' : item.audit_status == 1 ? '发布成功' : item.audit_status == 2 ? '己拒绝' : ''}}</view>
+            </block>
+          </view>
+          <view data-id="{{item.id}}" data-sid="{{item.section_id}}" data-verify="0" catchtap="turnToDetail">
+            <text class="communityUsercenter-myli-title" >{{item.title}}</text>
+            <view class="communityUsercenter-myli-content">
+              <text class="text-p">{{item.content_text}}</text>
+              <view wx:if="{{item.content.type == 2 && item.content.url.article}}" class="tcommunity-topic-link">
+                <view class="link-logo-wrap">
+                  <image class="link-logo" src="{{item.content.url.article.cover || topic.content.url.article.logo}}" mode="aspectFill" alt="" lazy-load="{{true}}"></image>
+                  <label wx:if="{{item.content.url.article.type == 4}}" class="ico-moon icon-news-video-play"></label>
+                </view>
+                <text class="link-text">{{item.content.url.article.title}}</text>
+              </view>
+              <view wx:if="{{item.content.type == 2 && item.content.url.video}}" class="tcommunity-topic-video">
+                <image class="video-cover" src="{{item.content.url.video.cover || ''}}" mode="aspectFill" alt="" lazy-load="{{true}}"></image>
+                <label class="ico-moon icon-news-video-play"></label>
+              </view>
+            </view>
+            <view wx:if="{{item.content.imgs}}" class="communityUsercenter-imgli-wrap">
+              <view wx:for="{{item.content.imgs}}" wx:key="index" wx:for-item="it" wx:for-index="itIdx" style="display:{{itIdx > 8 ? 'none' : 'inline-block'}}" class="{{item.content.imgs.length == 1 ? 'communityUsercenter-imgli-one' : 'communityUsercenter-imgli'}}" catchtap="tapPrevewPictureHandler" data-imgarr="{{item.content.imgs}}" data-img="{{it}}">
+                <image wx:if="{{item.content.imgs.length == 1}}" src="{{it}}" data-index="{{sInd}}" alt="" bindload="imgLoad" data-path="myArticleList[{{sInd}}].oneImageStyle" style="{{item.oneImageStyle}}" lazy-load="{{true}}"></image>
+                <image wx:else src="{{it}}" mode="aspectFill" alt="" lazy-load="{{true}}"></image>
+              </view>
+            </view>
+            <!-- 如果状态为已拒绝，显示查看拒绝原因 -->
+            <view class="check-reason" wx:if="{{userInfo.usertoken === item.user_token && item.audit_status == 2}}">
+              <button class="reason-btn">查看原因</button>
+            </view>
+          </view>
+          <view wx:if="{{item.form_data.list_recommend.recommend_goods}}" class="communityUsercenter-li-goods" catchtap="turnToGoodsDetail" data-id="{{item.form_data.list_recommend.recommend_goods[0].id}}">
+            <view class="goods-left">
+              <image src="{{item.form_data.list_recommend.recommend_goods[0].image}}" lazy-load="{{true}}"></image>
+            </view>
+            <view class="goods-center">
+              <view class="goods-name"><text>{{item.form_data.list_recommend.recommend_goods[0].name}}</text></view>
+              <view class="goods-price">¥<text>{{item.form_data.list_recommend.recommend_goods[0].price}}</text></view>
+            </view>
+            <view class="goods-right">
+              <button>去购买</button>
+            </view>
+          </view>
+          <view class="communityUsercenter-myli-foot">
+            <view wx:if="{{userInfo.usertoken === item.user_token}}" class="communityUsercenter-myli-info"><icon class="ico-moon icon-more" data-id="{{item.id}}" data-index="{{sInd}}" bindtap="showMore"></icon>
+              <view class="communityUsercenter-myli-more"></view>
+            </view>
+            <view class="communityUsercenter-myli-info" data-id="{{item.id}}" data-liked="{{item.is_liked}}" data-index="{{sInd}}" data-like-count="{{item.like_count}}" catchtap="articleLike"><icon class="ico-moon icon-community{{item.is_liked == 1 ? '_praise_fill' : '_praise'}}" style="{{item.is_liked == 1 ? 'color: #59607b;' : ''}}"></icon><text>{{item.like_count}}</text></view>
+            <view class="communityUsercenter-myli-info" data-comment-id="0" data-parent-comment-id="0" data-article-id="{{item.id}}" data-section-id="{{item.section_id}}" data-index="{{sInd}}" catchtap="turnComment" data-replyto="{{item.nickname}}" data-agent-user-token="{{item.agent_user_token}}" data-require-article-post="{{item.require_article_post}}" data-require-article-comment="{{item.require_article_comment}}"><icon class="ico-moon icon-community_message"></icon><text>{{item.comment_count}}</text></view>
+          </view>
+        </view>
+        <view wx:if="{{getMyArticleData.nomore}}" class="communityUsercenter-li-none">没有更多了</view>
+      </view>
+    </scroll-view>
+    <scroll-view wx:elif="{{tabActive === 'reply'}}" class="communityUsercenter-scrollwrap" data-type="reply" scroll-y="{{tadNeedFixed}}" scroll-with-animation="{{false}}" scroll-top="{{replyScrollTop}}" bindscrolltolower="myCommentScroll" bindscroll="bindScrollEvent">
+      <view class="communityUsercenter-myreply-ul">
+        <view id="reply-item-{{index}}" class="communityUsercenter-li" wx:for="{{myCommentList}}" wx:key="reply-item-{{index}}" data-id="{{item.id}}">
+          <view>
+            <view class="community-li-cover">
+              <image src="{{item.headimgurl}}" lazy-load="{{true}}"></image>
+            </view>
+            <view class="community-li-author">
+              <text class="community-li-name text-p">{{item.nickname}}</text>
+              <text class="community-li-time text-p">{{item.add_time}}</text>
+            </view>
+          </view>
+          <view class="communityUsercenter-reply-li-content">
+            <!-- <text class="text-p"><text wx:if="{{item.comment_id != 0 && !!item.comment_id}}" class="communityUsercenter-replyto">@{{item.content.reply_to.nickname}}</text>{{item.content_text}}</text> -->
+            <view class="comment-text"><text class="text-p">{{item.content_text}}</text></view>
+            <view wx:if="{{item.content.comment_img_url}}" class="comment-image" bindtap="tapPrevewPictureHandler" data-imgarr="{{item.content.comment_img_url}}"><image style="{{item.commentImageStyle || ''}}" src="{{item.content.comment_img_url}}" data-src="{{item.content.comment_img_url}}" data-path="myCommentList[{{index}}].commentImageStyle" onload="imgLoad" lazy-load="{{true}}" /><text>查看原图</text></view>
+            <view class="comment-to" wx:if="{{item.comment_id != 0 && !!item.comment_id}}">
+              <text class="communityUsercenter-replyto">@{{item.content.reply_to.nickname}}</text><text class="replyto-comment-text">：{{item.content.reply_to.text}}</text><view class="replyto-comment-image" wx:if="{{item.content.reply_to.comment_img_url}}" bindtap="tapPrevewPictureHandler" data-imgarr="{{item.content.reply_to.comment_img_url}}"><text class="ico-moon icon-news-comment-image"></text><text>查看图片</text></view>
+            </view>
+          </view>
+          <view wx:if="{{item.obj.content.type == 2 && item.obj.content.url.article}}" class="tcommunity-topic-link" data-id="{{item.obj_id}}" data-sid="{{item.obj.section_id}}" catchtap="turnToDetail">
+            <view class="link-logo-wrap">
+              <image class="link-logo" src="{{item.obj.content.url.article.cover || item.obj.content.url.article.logo}}" mode="aspectFill" alt="" lazy-load="{{true}}"></image>
+              <label wx:if="{{item.obj.content.url.article.type == 4}}" class="ico-moon icon-news-video-play"></label>
+            </view>
+            <text class="link-text">{{item.obj.content.url.article.title}}</text>
+          </view>
+          <view wx:elif="{{item.obj.content.type == 2 && item.obj.content.url.video}}" class="tcommunity-topic-video" data-id="{{item.obj_id}}" data-sid="{{item.obj.section_id}}" catchtap="turnToDetail">
+            <image class="video-cover" src="{{item.obj.content.url.video.cover || ''}}" mode="aspectFill" alt="" lazy-load="{{true}}"></image>
+            <label class="ico-moon icon-news-video-play"></label>
+          </view>
+          <view wx:else class="communityUsercenter-reply-li-post" data-id="{{item.obj_id}}" data-sid="{{item.section_id}}" catchtap="turnToDetail">
+            <image wx:if="{{item.obj.content.imgs}}" src="{{item.obj.content.imgs[0]}}" lazy-load="{{true}}"></image><text>{{item.obj.title}}</text>
+          </view>
+          <view wx:if="{{!userToken}}" class="comment-delete-btn" data-id="{{item.id}}" data-obj_id="{{item.obj_id}}" data-sid="{{item.section_id}}" data-index="{{index}}" bindtap="deleteComment">删除</view>
+          <!-- <view class="communityUsercenter-myli-foot">
+            <view class="communityUsercenter-myli-info" data-id="{{item.id}}" data-obj_id="{{item.obj_id}}" data-sid="{{item.section_id}}" data-index="{{index}}" bindtap="deleteComment"><icon class="ico-moon icon-delete"></icon></view>
+          </view> -->
+        </view>
+        <view wx:if="{{myCommentData.nomore}}" class="communityUsercenter-li-none">没有更多了</view>
+      </view>
+    </scroll-view>
+    <scroll-view wx:elif="{{tabActive == 'history'}}" class="communityUsercenter-scrollwrap" data-type="history" scroll-y="{{tadNeedFixed}}" scroll-with-animation="{{false}}" scroll-top="{{historyScrollTop}}" bindscrolltolower="getMyHistory" bindscroll="bindScrollEvent">
+      <view class="communityUsercenter-mytopic-ul">
+        <view id="history-item-{{sInd}}" class="communityUsercenter-li" wx:for="{{myHistoryList}}" wx:key="history-item-{{sInd}}" wx:for-index="sInd" data-id="{{item.id}}">
+          <view>
+            <view class="community-li-cover">
+              <image src="{{item.headimgurl}}" lazy-load="{{true}}"></image>
+            </view>
+            <view class="community-li-author">
+              <view><text class="community-li-name">{{item.nickname}}</text><text class="community-stick" wx:if="{{item.top_flag == 1}}">置顶</text><text class="community-hot" wx:if="{{item.hot_flag == 1}}">精品</text></view>
+              <text class="community-li-time">{{item.add_time}}</text>
+            </view>
+            <block wx:if="{{userInfo.usertoken === item.user_token}}">
+            <view class="communityUsercenter-myli-audit {{item.article_status == 2 ? 'audit-stop' : item.article_status == 3 ? '' : item.audit_status == 1 ? 'audit-success' : item.audit_status == 2 ? 'audit-fail' : ''}}" catchtap="turnToFailpass" data-id="{{item.id}}" data-audit="{{item.audit_status}}"><label class="ico-moon icon-community-stop" wx:if="{{item.article_status == 2}}"></label>{{item.article_status == 2 ? '屏蔽' : item.article_status == 3 ? '申诉中' : item.audit_status == 0 ? '待审核' : item.audit_status == 1 ? '发布成功' : item.audit_status == 2 ? '己拒绝' : ''}}</view>
+            </block>
+          </view>
+          <view data-id="{{item.id}}" data-sid="{{item.section_id}}" data-verify="0" catchtap="turnToDetail">
+            <text class="communityUsercenter-myli-title" >{{item.title}}</text>
+            <view class="communityUsercenter-myli-content">
+              <text class="text-p">{{item.content_text}}</text>
+              <view wx:if="{{item.content.type == 2 && item.content.url.article}}" class="tcommunity-topic-link">
+                <view class="link-logo-wrap">
+                  <image class="link-logo" src="{{item.content.url.article.cover || topic.content.url.article.logo}}" mode="aspectFill" alt="" lazy-load="{{true}}"></image>
+                  <label wx:if="{{item.content.url.article.type == 4}}" class="ico-moon icon-news-video-play"></label>
+                </view>
+                <text class="link-text">{{item.content.url.article.title}}</text>
+              </view>
+              <view wx:if="{{item.content.type == 2 && item.content.url.video}}" class="tcommunity-topic-video">
+                <image class="video-cover" src="{{item.content.url.video.cover || ''}}" mode="aspectFill" alt="" lazy-load="{{true}}"></image>
+                <label class="ico-moon icon-news-video-play"></label>
+              </view>
+            </view>
+            <view wx:if="{{item.content.imgs}}" class="communityUsercenter-imgli-wrap">
+              <view wx:for="{{item.content.imgs}}" wx:key="index" wx:for-item="it" wx:for-index="itIdx" style="display:{{itIdx > 8 ? 'none' : 'inline-block'}}" class="{{item.content.imgs.length == 1 ? 'communityUsercenter-imgli-one' : 'communityUsercenter-imgli'}}">
+                <image wx:if="{{item.content.imgs.length == 1}}" src="{{it}}" data-index="{{sInd}}" alt="" bindload="imgLoad"  data-path="myHistoryList[{{sInd}}].oneImageStyle" style="{{item.oneImageStyle}}" lazy-load="{{true}}"></image>
+                <image wx:else src="{{it}}" mode="aspectFill" alt="" lazy-load="{{true}}"></image>
+              </view>
+            </view>
+          </view>
+          <view wx:if="{{item.form_data.list_recommend.recommend_goods}}" class="communityUsercenter-li-goods" catchtap="turnToGoodsDetail" data-id="{{item.form_data.list_recommend.recommend_goods[0].id}}">
+            <view class="goods-left">
+              <image src="{{item.form_data.list_recommend.recommend_goods[0].image}}" lazy-load="{{true}}"></image>
+            </view>
+            <view class="goods-center">
+              <view class="goods-name"><text>{{item.form_data.list_recommend.recommend_goods[0].name}}</text></view>
+              <view class="goods-price">¥<text>{{item.form_data.list_recommend.recommend_goods[0].price}}</text></view>
+            </view>
+            <view class="goods-right">
+              <button>去购买</button>
+            </view>
+          </view>
+          <view class="communityUsercenter-myli-foot">
+            <view wx:if="{{false}}" class="communityUsercenter-myli-info"><icon class="ico-moon icon-more" data-id="{{item.id}}" data-index="{{sInd}}" bindtap="showMore"></icon>
+              <view class="communityUsercenter-myli-more"></view>
+            </view>
+            <view class="communityUsercenter-myli-info" data-id="{{item.id}}" data-liked="{{item.is_liked}}" data-index="{{sInd}}" data-like-count="{{item.like_count}}" catchtap="articleLike"><icon class="ico-moon icon-community{{item.is_liked == 1 ? '_praise_fill' : '_praise'}}" style="{{item.is_liked == 1 ? 'color: #59607b;' : ''}}"></icon><text>{{item.like_count}}</text></view>
+            <view class="communityUsercenter-myli-info" data-comment-id="0" data-parent-comment-id="0" data-article-id="{{item.id}}" data-section-id="{{item.section_id}}" data-index="{{sInd}}" catchtap="turnComment" data-replyto="{{item.nickname}}" data-agent-user-token="{{item.agent_user_token}}" data-require-article-post="{{item.require_article_post}}" data-require-article-comment="{{item.require_article_comment}}"><icon class="ico-moon icon-community_message"></icon><text>{{item.comment_count}}</text></view>
+          </view>
+        </view>
+        <view wx:if="{{getMyArticleData.nomore}}" class="communityUsercenter-li-none">没有更多了</view>
+      </view>
+    </scroll-view>
+  </view>
+  <view class="backto-top"><text class="ico-moon icon-news-totop" catchtap="tapBackToTop"></text></view>
+</view>
+
+<!-- 申诉弹窗 -->
+<view class="communityUsercenter-appeal-mask" id="communityUsercenter-appeal" wx:if="{{showAppeal}}" catchtouchmove=" ">
+  <view class="communityUsercenter-appeal-window">
+    <view class="appeal-top"><text>申诉</text><text class="close-appealWindow ico-moon icon-closes" catchtap="changeAppealState"></text></view>
+    <view><textarea name="appeal-reason" id="communityUsercenter-appealReason" placeholder="申诉原因" value="{{appealReason}}" bindinput="appealInput" maxlength="-1"></textarea></view>
+    <view class="bottom-button"><button class="submit-btn" data-id="{{appealId}}" catchtap="submitAppeal">提交</button></view>
+  </view>
+</view>
+
+<!-- 话题编辑弹窗 -->
+<view class="actionSheet-wrap" wx:if="{{showActionSheet}}" catchtouchmove=" " catchtap="closeActionSheet">
+  <view class="actionSheet-buttons">
+    <button class="appeal-btn" wx:if="{{showAppealBtn}}" catchtap="changeAppealState">话题申诉</button>
+    <button class="edit-btn" catchtap="turnToCommunityPublish">编辑话题</button>
+    <button class="delete-btn" catchtap="deleteArticle">删除话题</button>
+    <button class="cancel-btn" catchtap="closeActionSheet">取消</button>
+  </view>
+</view>
+
+<!-- ++++++++2019-3-28-11:11 -->
+<!-- 新版评论框 -->
+<view class="communityUsercenter-comment-mask" wx:if="{{showReplyBox}}" bindtap="cancelReply">
+</view>
+<view class="communityUsercenter-comment-box" id="comment-box" wx:if="{{showReplyBox}}" style="bottom: {{ replyBoxFocus ? keyboardHeight : 0 }};">
+  <view class="communityUsercenter-comment-top">
+    <textarea class="communityUsercenter-comment-input" id="" placeholder="{{replyPlaceholder}}" placeholder-style="color: #d8d8d8; font-size: 28rpx;" maxlength="-1" value="{{replyParam.text}}" auto-focus="{{showReplyBox}}" show-confirm-bar="{{false}}" fixed="{{true}}"
+              adjust-position="{{false}}" bindinput="replyInput" bindfocus="replyFocus" bindblur="replyBlur" bindlinechange="replyLineChange" style="height: {{commentContentHeight + 20}}rpx"></textarea>
+    <!-- 放置图片、位置 -->
+    <view class="communityUsercenter-comment-others" wx:if="{{replyParam.comment_img_url || replyParam.address}}">
+      <view class="communityUsercenter-comment-others-image" wx:if="{{replyParam.comment_img_url}}" style="margin-bottom: {{replyParam.address ? '36' : '0'}}rpx;">
+        <image src="{{replyParam.comment_img_url}}" mode="aspectFill" catchtap="replyImagePreview" lazy-load="{{true}}"></image>
+        <view class="image-close-icon-box" catchtap="replyImageDelete">
+          <icon class="image-close-icon ico-moon icon-closes"></icon>
+        </view>
+      </view>
+      <view class="communityUsercenter-comment-others-location" wx:if="{{replyParam.address}}" catchtap="replyLocationDelete">
+        <text>{{replyParam.address}}</text>
+        <icon class="location-close-icon ico-moon icon-closes"></icon>
+      </view>
+    </view>
+  </view>
+  <!-- 上传图片按钮、选择位置按钮、发布按钮 -->
+  <view class="communityUsercenter-comment-bottom">
+    <view class="communityUsercenter-comment-bottom-left">
+      <icon class="communityUsercenter-comment-bottom-icon ico-moon icon-news-input-image" catchtap="replyImageChoose"></icon>
+      <icon class="communityUsercenter-comment-bottom-icon ico-moon icon-community-location" catchtap="replyLocationChoose"></icon>
+    </view>
+    <view class="communityUsercenter-comment-bottom-right">
+      <view class="communityUsercenter-comment-bottom-right-cancel" catchtap="cancelReply">
+        <text>取消</text>
+      </view>
+      <view class="communityUsercenter-comment-bottom-right-send" catchtap="submitReply">
+        <text>发布</text>
+      </view>
+    </view>
+  </view>
+</view>

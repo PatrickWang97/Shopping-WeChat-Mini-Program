@@ -1,0 +1,28 @@
+<!--eCommerce/pages/invoiceDetails/invoiceDetails.wxml-->
+<view class="mark" style="{{showDialog ? 'display: block' : 'display: none'}}">
+  <view class="dialog">
+    <view class="title">
+      <text>请输入邮箱地址</text>
+    </view>
+    <view class="content">
+      <textarea class="email-text" bindinput="checkEmail" value='{{taker_email}}' placeholder="请输入邮箱地址" />
+    </view>
+    <view class="bottom">
+    <view class="bottom-btn">
+      <view class="cancel" catchtap="cancel">取消</view>
+      <view class="ok" catchtap="sendEmail">确定</view>
+    </view>
+    </view>
+  </view>
+</view>
+<view class="main">
+  <view class="invoice-img">
+    <image class="img" src="{{url}}" mode="widthFix"></image>
+  </view>
+  <view class="button-box">
+    <view class="btn-absolute">
+      <view class="save-local" catchtap="localPreservation">保存至本地相册</view>
+      <view class="send-email" catchtap="emailDailog">发送到邮箱</view>
+    </view>
+  </view>
+</view>

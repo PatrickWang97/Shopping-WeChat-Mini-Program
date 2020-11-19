@@ -1,0 +1,6 @@
+<!-- 分享朋友圈提示 -->
+<cover-view class="shareTimeline-wrap" wx:if="{{show}}">
+  <cover-view class="shareTimeline-dialog">
+    <cover-image src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-share/shareTimeline.gif" class="shareTimeline-bc"></cover-image>
+  </cover-view>
+</cover-view>

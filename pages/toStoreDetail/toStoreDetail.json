@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText":"商品详情",
+  "navigationBarTextStyle":"black",
+  "navigationStyle":"custom",
+  "usingComponents":{
+    "component-share": "/components/pageQRCode/pageQRCode",
+    "component-reward-point": "\/components\/rewardPointModal\/rewardPointModal",
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+    "component-topNavBar": "/components/topNavBar/topNavBar",
+    "component-behavior-track": "/components/behaviorTrack/behaviorTrack"
+  }
+}

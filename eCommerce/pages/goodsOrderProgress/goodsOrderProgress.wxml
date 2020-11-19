@@ -1,0 +1,25 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="progress-contain">
+  <view class="progress-header">
+    <view>买家操作</view>
+    <view>卖家操作</view>
+  </view>
+  <view class="progress-content">
+    <view class="content-box" wx:for="{{ orderFlowData }}" wx:key="index">
+      <view class="progress-left">
+        <block wx:if="{{ item.is_custom }}">
+          <text>{{ item.content.msg }}</text>
+          <text class="progress-time">{{ item.op_time }}</text>
+        </block>
+      </view>
+      <view class="progress-center"></view>
+      <view class="progress-right">
+        <block wx:if="{{ !item.is_custom }}">
+          <text>{{ item.content.msg }}</text>
+          <text class="progress-time">{{ item.op_time }}</text>
+        </block>
+      </view>
+    </view>
+  </view>
+</view>

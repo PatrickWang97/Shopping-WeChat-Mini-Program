@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "拼团订单详情",
+  "usingComponents": {
+    "component-share": "/components/pageQRCode/pageQRCode",
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift"
+  }
+}

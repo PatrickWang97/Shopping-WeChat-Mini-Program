@@ -1,0 +1,102 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+
+<!-- <view class="promotion-tab">
+  <view class="tab-item {{tabIndex == 0 ? 'tab-active' : ''}}" data-index="0" bindtap="changeTab"><view>社区团长信息</view></view>
+  <view class="tab-item {{tabIndex == 1 ? 'tab-active' : ''}}" data-index="1" bindtap="changeTab"><view>等级说明</view></view>
+</view> -->
+
+<view class="tab-content">
+  <view wx:if="{{tabIndex == 0}}">
+    <view class="apply-content">
+      <view class="apply-list">
+        <view class="apply-list-item" style="line-height:109rpx;">
+          <view class="list-item-label">团长头像</view>
+          <view class="list-item-img">
+            <image src="{{colonelInfo.logo}}"></image>
+          </view>
+        </view>
+
+        <view class="apply-list-item">
+          <view class="list-item-label">团长名称</view>
+          <view class="list-item-input">
+            <input disabled="true" type="text" value="{{colonelInfo.nick_name}}"></input>
+          </view>
+        </view>
+
+        <view class="apply-list-item">
+          <view class="list-item-label">联系电话</view>
+          <view class="list-item-input">
+            <input disabled="true" type="number" maxlength="11" value="{{colonelInfo.phone}}"></input>
+          </view>
+        </view>
+
+        <view class="apply-list-item">
+          <view class="list-item-label">地区</view>
+          <view class="list-item-input ellipsis">
+            <input disabled="true" type="number" maxlength="11" value="{{colonelInfo.region_address}}"></input>
+          </view>
+        </view>
+
+        <view class="apply-list-item">
+          <view class="list-item-label">代理小区</view>
+          <view class="list-item-input">
+            <input disabled="true" type="text" value="{{colonelInfo.housing_estate}}"></input>
+          </view>
+        </view>
+
+        <view class="apply-list-item">
+          <view><label>提货地址</label></view>
+          <view class='color-666'>{{colonelInfo.address_detail}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="apply-content" style="margin-top: 10rpx">
+      <view class="apply-list">
+        <view class="apply-list-item" wx:if="{{colonelInfo.ship_type.length}}">
+          <view><label>配送方式</label></view>
+          <view class='color-666'><text wx:for="{{colonelInfo.ship_type}}" wx:key="index" class='delivery-model'>{{item == 0 ? '自提点自提' : '团长配送'}}</text></view>
+        </view>
+
+        <view class="apply-list-item-auto" wx:if="{{colonelInfo.ship_type.length == 2 || colonelInfo.ship_type[0] == 1}}">
+          <view><label>团长配送费</label></view>
+          <view class='color-666'>{{colonelInfo.express_fee}}</view>
+        </view>
+      </view>
+    </view>
+ 
+    <view class='extra-info-box' wx:if="{{extraInfo.length > 0}}">
+      <text>附加信息</text>
+      <view class='apply-content'>
+        <view class="apply-list">
+          <block wx:for="{{extraInfo}}">
+            <view class="apply-list-item">
+              <view class="list-item-label">{{item.txt}}</view>
+              <view class='color-666'>{{item.value || '暂未填写内容'}}</view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+ 
+    <view class="apply-explain">
+      <text bindtap="showLeader">查看社区团长说明</text>
+    </view>
+  </view>
+</view>
+
+<view class="bottom-button" wx:if="{{tabIndex == 0}}">
+  <button type="default" bindtap="applyModify">修改信息</button>
+</view>
+
+<view class="apply-info" wx:if="{{showLeader}}">
+  <view class="apply-info-message">
+    <view class="message-title">团长说明</view>
+    <view class="message-text">
+      <view wx:for="{{explain}}" wx:key="index">{{item}}</view>
+    </view>
+    <view class="message-btn" bindtap="showLeader">知道了</view>
+  </view>
+</view>
+

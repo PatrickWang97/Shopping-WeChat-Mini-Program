@@ -1,0 +1,51 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="community-content">
+  <view class="community-banner" wx:if="{{banner.length}}">
+    <swiper autoplay="true" duration="1000" interval="5000">
+      <swiper-item wx:for="{{banner}}" wx:key="index">
+        <image mode="widthFix" src="{{item}}"></image>
+      </swiper-item>
+    </swiper>
+  </view>
+  <view class="community-describe">
+    <view class="describe-title">{{title}}</view>
+    <view class="describe-time">
+      <text class="icon-comTime ico-moon"></text>
+      <text>{{start_date}}-{{end_date}}</text>
+    </view>
+    <view class="describe-intro" style="height: {{(showBtn && showMore) ?'168rpx':'auto'}}">
+      <label>{{illustration}}</label>
+      <view wx:if="{{showMore}}" bindtap="isShowMore" style="width:{{showBtn ? '' : '60rpx'}}">{{showBtn ? "展开详细" : "收起"}}</view>
+    </view>
+  </view>
+  <view class="community-good">
+    <view class="community-good-title" wx:if="{{notice}}">
+      <text class="icon-communityPage-news ico-moon"></text>请勾选买家可购买的商品<text class="ico-moon icon-closes pull-right" bindtap="closeNotice"></text>
+    </view>
+    <view class="community-good-content">
+      <view class="community-good-number">商品
+        <label>(已选{{agent_goods_ids.length}}/{{goods_num}})</label>
+      </view>
+      <view class="community-good-item" wx:for="{{goodsArr}}" wx:key="id" data-index="{{ index }}" data-id="{{item.id}}"  bindtap="checkGood">
+        <label wx:if="{{is_audit != 4}}" class="community-check-box {{item.check ? 'checked ico-moon icon-success-tip' : ''}}"></label>
+        <view class="community-good-info">
+          <view class="good-info-img">
+            <image mode="aspectFill" src="{{item.cover}}"></image>
+            <image wx:if="{{item.stock == 0}}" class='group-no-stock' src="http://cdn.jisuapp.cn/static/webapp/images/promotion/group-no-stock.png"></image>
+          </view>
+          <view class="community-good-text">
+            <view class="good-title">{{item.title}}</view>
+            <view class="good-commission">佣金¥{{item.commissionPrice}}</view>
+            <view class="goods-describe-price" data-virtual="{{(item.virtual_price == 0.00 || item.virtual_price == null) ? '' : '¥' + item.virtual_price}}">¥{{item.price}}</view>
+            <view class="goods-describe-stock">已售{{item.sales}}件.剩余{{item.stock}}件</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="community-btn" wx:if="{{is_audit != 4}}">
+    <button bindtap="saveGoods">保存</button>
+    <button open-type="share">保存并转发至群聊</button>
+  </view>
+</view>

@@ -1,0 +1,334 @@
+page {
+  background-color: #fff;
+  overflow: hidden;
+}
+.leagueVip-main-wrapper {
+  min-height: 100vh;
+  background-color: #000;
+}
+.leagueVip-card-wrapper .card-swiper {
+  width: 750rpx;
+  height: 264rpx;
+  padding-top: 20rpx;
+  background: url('http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-leagueVip/vip_swiper_bg.png') no-repeat;
+  background-size: cover;
+  background-position: 0 -100rpx;
+}
+.leagueVip-card-wrapper .card-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.leagueVip-card-wrapper .card-info {
+  position: relative;
+  width: 640rpx;
+  height: 160rpx;
+  border-radius: 16rpx;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  overflow: hidden;
+}
+.leagueVip-card-wrapper .card-info.vip0 {
+  background-image: url('http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-leagueVip/vip_bg0.png');
+}
+.leagueVip-card-wrapper .card-info.vip1 {
+  background-image: url('http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-leagueVip/vip_bg1.png');
+}
+.leagueVip-card-wrapper .card-info.vip2 {
+  background-image: url('http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-leagueVip/vip_bg2.png');
+}
+.leagueVip-card-wrapper .card-info.active {
+  height: 180rpx;
+  transition: height .1s linear;
+}
+.leagueVip-card-wrapper .card-mark-txt {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 138rpx;
+  height: 34rpx;
+  font-size: 22rpx;
+  line-height: 34rpx;
+  text-align: center;
+  color: #fff;
+}
+.leagueVip-card-wrapper .active .card-mark-txt {
+  height: 42rpx;
+  line-height: 42rpx;
+}
+.leagueVip-card-wrapper .card-name {
+  position: absolute;
+  top: 50%;
+  left: 232rpx;
+  font-size: 36rpx;
+  color: #F6CB7E;
+  transform: translateY(-50%);
+}
+.leagueVip-card-wrapper .vip1 .card-name {
+  left: 165rpx;
+  color: #5F4830;
+}
+.leagueVip-card-wrapper .card-level-txt {
+  margin-right: 12rpx;
+  font-size: 50rpx;
+  font-weight: bold;
+}
+.leagueVip-detail-wrapper {
+  width: 100%;
+  border-radius: 24rpx 24rpx 0px 0px;
+  overflow: hidden;
+}
+.leagueVip-detail-wrapper .detail-swiper {
+  width: 750rpx;
+  height: 960rpx;
+  background-color: #fff;
+  overflow: auto;
+}
+.leagueVip-detail-wrapper .detail-item {
+  border-radius: 24rpx 24rpx 0px 0px;
+  background-color: #fff;
+  overflow: auto;
+}
+.leagueVip-detail-wrapper .detail-info-list {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+}
+.leagueVip-detail-wrapper .info-item {
+  display: flex;
+  padding: 32rpx 0;
+  margin: 0 42rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+.leagueVip-detail-wrapper .title-txt {
+  display: inline-block;
+  width: 208rpx;
+  font-weight: bold;
+  color: #333;
+}
+.leagueVip-detail-wrapper .content-txt {
+  display: block;
+  max-width: 460rpx;
+  line-height: 1.4;
+}
+.leagueVip-detail-wrapper .shops,
+.leagueVip-detail-wrapper .days {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 52rpx;
+}
+.leagueVip-detail-wrapper .shops {
+  padding: 32rpx 0;
+}
+.leagueVip-detail-wrapper .shops .icon-rightarrow,
+.leagueVip-detail-wrapper .days .icon-rightarrow {
+  font-size: 24rpx;
+  color: #d2d2d2;
+}
+.leagueVip-detail-wrapper .receive-btn {
+  display: inline-block;
+  position: relative;
+  top: -2rpx;
+  padding:  0 6rpx;
+  margin-right: 12rpx;
+  border-radius: 4rpx;
+  font-size: 20rpx;
+  color: #999;
+  background-color: rgba(49, 49, 49, .08);
+}
+.leagueVip-detail-wrapper .receive-btn.not {
+  color: #FF7100;
+  background-color: transparent;
+}
+.leagueVip-detail-wrapper .receive-btn.not .receive-bd {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  border-radius: 8rpx;
+  border-width: 1px;
+  border-color: rgb(255, 113, 0);
+  border-style: solid;
+  box-sizing: border-box;
+  opacity: .6;
+  transform-origin: 0 0;
+  transform: scale(0.5,0.5);
+}
+.leagueVip-detail-wrapper .receive-btn.not .receive-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 8rpx;
+  background-color: rgb(255, 113, 0);
+  opacity: .06;
+}
+.leagueVip-detail-wrapper .package {
+  flex-direction: column;
+}
+.package-list {
+  width: auto;
+  height: 250rpx;
+  margin-top: 32rpx;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.package-list .package-item {
+  display: inline-block;
+  position: relative;
+  width: 230rpx;
+  height: 250rpx;
+  margin-right: 22rpx;
+  border-radius: 20rpx;
+  border: 1px solid #e7e7e7;
+  text-align: center;
+  box-sizing: border-box;
+}
+.package-list .package-item.selected {
+  border: 1px solid rgba(194, 152, 85, .7);
+  color: #C29855;
+  background-color: #FEFCEF;
+  transition: all .2s linear;
+}
+.package-list .package-item .item-info {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.package-item .item-month-txt {
+  font-size: 28rpx;
+  color: #666;
+}
+.package-item.selected .item-month-txt {
+ color: #C29855;
+}
+.package-item .item-price {
+  margin-top: 10rpx;
+}
+.package-item .item-mark-txt {
+  font-size: 34rpx;
+  color: #FF7100;
+}
+.package-item.selected .item-mark-txt {
+  color: #825C2A !important;
+}
+.package-item .item-price-txt {
+  font-size: 50rpx;
+  color: #FF7100;
+}
+.package-item.selected .item-price-txt {
+  color: #825C2A !important;
+}
+.package-item .item-virtual-txt {
+  padding-top: 20rpx;
+  font-size: 24rpx;
+  color: #999;
+  text-decoration: line-through;
+}
+.package-item.selected .item-virtual-txt {
+  color: #C29855;
+}
+.rights {
+  flex-direction: column;
+}
+.rights .rights-list {
+  width: 610rpx;
+  padding: 18rpx 30rpx;
+  border-radius: 10rpx;
+  margin-top: 20rpx;
+  font-size: 26rpx;
+  line-height: 26rpx;
+  color: #999;
+  background-color: #F7F8FC;
+}
+.rights-list .rights-item {
+  display: flex;
+  position: relative;
+  padding: 12rpx;
+}
+.rights-list .rights-item.coupon {
+  display: flex;
+}
+.rights-list .item-content-txt {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.4;
+}
+.rights-list .item-title {
+  position: relative;
+  width: 152rpx;
+  height: 30rpx;
+  padding-left: 20rpx;
+  color: #333;
+}
+.rights-list .item-mark {
+  position: absolute;
+  left: 0;
+  top: 52%;
+  width: 6rpx;
+  height: 14rpx;
+  border-radius: 4rpx;
+  background-color: #FF7100;
+  transform: translateY(-50%);
+}
+.leagueVip-detail-wrapper .info-items {
+  padding: 14rpx 0 30rpx;
+  margin: 0 42rpx;
+}
+.leagueVip-detail-wrapper .info-items.is-pay {
+  padding: 14rpx 0 128rpx;
+}
+.leagueVip-detail-wrapper .info-item.tip,
+.leagueVip-detail-wrapper .info-item.contact,
+.leagueVip-detail-wrapper .info-item.notice  {
+  padding: 16rpx 0;
+  margin: 0;
+  word-break: break-all;
+}
+.leagueVip-nodata-wrapper {
+  padding-top: 240rpx;
+  text-align: center;
+  color: #999;
+}
+.buy-btn {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 88rpx;
+  border-radius: 0;
+  font-size: 30rpx;
+  line-height: 88rpx;
+  text-align: center;
+  color: #fff;
+  background-color: #FF7100;
+}
+.thin-bd-b,
+.thin-bd-t {
+  position: relative;
+}
+.thin-bd-b:before,
+.thin-bd-t:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  width: 100%;
+  background-color: #f3f3f3;
+  transform: scaleY(0.5);
+  box-sizing: border-box;
+}
+.thin-bd-b:before {
+  bottom: 0;
+}
+.thin-bd-t:before {
+  top: 0;
+}

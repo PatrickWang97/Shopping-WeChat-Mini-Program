@@ -1,0 +1,59 @@
+<component-reward-point rewardPointObj="{{rewardPointObj}}" shareGiftsObj="{{shareGiftsObj}}" collectGiftsObj="{{collectGiftsObj}}" collectGetObj="{{collectGetObj}}"></component-reward-point>
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-sinkingModal></component-sinkingModal>
+
+<view class="evoucher-refund-container">
+  <view class="evoucher-item">
+    <view class="item-img">
+      <image src="{{goodsInfo.cover}}" mode="aspectFit"></image>
+    </view>
+    <view class="item-content flex-column">
+      <view class="row-between">
+        <text class="item-name">{{goodsInfo.goods_name}}</text>
+      </view>
+      <text class="item-species gray" wx:if="{{goodsInfo.model_value}}">{{goodsInfo.model_value}}</text>
+    <view class="row-between" style="padding-top: {{goodsInfo.model_value ? 0 : '60rpx'}};">
+        <text class="gray">有效期 {{goodsInfo.valid_date_str}}</text>
+      </view>
+      <view class="item-price row-between">
+        <text class="theme-color" style="{{ 'color:' + storeStyle.theme }}">￥{{goodsInfo.price}}</text>
+        <view class="goods-number-box pull-right" catchtap="stopPropagation" wx:if="{{origin == 'apply'}}">
+          <view class="goods-num-mius {{refundGoods.num == 1 ? 'no-more' :''}}" bindtap="clickMinusButton">-</view>
+          <input type="number" class="goods-num-box" value="{{ refundGoods.num }}" bindinput="inputGoodsCount" />
+          <view class="goods-num-plus {{maxNum == goods.num ? 'no-more' :''}}" bindtap="clickPlusButton">+</view>
+        </view>
+        <view wx:else>×{{refundGoods.num}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="evoucher-box row-between price">
+    <view class="price-title"><text style="{{ 'color:' + storeStyle.theme }}">*</text>退款金额</view>
+    <text class="theme-color" style="{{ 'color:' + storeStyle.theme }}">￥{{refundPrice}}</text>
+  </view>
+
+  <view class="evoucher-box intro">
+    <text class="box-title">退款说明（选填）</text>
+    <textarea placeholder="在这里输入" bindinput="inputRefundDes" value="{{refundDes}}"></textarea>
+  </view>
+
+  <view class="evoucher-box img">
+    <text class="box-title">上传图片（选填）</text>
+    <view class="img-box">
+      <view wx:for="{{ imagesArr }}" wx:key="index">
+        <text class="delete-img ico-moon icon-closes" catchtap="deleteImage" data-index="{{ index }}"></text>
+        <image src="{{item}}" data-index="{{ index }}" catchtap="previewImage"></image>
+      </view>
+      <view wx:if="{{ imagesArr.length < 8 }}" class="add-img" bindtap="chooseImage">
+        <text class="ico-moon icon-fn-camera"></text>
+        <view>添加图片</view>
+      </view>
+    </view>
+  </view>
+  
+
+  <view class="refund-btn">
+    <button bindtap="sureRefund" style="background: linear-gradient(90deg,{{storeStyle.secondary}},{{storeStyle.theme}});">申请退款</button>
+  </view>
+</view>

@@ -1,0 +1,9 @@
+{
+    "navigationBarTitleText":"我的推广",
+    "navigationBarBackgroundColor": "#ff7700",
+    "navigationBarTextStyle": "white",
+    "usingComponents":{
+        "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+        "component-newcomer-gift": "/components/newcomerGift/newcomerGift"
+    }
+}

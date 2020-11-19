@@ -1,0 +1,7 @@
+{
+    "navigationBarTitleText":"店铺设置",
+    "usingComponents":{
+        "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+        "component-newcomer-gift": "/components/newcomerGift/newcomerGift"
+    }
+}

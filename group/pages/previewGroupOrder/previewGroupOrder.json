@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "确认订单",
+  "usingComponents": {
+    "component-memberDiscount": "/components/memberDiscount/memberDiscount",
+    "component-paySettlementGift": "/components/paySettlementGift/paySettlementGift"
+  }
+}

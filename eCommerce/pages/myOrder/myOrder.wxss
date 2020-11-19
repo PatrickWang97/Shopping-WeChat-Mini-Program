@@ -1,0 +1,520 @@
+page {
+  height: 100%;
+  background-color: #f3f3f3;
+  font-size: 29rpx;
+}
+.myOrder-wrap {
+  height: 100%;
+  padding-top: 170rpx;
+}
+.order-navigation {
+  padding-top: 84rpx;
+  position: fixed;
+  z-index: 999;
+  background: #fff;
+  width: 100%;
+}
+.nav-title-content {
+  display: inline-block;
+  vertical-align: middle;
+}
+.nav-title-icon {
+  display: inline-block;
+  height: 38rpx;
+  width: 38rpx;
+  line-height: 38rpx;
+  border-radius: 50%;
+  font-size: 16rpx;
+  color: #999;
+  background: #EFEFEF;
+  vertical-align: middle;
+  margin-left: 14rpx;
+  transform: rotateZ(0);
+  transition: transform 0.5s;
+}
+.rotate {
+  transform: rotateZ(180deg);
+  transition: transform 0.5s;
+}
+.nav-title {
+  line-height: 88rpx;
+  height: 88rpx;
+  text-align: center;
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #000;
+}
+.nav-title .icon-leftarrow {
+  position: absolute;
+  left: 25rpx;
+  line-height: 90rpx;
+}
+.order-navigation .mask {
+  background: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 180rpx;
+  bottom: 0;
+}
+.goods-type-box {
+  background: #fff;
+  padding: 30rpx;
+  border-radius: 0px 0px 20px 20px;
+  position: fixed;
+  width: 100%;
+  box-sizing: border-box;
+}
+.goods-type-box .goods-type {
+  width: 156rpx;
+  display: inline-block;
+  height: 60rpx;
+  line-height: 60rpx;
+  color: #666;
+  font-size: 24rpx;
+  text-align: center;
+  border-radius: 30rpx;
+  background: #F6F6F6;
+  margin: 0 22rpx 22rpx 0;
+}
+.goods-type-box .goods-type:nth-child(4n){
+  margin-right: 0;
+}
+.goods-type-box .goods-type.selected {
+  background: #FFEAD9;
+  color: #ff7100;
+}
+.order-list-header {
+  background: #fff;
+}
+.order-list-search {
+  width: calc(100% - 60rpx);
+  height: 60rpx;
+  background: #F0F0F0;
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 8rpx;
+  margin: 20rpx 30rpx 10rpx 30rpx;
+}
+.order-list-search .icon-search {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 20rpx;
+  line-height: 60rpx;
+  color: #B3B3B3;
+}
+.order-list-search .icon-closes {
+  display: inline-block;
+  font-size: 22rpx;
+  line-height: 62rpx;
+  color: #B3B3B3;
+  width: 70rpx;
+  text-align: center;
+}
+.order-list-search input {
+  width: 550rpx;
+  line-height: 60rpx;
+  display: inline-block;
+  vertical-align: middle;
+}
+.placehoder-class {
+  color: #ccc;
+  font-size: 28rpx;
+}
+.goods-type-name {
+  color: #fff;
+  font-size: 20rpx;
+  vertical-align: middle;
+  margin-right: 20rpx;
+  height: 40rpx;
+  width: 40rpx;
+  line-height: 40rpx;
+  border-radius: 50%;
+  text-align: center;
+}
+.icon-order-ecommerce, .icon-order-takeaway, .icon-order-transfer, .icon-order-dine, .icon-order-giftcard {
+  background: linear-gradient(142deg,#FF9B00,#FF7100);
+}
+.icon-order-appointment {
+  background: linear-gradient(135deg,#06D8FF,#1491FE);
+}
+.icon-order-tostore, .icon-order-rownumber, .icon-order-secondarycard {
+  background: linear-gradient(142deg,#63DD3D,#29BD78);
+}
+.icon-order-communitygroup, .icon-order-exchange {
+  background: linear-gradient(312deg,#4A8AFF,#6E79FF);
+}
+.icon-order-storedvalue, .icon-order-vipcard, .icon-order-shoppingcard, .icon-order-rechargecard {
+  background: linear-gradient(144deg,#FF3664,#FA2C4B);
+}
+.model-value-box {
+  overflow: hidden;
+}
+.model-value-box .model-value {
+  width: 390rpx; /*原来420rpx 当订单商品数量很大时样式会有问题*/
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  color: #999;
+  font-size: 24rpx;
+}
+.model-value-box .model-num {
+  font-size: 26rpx;
+}
+.myOrder-goods-price {
+  font-size: 30rpx;
+}
+.total-price {
+  font-size: 30rpx;
+  color: #ff7100;
+}
+.tab-list-submenu {
+  line-height: 80rpx;
+  font-size: 26rpx;
+  background: #fff;
+  color: #666;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+.tab-list-submenu view {
+  width: 144rpx;
+  display: inline-block;
+  text-align: center;
+}
+.tab-list-submenu view.active{
+  color: #ff7100;
+  position: relative;
+  font-weight: bold;
+}
+.tab-list-submenu view.active .bottom-line {
+  visibility: initial;
+}
+.MeanTab {
+  display: inline-block;
+  padding: 0 20rpx;
+}
+.bottom-line {
+  position: absolute;
+  display: inline-block;
+  width: 40rpx;
+  height: 4rpx;
+  background: #ff7000;
+  bottom: 12rpx;
+  border-radius: 4rpx;
+  left: 54rpx;
+  visibility: hidden;
+}
+.goods-list-submenu .trangel {
+  display: inline-block;
+  margin-left: 8rpx;
+  position: relative;
+  top: -4rpx;
+  left: -4rpx;
+  width: 0;
+  height: 0;
+  border-right: 8rpx solid transparent;
+  border-left: 8rpx solid transparent;
+  border-top: 8rpx solid #D2D2D2;
+}
+.myOrder-tab-list {
+  position: relative;
+}
+.myOrder-tab-list .goods-list-submenu {
+  width: calc(100% - 130rpx);
+}
+.myOrder-tab-list .filter-goods-pick {
+  font-size: 26rpx;
+  color: #666;
+  display: inline-block;
+  width: 130rpx;
+  text-align: center;
+  position: absolute;
+  right: 0;
+  background: #fff;
+}
+.goods-order-list-box {
+  background: #fff;
+  margin-bottom: 10rpx;
+}
+.goods-order-header{
+  line-height: 80rpx;
+  font-size: 26rpx;
+  margin-bottom: 20rpx;
+  border-bottom: 2rpx solid #F3F3F3;
+}
+.goods-order-time {
+  color: #999;
+  vertical-align: middle;
+}
+.goods-order-content {
+  padding: 20rpx 0;
+  display: flex;
+}
+.goods-order-detail {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  vertical-align: top;
+  width: 480rpx;
+  height: 140rpx;
+  margin-left: 20rpx;
+  color: #333;
+}
+.goods-order-content .cover{
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 8rpx;
+  vertical-align: top;
+}
+.goods-order-content .title {
+  font-size: 26rpx;
+  margin-bottom: 10rpx;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.goods-order-content .price {
+  font-size: 28rpx;
+}
+.goods-order-list-box .total-price {
+  font-size: 30rpx;
+  color: #ff7100;
+}
+.goods-order-bottom {
+  line-height: 80rpx;
+  text-align: right;
+  font-size: 24rpx;
+  color: #666;
+}
+.goods-btn-box {
+  text-align: right;
+  line-height: 96rpx;
+  position: relative;
+  border-top: 2rpx solid #f3f3f3;
+}
+.goods-btn-box .btn {
+  width: 148rpx;
+  padding: 0;
+  border: 2rpx solid #D2D2D2;
+  border-radius: 28rpx;
+  line-height: 56rpx;
+  margin-left: 20rpx;
+  color: #666;
+  font-size: 24rpx;
+}
+.filter-goods-pick-mask {
+  position: fixed;
+  top: 350rpx;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+.filter-goods-pick-box {
+  width: 100%;
+  background: #F9F9F9;
+}
+.filter-goods-pick-box view {
+  line-height: 80rpx;
+  color: #666;
+  font-size: 26rpx;
+  padding: 0 30rpx 0 40rpx;
+}
+.filter-goods-pick-box view.selected {
+  color: #ff7100;
+}
+.myOrder-content-body {
+  height: calc(100% - 172rpx);
+  margin-top: 25rpx;
+  padding: 0 25rpx;
+}
+.lengthOneBody {
+  height:calc(100% - 94rpx);
+  margin-top: 94rpx;
+}
+.myOrder-list-wrap {
+  padding: 0 30rpx;
+  margin-bottom: 24rpx;
+  border-radius: 12rpx;
+  background-color: #fff;
+}
+.myOrder-order-status {
+  color: #ff7100;
+  margin-top: 4rpx;
+}
+.noMoreNewDataTip {
+  text-align: center;
+  color: #aaa;
+  line-height: 30px;
+  margin-bottom: 10px;
+}
+.scrollContainer {
+  height: 100%;
+  padding: 0 24rpx;
+}
+.myOrder-franchisee-name {
+  line-height: 80rpx;
+  color: #aaa;
+}
+.cash-delivery {
+  display:inline-block;
+  padding: 0 10rpx;
+  background: #f2303e;
+  color: #fff;
+  font-size: 25rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  vertical-align: middle;
+  margin-right: 10rpx;
+  border-radius: 4rpx;
+}
+.add-time {
+  vertical-align: middle;
+}
+.goods-gift, .goods-seckill, .goods-presell, .goods-group{
+  display:inline-block;
+  padding: 0 10rpx;
+  color: #fff;
+  font-size: 22rpx;
+  height: 26rpx;
+  line-height: 26rpx;
+  margin-right: 10rpx;
+  border-radius: 4rpx;
+}
+.goods-gift, .goods-seckill, .goods-group{
+  background: #f2303e;
+}
+.myOrder-goods-tips {
+  position: absolute;
+  width: 30rpx;
+  height: 40rpx;
+  color: #fff;
+  font-size: 22rpx;
+  overflow: hidden;
+  z-index: 1;
+}
+.myOrder-goods-tips-top {
+  position: absolute;
+  width: 30rpx;
+  height: 30rpx;
+  background: #FF7100;
+  z-index: 1;
+  text-align: center;
+}
+.myOrder-goods-tips-left {
+  position: absolute;
+  top: 20rpx;
+  left: -3px;
+  width: 15rpx;
+  height: 15rpx;
+  background: #FF7100;
+  transform: rotate(-30deg);
+  -webkit-transform: rotate(-30deg);
+  -moz-transform: rotate(-30deg);
+  -ms-transform: rotate(-30deg);
+  -o-transform: rotate(-30deg);
+}
+.myOrder-goods-tips-right {
+  position: absolute;
+  top: 20rpx;
+  right: -3px;
+  width: 15rpx;
+  height: 15rpx;
+  background: #FF7100;
+  transform: rotate(30deg);
+  -webkit-transform: rotate(30deg);
+  -moz-transform: rotate(30deg);
+  -ms-transform: rotate(30deg);
+  -o-transform: rotate(30deg);
+}
+.order-noLogin{
+  text-align: center;
+}
+.order-noLogin image{
+  width: 200rpx;
+  height: 200rpx;
+  margin: 200rpx auto 40rpx;
+}
+.order-noLogin-status{
+  font-size: 30rpx;
+  color: #333;
+  font-weight: bold;
+}
+.order-noLogin-tip{
+ font-size: 26rpx;
+ color: #666;
+ margin-top:  10rpx;
+}
+.order-noLogin-btn{
+  width: 220rpx;
+  text-align: center;
+  line-height: 70rpx;
+  color: #fff;
+  background: #ff7100;
+  border-radius: 35rpx;
+  font-size: 28rpx;
+  margin: 46rpx auto;
+}
+.myOrder-pay-directly{
+  vertical-align: middle;
+  box-sizing: initial;
+}
+.row-num-content {
+  line-height: 60rpx;
+}
+.row-num-content .ico-moon {
+  color: #3091f2;
+  margin-right: 10rpx;
+}
+.order-content-list {
+  display: flex;
+  justify-content: space-between;
+  line-height: 60rpx;
+}
+.column-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.qr-code-dialog {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  font-size: 26rpx;
+  background-color: rgba(0, 0, 0, .4);
+  z-index: 11;
+}
+.qr-code-dialog .qr-code {
+  width: 586rpx;
+  height: 792rpx;
+  border-radius: 12rpx;
+  background-color: #fff;
+}
+.qr-code-dialog .code-img {
+  width: 480rpx;
+  height: 480rpx;
+  padding: 40rpx 0 85rpx;
+}
+.qr-code-dialog .qr-code-close {
+  margin-top: 50rpx;
+  height: 56rpx;
+  width: 56rpx;
+  text-align: center;
+  line-height: 56rpx;
+  color: #fff;
+  border-radius: 50%;
+  border: 1px solid #fff;
+}
+.qr-code-dialog .code-num {
+  font-size: 28rpx;
+  font-weight: bold;
+}
+.qr-code-dialog .code-copy {
+  padding-top: 30rpx;
+  color: #ff7100;
+}

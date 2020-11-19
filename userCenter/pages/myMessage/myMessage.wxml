@@ -1,0 +1,187 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-behavior-track></component-behavior-track>
+<wxs module="pictureWxsModule">
+var isArray = function(array) {
+  return array.join ? true : false;
+}
+module.exports.isArray = isArray;
+</wxs>
+<view class="myMessage-wrap page" id="myMessage">
+  <view class="myMessage-top-nav" wx:if="{{ messageDetail == 0 }}">
+    <view class="myMessage-type-list">
+      <view class="myMessage-type-item {{ messageType == 5 ? 'active' : '' }}" catchtap="changeMessageType" data-message-type="5">
+        系统消息
+        <view class="active-line" wx:if="{{messageType == 5}}"></view>
+      </view>
+      <view class="myMessage-type-item {{ messageType == 6 ? 'active' : '' }} {{ interactBranch.unreadCount > 0 ? 'has-noread' : '' }}" catchtap="changeMessageType" data-message-type="6">
+        互动消息
+        <view class="active-line" wx:if="{{messageType == 6}}"></view>
+      </view>
+      <view class="myMessage-type-item {{ messageType == 16 ? 'active' : '' }} {{ interactBranch.unreadCount > 0 ? 'has-noread' : '' }}" catchtap="changeMessageType" data-message-type="16">
+        推送消息
+        <view class="active-line" wx:if="{{messageType == 16}}"></view>
+      </view>
+    </view>
+  </view>
+  <view class="myMessage-content-container" wx:if="{{ messageDetail == 0 }}">
+    <scroll-view id="myMessage-system-message" class="myMessage-content {{ messageType == 5 ? 'active' : '' }}" scroll-y="true" lower-threshold="116" bindscrolltolower="checkMoreMessageData">
+      <block wx:for="{{ systemBranch.data }}" wx:key="index">
+        <view class="message-item {{ item.className }}" wx:if="{{ item.messageType == 1 }}" catchtap="jumpToPage" data-page-url="{{ item.messagePageUrl }}" >
+          <view class="message-row">
+            <view class="message-title">{{ item.messageTitle }}</view>
+            <view class="message-time">{{ item.messageTime }}</view>
+          </view>
+          <view class="message-row">
+            <image class="message-img" src="{{ item.messageImg }}" ></image>
+            <view class="message-content">{{ item.messageContent }}</view>
+          </view>
+        </view>
+        <view class="message-item {{ item.className }}" wx:elif="{{ item.messageType == 2 }}">
+          <view class="message-row">
+            <view class="message-title">{{ item.messageTitle }}</view>
+            <view class="message-time">{{ item.messageTime }}</view>
+          </view>
+          <view class="message-row">
+            <view class="message-img" >
+              <view class="ico-moon {{ item.messageImg }}"></view>
+            </view>
+            <view class="message-content">
+              <view class="message-price">
+                <view class="message-price-text">支付金额：</view>
+                <view class="message-price-text">¥{{ item.messagePrice }}</view>
+              </view>
+              <view class="message-orderNum">
+                <view class="message-orderNum-text">订单号：</view>
+                <view class="message-orderNum-text">{{ item.messageOrderId }}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="message-item {{ item.className }}" wx:elif="{{ item.messageType == 3 }}" data-form="{{ item.messageForm }}" data-form-id="{{ item.messageFormId }}" data-form-data-id="{{ item.messageFormDataId }}" catchtap="showMessageDetailForm">
+          <view class="message-row">
+            <view class="message-title">{{ item.messageTitle }}</view>
+            <view class="message-time">{{ item.messageTime }}</view>
+          </view>
+          <view class="message-row">
+            <view class="message-img" >
+              <view class="ico-moon {{ item.messageImg }}"></view>
+            </view>
+            <view class="message-content">
+              <view class="message-price">
+                <view class="message-price-text">{{ item.messageContent }}</view>
+                <view class="message-price-text" wx:if="{{(item.review_status || item.review_status >= 0) && item.review_switch == 1}}">状态：<text class="{{item.review_status == 0?'':item.review_status == 1? 'success-examine': 'faile-examine'}}">{{ item.review_status == 0 ? reviewList.applying_text || '待审核' : item.review_status == 1? reviewList.apply_passed_text || '审核通过': reviewList.apply_unpassed_text || '审核不通过'}}</text></view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="message-item {{ item.className }}" wx:elif="{{ item.messageType == 8 }}" >
+          <view class="message-row">
+            <view class="message-title">{{ item.messageTitle }}</view>
+            <view class="message-time">{{ item.messageTime }}</view>
+          </view>
+          <view class="message-row">
+            <view class="message-img" >
+              <view class="ico-moon {{ item.messageImg }}"></view>
+            </view>
+            <view class="message-content"><text>{{ item.messageContent }}</text></view>
+          </view>
+        </view>
+      </block>
+      <view wx:if="{{ !systemBranch.data.length }}">
+        <view class="request-none">
+          <image src="http://cdn.jisuapp.cn/static/webapp/images/request-none.png" mode="widthFix"></image>
+          <view>暂无数据~</view>
+        </view>
+      </view>
+    </scroll-view>
+    <scroll-view id="myMessage-interact-message" class="myMessage-content {{ messageType == 6 ? 'active' : '' }}" scroll-y="true" lower-threshold="116" bindscrolltolower="checkMoreMessageData">
+      <block wx:for="{{ interactBranch.data }}" wx:key="index">
+        <view class="message-item {{ item.className }}" wx:if="{{ item.messageType == 4 }}" >
+          <view class="message-row">
+            <view class="message-title">{{ item.messageTitle }}</view>
+            <view class="message-time">{{ item.messageTime }}</view>
+          </view>
+          <view class="message-row">
+            <view class="message-img" >
+              <view class="ico-moon {{ item.messageImg }}"></view>
+            </view>
+            <view class="message-content">{{ item.messageContent }}</view>
+          </view>
+        </view>
+      </block>
+      <view wx:if="{{ !interactBranch.data.length }}">
+        <view class="request-none">
+          <image src="http://cdn.jisuapp.cn/static/webapp/images/request-none.png" mode="widthFix"></image>
+          <view>暂无数据~</view>
+        </view>
+      </view>
+    </scroll-view>
+    <scroll-view id="myMessage-push-message" class="myMessage-content {{ messageType == 16 ? 'active' : '' }}" scroll-y="true" lower-threshold="116" bindscrolltolower="checkMoreMessageData">
+      <block wx:for="{{ pushBranch.data }}" wx:key="index">
+        <view class="message-item-push" wx:if="{{ item.messageType == 16 }}" data-event-params="{{item.messageEventParams}}" catchtap="tapEventCommonHandler">
+          <!-- <view class="message-title">{{ item.messageTitle }}</view> -->
+          <view class="message-content-push">{{ item.messageContent }}</view>
+          <view class="message-time-push">{{ item.messageTime }}</view>
+          <!-- <view class="message-img">
+            <view class="ico-moon {{ item.messageImg }}"></view>
+          </view> -->
+         
+        </view>
+      </block>
+      <view wx:if="{{ !pushBranch.data.length }}">
+        <view class="request-none">
+          <image src="http://cdn.jisuapp.cn/static/webapp/images/request-none.png" mode="widthFix"></image>
+          <view>暂无数据~</view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+  <view class="myMessage-detail-form" wx:if="{{ messageDetail == 3 }}">
+    <view class="myMessage-form-list">
+      <view class="myMessage-form-item" wx:for="{{ messageDetailFormData }}" wx:key="index">
+        <view class="data-name">{{ item.dataName }}</view>
+        <view class="data-content" wx:if="{{ item.dataType != 2 && item.dataType != 12 }}">{{ item.dataContent }}</view>
+        <block wx:elif="{{ item.dataType == 2 }}">
+          <block wx:if="{{pictureWxsModule.isArray(item.dataContent)}}">
+            <image wx:key="index" class="data-img" wx:for="{{ item.dataContent }}" wx:for-item="pic" src="{{ pic }}" ></image>
+          </block>
+          <block wx:else>
+            <image wx:key="index" class="data-img" src="{{ item.dataContent }}"></image>
+          </block>
+        </block>
+        <block wx:elif="{{ item.dataType == 12 }}">
+          <view class='data-content'>
+            <view class='video-item' wx:for="{{ item.dataContent }}" wx:key="index" wx:for-item="videoItem" wx:for-index="videoIndex">
+              <video id="wxParse{{videoIndex}}"
+                     class='video'
+                     poster="{{videoItem.previewImageUrl}}"
+                     src="{{videoItem.fileName}}"
+                     data-id="wxParse{{videoIndex}}"
+                     bindplay="bindPlayVideo"
+                     controls="{{true}}">
+                  <cover-view class="controls" 
+                     data-tag="{{index}}"
+                     data-index="{{videoIndex}}"
+                     hidden="{{videoItem.fileName == videoItem.virtual}}"
+                     data-id="wxParse{{videoIndex}}" 
+                     bindtap="bindplay"></cover-view>
+              </video>
+            </view>
+          </view>
+        </block>
+      </view>
+    </view>
+    <view class="myMessage-form-list" wx:if="{{review_switch == 1}}">
+      <view class="myMessage-form-item">
+        <view class="data-name">状态</view>
+        <view class="data-content">{{form_data.review_status == 0 ? reviewList.applying_text || "待审核":form_data.review_status==1? reviewList.apply_passed_text || "审核通过": reviewList.apply_unpassed_text || "审核不通过"}}</view>
+      </view>
+      <view class="myMessage-form-item" wx:if="{{form_data.review_result}}">
+        <view class="data-name">备注</view>
+        <view class="data-content">{{form_data.review_result}}</view>
+      </view>
+    </view>
+    <view class="myMessage-form-confirm" catchtap="confirmMessageDetailForm">关闭</view>
+  </view>
+</view>

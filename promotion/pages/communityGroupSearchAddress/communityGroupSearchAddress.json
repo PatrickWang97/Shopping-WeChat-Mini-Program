@@ -1,0 +1,7 @@
+{
+    "navigationBarTitleText":"选择收货地址",
+    "usingComponents":{
+        "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+        "component-newcomer-gift": "/components/newcomerGift/newcomerGift"
+    }
+}

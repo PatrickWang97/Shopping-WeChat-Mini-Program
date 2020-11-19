@@ -1,0 +1,37 @@
+<view class="share-polite-mask" wx:if="{{sharePoliteShow}}">
+  <view class="share-polite-content" style="margin-top: {{marginTop}}rpx;">
+    <view class="share-polite-header">
+      <image class="share-polite-img" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/share-polite/share-polite.png"></image>
+      <!-- <view class="receive-times">（{{sharePoliteData.times_limit.type !=1?'每天':''}}限领{{sharePoliteData.times_limit.value}}次）</view> -->
+    </view>
+    <view class="share-polite-body">
+      <view class="share-type-list {{sharePoliteData.rewards.length !=3?'space-around':''}}">
+        <view class="share-type-item" wx:for="{{sharePoliteData.rewards}}" wx:key="">
+          <image class="share-type-image" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/share-polite/{{item.icon}}.png"></image>
+          <view class="share-type-name">{{item.title}}</view>
+        </view>
+        <!-- <view class="share-type-item">
+          <image class="share-type-image" src="/images/share-polite-integral.png"></image>
+          <view class="share-type-name">100积分</view>
+        </view>
+        <view class="share-type-item">
+          <image class="share-type-image" src="/images/share-polite-vip-card.png"></image>
+          <view class="share-type-name">会员卡</view>
+        </view> -->
+      </view>
+       <view class="share-polite-des" wx:if="{{sharePoliteData.extra_rewards.length}}">
+        <view class="first-des">拉新额外奖励</view>
+        <view class="sec-des maTop18">{{sharePoliteData.extra_rewards[0].title}}</view>
+        <view class="third-des maTop18" wx:if="{{sharePoliteData.extra_reward_type == 1}}">*邀请{{sharePoliteData.extra_reward_type_value}}个新用户可领</view>
+        <view class="third-des maTop18" wx:if="{{sharePoliteData.extra_reward_type == 0}}">*每邀请{{sharePoliteData.extra_reward_type_value}}个新用户可领</view>
+        <view class="third-des maTop18" wx:if="{{sharePoliteData.extra_reward_type == 0}}">*{{sharePoliteData.extra_times_limit.type !=1?'每天':''}}限领{{sharePoliteData.extra_times_limit.value}}次</view>
+      </view>
+      <view class="share-polite-remark {{sharePoliteData.extra_rewards.length?'':'maTop60'}}" wx:if="{{sharePoliteData.immediately == 2}}">
+         注：奖励需要分享链接被点击后才生效哦
+      </view>
+    </view>
+  </view>
+  <view class="close-share-window">
+    <text class="ico-moon icon-closes" catchtap="closeWindow"></text>
+  </view>
+</view>

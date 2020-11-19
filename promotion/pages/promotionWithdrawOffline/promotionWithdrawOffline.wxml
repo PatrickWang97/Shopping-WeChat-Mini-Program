@@ -1,0 +1,63 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+  <view class="withdraw-by-other-title">
+    <view class="header-title">提现金额（元）</view>
+    <view class="widthdraw-money">¥{{withdrawCount}}</view>
+  </view>
+  <view class="withdraw-by-other-dialog" hidden="{{!hideWithdrawSuccess}}">
+    <view class="widthdraw-form">
+      <label>收款人</label>
+      <input type="text" placeholder="真实姓名" value="{{distributor_withdraw_arr.real_name}}" bindinput="realname"
+      />
+    </view>
+    <view class="widthdraw-form">
+      <label>收款方式</label>
+      <picker value="{{index}}" range="{{acceptTypeArray}}" bindchange="changeAcceptType">
+        <view>{{acceptTypeArray[index]}}
+          <text class="ico-moon icon-rightarrow"></text>
+        </view>
+      </picker>
+    </view>
+    <block wx:if="{{index == 0}}">
+      <view class="widthdraw-form">
+        <label>支付宝昵称</label>
+        <input type="text" value="{{distributor_withdraw_arr.nickname}}" bindinput="nickname" />
+      </view>
+      <view class="widthdraw-form">
+        <label>支付宝账号</label>
+        <input type="text" value="{{distributor_withdraw_arr.account}}" bindinput="account" />
+      </view>
+    </block>
+    <block wx:else>
+      <view class="widthdraw-form">
+        <label for="">收款银行</label>
+        <input type="text" placeholder="开户行（支行）" value="{{distributor_withdraw_arr.bank_name}}" bindinput="bank"
+        />
+      </view>
+      <view class="widthdraw-form">
+        <label for="">银行卡号</label>
+        <input type="text" placeholder="收款人卡号" value="{{distributor_withdraw_arr.account}}" bindinput="account"
+        />
+      </view>
+    </block>
+    <view class="widthdraw-form">
+      <label for="">备注</label>
+      <textarea type="text" value="{{distributor_withdraw_arr.description}}" bindinput="desc"></textarea>
+    </view>
+  </view>
+  <view class="payattention" wx:if="{{index == 1}}">
+    <view>注：</view>
+    <view>1.异地跨行转账需要承担相应的手续费用。</view>
+    <view>2.银行转款到账时间已实际到账为准。</view>
+    <view>3.请认真核对信息，一旦提交无法修改</view>
+  </view>
+  <view class="payattention" wx:else>注：请认真核对信息，一旦提交无法修改。</view>
+  <view class="submitWidthdraw" catchtap="wantWithdraw">我要提现</view>
+  <view class="page-dialog-wrap" hidden="{{hideWithdrawSuccess}}" catchtap="hideWithdrawSuccess">
+    <view class="withdrawSuccess">
+      <image src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/promotion/withdraw-success.png"></image>
+      <view>成功申请提现了！</view>
+      <view>请耐心等待商家打款~</view>
+      <view class="close-withdraw-btn" catchtap="hideWithdrawSuccess">知道了</view>
+    </view>
+  </view>

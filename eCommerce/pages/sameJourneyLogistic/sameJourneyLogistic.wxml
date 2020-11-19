@@ -1,0 +1,22 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="journey-logistics-header" wx:if="{{sameCity == 0}}">
+  <view class="logistic-status">{{type == 0 ? '商家自配送' : logistics[0].content.msg}}</view>
+  <view wx:if="{{arriveTime}}" class="service-time">预计送达时间：<text>{{arriveTime}}</text></view>
+  <block wx:if="{{showMap}}">
+    <map longitude="{{centerLongitude}}" latitude="{{centerLatitude}}" scale="18" markers="{{riderMakers}}"></map>
+  </block>
+  <view wx:if="{{ type == 0 }}" class="rider-info">商家信息<text catchtap="contactPhone" data-phone="{{phone}}" class="pull-right contact-rider">联系商家</text></view>
+  <view wx:else class="rider-info">骑手信息<text wx:if="{{info.transporter_phone}}" catchtap="contactPhone" data-phone="{{info.transporter_phone}}" class="pull-right contact-rider">联系骑手</text><text class="pull-right rider-name">{{info.transporterName}}</text></view>
+</view>
+<view id="logisticsPage">
+  <view class="logistics-container">
+    <view class="logistics-list">
+      <view wx:for="{{ logistics }}" wx:key="index" class="logistics-item">
+        <view class="logistics-location">{{ item.content.msg }}</view>
+        <view class="logistics-time">{{ item.op_time }}</view>
+      </view>
+    </view>
+  </view>
+</view>
+

@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "订单详情",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "usingComponents": {
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+    "component-behavior-track": "/components/behaviorTrack/behaviorTrack",
+    "write-off-code": "/components/writeOffCode/writeOffCode"
+  },
+  "enablePullDownRefresh": true
+}

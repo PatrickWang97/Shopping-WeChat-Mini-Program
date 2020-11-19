@@ -1,0 +1,7 @@
+{"navigationBarTitleText":"订单详情",
+  "usingComponents": {
+  "component-reward-point": "/components/rewardPointModal/rewardPointModal",
+  "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+  "component-behavior-track": "/components/behaviorTrack/behaviorTrack",
+  "component-newcomer-gift": "/components/newcomerGift/newcomerGift"
+},"enablePullDownRefresh":true}

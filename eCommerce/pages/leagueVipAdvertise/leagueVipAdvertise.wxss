@@ -1,0 +1,335 @@
+page {
+  background-color: #f3f3f3;
+}
+.lvAdvertise-main-wrapper {
+  min-height: 100vh;
+  color: #333;
+  background-color: #fff;
+}
+.wx-swiper-dots.wx-swiper-dots-horizontal{
+  margin-bottom: -18rpx;
+}
+.lvAdvertise-swiper-wrapper {
+  background-image: url(http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-leagueVip/swiper_bg.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center top;
+  padding-top: 50rpx;
+}
+.lvAdvertise-swiper-wrapper .swiper-list {
+  width: 100%;
+  height: 350rpx;
+}
+.lvAdvertise-swiper-wrapper .swiper-item {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.lvAdvertise-swiper-wrapper .swiper-item .item-card {
+  position: relative;
+  width: 678rpx;
+  height: 100%;
+  padding: 0 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 26rpx;
+  line-height: 26rpx;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+.lvAdvertise-swiper-wrapper .swiper-item  .item-card.free {
+  color: #3a5178;
+  background-image: url(http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-leagueVip/bg1.png);
+}
+.lvAdvertise-swiper-wrapper .swiper-item  .item-card.condition {
+  color: #dfbd9a;
+  background-image: url(http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-leagueVip/bg2.png);
+}
+.lvAdvertise-swiper-wrapper .swiper-item  .item-card.pay {
+  color: #38200f;
+  background-image: url(http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-leagueVip/bg3.png);
+}
+.lvAdvertise-swiper-wrapper .swiper-item .item-mark {
+  position: absolute;
+  top: 22rpx;
+  left: 74rpx;
+  font-size: 26rpx;
+  color: #fff;
+}
+.lvAdvertise-swiper-wrapper .swiper-item .item-right {
+  display: flex;
+  flex-direction: column;
+  width: 370rpx;
+  padding-left: 44rpx;
+}
+.lvAdvertise-swiper-wrapper .swiper-item .item-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-right: 60rpx;
+}
+.lvAdvertise-swiper-wrapper .swiper-item .item-name {
+  font-size: 42rpx;
+  font-weight: bold;
+  line-height: 1;
+}
+.lvAdvertise-swiper-wrapper .swiper-item .item-tip {
+  padding: 20rpx 0 24rpx;
+}
+.lvAdvertise-swiper-wrapper .swiper-item .item-discount {
+  display: flex;
+  align-items: center;
+  padding-bottom: 24rpx;
+  font-size: 68rpx;
+  line-height: 1;
+}
+.lvAdvertise-swiper-wrapper .swiper-item .discount-unit {
+  padding-left: 10rpx;
+  font-size: 58rpx;
+  line-height: 1;
+}
+.lvAdvertise-swiper-wrapper .swiper-item .item-btn {
+  padding: 16rpx 50rpx;
+  border-radius: 40rpx;
+  text-align: center;
+  line-height: 40rpx;
+  color: #EEBD9F;
+  background-color: #4A3D34;
+}
+.lvAdvertise-swiper-wrapper .swiper-item .item-intro {
+  position: absolute;
+  bottom: 50rpx;
+  right: 30rpx;
+}
+.lvAdvertise-swiper-wrapper .swiper-item .pay .item-intro {
+  bottom: 28rpx;
+}
+.lvAdvertise-swiper-wrapper .swiper-item .condition .item-intro {
+  width: 160rpx;
+  text-align: center;
+  font-weight: bold;
+  color: #32302f;
+}
+.lvAdvertise-swiper-wrapper .swiper-item .pay .item-intro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 330rpx;
+  height: 62rpx;
+  padding: 0 20rpx;
+  color: #EEBD9F;
+  background-color: #4A3D34;
+  border-top-left-radius: 30rpx;
+  border-bottom-right-radius: 30rpx;
+}
+.lvAdvertise-swiper-wrapper .swiper-item .intro-price {
+  padding-right: 12rpx;
+  font-size: 30rpx;
+  font-style: italic;
+  color: #ff7a08;
+}
+.lvAdvertise-swiper-wrapper .swiper-item .intro-original {
+  text-decoration: line-through;
+}
+.lvAdvertise-info-wrapper {
+  padding-bottom: 30rpx;
+}
+.lvAdvertise-info-wrapper .info-item {
+  margin: 50rpx 38rpx 0;
+}
+.lvAdvertise-info-wrapper .info-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.lvAdvertise-info-wrapper .title-txt {
+  font-size: 34rpx;
+  line-height: 34rpx;
+  font-weight: bold;
+}
+.lvAdvertise-info-wrapper .title-more {
+  font-size: 28rpx;
+  color: #666;
+}
+.lvAdvertise-info-wrapper .icon-rightarrow {
+  padding-left: 10rpx;
+  font-size: 24rpx;
+  color: #999;
+}
+.lvAdvertise-info-wrapper .condition-list {
+  padding: 22rpx 48rpx;
+  margin-top: 24rpx;
+  border-radius: 10rpx;
+  background-color: #F9FAFC;
+}
+.lvAdvertise-info-wrapper .condition-item {
+  position: relative;
+  padding: 10rpx 0;
+  font-size: 26rpx;
+  line-height: 26rpx;
+}
+.lvAdvertise-info-wrapper .condition-item::before {
+  content: '';
+  position: absolute;
+  left: -16rpx;
+  top: 20rpx;
+  width: 6rpx;
+  height: 6rpx;
+  border-radius: 50%;
+  background-color: #d4ae75;
+}
+.lvAdvertise-info-wrapper .package-list {
+  width: auto;
+  height: 200rpx;
+  margin-top: 28rpx;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.lvAdvertise-info-wrapper .package-item {
+  display: inline-block;
+  position: relative;
+  width: 198rpx;
+  height: 200rpx;
+  margin-right: 18rpx;
+  border-radius: 10rpx;
+  border: 1px solid #f1f1f1;
+  text-align: center;
+  box-sizing: border-box;
+}
+.lvAdvertise-info-wrapper .package-item.selected {
+  border: 1px solid #D8BE92;
+  color: #BA721A;
+  background-color: #FEFCEF;
+  transition: all .2s linear;
+}
+.lvAdvertise-info-wrapper .package-item .item-info {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.lvAdvertise-info-wrapper .package-item .item-month-txt {
+  font-size: 28rpx;
+  color: #BA721A;
+}
+.lvAdvertise-info-wrapper .package-item .item-price {
+  margin-top: 10rpx;
+}
+.lvAdvertise-info-wrapper .package-item .item-mark-txt {
+  font-size: 26rpx;
+  color: #FF7100;
+}
+.lvAdvertise-info-wrapper .package-item.selected .item-mark-txt {
+  color: #825C2A;
+}
+.lvAdvertise-info-wrapper .package-item .item-price-txt {
+  font-size: 40rpx;
+  color: #FF7100;
+}
+.lvAdvertise-info-wrapper .package-item.selected .item-price-txt {
+  color: #825C2A;
+}
+.lvAdvertise-info-wrapper .package-item .item-virtual-txt {
+  padding-top: 20rpx;
+  font-size: 24rpx;
+  color: #999;
+  text-decoration: line-through;
+}
+.lvAdvertise-info-wrapper .package-item.selected .item-virtual-txt {
+  color: #C29855;
+}
+.lvAdvertise-info-wrapper .shops-list {
+  margin-top: 30rpx;
+  white-space: nowrap;
+}
+.lvAdvertise-info-wrapper .shops-item {
+  display: inline-block;
+  width: 198rpx;
+  border-radius: 10rpx;
+  margin-right: 20rpx;
+  border: 1px solid #f1f1f1;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.lvAdvertise-info-wrapper .shops-item .item-logo {
+  width: 100%;
+  height: 154rpx;
+}
+.lvAdvertise-info-wrapper .shops-item .item-name {
+  display: block;
+  max-width: 174rpx;
+  padding: 16rpx 12rpx 26rpx;
+  font-size: 28rpx;
+  line-height: 28rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lvAdvertise-info-wrapper .info-benefits {
+  margin-right: 0;
+}
+.lvAdvertise-info-wrapper .info-benefits .info-title {
+  padding: 10rpx 0 20rpx;
+}
+.lvAdvertise-info-wrapper .benefits-list {
+  display: flex;
+  flex-flow: wrap;
+}
+.lvAdvertise-info-wrapper .benefits-item {
+  display: flex;
+  align-items: center;
+  width: 356rpx;
+  padding: 25rpx 0;
+  font-size: 24rpx;
+  line-height: 24rpx;
+}
+.lvAdvertise-info-wrapper .benefits-item .item-icon {
+  width: 60rpx;
+  height: 60rpx;
+  padding-right: 22rpx;
+}
+.lvAdvertise-info-wrapper .benefits-item .item-tip {
+  display: block;
+  padding-top: 10rpx;
+  font-size: 20rpx;
+  line-height: 20rpx;
+  color: #999;
+}
+.lvAdvertise-info-wrapper .status-btn {
+  width: 680rpx;
+  height: 98rpx;
+  border-radius: 50rpx;
+  margin: 60rpx auto 0;
+  font-size: 34rpx;
+  font-weight: bold;
+  line-height: 98rpx;
+  text-align: center;
+  color: #6A461A;
+  background: linear-gradient(90deg,rgba(254,233,200,1) 0%,rgba(233,187,122,1) 100%);
+  box-shadow: 0 4rpx 18rpx 0 rgba(0, 0, 0, 0.1);
+}
+.lvAdvertise-nodata-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 170rpx;
+  font-size: 28rpx;
+  text-align: center;
+  color: #666;
+}
+.lvAdvertise-nodata-wrapper image {
+  width: 148rpx;
+  height: 166rpx;
+  padding-bottom: 60rpx;
+}
+.lvAdvertise-nodata-wrapper .tip-txt1 {
+  padding-bottom: 20rpx;
+  color: #333;
+}
+.lvAdvertise-nodata-wrapper .tip-txt2 {
+  color: #999;
+}

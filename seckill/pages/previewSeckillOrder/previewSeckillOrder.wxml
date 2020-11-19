@@ -1,0 +1,532 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-memberDiscount
+  id="component-memberDiscount"
+  discountType="{{ discountList }}"
+  bind:afterSelectedDiscount="afterSelectedBenefit"></component-memberDiscount>
+<view class="preview-goods-wrap">
+  <view class="pick-method flex-between" style="font-weight:bold;" wx:if="{{ is_addDishing }}">
+    <text>桌位号</text>
+    <text>{{location_name}}</text>
+  </view>
+  <view class="pick-method" wx:if='{{is_addDishing}}' style='margin-bottom:20rpx;'>
+    <picker class="pick-method-box" style='border-bottom:0;' range='{{customNumArr}}' bindchange='changeCustomNum'>
+      <text style='font-weight:bold;'>就餐人数</text>
+      <text class="pull-right ico-moon icon-rightarrow"></text>
+      <text class="pull-right pick-method-title" style='font-weight:bold;'>{{people_num}}</text>
+    </picker>
+  </view>
+  <view class="pick-method" catchtap="{{pickUpTypeArr.length > 1 ? 'selectPickMethod' : ''}}" hidden='{{ is_addDishing}}'>
+      <view class="pick-method-box">
+      <text style="position:relative;bottom:4rpx;">取货方式</text>
+      <text wx:if="{{pickUpTypeArr.length > 1}}" class="pull-right ico-moon icon-rightarrow"></text>
+      <text class="pull-right pick-method-title" style='font-weight:bold;'>{{  pickUpType == 1 ? '快递' : pickUpType == 2 ? '同城' : pickUpType == 3 ? '自提' : pickUpType == 4 ? '点餐' : pickUpType == -1 ? '' : '无可用取货方式' }}</text>
+    </view>
+  </view>
+  <view class="preview-section" wx:if="{{ pickUpType == 1 }}">
+    <block wx:if="{{ selectAddress.id }}">
+      <view class="address-box" bindtap="goToMyAddress" data-address-id="{{ selectAddress.id }}">
+        <text class="ico-moon icon-goods-location"></text>
+        <view class="address-detail">
+          <view class="buyer-name-box"><text class="store-config-label" style="{{'background:' + storeStyle.theme}}">快递</text><text class="buyer-name">{{ selectAddress.address_info.name }}</text> <text>{{ selectAddress.address_info.contact }}</text></view>
+          <view class="buyer-address">{{ selectAddress.address_info.province.text + selectAddress.address_info.city.text + selectAddress.address_info.district.text + selectAddress.address_info.detailAddress }}</view>
+        </view>
+        <view class="ico-moon icon-rightarrow"></view>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="address-null-box" bindtap="goToMyAddress">
+        <view class="pull-right ico-moon icon-rightarrow"></view>
+        <view>
+          <text class="ico-moon icon-goods-location"></text>
+          <text class="add-new-address">新增地址</text>
+        </view>
+      </view>
+    </block>
+  </view>
+  <view class="preview-section" wx:if="{{ pickUpType == 3 }}">
+    <block wx:if="{{ selectDelivery.id }}">
+      <view class="address-box" bindtap="toDeliveryList" data-address-id="{{ selectDelivery.id }}">
+        <text class="ico-moon icon-goods-location"></text>
+        <view class="address-detail">
+          <view class="buyer-name-box"><text class="store-config-label" style="{{'background:' + storeStyle.theme}}">自提</text><text class="buyer-name">{{ selectDelivery.contact_name }}</text> <text>{{ selectDelivery.contact_phone || ''}}</text></view>
+          <view class="buyer-address">{{ selectDelivery.region_data.region_string + selectDelivery.address_detail }}</view>
+        </view>
+        <view class="ico-moon icon-rightarrow"></view>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="address-null-box" bindtap="toDeliveryList">
+        <view class="pull-right ico-moon icon-rightarrow"></view>
+        <view>
+          <text class="ico-moon icon-goods-location"></text>
+          <text class="add-new-address">选择自提点</text>
+        </view>
+      </view>
+    </block>
+  </view>
+  <view class="preview-section" wx:if="{{ pickUpType == 2 }}">
+    <block wx:if="{{ selectSameJourney.id }}">
+      <view class="address-box" bindtap="goSameJourneyAddress">
+        <text class="ico-moon icon-goods-location"></text>
+        <view class="address-detail">
+          <view class="buyer-name-box"><text class="store-config-label" style="{{'background:' + storeStyle.theme}}">同城</text><text class="buyer-name">{{ selectSameJourney.address_info.name }}</text> <text>{{ selectSameJourney.address_info.contact }}</text></view>
+          <view class="buyer-address">{{ selectSameJourney.address_info.province.text + selectSameJourney.address_info.city.text + selectSameJourney.address_info.district.text + selectSameJourney.address_info.detailAddress }}</view>
+        </view>
+        <view class="ico-moon icon-rightarrow"></view>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="address-null-box">
+        <view class="pull-right ico-moon icon-rightarrow"></view>
+        <view bindtap="goSameJourneyAddress">
+          <text class="ico-moon icon-goods-location"></text>
+          <text class="add-new-address">选择同城地址</text>
+        </view>
+      </view>
+    </block>
+  </view>
+  <view class="" wx:if="{{ pickUpType == 4 && !is_addDishing }}">
+      <view class='eating-info-wrapper'>
+        <view class='eating-info-item flex-between'>
+          <text class='mustFill'>就餐人数</text>
+          <picker class='eating-picker' bindchange='changeCustomNum' range='{{customNumArr}}'>
+            <text style='font-weight:bold;'>{{people_num || 1}}</text>
+            <text class='ico-moon icon-rightarrow icon-right'></text>
+          </picker>
+        </view>
+        <view class='eating-info-item flex-between'>
+          <text class='mustFill'>就餐方式</text>
+          <picker class='eating-picker' range='{{dining_mode_arr}}' bindchange='changeDiningMode'>
+            <text style='font-weight:bold;'>{{dining_mode == 2 ? '打包':'堂食'}}</text>
+            <text class='ico-moon icon-rightarrow icon-right'></text>
+          </picker>
+        </view>
+        <view class='eating-info-item flex-between'>
+          <text class='mustFill'>取餐方式</text>
+          <picker class='eating-picker' range='{{take_meal_type_arr}}' bindchange='changeTakeMealType' range-key="text" value="{{take_meal_type_index}}">
+            <text style='font-weight:bold;'>{{take_meal_type_arr[take_meal_type_index].text}}</text>
+            <text class='ico-moon icon-rightarrow icon-right'></text>
+          </picker>
+        </view>
+        <view class='eating-info-item flex-between'>
+          <text class='{{take_meal_type == 1 ? "mustFill":""}}'>桌号</text>
+          <view class='flex-between' catchtap='scanPlaceInfo' style='flex:1;'>
+            <text style='color:#999;text-align:right;width:100%;'>{{ec_location_id ? location_name:"扫码获取位置信息"}}</text>
+            <text class='ico-moon icon-shopping-scan' style='padding-left:20rpx;font-size:30rpx;color:#999;'></text>
+          </view>
+        </view>
+      </view>
+  </view>
+  <view class="address-bg">
+    <image src="http://cdn.jisuapp.cn/static/webapp/images/xcx-goods/goods-address-bg.png"></image>
+  </view>
+  <view class="preview-box margin-bottom-16" wx:if="{{ pickUpType == 2 }}">
+    <view catchtap="showSameJourneyTime" class="single-box">取货时间 
+      <view class="pull-right appointment-time-box">
+        <text wx:if="{{sameJourneyImmediatelyState == 1}}" class="appointment-time" style="{{'color:' + storeStyle.theme}}">尽快送达(预计{{intraCityStatusData.tomorrow ? '次日' : ''}}{{sameJourneyImmediatlyTime || ''}}送达)</text>
+        <text wx:elif="{{sameJourneyHourTime}}" class="appointment-time" style="{{'color:' + storeStyle.theme}}">预约配送 {{dateTrans.date(sameJourneyDateTime) + ' ' + sameJourneyHourTime}}送达</text>
+        <text wx:else class="appointment-time" style="{{'color:' + storeStyle.theme}}">请选择送达时间</text>
+        <text class="ico-moon icon-rightarrow"></text>
+      </view>
+    </view>
+  </view>
+  <view class="preview-box border-bottom30" wx:if="{{ pickUpType == 3 }}">
+    <view wx:if="{{selfAppointmentSwitch}}" catchtap="showServiceTime" class="single-box">取货时间
+      <view class="pull-right appointment-time-box">
+        <text wx:if="{{tostoreTimeType == 1 && tostoreDateTime && tostoreOrderType == 2}}" class="appointment-time" style="{{'color:' + storeStyle.theme}}">{{dateTrans.date(tostoreDateTime)}}</text>
+        <text wx:elif="{{tostoreTimeType == 1 && tostoreOrderType == 1}}" class="appointment-time" style="{{'color:' + storeStyle.theme}}">{{waitingQueueTime == 0 ? '立即取货' : '大约等待'+waitingQueueTime+ '分钟'}}</text>
+        <text wx:elif="{{tostoreTimeType != 1 && tostoreHourTime && tostoreOrderType == 2}}" class="appointment-time" style="{{'color:' + storeStyle.theme}}">{{dateTrans.date(tostoreDateTime) + ' ' + tostoreHourTime}}</text>
+        <text wx:elif="{{tostoreTimeType != 1 && tostoreOrderType == 1}}" class="appointment-time" style="{{'color:' + storeStyle.theme}}">{{dateTrans.date(tostoreDateTime) + (waitingQueueTime == 0 ? ' 立即取货' : '大约等待'+waitingQueueTime+ '分钟')}}</text>
+        <text wx:else class="appointment-time" style="{{'color:' + storeStyle.theme}}">请选择时间</text>
+        <text class="ico-moon icon-rightarrow"></text>
+      </view>
+    </view>
+    <view wx:if="{{onlyImmediatlyPickSwitch && waitingQueueTime >= 0}}" class="single-box">取货时间
+      <view class="pull-right appointment-time-box">
+        <text class="appointment-time" style="{{'color:' + storeStyle.theme}}">{{waitingQueueTime == 0 ? '无需等待' : '大约等待'+waitingQueueTime+'分钟'}}</text>
+      </view>
+    </view>
+    <view wx:if="{{selfDeliveryPhone == 1}}" class="single-box">联系手机号 <view class="pull-right input-phone-box"><input type="text" bindinput="inputPhone" value="{{phone}}" placeholder="请输入手机号" /><button class="get-phone-number" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" style="{{'color:' + storeStyle.theme}}">自动授权</button></view></view>
+    <view wx:if="{{selfDeliveryScan}}" class="single-box" catchtap="getInStoreSeat">店内位置 <view class="pull-right scan-seat-box"><text>{{inStoreSeatName || '请扫码获取位置信息'}}</text><text class="ico-moon icon-shopping-scan"></text></view></view>
+  </view>
+  <view class="preview-goods-order-list" wx:for="{{ goodsList }}" wx:for-item="goods" wx:for-index="goodsIndex" wx:key="index">
+    <view class="seckill-time">
+     <view class="countdown" style="{{'color:' + storeStyle.theme }}">
+        <label wx:if="{{goods.seckill_start_state == 0}}">距开始</label>
+        <label wx:elif="{{goods.seckill_start_state == 1}}">距结束还剩</label>
+        <label wx:elif="{{goods.seckill_start_state == 2}}">已结束</label>
+        <text class="days" wx:if="{{goods.downCount.days}}">{{goods.downCount.days}}天</text>
+        <text class="hours countdown-text" style="{{'background-color:' + storeStyle.theme }}">{{goods.downCount.hours}}</text>:
+        <text class="minutes countdown-text" style="{{'background-color:' + storeStyle.theme }}">{{goods.downCount.minutes}}</text>:
+        <text class="seconds countdown-text" style="{{'background-color:' + storeStyle.theme }}">{{goods.downCount.seconds}}</text>
+      </view>
+    </view>
+    <view class="preview-goods-order-item">
+      <image class="preview-goods-cover" src="{{ goods.cover }}" mode="aspectFill"></image>
+      <view class="preview-goods-content">
+        <view class="preview-goods-title"><text  class="exchange-tip">秒杀</text>{{ goods.title }}</view>
+        <view wx:if="{{ goods.model_value_str }}" class="preview-goods-model">{{ goods.model_value_str }}</view>
+        <view class="goods-price-box">
+          <text class="preview-goods-price" style="{{ !is_group ? 'color:' + storeStyle.theme : '' }}">¥{{ goods.price }}</text>
+          <text class="seckill-original-price">¥{{goods.original_price}}</text>
+          <view class="good-number-box pull-right" wx:if="{{ !is_group }}">
+            <view class="goods-minus" data-index="{{ goodsIndex }}" catchtap="clickMinusButton">-</view>
+            <input class="goods-count" data-index="{{ goodsIndex }}" type="number" value="{{ goods.num }}" bindinput="inputGoodsCount" />
+            <view class="goods-plus" style="{{ 'color:' + storeStyle.theme }}" data-index="{{ goodsIndex }}" catchtap="clickPlusButton">+</view>
+          </view>
+          <view class="good-number-box pull-right" wx:if="{{ is_group }}">
+            <view class="group-count">数量：{{ goods.num }}</view>
+          </view>
+        </view>
+        <view class="seckill-remaining-num">当前剩余件数：{{goods.stock}}</view>
+      </view>
+    </view>
+  </view>
+  <view class="preview-goods-order-list" wx:if="{{ exchangeCouponData.hasSelectGoods }}">
+    <view class="preview-goods-order-item">
+      <image class="preview-goods-cover" src="{{ exchangeCouponData.goodsInfo.cover }}"></image>
+      <view class="preview-goods-content">
+        <view class="preview-goods-title"><text class="exchange-tip">赠品</text>{{ exchangeCouponData.goodsInfo.title }}</view>
+        <view wx:if="{{ exchangeCouponData.goodsInfo.model_value_str }}" class="preview-goods-model">{{ exchangeCouponData.goodsInfo.model_value_str }}</view>
+        <view class="goods-number-contain">
+          <view class="exchange-num pull-right">x1</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="preview-box">
+    <view class="single-box">商品金额 <text class="pull-right">¥ {{is_group ? group_buy_price : total_original_price }}</text></view>
+     <view class="single-box">活动优惠 <text class="pull-right">-¥{{activePreferential}}</text></view>
+    <view class="single-box" wx:if='{{pickUpType!=4}}'>运费 <text class="pull-right">¥ {{ express_fee }}</text></view>
+    <view class="single-box" wx:if='{{ box_fee > 0}}'>包装费 <text class="pull-right">¥{{ box_fee }}</text></view>
+    <view class="single-box" wx:if='{{pickUpType==4 && server_fee > 0}}'>服务费 <text class="pull-right">¥{{ server_fee }}</text></view>
+    <view class="single-box" wx:if='{{pickUpType==4 && tissue_fee > 0}}'>纸巾费 <text class="pull-right">¥{{ tissue_fee }}</text></view>
+    <view bindtap="showMemberDiscount" wx:if="{{ discountList.length }}" hidden='{{pickUpType == 4 && account_type == 2}}'>
+      <view class="balance-switch">
+        <text>优惠方式</text>
+        <view class="ico-moon icon-rightarrow pull-right"></view>
+        <text class="pull-right">{{ selectDiscountInfo.name }}</text>
+      </view>
+      <view hidden="{{ selectDiscountIndex == 0 }}" class="balance-price">
+        <text class="pull-right" style="{{ 'color:' + storeStyle.theme }}">- ¥{{ discount_cut_price }}</text>
+      </view>
+    </view>
+    <view hidden='{{ pickUpType == 4 && account_type == 2 || (deduction == 0 && useBalance) }}'>
+      <view class="balance-switch">
+        <text>使用储值金</text>
+        <switch color="{{ storeStyle.theme }}" style="transform:scale(0.7);" class="pull-right" checked="true" bindchange="useBalanceChange"/>
+      </view>
+      <view hidden="{{ !useBalance }}" class="balance-price">
+        <text class="pull-right" style="{{ 'color:' + storeStyle.theme }}">- ¥{{ deduction }}</text>
+      </view>
+    </view>
+    <component-paySettlementGift wx:if="{{ !cashOnDelivery && !(pickUpType == 4 && account_type == 2) }}" 
+                                 franchisee="{{ franchisee_id }}"
+                                 bind:selected="selectedPayGift" 
+                                 orderPrice="{{ settlementActivityFreePrice }}"></component-paySettlementGift>
+    <view wx:if="{{ totalPayment > 0 && ((pickUpType == 1 && canCashDelivery == 1) || (pickUpType == 2 && canCashDelivery == 1) || (pickUpType == 3 && selfPayOnDelivery == 1)) && !payGiftOptions.id }}">
+      <view class="balance-switch">
+        <text>货到付款（先下单，验货后支付）</text>
+        <switch color="{{ storeStyle.theme }}" class="pull-right" bindchange="useCashDelivery" checked="{{ cashOnDelivery }}"/>
+      </view>
+    </view>
+  </view>
+  <view class="preview-box">
+    <view class="buyer-message single-box">
+      买家留言 <view class="pull-right"><input class="remark" value="{{orderRemark}}" bindinput="remarkInput" placeholder="买家留言" /></view>
+    </view>
+    <view class="border-top1 single-box" bindtap="goToAdditionalInfo" wx:if="{{ !noAdditionalInfo && !aloneDeliveryShow }}">
+      补充信息
+      <view class="ico-moon icon-rightarrow pull-right"></view>
+      <text style="{{'color:' + ((hasRequiredSuppInfo && !deliverydWrite) ? storeStyle.theme : '#666')}}" class="additional-tip pull-right">{{ deliverydWrite ? '已填写' : '未填写'}}</text>
+    </view>
+  </view>
+   <!-- 单件商品展示补充信息 -->
+  <view class="additional-list" wx:if="{{ aloneDeliveryShow }}" wx:for="{{ additional_info[additional_goodsid_arr[0]] }}" wx:key="index">
+    <view class="additional-text" wx:if="{{ item.type == 'text' }}">
+      <text class="additional-name {{ item.is_required == 0 ? 'is-required' : '' }}">{{ item.title }}</text>
+      <view class="additional-info"><input type="text" bindinput="inputFormControl" value="{{ item.value }}"></input></view>
+    </view>
+    <view class="additional-textarea" wx:if="{{ item.type == 'mul-text' }}">
+      <text class="additional-name {{ item.is_required == 0 ? 'is-required' : '' }}">{{ item.title }}</text>
+      <view class="additional-info"><textarea maxlength="-1" bindinput="inputFormControl" value="{{ item.value }}"></textarea></view>
+    </view>
+    <view class="additional-picture" wx:if="{{ item.type == 'picture' }}">
+      <text class="additional-name {{ item.is_required == 0 ? 'is-required' : '' }}">{{ item.title }}</text>
+      <view class="additional-info">
+        <view class="image-list" wx:for="{{ item.value }}" wx:key="index" wx:for-item="imgSrc" wx:for-index="imageIndex">
+          <image src="{{ imgSrc }}"></image><label class="delete-image ico-moon icon-closes" bindtap="deleteImage" data-image-index="{{ imageIndex }}">-</label>
+        </view>
+        <view wx:if="{{ item.value.length < 9 }}" class="add-images" bindtap="addDeliveryImg">
+          <text class="ico-moon icon-fn-camera"></text>
+          <view>添加图片</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="bottom-nav" hidden='{{pickUpType == 4 && account_type == 2}}'>
+    <view class="preview-goods-total-price">合计: <text class="price-count" style="{{ 'color:' + storeStyle.theme }}">¥{{ totalPayment }}</text></view>
+    <form report-submit="true" bindsubmit="confirmPayment">
+      <button formType="submit" style="{{ 'background:' + storeStyle.theme }}">{{ cashOnDelivery ? '货到付款' : '在线支付' }}</button>
+    </form>
+  </view>
+  <view class='all-price-box flex-between' wx:if='{{pickUpType == 4 && account_type == 2}}'>
+    <view class='add-dishs' hidden='{{!allow_add_dish}}' style='color:{{storeStyle.theme}};' catchtap='turnToAddDish'>继续点菜</view>
+    <form report-submit="true" bindsubmit="confirmPayment" style='flex:1;'>
+      <button formType="submit" class='all-price-calculate'
+        style='background-color:{{storeStyle.theme}};border-radius:0;'>下单
+      </button>
+    </form>
+  </view>
+  <template name="exchangeCouponUseDialog">
+    <view class="page-dialog-wrap" hidden="{{ dialogHidden }}">
+      <view class="page-bottom-dialog">
+        <view class="page-bottom-content">
+          <view class="pay-close-dialog page-dialog-close" bindtap="exchangeCouponHideDialog">×</view>
+          <view class="dialog-block-item">
+            <view class="thumb">
+              <view class="thumb-wrap">
+                <image class="pay-goods-cover" src="{{ selectModelInfo.imgurl || goodsInfo.cover }}"></image>
+              </view>
+            </view>
+            <view class="pay-goods-baseinfo">
+              <view class="pay-goods-title ellipsis">
+                <text class="gift-text">赠品</text>
+                <text class="gift-title">{{ goodsInfo.title }}</text>
+              </view>
+              <view wx:if="{{selectModelInfo.models_text}}" class="pay-checked-text clearfix">已选：{{ selectModelInfo.models_text }}</view>
+              <text class="gift-price">¥{{ selectModelInfo.price }}</text>
+            </view>
+          </view>
+          <view class="exchange-rules-box" hidden="{{ !goodsInfo.model_items.length }}">
+            <view class="pay-goods-models">
+              <view wx:for="{{ goodsInfo.model }}" wx:key="index" wx:for-item="model" wx:for-index="modelIndex">
+                <text class="model-title">{{ model.name }}</text>
+                <label class="pills-list">
+                  <label wx:for="{{ model.subModelName }}"
+                        wx:for-item="name"
+                        wx:key="index"
+                        data-model-index="{{ modelIndex }}"
+                        data-submodel-index="{{ index }}"
+                        class="subModel {{ selectModelInfo.models[modelIndex] == model.subModelId[index] ? 'select' : '' }}"
+                        data-submodel-id="{{ model.subModelId[index] }}" bindtap="exchangeCouponSelectSubModel">{{ name }}</label>
+                </label>
+              </view>
+            </view>
+          </view>
+          <view class="confirm-goods" bindtap="exchangeCouponConfirmGoods">确认</view>
+        </view>
+      </view>
+    </view>
+  </template>
+  <template is="exchangeCouponUseDialog" data="{{ ...exchangeCouponData }}"></template>
+</view>
+<view class="goods-pick-mask" wx:if="{{isShowPickMask}}" catchtap="closeGoodsPick">
+  <!-- 餐饮 2.0.1 -->
+  <view class="goods-pick-box canyin" catchtap="stopPropagation">
+    <view class="goods-pick-header canyin">更换取货方式
+      <view class="ico-moon icon-closes hidePickMask" catchtap="closeGoodsPick"></view>
+    </view>
+    <view class="goods-pick-content canyin">
+      <view wx:for="{{pickUpTypeArr}}" wx:key="index" class="goods-pick-menu canyin">
+        <view class="pick-detail canyin" wx:if="{{item == 1}}" data-type="1" bindtap="checkedPickRadioFn">
+          <view class="pick-detail-item">
+            <view class="pick-detail-item-l">
+              <view class="pick-detail-item-bg">
+                <view class="pick-detail-item-bg-theme" style="{{pickUpType == 1 ? 'background:'+ (storeStyle.theme || '#ff7100;') : 'background:#fff;'}}"></view>
+                <view class="pick-detail-item-bg-mask"></view>
+                <view class="pick-detail-item-icon ico-moon icon-express-{{pickUpType == 1 ? 'active':'default'}} {{pickUpType == 1 ? 'active':''}}"></view>  
+              </view>
+              <text class="pick-detail-item-name {{pickUpType == 1 ? 'active':''}}">快递配送</text>
+            </view>
+            <radio class="pick-detail-item-r" color="{{storeStyle.theme || '#FF7100'}}" checked="{{pickUpType == 1}}"></radio>
+          </view>
+        </view>
+        <view class="pick-detail canyin" wx:if="{{item == 2}}" data-type="2" bindtap="{{intraCityData.in_business_time != 1 || intraCityData.is_enough_price != 1 ? '':'checkedPickRadioFn'}}">
+          <view class="pick-detail-item">
+            <view class="pick-detail-item-l">
+              <view class="pick-detail-item-bg">
+                <view class="pick-detail-item-bg-theme" style="{{pickUpType == 2 ? 'background:'+ (storeStyle.theme || '#ff7100;') : 'background:#fff;'}}"></view>
+                <view class="pick-detail-item-bg-mask"></view>
+                <view class="pick-detail-item-icon ico-moon icon-intraCity-{{pickUpType == 2 ? 'active':'default'}} {{pickUpType == 2 ? 'active':''}}"></view>  
+              </view>
+              <text class="pick-detail-item-name {{pickUpType == 2 ? 'active':''}}">同城配送</text>
+              <text wx:if="{{intraCityData.in_business_time != 1}}">不在营业时间</text>
+              <text wx:elif="{{intraCityData.is_enough_price != 1}}">未达到起送价</text>
+              <view wx:elif="{{ori_pick_up_type == 2 && intraCity_in_distance != 1 && intraCityData.in_distance != 1}}" style="display:inline-block;">不在配送范围，<text bindtap="goSameJourneyAddress" style="color:{{storeStyle.theme}};">修改地址</text></view>
+            </view>
+            <radio class="pick-detail-item-r" color="{{storeStyle.theme || '#FF7100'}}" checked="{{pickUpType == 2}}" disabled="{{intraCityData.in_business_time != 1 || intraCityData.is_enough_price != 1}}"></radio>
+          </view>
+        </view>
+        <view class="pick-detail canyin" wx:if="{{item == 3}}" data-type="3" bindtap="checkedPickRadioFn">
+          <view class="pick-detail-item">
+            <view class="pick-detail-item-l">
+              <view class="pick-detail-item-bg">
+                <view class="pick-detail-item-bg-theme" style="{{pickUpType == 3 ? 'background:'+ (storeStyle.theme || '#ff7100;') : 'background:#fff;'}}"></view>
+                <view class="pick-detail-item-bg-mask"></view>
+                <view class="pick-detail-item-icon ico-moon icon-selfDelivery-{{pickUpType == 3 ? 'active':'default'}} {{pickUpType == 3 ? 'active':''}}"></view>  
+              </view>
+              <text class="pick-detail-item-name {{pickUpType == 3 ? 'active':''}}">上门自提</text>
+            </view>
+            <radio class="pick-detail-item-r" color="{{storeStyle.theme || '#FF7100'}}" checked="{{pickUpType == 3}}"></radio>
+          </view>
+        </view>
+        <view class="pick-detail canyin" wx:if="{{item == 4}}" data-type="4" bindtap="checkedPickRadioFn">
+          <view class="pick-detail-item">
+            <view class="pick-detail-item-l">
+              <view class="pick-detail-item-bg">
+                <view class="pick-detail-item-bg-theme" style="{{pickUpType == 4 ? 'background:'+ (storeStyle.theme || '#ff7100;') : 'background:#fff;'}}"></view>
+                <view class="pick-detail-item-bg-mask"></view>
+                <view class="pick-detail-item-icon ico-moon icon-dining-{{pickUpType == 4 ? 'active':'default'}} {{pickUpType == 4 ? 'active':''}}"></view>  
+              </view>
+              <text class="pick-detail-item-name {{pickUpType == 4 ? 'active':''}}">堂食点餐</text>
+              <text wx:if="{{dining_data.in_business_time != 1}}">商家已打烊</text>
+            </view>
+            <radio class="pick-detail-item-r" color="{{storeStyle.theme || '#FF7100'}}" checked="{{pickUpType == 4}}" disabled="{{dining_data.in_business_time != 1}}"></radio>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="goods-pick-foot">
+      <view class="goods-pick-foot-l">
+        <view style="color:#333;"><text>总价：</text><text style="color:{{storeStyle.theme}};font-size:36rpx;">¥{{original_price}}</text></view>
+        <view style="color:#999;"><text>共{{goods_num}}件</text>
+          <block wx:if="{{pickUpType == 1 || pickUpType == 4}}">
+            <text class="pick-foot-fee"></text>
+            <text>配送费：¥{{express_fee}}</text>
+          </block>
+        </view>
+      </view>
+      <view class="goods-pick-foot-r" style="background:{{storeStyle.theme}};" bindtap="confirmGoodsPick">确定</view>
+    </view>
+  </view>
+</view>
+<wxs module="dateTrans">
+  var date = function(a){
+    var reg = getRegExp("-", "img");
+    var c = '';
+    if(a){
+      c = a.replace(reg,'月') + '日';
+    }
+    return c
+  }
+  var week = function(a){
+    switch(a){
+      case '0':
+        return '日';
+      case '1':
+        return '一';
+      case '2':
+        return '二';
+      case '3':
+        return '三';
+      case '4':
+        return '四';
+      case '5':
+        return '五';
+      case '6':
+        return '六';
+    }
+  }
+  module.exports.date = date;
+  module.exports.week = week;
+</wxs>
+<!-- 同城 送货时间选择框 start -->
+<view class="goods-pick-mask" wx:if="{{isShowSameJourneyTime}}">
+  <view class="goods-mask" catchtap="closeGoodsPick"></view>
+  <view class="goods-pick-box">
+    <view class="goods-pick-header">选择送达时间</view>
+    <block wx:if="{{!noAppointmentShow}}">
+      <view class="double-column-time">
+        <view class="double-time-day">
+          <block wx:for="{{sameJourneyConfig.date_arr}}" wx:key="index">
+            <view catchtap="selectSameJourneyTime" data-index="{{index}}" wx:if="{{item.is_vaild == 1}}"
+              class="goods-pick-time {{sameJourneyDateTime == item.date ? 'selected' : ''}}"
+              style="color: {{sameJourneyDateTime == item.date ? storeStyle.theme : '#666'}};">
+              {{dateTrans.date(item.date)}}(星期{{dateTrans.week(item.week)}})</view>
+          </block>
+        </view>
+        <view class="double-time-hours">
+          <view wx:if="{{showSameJourneyImmediatelyTime}}" catchtap="selectSameJourneyTimeHour" data-type="immedia"
+            class="goods-pick-time" 
+            style="color:{{sameJourneyImmediatelyState == 1 ? storeStyle.theme : '#666'}};">
+            尽快送达(预计{{sameJourneyImmediatlyTime}}送达)</view>
+          <block wx:for="{{sameJourneyHoursArr}}" wx:key="index">
+            <view catchtap="selectSameJourneyTimeHour" data-type="appoint" data-index="{{index}}"
+              class="goods-pick-time" 
+              style="color:{{sameJourneyImmediatelyState != 1 && sameJourneyHourTime == item ? storeStyle.theme : '#666'}};">{{item}}
+            </view>
+          </block>
+        </view>
+      </view>
+    </block>
+    <view class="none-appointment-time" wx:else>
+      <image class="no-reservation" src="http://cdn.jisuapp.cn/static/webapp/images/xcx-goods/no-reservation.png">
+      </image>
+      <view class="title">暂无可预约时间</view>
+      <view class="tips">{{noAppointmentWordb}}</view>
+      <view class="tips">{{noAppointmentWorda}}</view>
+    </view>
+    <view class="goods-pick-bottom" catchtap="closeGoodsPick">关闭</view>
+  </view>
+</view>
+<!-- 同城 送货时间选择框 end -->
+<!-- 自提取货时间选择框 start -->
+<view class="goods-pick-mask" wx:if="{{isShowServiceTime}}">
+  <view class="goods-mask" catchtap="closeGoodsPick"></view>
+  <view class="goods-pick-box">
+    <view class="goods-pick-header">选择取货时间</view>
+    <block wx:if="{{!noAppointmentShow}}">
+      <view class="goods-pick-content" wx:if="{{tostoreTimeType == 1}}">
+        <view wx:if="{{noImmediaPick}}" catchtap="tostoreImmediately"
+          class="goods-pick-time {{tostoreOrderType == 1 ? 'selected' : ''}}"
+          style="color: {{tostoreOrderType == 1 ? storeStyle.theme : ''}};">
+          立即取货{{showWaitTime ? (waitingQueueTime == 0 ? '(无需等待)' : '(大约等待'+waitingQueueTime+'分钟)') : ''}}</view>
+        <block wx:for="{{getEcTostoredate.date_arr}}" wx:key="index">
+          <view wx:if="{{item.is_vaild == 1}}" catchtap="selectTostoreTime" data-index="{{index}}"
+            class="goods-pick-time {{tostoreOrderType != 1 && tostoreDateTime == item.date ? 'selected' : ''}}"
+            style="color: {{tostoreOrderType != 1 && tostoreDateTime == item.date ? storeStyle.theme : ''}};">
+            {{dateTrans.date(item.date)}}(星期{{dateTrans.week(item.week)}})</view>
+        </block>
+      </view>
+      <view class="double-column-time" wx:if="{{getEcTostoredate.setting_data && tostoreTimeType != 1}}">
+        <view class="double-time-day">
+          <block wx:for="{{getEcTostoredate.date_arr}}" wx:key="index">
+            <view catchtap="selectTostoreTime" data-index="{{index}}" wx:if="{{item.is_vaild == 1}}"
+              class="goods-pick-time {{tostoreDateTime == item.date ? 'selected' : ''}}"
+              style="color: {{tostoreDateTime == item.date ? storeStyle.theme : ''}};">
+              {{dateTrans.date(item.date)}}(星期{{dateTrans.week(item.week)}})</view>
+          </block>
+        </view>
+        <view class="double-time-hours">
+          <view catchtap="tostoreImmediately" wx:if="{{!dateIndex && noImmediaPick}}"
+            class="goods-pick-time {{tostoreOrderType == 1 ? 'selected' : ''}}"
+            style="color: {{tostoreOrderType == 1 ? storeStyle.theme : ''}};">
+            立即取货{{showWaitTime ? (waitingQueueTime == 0 ? '(无需等待)' : '(大约等待'+waitingQueueTime+'分钟)') : ''}}</view>
+          <view catchtap="selectTostoreHourTime" data-index="{{index}}"
+            class="{{tostoreHourTime == item ? 'selected' : ''}}" style="color: {{tostoreHourTime == item ? storeStyle.theme : ''}};" wx:for="{{tostoreHoursArr}}" wx:key="index">{{item}}</view>
+        </view>
+      </view>
+    </block>
+    <view class="none-appointment-time" wx:else>
+      <image class="no-reservation" src="http://cdn.jisuapp.cn/static/webapp/images/xcx-goods/no-reservation.png">
+      </image>
+      <view class="title">暂无可预约时间</view>
+      <view class="tips">{{noAppointmentWordb}}</view>
+      <view class="tips">{{noAppointmentWorda}}</view>
+    </view>
+    <view class="goods-pick-bottom" catchtap="closeGoodsPick">关闭</view>
+  </view>
+</view>
+<!-- 自提取货时间选择框 end -->
+<view class="perfect-address-mask" bindtap="hidePerfectAddress" wx:if="{{expressAddressNull}}">
+  <view class="perfect-address-box" catchtap="stopPropagation">
+    <view class="perfect-address-title">提示</view>
+    <view class="perfect-address-tips">请完善地址信息~</view>
+    <view class="perfect-address-bottom">
+      <text catchtap="manuallyAddAddress">手动新增地址</text>
+      <text catchtap="importWeChatAddress" class="import-weChat-address">导入微信地址</text>
+    </view>
+  </view>
+</view>

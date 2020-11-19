@@ -1,0 +1,29 @@
+
+<component-behavior-track></component-behavior-track>
+<!-- 主图 -->
+<view class="giftCardImg">
+  <image src="{{img}}"></image>
+</view>
+<view class="giftCardTitle">{{cardTitle}}</view>
+
+<!-- 编辑留言 -->
+<view class="caption">
+  <view class="ico-moon icon-beEvaluated title"></view>
+  <view>编辑留言</view>
+</view>
+
+
+<!-- 留言框 -->
+<view class="textarea">
+  <textarea placeholder="请编辑您的留言" 
+            placeholder-class="text" 
+            placeholder-style="color:#999;font-size:26rpx;"
+            maxlength="50"
+            auto-focus="true"
+            bindblur="changeContent"></textarea>
+</view>
+
+
+
+<!-- 赠送给好友 -->
+<button class="presenter" open-type="share" bindtap="sendCard">赠送给好友</button>

@@ -1,0 +1,56 @@
+page {
+  background-color: #F3F3F3;
+}
+.container {
+  background-color: #F3F3F3;
+  overflow: hidden;
+  font-size: 28rpx;
+  padding-top: 20rpx;
+}
+.complaints {
+  margin-bottom: 16rpx;
+  background-color: #fff;
+}
+.complaints .complaintsItem{
+  padding: 28rpx 30rpx;
+  border-bottom: 1px solid #F3F3F3;
+  overflow: hidden;
+}
+.complaintsItem .imageContain {
+  float: right;
+}
+.complaintsItem .imageContain image {
+  width: 150rpx;
+  height: 150rpx;
+  margin-right: 20rpx;
+}
+.complaintsItem .imageContain image:last-child {
+  margin-right: 0;
+}
+.fr {
+  float: right;
+}
+.indemnityItem {
+  margin-bottom: 40rpx;
+}
+.indemnityBtn {
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  background-color: #FF7100;
+}
+.indemnityBtn text {
+  display: inline-block;
+  color: #fff;
+}
+.tips {
+  border-bottom: 1px solid #F3F3F3;
+  background-color: #fff;
+  padding:16rpx 30rpx;
+}
+.tips view{
+  overflow:hidden;
+  letter-spacing: 2rpx;
+  font-size: 24rpx;
+  line-height: 40rpx;
+}

@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "订单详情",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+    "component-memberDiscount": "/components/memberDiscount/memberDiscount",
+    "component-paySettlementGift": "/components/paySettlementGift/paySettlementGift"
+  }
+}

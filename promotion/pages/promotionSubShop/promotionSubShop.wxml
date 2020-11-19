@@ -1,0 +1,43 @@
+<!--promotion/pages/promotionSubShop/promotionSubShop.wxml-->
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="page-top search-form">
+  <view class="input-container">
+    <icon class="ico-moon icon-search"></icon>
+    <input placeholder="分销子店搜索：请输入名称" placeholder-class="search-placeholder" value="{{searchValue}}" confirm-type="search" type="text" bindconfirm="searchConfirmHandle" bindinput="searchInputHandle"></input>
+    <icon wx:if="{{searchValue}}" class="ico-moon icon-close-btn" bindtap="clearInputHandle"></icon>
+  </view>
+</view>
+<view class="subShop-goods-list">
+  <scroll-view class="list-container" scroll-y="{{true}}">
+    <view class="goods-item" wx:for="{{shopList}}" wx:key="index" data-appid="{{item.app_id}}" data-mode="{{item.mode_id}}" data-id="{{item.id}}" bindtap="turnToFranchiseeDetail">
+      <view class="goods-item-logo">
+        <image src="{{item.picture}}" mode="aspectFill" />
+      </view>
+      <view class="goods-item-content">
+        <view class="goods-title">
+          <text class="goods-tag">{{item.industry_type_name}}</text>
+          <text class="goods-name">{{item.name}}</text>
+        </view>
+        <view class="goods-order">
+          已产生<text class="order-num">{{item.dis_sub_shop_data.order_num}}</text>个分销订单
+        </view>
+        <view wx:if="{{item.dis_sub_shop_data}}" class="profit-stratification">
+          <view class="level level-1">
+            一级：<text>{{item.dis_sub_shop_data.first_commission}}</text>%
+          </view>
+          <block wx:if="{{item.dis_sub_shop_data.distribution_type > 1}}">
+            <view class="center-border"></view>
+            <view class="level level-2">
+              二级：<text>{{item.dis_sub_shop_data.second_commission}}</text>%
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{!shopList.length && (!shopListParam.loading) && (!shopListParam.isMore)}}" class="no-result">
+      <image class="no-result-image" src="https://develop.zhichiwangluo.com/static/webapp/images/promotion/no_result.png"></image>
+      <view class="no-result-text">暂无数据哦~</view>
+    </view>
+  </scroll-view>
+</view>

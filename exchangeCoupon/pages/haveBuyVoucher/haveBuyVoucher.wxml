@@ -1,0 +1,148 @@
+<component-behavior-track></component-behavior-track>
+<view class="exchange-coupon-detail">
+  <view class="exchange-coupon-detail-content">
+    <view class="exchange-coupon-top-background"></view>
+    <view class="exchange-coupon-wrapper" style="background-color:{{ data.customFeature.lineBackgroundColor}}">
+      <view class="exchange-coupon-top">
+        <view class="exchange-coupon-left">
+          <image class="exchange-coupon-image" src="http://cdn.jisuapp.cn/static/webapp/images/exchange-coupon/voucher-icon.png"></image>
+          <text class="exchange-coupon-number">{{couponDetail.total}}<text class="exchange-coupon-number-unit">张</text></text>
+        </view>
+        <view class="exchange-coupon-center">
+          <view class="exchange-coupon-title">
+            <text class="many-businesses-icon" wx:if="{{couponDetail.category == 1}}">联盟</text>{{couponDetail.activity_name}}</view>
+          <view class="exchange-coupon-des maTop6" style="color:{{style.strStyle.color}}">
+            <text wx:if="{{couponDetail.exchange_condition.price != 0}}">¥{{couponDetail.exchange_condition.price}}</text>
+            <text wx:if="{{couponDetail.exchange_condition.price != 0 && couponDetail.exchange_condition.integral != 0}}">+</text>
+            <text wx:if="{{couponDetail.exchange_condition.integral != 0}}">{{couponDetail.exchange_condition.integral}}积分</text>
+          </view>
+
+        </view>
+        <view class="exchange-coupon-right {{type != 1?'no-use-coupon':''}}">{{type==1?'可用':type==2?'已使用':'已失效'}}</view>
+      </view>
+      <!-- <view class="exchange-coupon-bottom">
+        <view class="exchange-coupon-des-item">可使用时间：2019.09.09-2019.10.10</view>
+      </view> -->
+      <!-- <view class="exchange-coupon-round-left"></view>
+      <view class="exchange-coupon-round-right"></view> -->
+    </view>
+
+    <view class="voucher-detail {{type !=1?'lose-voucher-detail':''}}">
+      <view class="voucher-detail-line"></view>
+      <view class="voucher-detail-title">券包详情</view>
+    </view>
+
+    <!-- 未使用的优惠券 start -->
+    <block wx:if="{{type == 1}}">
+      <view class="exchange-coupon-wrapper new-coupon" wx:for="{{couponDetail.unusedCoupon}}" wx:for-item="coupon" wx:key="">
+        <template is="voucherCoupon" data="{{ coupon, index, couponId: coupon.can_use_coupon_arr[0], couponNums: coupon.can_use_num, couponType: 'noUse' }}"></template>
+      </view>
+    </block>
+    <!-- 未使用的优惠券 end -->
+
+    <!-- 赠送中的优惠券 start -->
+    <view class="exchange-coupon-wrapper new-coupon" wx:for="{{couponDetail.givingCoupon}}" wx:for-item="coupon" wx:key="">
+      <template is="voucherCoupon" data="{{ coupon, index, couponId: coupon.under_transfer_coupon_arr[0], couponNums: coupon.under_transfer_num, couponImgName: 'share-coupon-icon2', couponType: 'giving' }}"></template>
+    </view>
+    <!-- 赠送中的优惠券 end -->
+
+    <view class="lose-efficacy-coupon" catchtap="showMoreExchangeCoupon" wx:if="{{couponDetail.alreadyUseCoupon.length || couponDetail.expiredUseCoupon.length || couponDetail.givingCoupon.length || couponDetail.givedCoupon.length}}">
+      <view class="lose-coupon-font" wx:if="{{!showLoseExchangeCoupon}}">展开不可用券
+        <text class="ico-moon icon-downarrow"></text>
+      </view>
+      <view class="lose-coupon-font" wx:if="{{showLoseExchangeCoupon}}">收起不可用券
+        <text class="ico-moon icon-uparrow"></text>
+      </view>
+    </view>
+
+    <block wx:if="{{showLoseExchangeCoupon}}">
+      <!-- 已使用的优惠券  start-->
+      <view class="exchange-coupon-wrapper new-coupon" wx:for="{{couponDetail.alreadyUseCoupon}}" wx:for-item="coupon" wx:key="">
+        <template is="voucherCoupon" data="{{ coupon, index, couponId: coupon.has_used_coupon_arr[0], couponNums: coupon.has_used_num, couponImgName: 'already-use-coupon', couponType: 'alreadyUse', disabledStatus: 1 }}"></template>
+      </view>
+      <!-- 已使用的优惠券 end -->
+
+      <!-- 已赠送的优惠券 start -->
+      <view class="exchange-coupon-wrapper new-coupon" wx:for="{{couponDetail.givedCoupon}}" wx:for-item="coupon" wx:key="">
+        <template is="voucherCoupon" data="{{ coupon, index, couponId: coupon.have_transfer_coupon_arr[0], couponNums: coupon.have_transfer_num, couponImgName: 'recei-coupon-icon', couponType: 'gived', disabledStatus: 1 }}"></template>
+      </view>
+      <!-- 已赠送的优惠券 end -->
+
+      <!-- 已失效的优惠券 start -->
+      <view class="exchange-coupon-wrapper new-coupon" wx:for="{{couponDetail.expiredUseCoupon}}" wx:for-item="coupon" wx:key="">
+        <template is="voucherCoupon" data="{{ coupon, index, couponId: coupon.expired_coupon_arr[0], couponNums: coupon.expired_num, couponImgName: 'lose-coupon-icon', couponType: 'loseUse', disabledStatus: 1 }}"></template>
+      </view>
+      <!-- 已失效的优惠券 end -->
+    </block>
+  </view>
+
+  <template name="voucherCoupon">
+    <view class="exchange-coupon-top" catchtap="gotoCouponDetail" data-id="{{couponId}}">
+      <view class="exchange-coupon-left {{ disabledStatus === 1 && 'lose-efficacy-style' }}">
+        <view wx:if="{{coupon.type != 3 && coupon.type != 5}}">
+          <text class="exchange-coupon-unit" wx:if="{{coupon.type != 1 && coupon.type != 6}}">¥</text>
+          <text class="exchange-coupon-number-new">{{coupon.value}}</text>
+          <text class="exchange-coupon-unit" wx:if="{{coupon.type == 1}}">折</text>
+          <text class="exchange-coupon-unit" wx:if="{{coupon.type == 6}}">次</text>
+        </view>
+        <view class="exchange-coupon-type {{(coupon.type == 3 || coupon.type == 5)?'exchange-coupon-type-new':''}}">
+          <text>{{coupon.stampsType}}</text>
+        </view>
+      </view>
+      <view class="exchange-coupon-center">
+        <view class="exchange-coupon-title maTop14 {{ disabledStatus === 1 && 'lose-efficacy-style' }}">
+          <text class="many-businesses-icon {{ disabledStatus === 1 && 'lose-businesses-icon' }}" wx:if="{{coupon.category == 1}}">联盟</text>{{coupon.title}}</view>
+        <view class="exchange-coupon-time maTop11 {{ disabledStatus === 1 && 'lose-efficacy-style' }}" wx:if="{{coupon.expire==-1}}">{{coupon.start_use_date}}-{{coupon.end_use_date}}</view>
+        <view class="exchange-coupon-time maTop11 {{ disabledStatus === 1 && 'lose-efficacy-style' }}" wx:else>领取后{{coupon.react==0?'当':coupon.react}}天生效，有效期{{coupon.expire}}天</view>
+      </view>
+      <view class="coupon-number {{ disabledStatus === 1 && 'lose-efficacy-background' }}">x{{couponNums}}</view>
+      <image wx:if="couponImgName" src="http://cdn.jisuapp.cn/static/webapp/images/exchange-coupon/{{couponImgName}}.png" class="coupon-type-image"></image>
+    </view>
+    <view class="exchange-coupon-wrapper-center">
+      <view class="exchange-coupon-round-left"></view>
+      <view class="exchange-coupon-round-right"></view>
+    </view>
+    <view class="exchange-coupon-bottom {{ disabledStatus === 1 && 'lose-efficacy-style' }}" catchtap="isShowMoreData" data-index="{{index}}"  data-type="{{couponType}}">
+      <view class="ico-moon icon-uparrow" wx:if="{{coupon.showMore && coupon.showMoreData}}"></view>
+      <view class="ico-moon icon-downarrow" wx:if="{{coupon.showMore && !coupon.showMoreData}}"></view>
+      <view wx:if="{{coupon.type == 0}}">
+        <view class="exchange-coupon-des-item">订单满{{ coupon.condition }}元可用</view>
+        <view class="exchange-coupon-des-item" wx:if="{{coupon.extra_goods && coupon.extra_goods !='null' && coupon.showMoreData}}">部分商品可用</view>
+        <view class="exchange-coupon-des-item" wx:if="{{coupon.showMoreData}}">
+          <text>使用时间{{coupon.start_use_time}}-{{coupon.end_use_time}} </text>
+          <text wx:if="{{coupon.exclude_holiday == 1}}">除去法定节假日 </text>
+          <text wx:if="{{coupon.exclude_weekend == 1}}">周一至周五可用 </text>
+        </view>
+      </view>
+      <view wx:if="{{coupon.type == 1 || coupon.type == 2 || coupon.type == 4 ||coupon.type == 6}}">
+        <view class="exchange-coupon-des-item" wx:if="{{coupon.extra_goods && coupon.extra_goods !='null'}}">部分商品可用</view>
+        <view class="exchange-coupon-des-item" wx:if="{{!coupon.extra_goods || coupon.extra_goods =='null' || coupon.showMoreData}}">
+          <text>使用时间{{coupon.start_use_time}}-{{coupon.end_use_time}} </text>
+          <text wx:if="{{coupon.exclude_holiday == 1}}">除去法定节假日 </text>
+          <text wx:if="{{coupon.exclude_weekend == 1}}">周一至周五可用 </text>
+        </view>
+      </view>
+      <view wx:if="{{coupon.type == 3}}">
+        <view class="exchange-coupon-des-item">
+          <view wx:if="{{ coupon.extra_condition == '' }}">直接兑换{{ coupon.coupon_goods_info.title }} </view>
+          <view wx:elif="{{ coupon.extra_condition.price }}">消费满{{ coupon.extra_condition.price }}元可兑换{{ coupon.coupon_goods_info.title }}</view>
+          <view wx:elif="{{ coupon.extra_condition.goods_id }}">购买{{ coupon.condition_goods_info.title }}可兑换{{ coupon.coupon_goods_info.title }}</view>
+        </view>
+        <view class="exchange-coupon-des-item" wx:if="{{coupon.extra_goods && coupon.extra_goods !='null' && coupon.showMoreData}}">部分商品可用</view>
+        <view class="exchange-coupon-des-item" wx:if="{{coupon.showMoreData}}">
+          <text>使用时间{{coupon.start_use_time}}-{{coupon.end_use_time}} </text>
+          <text wx:if="{{coupon.exclude_holiday == 1}}">除去法定节假日 </text>
+          <text wx:if="{{coupon.exclude_weekend == 1}}">周一至周五可用 </text>
+        </view>
+      </view>
+      <view wx:if="{{coupon.type == 5}}">
+        <view class="exchange-coupon-des-item {{coupon.showMoreData?'coupon-type-5':''}}">使用条件：{{coupon.extra_condition}}</view>
+        <view class="exchange-coupon-des-item" wx:if="{{coupon.showMoreData}}">
+          <text>使用时间{{coupon.start_use_time}}-{{coupon.end_use_time}} </text>
+          <text wx:if="{{coupon.exclude_holiday == 1}}">除去法定节假日 </text>
+          <text wx:if="{{coupon.exclude_weekend == 1}}">周一至周五可用 </text>
+        </view>
+      </view>
+    </view>
+  </template>
+</view>

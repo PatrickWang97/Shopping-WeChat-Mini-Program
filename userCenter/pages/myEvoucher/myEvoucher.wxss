@@ -1,0 +1,187 @@
+page {
+  color: #333;
+  background-color: #f3f3f3;
+}
+.gray {
+  color: #999;
+}
+.flex {
+  display: flex;
+  align-items: center;
+}
+.self-start {
+  align-self: flex-start;
+}
+.self-end {
+  align-self: flex-end;
+}
+.row-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.row-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.column-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.evoucher-list {
+  padding: 20rpx 24rpx;
+}
+.evoucher-item {
+  position: relative;
+  width: 654rpx;
+  padding: 32rpx 24rpx;
+  border-radius: 12rpx;
+  margin-bottom: 20rpx;
+  font-size: 26rpx;
+  line-height: 26rpx;
+  color: #999;
+  background-color: #fff;
+}
+.evoucher-item .item-img {
+  position: relative;
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+.evoucher-item .item-img image {
+  max-width: 100%;
+  max-height: 100%;
+}
+.evoucher-item .item-content {
+  width: 462rpx;
+  height: 160rpx;
+  margin-left: 20rpx;
+  color: #333;
+}
+.evoucher-item .icon-qr-code {
+  width: 90rpx;
+  height: 56rpx;
+  font-size: 38rpx;
+  text-align: center;
+  line-height: 56rpx;
+  border-radius: 28rpx;
+  color: #fff;
+  box-shadow:0 4rpx 8rpx 0 rgba(255,96,0,0.4);
+  background:linear-gradient(125deg,rgba(255,150,0,1) 0%,rgba(255,114,0,1) 100%);
+}
+.evoucher-item .item-name {
+  max-width: 345rpx;
+  font-size: 28rpx;
+  line-height: 28rpx;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.evoucher-item .item-species {
+  padding: 12rpx 0 40rpx;
+}
+.evoucher-item.expired::before,
+.evoucher-item.used::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.4);
+  z-index: 10;
+}
+.evoucher-item.expired .item-img::before, 
+.evoucher-item.used .item-img::before {
+  content: '失效';
+  position: absolute;
+  top: 15rpx;
+  left: 15rpx;
+  right: 0;
+  bottom: 0;
+  width: 130rpx;
+  height: 130rpx;
+  color: #fff;
+  text-align: center;
+  line-height: 130rpx;
+  border-radius: 50%;
+  background-color: rgba(48, 52, 69, .5);
+  z-index: 9;
+}
+.evoucher-item.expired .item-img::before {
+  content: '已过期';
+}
+.evoucher-item.used .item-img::before {
+  content: '已使用';
+}
+.evoucher-item.expired .item-name,
+.evoucher-item.used .item-name {
+  max-width: 455rpx;
+}
+.evoucher-item.expired .item-species,
+.evoucher-item.used .item-species {
+  padding-top: 20rpx;
+}
+.evoucher-list-null {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 200rpx;
+}
+.evoucher-list-null text {
+  font-size: 26rpx;
+  color: #999;
+}
+.evoucher-list-null image {
+  width: 200rpx;
+  height: 200rpx;
+}
+.qr-code-dialog {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  font-size: 26rpx;
+  background-color: rgba(0, 0, 0, .4);
+  z-index: 11;
+}
+.qr-code-dialog .qr-code {
+  width: 586rpx;
+  height: 792rpx;
+  border-radius: 12rpx;
+  background-color: #fff;
+}
+.qr-code-dialog .code-img {
+  width: 480rpx;
+  height: 480rpx;
+  padding: 40rpx 0 85rpx;
+}
+.qr-code-dialog .qr-code-close {
+  margin-top: 50rpx;
+  height: 56rpx;
+  width: 56rpx;
+  text-align: center;
+  line-height: 56rpx;
+  color: #fff;
+  border-radius: 50%;
+  border: 1px solid #fff;
+}
+.qr-code-dialog .code-num {
+  font-size: 28rpx;
+  font-weight: bold;
+}
+.qr-code-dialog .code-copy {
+  padding-top: 30rpx;
+  color: #ff7100;
+}

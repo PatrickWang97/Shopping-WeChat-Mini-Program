@@ -1,0 +1,168 @@
+<block wx:if='{{customtopnav.customFeature && customtopnav.customFeature.isDefault == 1}}'>
+  <wxs module="topNavInputModule">
+    var parseInputStyle = function(style) {
+      var styleArr1 = ["width", "height", "margin-left", "font-size"];
+      var styleArr2 = ["background-color", "font-style", "font-weight", "text-decoration", "opacity", "color"];
+      var s = '';
+      for (var i = 0; i < styleArr1.length; i++) {
+        var idx = styleArr1[i];
+        if (style[idx]) {
+          s += idx + ':' + (parseInt(style[idx]) * 2.34375) + 'rpx;'
+        }
+      }
+      for (var i = 0; i < styleArr2.length; i++) {
+        var idx = styleArr2[i];
+        if (style[idx]) {
+          s += idx + ':' + style[idx] + ';'
+        }
+      }
+      return s;
+    }
+    module.exports.parseInputStyle = parseInputStyle;
+  </wxs>
+  <view class='top-nav-wrap' style='padding-top:{{ paddingTop }}px;color:{{ customtopnav.customFeature.style.color}};background-color:{{ customtopnav.customFeature.style["background-color"]}};opacity:{{customtopnav.customFeature.style.opacity}}'>
+    <view class='top-nav' style='height:{{height}}px;' wx:if='{{customtopnav.customFeature.type == 1}}'>
+      <view class='top-nav-left_icon top-nav-back' wx:if='{{customtopnav.customFeature.iconSrc}}' data-event-params="{{customtopnav.customFeature}}" catchtap='{{customtopnav.customFeature.action && customtopnav.customFeature.action != "none" ? "tapEventCommonHandler" : "_navback"}}'>
+        <image src='{{customtopnav.customFeature.iconSrc}}' class='top-nav-img alone'></image>
+        <view class='top-nav-unReadCount  {{count>99 ? "lessLeft":""}}' hidden='{{!count}}'>{{count>99?'99+':count}}</view>
+      </view>
+      <block wx:if="{{customtopnav.customFeature.customLogo && customtopnav.customFeature.logoIcon != ''}}">
+        <view class='top-nav-title absolute' style='width: {{height * 3}}px;line-height:{{height}}px;height:{{height}}px;'>
+          <image src='{{customtopnav.customFeature.logoIcon}}' class='custom-nav-icon'></image>
+        </view>
+      </block>
+      <block wx:else>
+        <view class='top-nav-title absolute' style='line-height:{{height}}px;height:{{height}}px;'>{{customtopnav.customFeature.title}}</view>
+      </block>
+    </view>
+    <view class='top-nav' style='height:{{height}}px;' wx:elif='{{customtopnav.customFeature.type == 2}}'>
+      <view class='top-nav-left_icon top-nav-back' wx:if='{{customtopnav.customFeature.iconSrc}}' data-event-params="{{customtopnav.customFeature}}" data-compid="{{ customtopnav.customFeature.compId }}" catchtap="tapEventCommonHandler">
+        <image src='{{customtopnav.customFeature.iconSrc}}' class='top-nav-img alone'></image>
+        <view class='top-nav-unReadCount  {{count>99 ? "lessLeft":""}}' hidden='{{!count}}'>{{count > 99 ? '99+':count}}</view>
+      </view>
+      <view class='top-nav-input' style='{{topNavInputModule.parseInputStyle(customtopnav.customFeature.style.inputStyle)}}' catchtap='turnToSearch' data-listid="{{customtopnav.customFeature.searchObject.customFeature.id}}" data-listtype="{{customtopnav.customFeature.searchObject.type}}" data-form="{{customtopnav.customFeature.searchObject.customFeature.form}}" 
+      data-hasquicktags="{{customtopnav.customFeature.hasQuickTags}}" 
+      data-keycodemeta="{{customtopnav.customFeature.keyCodeMeta}}" 
+      data-hotsearch="{{customtopnav.customFeature.hotSearch}}" 
+      data-conf="{{customtopnav.customFeature.editObject}}" 
+      data-form="{{customtopnav.customFeature.searchObject.customFeature.form}}" 
+      data-listid="{{customtopnav.customFeature.searchObject.customFeature.id}}" 
+      data-compid="{{customtopnav.customFeature.compId}}"
+      data-listtype="{{customtopnav.customFeature.searchObject.type}}"
+      data-industry="{{customtopnav.customFeature.industry}}"
+      data-quicktags="{{customtopnav.customFeature.quickTags}}"
+      data-bindtype="{{customtopnav.customFeature.bindType}}">
+        <view class='top-nav-serach_icon'>
+          <image src='https://cdn.jisuapp.cn/static/jisuapp_editor/images/titleBar-search.png' class='top-nav-img' style='width:26rpx;height:26rpx;'></image>
+          <view class='top-nav-search-placeholder'>{{customtopnav.customFeature.input_placeholder}}</view>
+        </view>
+      </view>
+    </view>
+    <view class='top-nav' style='height:{{height}}px;' wx:elif='{{customtopnav.customFeature.type == 3}}'>
+      <view class='top-nav-btn_icon' style='height:32px;width:81px;'>
+        <view class='top-nav-go_back' catchtap='_navback'>
+          <image src='https://cdn.jisuapp.cn/static/jisuapp_editor/images/titleBar-back.png' class='top-nav-img'></image>
+        </view>
+        <view class='top-nav-mid_line'></view>
+        <view wx:if="{{customtopnav.customFeature.iconSrc}}" class='top-nav-go_home'  data-event-params='{{customtopnav.customFeature}}' catchtap='{{customtopnav.customFeature.action && customtopnav.customFeature.action != "none" ? "tapEventCommonHandler" : "_backhome"}}'>
+          <image src='{{customtopnav.customFeature.iconSrc}}' class='top-nav-img'></image>
+          <view class='top-nav-unReadCount {{count>99 ? "padding":"moreLeft"}}' hidden='{{!count}}'>{{count > 99 ? '99+':count}}</view>
+        </view>
+        <view wx:else class='top-nav-go_home'></view>
+      </view>
+      <block wx:if="{{customtopnav.customFeature.customLogo && customtopnav.customFeature.logoIcon != ''}}">
+        <view class='top-nav-title absolute' style='width: {{height * 3}}px;line-height:{{height}}px;height:{{height}}px;'>
+          <image src='{{customtopnav.customFeature.logoIcon}}' class='custom-nav-icon'></image>
+        </view>
+      </block>
+      <block wx:else>
+        <view class='top-nav-title absolute' style='line-height:{{height}}px;height:{{height}}px;'>{{customtopnav.customFeature.title}}</view>
+      </block>
+    </view>
+    <view class='top-nav' style='height:{{height}}px;' wx:elif='{{customtopnav.customFeature.type == 4}}'>
+      <view class='top-nav-btn_icon' style='height:32px;width:81px;'>
+        <view class='top-nav-go_back' catchtap='_navback'>
+          <image src='https://cdn.jisuapp.cn/static/jisuapp_editor/images/titleBar-back.png' class='top-nav-img'></image>
+        </view>
+        <view class='top-nav-mid_line'></view>
+        <view wx:if="{{customtopnav.customFeature.iconSrc}}" class='top-nav-go_home' data-event-params='{{customtopnav.customFeature}}' catchtap='{{customtopnav.customFeature.action && customtopnav.customFeature.action != "none" ? "tapEventCommonHandler" : "_backhome"}}'>
+          <image src='{{customtopnav.customFeature.iconSrc}}' class='top-nav-img'></image>
+          <view class='top-nav-unReadCount {{count>99 ? "padding":"moreLeft"}}' hidden='{{!count}}'>{{count > 99 ? '99+': count}}</view>
+        </view>
+        <view wx:else class='top-nav-go_home'></view>
+      </view>
+      <view class='top-nav-input' style='{{topNavInputModule.parseInputStyle(customtopnav.customFeature.style.inputStyle)}}' catchtap='turnToSearch' data-listid="{{customtopnav.customFeature.searchObject.customFeature.id}}" data-listtype="{{customtopnav.customFeature.searchObject.type}}" data-form="{{customtopnav.customFeature.searchObject.customFeature.form}}"      
+      data-hasquicktags="{{customtopnav.customFeature.hasQuickTags}}" 
+      data-keycodemeta="{{customtopnav.customFeature.keyCodeMeta}}" 
+      data-hotsearch="{{customtopnav.customFeature.hotSearch}}" 
+      data-conf="{{customtopnav.customFeature.editObject}}" 
+      data-form="{{customtopnav.customFeature.searchObject.customFeature.form}}" 
+      data-listid="{{customtopnav.customFeature.searchObject.customFeature.id}}" 
+      data-compid="{{customtopnav.customFeature.compId}}"
+      data-listtype="{{customtopnav.customFeature.searchObject.type}}"
+      data-industry="{{customtopnav.customFeature.industry}}"
+      data-quicktags="{{customtopnav.customFeature.quickTags}}"
+      data-bindtype="{{customtopnav.customFeature.bindType}}">
+        <view class='top-nav-serach_icon'>
+          <image src='https://cdn.jisuapp.cn/static/jisuapp_editor/images/titleBar-search.png' class='top-nav-img' style='width:26rpx;height:26rpx;'></image>
+          <view class='top-nav-search-placeholder'>{{customtopnav.customFeature.input_placeholder}}</view>
+        </view>
+      </view>
+    </view>
+    <view class='top-nav' style='height:{{height}}px;' wx:elif='{{customtopnav.customFeature.type == 5}}'>
+      <view wx:if="{{customtopnav.customFeature.iconSrc}}" class='top-nav-left_icon top-nav-back'  data-event-params='{{customtopnav.customFeature}}' catchtap='{{customtopnav.customFeature.action && customtopnav.customFeature.action != "none" ? "tapEventCommonHandler" : "_navback"}}'>
+        <image src='{{customtopnav.customFeature.iconSrc}}' class='{{customtopnav.customFeature.iconSrc == "titleBar.back" ? "back":""}} top-nav-img alone'></image>
+        <view class='top-nav-unReadCount {{count>99 ? "lessLeft":""}}' hidden='{{!count}}'>{{count>99?'99+':count}}</view>
+      </view>
+      <view class='top-nav-title-menu' style='height:32px;'>
+        <view class='top-nav-title_left' style='{{customtopnav.content[0].style}};line-height:32px;' catchtap='{{customtopnav.content[0].customFeature.action && customtopnav.content[0].customFeature.action  != "none" ? "tapEventCommonHandler" : ""}}'
+          data-event-params='{{customtopnav.content[0].customFeature}}'>{{customtopnav.content[0].name}}</view>
+        <view class='top-nav-title_right' style='{{customtopnav.content[1].style}};line-height:32px;' catchtap='{{customtopnav.content[1].customFeature.action && customtopnav.content[1].customFeature.action  != "none" ? "tapEventCommonHandler" : ""}}'
+          data-event-params='{{customtopnav.content[1].customFeature}}'>{{customtopnav.content[1].name}}</view>
+      </view>
+    </view>
+  </view>
+  <view class='top-nav-margin_botom' style='height:{{height + paddingTop }}px;'></view>
+</block>
+<block wx:elif='{{topNavBarData.isDefault == 0 && topNavBarData.type != 4}}'>
+  <view class='top-nav-wrap' style='padding-top:{{ paddingTop }}px;'>
+    <view class='top-nav' style='height:{{height}}px;' >
+      <view class='top-nav-btn_icon' style='height:32px;width:81px;'>
+        <view class='top-nav-go_back' catchtap='_navback'>
+          <image src='https://cdn.jisuapp.cn/static/jisuapp_editor/images/titleBar-back.png' class='back top-nav-img'></image>
+        </view>
+        <view class='top-nav-mid_line'></view>
+        <view class='top-nav-go_home' catchtap='_backhome'>
+          <image src='https://cdn.jisuapp.cn/static/jisuapp_editor/images/titleBar-home.png' class='top-nav-img'></image>
+        </view>
+      </view>
+      <view class='top-nav-title absolute' style='line-height:{{height}}px;height:{{height}}px;'>{{topNavBarData.title}}</view>
+    </view>
+  </view>
+  <view class='top-nav-margin_botom' style='height:{{height + paddingTop }}px;'></view>
+</block>
+<block wx:elif='{{topNavBarData.type == 4}}'>
+  <view class='top-nav-wrap' style='padding-top:{{ paddingTop }}px;{{topNavBarData.showBg == 0? "background:none;" : ""}}'>
+    <view class='top-nav' style='height:{{height}}px;' >
+      <view class='top-nav-btn_icon' style='height:32px;width:81px;'>
+        <view class='top-nav-go_back' catchtap='_navback'>
+          <image src='https://cdn.jisuapp.cn/static/jisuapp_editor/images/titleBar-back.png' class='back top-nav-img'></image>
+        </view>
+        <view class='top-nav-mid_line'></view>
+        <view class='top-nav-go_home' catchtap='_backhome'>
+          <image src='https://cdn.jisuapp.cn/static/jisuapp_editor/images/titleBar-home.png' class='top-nav-img'></image>
+        </view>
+      </view>
+      <view class='top-nav-title absolute' style='line-height:{{height}}px;height:{{height}}px;' hidden="{{topNavBarData.showBg == 0}}">
+        <view wx:for="{{topNavBarData.titleList}}" 
+                    wx:key="index" 
+                    style="display:inline-block;margin: 0 10rpx -10rpx;position: relative;{{topNavBarData.titleList.length > 1 ? 'font-size:28rpx' : ''}}" 
+                    data-index="{{index}}"
+                    catchtap="changePage"
+                    class="nav-title">{{item.title}}
+                    <view wx:if="{{item.select}}" class="titleActive" style="background:{{topNavBarData.color}}"></view></view>
+      </view>
+    </view>
+  </view>
+  <view class='top-nav-margin_botom' style='height:{{height + paddingTop }}px;'></view>
+</block>

@@ -1,0 +1,233 @@
+page {
+    background: #fcfcfc;
+    box-sizing: border-box;
+    font-size: 28rpx;
+    color: #333;
+    vertical-align: middle;
+}
+.giftCardImg {
+    width: 650rpx;
+    height: 370rpx;
+    margin: 45rpx 0 33rpx 50rpx;
+    border-radius: 20rpx;
+    overflow: hidden;
+    box-shadow: 0rpx 3rpx 5rpx 5rpx #F0F1F4;
+}
+.giftCardImg image {
+    width: 100%;
+    height: 100%;
+}
+.giftCardTitle {
+    color: #333;
+    font-size: 34rpx;
+    font-weight: bold;
+    line-height: 34rpx;
+    text-align: center;
+    vertical-align: middle;
+}
+.sendText {
+    margin: 64rpx 50rpx 69rpx;
+    position: relative;
+}
+.sendText>view {
+    display: inline-block;
+    vertical-align: top;
+}
+.sender {
+    width: 90rpx;
+    height: 90rpx;
+    box-sizing: border-box;
+}
+.sender .img {
+    width: 80rpx;
+    height: 80rpx;
+    border-radius: 45rpx;
+    overflow: hidden;
+    border: 5rpx solid rgba(255, 113, 0, 0.1);
+    margin: 0;
+}
+.img image {
+    width: 100%;
+    height: 100%;
+}
+.borderTriangle {
+    position: absolute;
+    width: 20rpx;
+    height: 20rpx;
+    background: #fcfcfc;
+    top: 40rpx;
+    left: -20rpx;
+    overflow: hidden;
+}
+.triangle.top {
+    position: absolute;
+    transform: rotate(45deg);
+    border: 10rpx solid #fff;
+    border-left: 10rpx solid #fff;
+    border-bottom: 10rpx solid #fff;
+    left: 13rpx;
+    box-shadow: 0rpx 3rpx 5rpx 5rpx #F0F1F4;
+}
+.textContent {
+    box-sizing: border-box;
+    width: 530rpx;
+    min-height: 100rpx;
+    background: #fff;
+    margin-left: 30rpx;
+    border-radius: 10rpx;
+    box-shadow: 0rpx 3rpx 5rpx 5rpx #F0F1F4;
+    padding: 36rpx 30rpx;
+    position: relative;
+}
+.textContent view {
+    display: inline-block;
+    vertical-align: top;
+}
+.textContent .content {
+    color: #666;
+    width: 377rpx;
+}
+.selectGoods {
+    margin-top: 64rpx;
+    font-size: 28rpx;
+    line-height: 28rpx;
+    margin-left: 50rpx;
+}
+.selectGoods view {
+    display: inline-block;
+    color: #333;
+}
+.selectGoods view:last-child {
+    color: #999;
+    font-size: 24rpx;
+}
+.aheadList {
+    padding-bottom: 154rpx;
+}
+.goodsList {
+    box-sizing: border-box;
+    margin: 41rpx 0 0 50rpx;
+    width: 650rpx;
+    background: rgba(255, 113, 0, 0.04);
+    border-radius: 8rpx;
+    padding: 0 30rpx;
+    font-size: 24rpx;
+}
+.goodsList .goodDetail {
+    height: 85rpx;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    border-top: 1rpx dashed #EDEDED;
+    position: relative;
+}
+.goodsList .goodDetail:first-child {
+    border-top: none;
+}
+.goodsList .point2 {
+    width: 4rpx;
+    height: 4rpx;
+    border-radius: 2rpx;
+    background: #D2D2D2;
+    margin-right: 15rpx;
+}
+.goodsList .title {
+    max-width: 200rpx;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: #333;
+    margin: 0;
+    font-size: 24rpx;
+}
+.goodsList .goodsnumber {
+    color: #999;
+}
+.oldPrice {
+    color: #b3b3b3;
+    position: absolute;
+    right: 120rpx;
+    text-decoration: line-through;
+    top: 25rpx;
+    font-size: 24rpx;
+  }
+  .currentPrice {
+    color: #ff7100;
+    margin-left: auto;
+    font-size: 28rpx;
+  }
+.goodDetail.getMore {
+    justify-content: center;
+    color: #999;
+}
+.getMore .icon-downarrow {
+    font-size: 20rpx;
+    color: #b3b3b3;
+    margin: 4rpx 0 0 12rpx;
+}
+.caption {
+    margin-top: 71rpx;
+    margin-left: 50rpx;
+    line-height: 28rpx;
+}
+.caption view {
+    display: inline-block;
+    color: #333;
+    vertical-align: middle;
+}
+.ico-moon.title {
+    color: #666;
+    width: 30rpx;
+    margin: 0 13rpx 0 0;
+}
+.textList {
+    margin-top: 21rpx;
+    margin-left: 50rpx;
+    width: 630rpx;
+    padding-bottom: 132rpx;
+}
+.text {
+    position: relative;
+    line-height: 46rpx;
+}
+.text view {
+    display: inline-block;
+    vertical-align: center;
+}
+.text view:nth-child(2) {
+    margin-left: 14rpx;
+    font-size: 26rpx;
+    color: #666;
+}
+.point {
+    position: absolute;
+    top: 21rpx;
+    width: 4rpx;
+    height: 4rpx;
+    border-radius: 2rpx;
+    background: #D2D2D2;
+}
+.presenter {
+    line-height: 94rpx;
+    background: linear-gradient(to right, #ff9600, #ff7200);
+    border-top: 1rpx solid #f3f3f3;
+    color: #fff;
+    font-size: 30rpx;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.shopping-cart {
+    position: fixed;
+    bottom: 222rpx;
+    right: 30rpx;
+    width: 84rpx;
+    line-height: 84rpx;
+    border-radius: 42rpx;
+    background: rgba(48, 52, 69, .5);
+    text-align: center;
+    font-size: 42rpx;
+    color: #fff;
+}

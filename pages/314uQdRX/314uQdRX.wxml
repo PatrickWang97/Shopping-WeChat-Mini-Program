@@ -1,0 +1,21 @@
+<import src="/components/wxParse/wxParse.wxml"/>
+<import src="/components/templates/templates.wxml"/>
+<component-share pageQRCodeData="{{pageQRCodeData}}"></component-share>
+<component-reward-point rewardPointObj="{{rewardPointObj}}"  shareGiftsObj="{{shareGiftsObj}}" collectGiftsObj="{{collectGiftsObj}}" collectGetObj="{{collectGetObj}}"></component-reward-point>
+<component-shop-vip shopVipModal="{{shopVipModal}}"></component-shop-vip>
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-sinkingModal></component-sinkingModal>
+<franchiseeTabbar franchiseeInfo="{{franchiseeInfo}}"></franchiseeTabbar>
+<component-vip-card-qr-code id="vip-card-qr-code" vipCardQrCode="{{vipCardQrCode}}"></component-vip-card-qr-code>
+<component-share-polite  id="share-polite" sharePolite="{{sharePolite}}"></component-share-polite>
+<component-newcomer-gift  id="newcomer-gift" newcomer="{{newcomer}}" inviter="{{inviter}}"></component-newcomer-gift>
+<component-behavior-track></component-behavior-track>
+<component-customer-service-modal id="customer-service-modal"></component-customer-service-modal>
+<component-share-timeline wx:if="{{scene === 1154}}"></component-share-timeline>
+
+<component-goodsShoppingCart id="component-goodsShoppingCart" bind:afterSelectedGoods="afterSelectGoods"></component-goodsShoppingCart>
+
+
+<view class="app" hidden="{{page_hidden}}">
+
+</view>

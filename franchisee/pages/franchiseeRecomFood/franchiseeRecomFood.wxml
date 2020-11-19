@@ -1,0 +1,58 @@
+<component-behavior-track></component-behavior-track>
+<view wx:if="{{goods_type !== '2'}}">
+  <view class="foods-top" wx:if="{{recommendInfo.goodsList.length > 0}}">
+    <view class="recommend-foods-sec" wx:if="{{recommendInfo.sec_title.isOpen}}">{{recommendInfo.sec_title.name}}<label>({{recommendInfo.goodsList.length}})</label></view>
+    <scroll-view scroll-x="{{true}}" class="recommend-content-list">
+      <block wx:for="{{recommendInfo.goodsList}}" wx:key="index">
+        <view class="recommend-item" data-id="{{item['goods-id']}}" data-index="{{index}}" catchtap="toRecommendDetail">
+          <view class="recommend-item-pic">
+            <image class="recommend-item-img" src="{{item['goods-cover']}}" mode="aspectFill"/>
+            <image class="recommend-item-lab" wx:if="{{item['corner-mark'] > 0 && (item['corner-position'] === 0 || item['corner-position'] === undefined)}}" src="{{item['corner-url']}}"/>            
+          </view>
+          <view class="recommend-item-bot">
+            <view class="recommend-item-name">{{item['goods-name']}}</view>
+            <view class="recommend-item-price">¥ {{item['goods-price']}}</view>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+  </view>
+  <view class="foods-content">
+    <view class="foods-content-title">网友推荐 <label>({{totalNum}})</label></view>
+    <view class="foods-list">
+      <block wx:for="{{foodList}}" wx:key="index">
+        <view class="foods-item" data-id="{{item.form_data.id}}" data-index="{{index + 1}}" catchtap="toRecommendThumb">
+          <view class="foods-item-left">
+            <view class="foods-item-pic">
+              <image src="{{item.form_data.cover}}" mode="aspectFill"/>
+              <view class="foods-item-sort" wx:if="{{index < 3}}">
+                <view class="foods-item-num">0{{index + 1}}</view>
+                <view class="foods-item-hot">TOP</view>
+              </view>
+            </view>
+            <view class="foods-item-desc">
+              <view class="foods-item-name">{{item.form_data.title}}</view>
+              <label class="foods-item-price">¥ {{item.form_data.price}}</label>
+            </view>
+          </view>
+          <view class="foods-item-right {{item.form_data.approval['status'] ? 'thumbed' : ''}}" data-index="{{index}}" data-id="{{item.form_data.id}}" data-goodstype="{{item.form_data.goods_type}}" catchtap="clickThumb">
+            <label class="ico-moon {{item.form_data.approval['status'] ? 'icon-news-like' : 'icon-community-group-thumb'}}"></label>{{item.form_data.approval.total_approval ? item.form_data.approval.total_approval : 0}}
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>
+<view class="appoint-content" wx:else>
+  <block wx:for="{{foodList}}" wx:key="index">
+    <view class="appoint-item" data-id="{{item.form_data.id}}" data-type="{{item.form_data.goods_type}}" catchtap="turnToDetail">
+      <image class="appoint-item-img" src="{{item.form_data.cover}}" mode="aspectFill"/>
+      <view class="appoint-item-name limit-line">{{item.form_data.title}}</view>
+      <view class="appoint-item-desc limit-line">
+        <block wx:for="{{item.form_data.category}}" wx:key="index">
+          <label>{{item}} </label>
+        </block>
+      </view>
+    </view>
+  </block>
+</view>

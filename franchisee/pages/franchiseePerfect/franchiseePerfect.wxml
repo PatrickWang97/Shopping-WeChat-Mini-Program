@@ -1,0 +1,383 @@
+<import src="../../../components/wxParse/wxParse.wxml" />
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="franchisee-enter page">
+  <block wx:if="{{isReEdit}}">
+    <view>
+      <image class="banner" mode="aspectFill" src="{{cdnUrl + '/static/webapp/images/franchisee/enter-banner.png'}}"></image>
+    </view>
+    <form bindsubmit="reEditSubmit">
+      <view class="form-item">
+        <label class="form-title necessary">店铺名称</label>
+        <view class="form-item-right">
+          <input class="form-input" type="text" placeholder="请输入店铺名称" name="name" value="{{franchiseeInfo.name}}" />
+        </view>
+      </view>
+      <view class="form-item">
+        <label class="form-title necessary">店铺logo</label>
+        <view class="form-item-right shop-logo-wrap">
+          <view class="upload-img" bindtap="uploadLogo">
+            <block wx:if="{{shopLogo}}">
+              <image class="shop-logo" mode="aspectFill" src="{{shopLogo}}"></image>
+              <label class="upload-mask">更换图片</label>
+            </block>
+            <block wx:else>
+              <label class="ver-line"></label>
+              <label class="hor-line"></label>
+            </block>
+          </view>
+        </view>
+      </view>
+      <view class="form-item form-address">
+        <label class="form-title necessary">店铺位置</label>
+        <view class="form-item-right">
+          <view class="from-area">
+            <!-- <picker class="form-picker form-region" mode="multiSelector" bindcolumnchange="bindRegionColumnChange" range="{{regionList}}" value="{{region}}" range-key="name" name="area">
+              <view class="picker-view">
+                {{regionList[0][region[0]].name}} {{regionList[1][region[1]].name}} {{regionList[2][region[2]].name}}
+              </view>
+            </picker> -->
+            <view class="picker-view" bindtap="showRegionPickerTap">
+              {{regionList[0][region[0]].name}} {{regionList[1][region[1]].name}} {{regionList[2][region[2]].name}} {{regionList[3][region[3]].name}} {{regionList[4][region[4]].name}}
+            </view>
+            <view class="get-location" bindtap="getLocation"><label class="ico-moon icon-relocate"></label><text>定位</text></view>
+          </view>
+          <view>
+            <textarea class="address-textarea" placeholder="请填写详细地址" value="{{address}}" name="address_detail" cursor-spacing="20" hidden="{{!tplHidden || !tplDetailHidden || showIndustryPickView || showRegionPickView || showCategoryPickView}}" bindblur="updateLatAndLng" />
+          </view>
+        </view>
+      </view>
+      <view class="form-item">
+        <label class="form-title necessary">行业分类</label>
+        <view class="form-item-right industry-type-item">
+          <view wx:if="{{selectedIndustry.length > 0}}" class="picker-view" bindtap="tapSelectIndustryType"><text wx:for="{{industryNames}}" wx:key="index" wx:for-index="i">{{(i > 0 ? '/' : '') + item}}</text></view>
+          <view wx:else class="picker-placeholder" bindtap="tapSelectIndustryType">请选择行业分类</view>
+        </view>
+      </view>
+      <view class="form-item" wx:if="{{categoryList.length > 0}}">
+        <label class="form-title necessary">店铺分类</label>
+        <view class="form-item-right">
+          <view wx:if="{{isOperateShopCate}}" class="picker-view" bindtap="tapSelectShopCategory"><text wx:for="{{categoryNames}}" wx:key="index" wx:for-index="i">{{(i > 0 ? '、' : '') + item}}</text></view>
+          <view wx:else class="picker-placeholder" bindtap="tapSelectShopCategory">请选择店铺分类</view>
+        </view>
+      </view>
+      <view class="form-item">
+        <label class="form-title necessary">选择模板</label>
+        <view class="form-item-right choose-tpl" bindtap="tplPopShow">
+          <text>{{tplText[chooseTplId] || '请选择店铺样式模板'}}</text><label class="ico-moon icon-rightarrow"></label>
+        </view>
+      </view>
+      <view class="form-item">
+        <label class="form-title necessary">营业时间</label>
+        <view class="form-item-right">
+          <view wx:for="{{franchiseeInfo.business_time}}" wx:key="index">
+            <picker class="form-picker" mode="time" value="{{item.start_time}}" bindchange="bindStartTimeChange" name="start_time" data-index="{{index}}">
+              <view class="picker-view picker-center" wx:if="{{item.start_time}}">
+                {{item.start_time}}
+              </view>
+              <view class="input-placeholder picker-view" wx:else>请选择开始时间</view>
+            </picker>
+            <view class="time-delimiter">-</view>
+            <picker class="form-picker" mode="time" value="{{item.end_time}}" start="{{item.start_time}}" bindchange="bindEndTimeChange" name="end_time" data-index="{{index}}">
+              <view class="picker-view picker-center" wx:if="{{item.end_time}}">
+                {{item.end_time}}
+              </view>
+              <view class="input-placeholder picker-view" wx:else>请选择结束时间</view>
+            </picker>
+          </view>
+        </view>
+      </view>
+      <view class="form-item">
+        <label class="form-title necessary">门店简介</label>
+        <view class="form-item-right">
+          <block wx:if="{{descIsRichText}}">
+            <view class="rechtext-container"><template is="wxParse" data="{{ wxParseData: wxParseDescription.nodes }}" /></view>
+          </block>
+          <block wx:else>
+            <textarea class="desc-textarea" placeholder="请输入详细介绍" value="{{franchiseeInfo.description}}" name="description" cursor-spacing="20" auto-height hidden="{{!tplHidden || !tplDetailHidden || showIndustryPickView || showRegionPickView || showCategoryPickView}}"  />
+          </block>
+        </view>
+      </view>
+      <view class="form-item">
+        <label class="form-title necessary">店铺环境</label>
+        <view class="form-item-right shop-img-wrap">
+          <view class="shop-img" wx:for="{{shopImg}}" wx:key="index">
+            <image class="shop-logo" mode="scaleToFill" src="{{item}}"></image>
+            <view class="delete-img ico-moon icon-closes" data-index="{{index}}" data-field="shopImg" bindtap="deleteLicenseImg"></view>
+          </view>
+          <view hidden="{{shopImg.length >= 6}}" class="upload-img" data-field="shopImg" data-length="6" bindtap="uploadLicenseImg"><label class="ver-line"></label><label class="hor-line"></label></view>
+        </view>
+      </view>
+      <view class="form-item">
+        <label class="form-title">手持身份证</label>
+        <view class="form-item-right shop-img-wrap">
+          <view class="shop-img" wx:for="{{IDCardImg}}" wx:key="index">
+            <image class="shop-logo" mode="scaleToFill" src="{{item}}"></image>
+            <view class="delete-img ico-moon icon-closes" data-index="{{index}}" data-field="IDCardImg" bindtap="deleteLicenseImg"></view>
+          </view>
+          <view hidden="{{IDCardImg.length >= 2}}" class="upload-img" data-field="IDCardImg" data-length="2" bindtap="uploadLicenseImg"><label class="ver-line"></label><label class="hor-line"></label></view>
+        </view>
+      </view>
+      <view class="form-item">
+        <label class="form-title">营业执照</label>
+        <view class="form-item-right shop-img-wrap">
+          <view class="shop-img" wx:for="{{BlicenseImg}}" wx:key="index">
+            <image class="shop-logo" mode="scaleToFill" src="{{item}}"></image>
+            <view class="delete-img ico-moon icon-closes" data-index="{{index}}" data-field="BlicenseImg" bindtap="deleteLicenseImg"></view>
+          </view>
+          <view hidden="{{BlicenseImg.length >= 2}}" class="upload-img" data-field="BlicenseImg" data-length="2" bindtap="uploadLicenseImg"><label class="ver-line"></label><label class="hor-line"></label></view>
+        </view>
+      </view>
+      <view class="form-item">
+        <label class="form-title">行业许可证</label>
+        <view class="form-item-right shop-img-wrap">
+          <view class="shop-img" wx:for="{{OlicenseImg}}" wx:key="index">
+            <image class="shop-logo" mode="scaleToFill" src="{{item}}"></image>
+            <view class="delete-img ico-moon icon-closes" data-index="{{index}}" data-field="OlicenseImg" bindtap="deleteLicenseImg"></view>
+          </view>
+          <view hidden="{{OlicenseImg.length >= 2}}" class="upload-img" data-field="OlicenseImg" data-length="2" bindtap="uploadLicenseImg"><label class="ver-line"></label><label class="hor-line"></label></view>
+        </view>
+      </view>
+      <view class="form-item">
+        <label class="form-title">店内设施</label>
+        <view class="form-item-right">
+          <view class="facilities-item clearfix">
+            <text>WIFI</text><switch class="facilities-switch" checked="{{facilities[0].checked}}" color="#ff7100" data-index="0" bindchange="facilitiesSwitch" />
+          </view>
+          <view class="form-wifi-info" hidden="{{!facilities[0].checked}}">
+            <view>
+              <label class="form-title form-wifi-title">账号</label>
+              <view class="form-wifi-right"><input hidden="{{showIndustryPickView || showRegionPickView || showCategoryPickView}}" class="form-input" type="text" placeholder="请输入WiFi账号" name="wifi_account" value="{{franchiseeInfo.fields_data.shop_facility.wifi_account || ''}}" /></view>
+            </view>
+            <view>
+              <label class="form-title form-wifi-title">密码</label>
+              <view class="form-wifi-right"><input hidden="{{showIndustryPickView || showRegionPickView || showCategoryPickView}}" class="form-input" type="text" placeholder="请输入WiFi密码" name="wifi_password" value="{{franchiseeInfo.fields_data.shop_facility.wifi_password || ''}}" /></view>
+            </view>
+          </view>
+          <view class="facilities-item clearfix">
+            <text>停车位</text><switch class="facilities-switch" checked="{{facilities[1].checked}}" color="#ff7100" data-index="1" bindchange="facilitiesSwitch" />
+          </view>
+          <view class="facilities-item clearfix">
+            <text>微信支付</text><switch class="facilities-switch" checked="{{facilities[2].checked}}" color="#ff7100" data-index="2" bindchange="facilitiesSwitch" />
+          </view>
+          <view class="facilities-item clearfix">
+            <text>支付宝</text><switch class="facilities-switch" checked="{{facilities[3].checked}}" color="#ff7100" data-index="3" bindchange="facilitiesSwitch" />
+          </view>
+        </view>
+      </view>
+      <view class="form-item">
+        <label class="form-title">人均消费</label>
+        <view class="form-item-right"><input hidden="{{showIndustryPickView || showRegionPickView || showCategoryPickView}}" class="form-input input-short" type="number" placeholder="请输入金额" name="per_capita" value="{{franchiseeInfo.per_capita == '0.00' ? '' : franchiseeInfo.per_capita}}" /><label class="unit-label">元</label></view>
+      </view>
+      <button class="form-btn" formType="submit">提交申请</button>
+    </form>
+  </block>
+  <block wx:else>
+    <form bindsubmit="enterSubmit">
+      <view class="form-item">
+        <label class="form-title necessary">选择模板</label>
+        <view class="form-item-right choose-tpl" bindtap="tplPopShow">
+          <text>{{tplText[chooseTplId] || '请选择店铺样式模板'}}</text><label class="ico-moon icon-rightarrow"></label>
+        </view>
+      </view>
+      <view class="form-item">
+        <label class="form-title necessary">营业时间</label>
+        <view class="form-item-right">
+          <view wx:for="{{franchiseeInfo.business_time}}" wx:key="index">
+            <picker class="form-picker" mode="time" value="{{item.start_time}}" bindchange="bindStartTimeChange" name="start_time" data-index="{{index}}">
+              <view class="picker-view picker-center" wx:if="{{item.start_time}}">
+                {{item.start_time}}
+              </view>
+              <view class="input-placeholder picker-view" wx:else>请选择开始时间</view>
+            </picker>
+            <view class="time-delimiter">-</view>
+            <picker class="form-picker" mode="time" value="{{item.end_time}}" start="{{item.start_time}}" bindchange="bindEndTimeChange" name="end_time" data-index="{{index}}">
+              <view class="picker-view picker-center" wx:if="{{item.end_time}}">
+                {{item.end_time}}
+              </view>
+              <view class="input-placeholder picker-view" wx:else>请选择结束时间</view>
+            </picker>
+          </view>
+        </view>
+      </view>
+      <view class="form-item">
+        <label class="form-title necessary">门店简介</label>
+        <view class="form-item-right">
+          <block wx:if="{{descIsRichText}}">
+            <view class="rechtext-container"><template is="wxParse" data="{{ wxParseData: wxParseDescription.nodes }}" /></view>
+          </block>
+          <block wx:else>
+            <textarea class="desc-textarea" placeholder="请输入详细介绍" value="{{franchiseeInfo.description}}" name="description" cursor-spacing="20" auto-height hidden="{{!tplHidden || !tplDetailHidden}}"  />
+          </block>
+        </view>
+      </view>
+      <view class="form-item">
+        <label class="form-title necessary">店铺环境</label>
+        <view class="form-item-right shop-img-wrap">
+          <view class="shop-img" wx:for="{{shopImg}}" wx:key="index">
+            <image class="shop-logo" mode="scaleToFill" src="{{item}}"></image>
+            <view class="delete-img ico-moon icon-closes" data-index="{{index}}" data-field="shopImg" bindtap="deleteLicenseImg"></view>
+          </view>
+          <view hidden="{{shopImg.length >= 6}}" class="upload-img" data-field="shopImg" data-length="6" bindtap="uploadLicenseImg"><label class="ver-line"></label><label class="hor-line"></label></view>
+        </view>
+      </view>
+      <view class="form-item">
+        <label class="form-title">手持身份证</label>
+        <view class="form-item-right shop-img-wrap">
+          <view class="shop-img" wx:for="{{IDCardImg}}" wx:key="index">
+            <image class="shop-logo" mode="scaleToFill" src="{{item}}"></image>
+            <view class="delete-img ico-moon icon-closes" data-index="{{index}}" data-field="IDCardImg" bindtap="deleteLicenseImg"></view>
+          </view>
+          <view hidden="{{IDCardImg.length >= 2}}" class="upload-img" data-field="IDCardImg" data-length="2" bindtap="uploadLicenseImg"><label class="ver-line"></label><label class="hor-line"></label></view>
+        </view>
+      </view>
+      <view class="form-item">
+        <label class="form-title">营业执照</label>
+        <view class="form-item-right shop-img-wrap">
+          <view class="shop-img" wx:for="{{BlicenseImg}}" wx:key="index">
+            <image class="shop-logo" mode="scaleToFill" src="{{item}}"></image>
+            <view class="delete-img ico-moon icon-closes" data-index="{{index}}" data-field="BlicenseImg" bindtap="deleteLicenseImg"></view>
+          </view>
+          <view hidden="{{BlicenseImg.length >= 2}}" class="upload-img" data-field="BlicenseImg" data-length="2" bindtap="uploadLicenseImg"><label class="ver-line"></label><label class="hor-line"></label></view>
+        </view>
+      </view>
+      <view class="form-item">
+        <label class="form-title">行业许可证</label>
+        <view class="form-item-right shop-img-wrap">
+          <view class="shop-img" wx:for="{{OlicenseImg}}" wx:key="index">
+            <image class="shop-logo" mode="scaleToFill" src="{{item}}"></image>
+            <view class="delete-img ico-moon icon-closes" data-index="{{index}}" data-field="OlicenseImg" bindtap="deleteLicenseImg"></view>
+          </view>
+          <view hidden="{{OlicenseImg.length >= 2}}" class="upload-img" data-field="OlicenseImg" data-length="2" bindtap="uploadLicenseImg"><label class="ver-line"></label><label class="hor-line"></label></view>
+        </view>
+      </view>
+      <view class="form-item">
+        <label class="form-title">店内设施</label>
+        <view class="form-item-right">
+          <view class="facilities-item clearfix">
+            <text>WIFI</text><switch class="facilities-switch" checked="{{facilities[0].checked}}" color="#ff7100" data-index="0" bindchange="facilitiesSwitch" />
+          </view>
+          <view class="form-wifi-info" hidden="{{!facilities[0].checked}}">
+            <view>
+              <label class="form-title form-wifi-title">账号</label>
+              <view class="form-wifi-right"><input class="form-input" type="text" placeholder="请输入WiFi账号" name="wifi_account" value="{{franchiseeInfo.fields_data.shop_facility.wifi_account || ''}}" /></view>
+            </view>
+            <view>
+              <label class="form-title form-wifi-title">密码</label>
+              <view class="form-wifi-right"><input class="form-input" type="text" placeholder="请输入WiFi密码" name="wifi_password" value="{{franchiseeInfo.fields_data.shop_facility.wifi_password || ''}}" /></view>
+            </view>
+          </view>
+          <view class="facilities-item clearfix">
+            <text>停车位</text><switch class="facilities-switch" checked="{{facilities[1].checked}}" color="#ff7100" data-index="1" bindchange="facilitiesSwitch" />
+          </view>
+          <view class="facilities-item clearfix">
+            <text>微信支付</text><switch class="facilities-switch" checked="{{facilities[2].checked}}" color="#ff7100" data-index="2" bindchange="facilitiesSwitch" />
+          </view>
+          <view class="facilities-item clearfix">
+            <text>支付宝</text><switch class="facilities-switch" checked="{{facilities[3].checked}}" color="#ff7100" data-index="3" bindchange="facilitiesSwitch" />
+          </view>
+        </view>
+      </view>
+      <view class="form-item">
+        <label class="form-title">人均消费</label>
+        <view class="form-item-right"><input class="form-input input-short" type="number" placeholder="请输入金额" name="per_capita" /><label class="unit-label">元</label></view>
+      </view>
+      <button class="form-btn" formType="submit">保存</button>
+    </form>
+  </block>
+
+  <view class="sidebar">
+    <view wx:if="{{appShopInfo.phone}}" class="ico-moon icon-telephone" data-phone="{{appShopInfo.phone}}" bindtap="makePhoneCall"></view>
+    <view class="ico-moon icon-service2">
+      <contact-button class="sidebar-service-btn" type="default-light" size="0" session-from="franchisee-perfect"></contact-button>
+    </view>
+  </view>
+
+  <view class="tpl-pop" hidden="{{tplHidden}}">
+    <view class="tpl-pop-inner">
+      <view class="tpl-pop-title">选择模板<label class="tpl-pop-close ico-moon icon-closes" bindtap="tplPopHidden"></label></view>
+      <view class="tpl-pop-content">
+        <view class="tpl-list tpl-list-store" data-id="0" bindtap="tplDetailShow">
+          <view class="tpl-list-icon ico-moon icon-franchisee-store"></view>
+          <view>门店</view>
+        </view>
+        <view class="tpl-list tpl-list-restaurant" data-id="1" bindtap="tplDetailShow">
+          <view class="tpl-list-icon ico-moon icon-franchisee-waimai"></view>
+          <view>外卖</view>
+        </view>
+        <view class="tpl-list tpl-list-shop" data-id="2" bindtap="tplDetailShow">
+          <view class="tpl-list-icon ico-moon icon-franchisee-shop"></view>
+          <view>商城</view>
+        </view>
+        <view class="tpl-list tpl-list-shop" data-id="3" bindtap="tplDetailShow">
+          <view class="tpl-list-icon ico-moon icon-dining-active"></view>
+          <view>到店</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="tpl-detail" hidden="{{tplDetailHidden}}">
+    <image src="{{tplUrls[tplId]}}" class="tpl-detail-img" mode="widthFix" />
+    <view class="tpl-detail-bottom">
+      <view class="tpl-detail-cancel" bindtap="tplDetailHidden">取消</view>
+      <view class="tpl-detial-confirm" bindtap="tplDetailConfirm">使用该模板</view>
+    </view>
+  </view>
+</view>
+
+<view wx:if="{{showIndustryPickView}}" class="industry-type-mult-picker" catchtouchmove="stoppropgation">
+  <view class="industry-type-upper-mask" catchtap="cancelIndustryType"></view>
+  <view class="picker-view-header">
+    <view class="cancel-btn" catchtap="cancelIndustryType">取消</view>
+    <view class="confirm-btn" catchtap="confirmIndustryType">确定</view>
+  </view>
+  <picker-view
+    indicator-style="height: 50px;"
+    bindchange="bindIndustryColumnChange"
+    bindpickerstart="bindIndustryPickerStart"
+    bindpickerend="bindIndustryPickerEnd"
+    value="{{industry}}"
+  >
+    <picker-view-column wx:for="{{industryList}}" wx:key="index" style="width: {{100 / industryList.length}}%">
+      <view wx:for="{{item}}" wx:key="index" style="line-height: 50px">{{item.name}}</view>
+    </picker-view-column>
+  </picker-view>
+</view>
+
+<view wx:if="{{showRegionPickView}}" class="industry-type-mult-picker" catchtouchmove="stoppropgation">
+  <view class="industry-type-upper-mask" catchtap="cancelRegionSelect"></view>
+  <view class="picker-view-header">
+    <view class="cancel-btn" catchtap="cancelRegionSelect">取消</view>
+    <view class="confirm-btn" catchtap="confirmRegionSelect">确定</view>
+  </view>
+  <picker-view
+    indicator-style="height: 50px;"
+    bindchange="bindRegionColumnChange"
+    bindpickerstart="bindRegionPickerStart"
+    bindpickerend="bindRegionPickerEnd"
+    value="{{region}}"
+  >
+    <picker-view-column wx:for="{{regionList}}" wx:for-item="regionListItem" wx:key="index">
+      <view wx:for="{{regionListItem}}" wx:key="index" style="line-height: 50px;">{{item.name}}</view>
+    </picker-view-column>
+  </picker-view>
+</view>
+
+<view wx:if="{{showCategoryPickView}}" class="industry-type-mult-picker" catchtouchmove="stoppropgation">
+  <view class="industry-type-upper-mask" catchtap="cancelCategorySelect"></view>
+  <view class="picker-view-header">
+    <view class="cancel-btn" catchtap="cancelCategorySelect">取消</view>
+    <view class="confirm-btn" catchtap="confirmCategorySelect">确定</view>
+  </view>
+  <picker-view
+    indicator-style="height: 50px;"
+    bindchange="bindCategoryColumnChange"
+    bindpickerstart="bindCategoryPickerStart"
+    bindpickerend="bindCategoryPickerEnd"
+    value="{{categoryIdxs}}"
+  >
+    <picker-view-column wx:for="{{categoryList}}" wx:for-item="catrgotyListItem" wx:key="index">
+      <view wx:for="{{catrgotyListItem}}" wx:key="index" style="line-height: 50px;">{{item.name}}</view>
+    </picker-view-column>
+  </picker-view>
+</view>

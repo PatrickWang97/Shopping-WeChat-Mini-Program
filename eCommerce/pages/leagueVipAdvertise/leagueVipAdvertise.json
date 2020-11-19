@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "多店会员卡",
+  "navigationBarTextStyle": "white",
+  "navigationBarBackgroundColor": "#010101",
+  "usingComponents": {
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",    
+    "component-topNavBar": "/components/topNavBar/topNavBar"
+  }
+}

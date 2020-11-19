@@ -1,0 +1,21 @@
+<cover-view class="bottomTabBar flex-wrap" wx:if="{{showTabbar}}">
+  <block wx:for="{{tabBar}}" wx:key="index" wx:if="{{type == 0}}">
+    <cover-view class="bottomTabBar-item flex-item {{item.active ? 'active' : ''}}" data-index="{{index}}" bindtap="tabBarTap">
+      <cover-image src="{{item.press_photo}}" wx:if="{{item.active}}" class="bottomTabBar-img" mode="aspectFill"></cover-image>
+      <cover-image src="{{item.photo}}" wx:if="{{!item.active}}" class="bottomTabBar-img" mode="aspectFill"></cover-image>
+      <cover-view>{{item.name}}</cover-view>
+    </cover-view>
+  </block>
+  <block wx:for="{{tabBar}}" wx:key="index" wx:if="{{type == 1}}">
+    <cover-view class="bottomTabBar-item_other {{item.active ? 'active' : ''}}" data-index="{{index}}" catchtap="tabBarTap" wx:if="{{index < tabBar.length - 1}}">
+      <cover-image src="{{item.press_photo}}" wx:if="{{item.active}}" class="bottomTabBar-img_other" mode="aspectFill"></cover-image>
+      <cover-image src="{{item.photo}}" wx:if="{{!item.active}}" class="bottomTabBar-img_other" mode="aspectFill"></cover-image>
+      <cover-view>{{item.name}}</cover-view>
+    </cover-view>
+    <cover-view class='franchisee-service' wx:if="{{index < tabBar.length - 2}}"></cover-view>
+    <cover-view class='bottomTabBar-discount' data-index="{{index}}" catchtap="turnToTransferPage" wx:if="{{index == tabBar.length - 1 && item.isVisible}}">
+      <cover-view class='bottomTabBar-discount_detail' style='background:{{item.bgColor}}'>{{item.name}}</cover-view>
+    </cover-view>
+  </block>
+</cover-view>
+<view wx:if="{{showTabbar && !hidddenPlace}}" class="franchiseeTabbar-place"></view>

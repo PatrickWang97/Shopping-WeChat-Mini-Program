@@ -1,0 +1,177 @@
+page {
+  padding-bottom: 30rpx;
+  background-color: #fff;
+}
+.top-content {
+  position: relative;
+  background: linear-gradient(0deg, rgba(255, 113, 0, 1), rgba(255, 150, 0, 1));
+}
+.top-section {
+  padding: 32rpx 32rpx 0;
+  text-align: center;
+  height: 428rpx;
+  background-image: url('http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/promotion/promotion-center.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+.top-section image {
+  width: 103rpx;
+  height: 103rpx;
+  border-radius: 50%;
+  border: 2rpx solid #fff;
+}
+.top-section .top-section-detail {
+  display: inline-block;
+  line-height: 44rpx;
+}
+.top-section .ico-moon {
+  color: #fff;
+  margin-left: 20rpx;
+  font-size: 24rpx;
+}
+.detail-level {
+  color: #ff8400;
+  margin-top: 10rpx;
+  font-size: 20rpx;
+}
+.detail-level>view {
+  display: inline-block;
+  background-color: #fff;
+  padding: 0 20rpx;
+  line-height: 30rpx;
+  border-radius: 15rpx;
+}
+.detail-level>view text.icon-vip {
+  color: #ff7100;
+  margin-left: 0;
+  margin-right: 6rpx;
+  vertical-align: middle;
+}
+.detail-level>view text {
+  vertical-align: middle;
+}
+.top-commission {
+  padding: 20rpx 32rpx 0;
+}
+.middle-section {
+  display: -webkit-flex;
+  display: flex;
+  position: absolute;
+  bottom: -92rpx;
+  left: 20rpx;
+  width: 710rpx;
+  height: 80rpx;
+  padding: 36rpx 0;
+  background-color: #fff;
+  border-radius: 10rpx;
+  z-index: 10;
+  box-shadow: 0px 0px 40px 0px rgba(255, 108, 0, 0.14);
+}
+.middle-section .withdraw-item:nth-child(2),
+.middle-section .withdraw-item:nth-child(3) {
+  border-left: 2rpx solid #f3f3f3;
+}
+.middle-section .withdraw-item {
+  -webkit-flex: auto;
+  flex: auto;
+  text-align: center;
+}
+.withdraw-item .item-title {
+  line-height: 40rpx;
+  color: #000;
+  font-size: 28rpx;
+}
+.withdraw-item .item-price {
+  line-height: 40rpx;
+  color: #999;
+  font-size: 26rpx;
+}
+.withdraw-title {
+  text-align: left;
+  color: #fff;
+  line-height: 39rpx;
+  margin-bottom: 30rpx;
+  padding-left: 4rpx;
+  opacity: 0.6;
+  font-size: 26rpx;
+}
+.withdraw-total {
+  float: left;
+  color: #fff;
+  font-size: 60rpx;
+  line-height: 47rpx;
+}
+.withdraw-btn {
+  float: right;
+  line-height: 50rpx;
+  background-color: #fff;
+  color: #ff7100;
+  border-radius: 25rpx;
+  font-size: 28rpx;
+  padding: 0 25rpx;
+}
+.withdraw-btn .ico-moon {
+  color: #ff7100;
+  margin-left: 0;
+  font-size: 20rpx;
+  margin-right: -6rpx;
+}
+.current-commission {
+  margin: 0 15rpx;
+}
+.current-commission,
+.history-commission {
+  color: #f05b10;
+}
+.bottom-section {
+  margin-top: 96rpx;
+  margin-bottom: 96rpx;
+  color: #666;
+  background-color: #fff;
+  text-align: center;
+  font-size: 24rpx;
+}
+.bottom-section-item {
+  display: -webkit-flex;
+  display: flex;
+  flex-wrap: wrap;
+}
+.bottom-section-item:last-child {
+  border-right: none;
+}
+.bottom-section-item .ico-moon {
+  margin-bottom: 28rpx;
+  font-size: 70rpx;
+  color: #ff7100;
+}
+.bottom-section-item .ico-moon.icon-subshop {
+  padding: 6rpx 0;
+  font-size: 58rpx;
+}
+.bottom-sub-item {
+  width: 33.3%;
+  padding: 36rpx 0;
+  box-sizing: border-box;
+}
+.promotion-btn {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  font-size: 30rpx;
+  border-radius: 0;
+  color: #fff;
+  background-color: #ff7100;
+  text-align: center;
+}
+.total-money {
+  font-size: 24rpx;
+  margin-top: 10rpx;
+  color: #999;
+}
+.remain-commission {
+  font-size: 32rpx;
+  color: #666;
+}

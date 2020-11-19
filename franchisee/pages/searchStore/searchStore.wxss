@@ -1,0 +1,424 @@
+page {
+  height: 100%;
+  background-color: #f8f8f8;
+}
+.ta-search{
+  background-color: #fff;
+  padding: 20rpx 0 0;
+}
+.ta-search-bg{
+  width: 710rpx;
+  height: 68rpx;
+  margin: 0 20rpx;
+  overflow: hidden;
+  text-align: center;
+  color: #B3B3B3;
+  font-size: 24rpx;
+  line-height: 68rpx;
+  background-color: #f5f5f5;
+  border-radius: 34rpx;
+}
+.ta-search-icon{
+  font-size: 30rpx;
+  color: #999;
+  margin-right: 10rpx;
+  vertical-align: middle;
+}
+.ta-search-focus{
+  height: 68rpx;
+  margin-left: 20rpx;
+}
+.ta-search-input-wrap{
+  display: inline-block;
+  width: 645rpx;
+  height: 68rpx;
+  overflow: hidden;
+  color: #333;
+  font-size: 24rpx;
+  line-height: 68rpx;
+  background-color: #f5f5f5;
+  border-radius: 34rpx;
+}
+.ta-search-focus .ta-search-icon{
+  color: #999;
+  margin-left: 30rpx;
+  vertical-align: top;
+}
+.ta-search-input{
+  display: inline-block;
+  width: 508rpx;
+  height: 68rpx;
+  vertical-align: top;
+}
+.ta-search-delete{
+  display: inline-block;
+  width: 60rpx;
+  color: #cecece;
+  font-size: 30rpx;
+  text-align: center;
+}
+.ta-search-cancel{
+  display: inline-block;
+  width: 80rpx;
+  color: #FC811A;
+  font-size: 26rpx;
+  line-height: 68rpx;
+  text-align: center;
+  vertical-align: top;
+}
+.ta-head{
+  font-size: 26rpx;
+  color: #A6A6A6;
+  line-height: 66rpx;
+  border-bottom: 1px solid #EEEEEE;
+}
+.ta-lately,
+.ta-nearby{
+  padding: 0 25rpx;
+  padding-top: 20rpx;
+  background-color: #fff;
+}
+.ta-item{
+  padding: 30rpx 0;
+  border-bottom: 1px solid #EEEEEE;
+}
+.ta-image{
+  display: inline-block;
+  width: 98rpx;
+  height: 98rpx;
+  border-radius: 50%;
+  vertical-align: top;
+}
+.ta-item-cneter{
+  display: inline-block;
+  width: 400rpx;
+  vertical-align: top;
+  margin-left: 25rpx;
+}
+.ta-titile{
+  font-size: 32rpx;
+  color: #131313;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ta-visit-time{
+  font-size: 26rpx;
+  color: #A6A6A6;
+  margin-top: 15rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ta-go-btn{
+  display: inline-block;
+  width: 120rpx;
+  height: 60rpx;
+  margin-left: 10rpx;
+  margin-top: 19rpx;
+  color: #FC811A;
+  font-size: 26rpx;
+  text-align: center;
+  line-height: 60rpx;
+  border-radius: 10rpx;
+  border: 1px solid #FC811A;
+}
+.ta-create{
+  color: #FC811A;
+  font-size: 28rpx;
+  text-align: center;
+  line-height: 84rpx;
+}
+.ta-create label{
+  vertical-align: middle;
+}
+.ta-create-icon{
+  display: inline-block;
+  width: 26rpx;
+  height: 26rpx;
+  margin-right: 10rpx;
+  font-size: 16rpx;
+  text-align: center;
+  line-height: 26rpx;
+  border-radius: 50%;
+  border: 1px solid #FC811A;
+}
+.ta-nearby{
+  margin-top: 30rpx;
+  padding-top: 0;
+}
+.ta-distance{
+  display: inline-block;
+  width: 160rpx;
+  margin-left: 10rpx;
+  font-size: 28rpx;
+  color: #A6A6A6;
+  text-align: right;
+}
+.ta-tab {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 96rpx;
+  font-size: 26rpx;
+  line-height: 96rpx;
+  background-color: #fff;
+}
+.ta-tab .ta-tab-item {
+  color: #666;
+  flex-grow: 1;
+  text-align: center;
+}
+.ta-tab .ta-tab-item.selected {
+  position: relative;
+  color: #fc811a;
+}
+.ta-tab .ta-tab-item.selected::after {
+  content: '';
+  position: absolute;
+  bottom: 16rpx;
+  left: 50%;
+  width: 60rpx;
+  height: 4rpx;
+  border-radius: 2rpx;
+  background-color: #fc811a;
+  transform: translateX(-50%);
+}
+.ta-result{
+  margin-top: 22rpx;
+}
+.ta-result-list1,
+.ta-result-list2,
+.ta-result-list3 {
+  background-color: #fff;
+}
+.ta-result-list1 .ta-item {
+  display: flex;
+  padding: 30rpx 30rpx 30rpx 20rpx;
+  border-bottom: 1px solid #f5f5f5;
+}
+.ta-result-list1 .ta-item-img {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 6rpx;
+  background-color: #f5f5f5;
+}
+.ta-result-list1 .ta-item-txt {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 18rpx;
+  color: #999;
+}
+.ta-result-list1 .ta-item-des {
+  width: 522rpx;
+}
+.ta-result-list1 .ta-item-shop {
+  max-width: 522rpx;
+  font-size: 30rpx;
+  line-height: 30rpx;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #333;
+}
+.ta-result-list1 .ta-item-goods {
+  margin-top: 14rpx;
+  font-size: 26rpx;
+  line-height: 36rpx;
+  color: #333;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  white-space: normal !important;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.ta-result-list1 .ta-item-data {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 522rpx;
+}
+.ta-result-list1 .ta-item-price {
+  display: flex;
+  align-items: center;
+}
+.ta-result-list1 .ta-item-price1 {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #fc811a;
+}
+.ta-result-list1 .ta-item-price1 text {
+  font-size: 22rpx;
+}
+.ta-result-list1 .ta-item-price2 {
+  margin-left: 20rpx;
+  font-size: 28rpx;
+  text-decoration:line-through;
+}
+.ta-result-list1 .ta-item-sales {
+  font-size: 28rpx;
+}
+.ta-result-list2 .ta-item {
+  display: flex;
+  padding: 0 20rpx 22rpx;
+  border-bottom: 10rpx solid #f5f5f5;
+}
+.ta-result-list2 .ta-item-logo {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 6rpx;
+  margin-top: 12rpx;
+  margin-right: 20rpx;
+  background-color: #f5f5f5;
+}
+.ta-result-list2 .ta-item-detail {
+  display: flex;
+  flex-direction: column;
+  width: 586rpx;
+}
+.ta-result-list2 .ta-item-desc {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 22rpx 0 20rpx;
+  border-bottom: 1px solid #f5f5f5;
+}
+.ta-result-list2 .ta-item-shop {
+  max-width: 440rpx;
+  font-size: 30rpx;
+  line-height: 30rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #333;
+}
+.ta-result-list2 .ta-item-other {
+  font-size: 24rpx;
+  line-height: 24rpx;
+  color: #666;
+  margin-top: 20rpx;
+}
+.ta-result-list2 .ta-item-other text:first-child {
+  position: relative;
+  padding-right: 32rpx;
+}
+.ta-result-list2 .ta-item-other text:first-child::after {
+  content: '';
+  position: absolute;
+  right: 16rpx;
+  top: 54%;
+  height: 20rpx;
+  width: 2rpx;
+  background-color: #999;
+  transform: translateY(-50%);
+}
+.ta-result-list2 .ta-item-btn {
+  height: 48rpx;
+  padding: 0 28rpx;
+  border: 1px solid #fc811a;
+  border-radius: 6rpx;
+  font-size: 22rpx;
+  line-height: 48rpx;
+  text-align: center;
+  color: #fc811a;
+}
+.ta-result-list2 .ta-item-goods {
+  display: flex;
+  margin: 18rpx 0;
+}
+.ta-result-list2 .goods-item {
+  position: relative;
+  width: 190rpx;
+  height: 163rpx;
+  margin-right: 10rpx;
+  overflow: hidden;
+}
+.ta-result-list2 .goods-item:last-child {
+  margin-right: 0;
+}
+.ta-result-list2 .goods-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 10rpx;
+  background-color: #f5f5f5;
+}
+.ta-result-list2 .goods-price {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 190rpx;
+  height: 66rpx;
+  border-radius: 10rpx;
+  font-size: 22rpx;
+  line-height: 76rpx;
+  text-align: center;
+  color: #fff;
+  background:linear-gradient(0deg,rgba(0,0,0,.5) 0%,rgba(0,0,0,0) 100%);
+}
+.ta-result-list2 .ta-item-coupons {
+  display: flex;
+  flex-direction: column;
+  margin-top: 18rpx;
+  font-size: 24rpx;
+  color: #333;
+}
+.ta-result-list2 .coupons-item {
+  display: flex;
+  align-items: center;
+}
+.ta-result-list2 .coupons-mark {
+  display: inline-block;
+  width: 26rpx;
+  height: 26rpx;
+  border-radius: 4rpx;
+  font-size: 20rpx;
+  line-height: 26rpx;
+  text-align: center;
+  color: #fff;
+  background-color: #fc811a;
+}
+.ta-result-list2 .coupons-name {
+  max-width: 550rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.ta-result-list3 {
+  padding: 0 25rpx;
+}
+.ta-result-list-null {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 166rpx;
+}
+.ta-result-list-null image {
+  width: 173rpx;
+  height: 120rpx;
+  margin-left: 26rpx;
+}
+.ta-result-list-null text {
+  margin-top: 32rpx;
+  font-size: 26rpx;
+  color: #999;
+}
+.ta-none-item .ta-image{
+  background-color: #D2D2D2;
+}
+.ta-none-item .ta-titile{
+  margin-top: 28rpx;
+}
+.ta-search-none{
+  font-size: 26rpx;
+  color: #A8A8A8;
+  text-align: center;
+  margin-top: 35rpx;
+  background-color: #f5f5f5;
+}

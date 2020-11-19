@@ -1,0 +1,72 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-memberDiscount id="component-memberDiscount" discountType="{{ discountList }}" bind:afterSelectedDiscount="afterSelectedBenefit"></component-memberDiscount>
+<component-behavior-track></component-behavior-track>
+<view class="preview-goods-wrap">
+  <view class="exchange-coupon-wrapper" style="background-color:{{ data.customFeature.lineBackgroundColor}}">
+    <view class="exchange-coupon-top">
+      <view class="exchange-coupon-left">
+        <image class="exchange-coupon-image" src="http://cdn.jisuapp.cn/static/webapp/images/exchange-coupon/voucher-icon.png"></image>
+        <text class="exchange-coupon-number">{{couponDetail.total}}<text class="exchange-coupon-number-unit">张</text></text>
+      </view>
+      <view class="exchange-coupon-center">
+        <view class="exchange-coupon-title"><text class="many-businesses-icon" wx:if="{{is_union_coupon == 1}}">联盟</text>{{couponDetail.activity_name}}</view>
+        <view class="exchange-coupon-des maTop6" style="color:{{style.strStyle.color}}">
+          <text wx:if="{{couponDetail.exchange_condition.price != 0}}">¥{{couponDetail.exchange_condition.price}}</text>
+          <text wx:if="{{couponDetail.exchange_condition.price != 0 && couponDetail.exchange_condition.integral != 0}}">+</text>
+          <text wx:if="{{couponDetail.exchange_condition.integral != 0}}">{{couponDetail.exchange_condition.integral}}积分</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="exchange-coupon-content">
+    <view class="exchange-coupon-content-item">
+      <view class="content-item-title">数量</view>
+      <view class="content-item-counter">
+        <view class="counter-symbol" catchtap="changeCouponNum" data-type="min">-</view>
+        <input class="counter-input" bindblur="changeCouponInput" value="{{couponBuyNum}}" type="number"></input>
+        <view class="counter-symbol" catchtap="changeCouponNum" data-type="add">+</view>
+      </view>
+    </view>
+    <view class="exchange-coupon-content-item">
+      <view class="content-item-title">小计
+        <text class="content-item-title-remark">（积分将自动抵扣）</text>
+      </view>
+      <view class="exchange-coupon-subtotal">
+        <text wx:if="{{payInfo.original_price != 0}}">¥{{payInfo.original_price}}</text>
+        <text wx:if="{{payInfo.original_price != 0 && payInfo.integral != 0}}">+</text>
+        <text wx:if="{{payInfo.integral != 0}}">{{payInfo.integral}}积分</text>
+      </view>
+    </view>
+     <!-- <view class="exchange-coupon-content-remark">积分不足</view> -->
+  </view>
+
+  <view class="exchange-coupon-content">
+    <block  wx:if="{{ payInfo.benefit.all_vip_benefit.length != 0 || payInfo.benefit.coupon_benefit.length != 0 }}">
+       <view class="exchange-coupon-content-item" bindtap="showMemberDiscount">
+      <view class="content-item-title">优惠方式</view>
+      <view class="exchange-coupon-type">{{ selectDiscountInfo.discount_title ||  selectDiscountInfo.title}}<text class="ico-moon icon-rightarrow"></text></view>
+    </view>
+     <view class="exchange-coupon-content-remark" hidden="{{ selectDiscountIndex == 0 }}">-¥{{ payInfo.discount_price }}</view>
+    </block>
+   
+    <view class="exchange-coupon-content-item">
+      <view class="content-item-title">储值抵扣
+        <text class="content-item-title-remark">（余额：¥{{payInfo.user_balance}}）</text>
+      </view>
+      <view class="exchange-coupon-switch">
+         <switch checked="true" color="#ff7100" bindchange="useBalanceChange"/>
+      </view>
+    </view>
+  </view>
+  <view class="bottom-nav">
+    <view class="preview-goods-total-price">合计:
+      <text class="price-count">¥{{payInfo.final_price}}</text>
+    </view>
+    <form report-submit="true" bindsubmit="confirmPayment">
+      <button formType="submit">立即付款</button>
+    </form>
+  </view>
+  
+</view>

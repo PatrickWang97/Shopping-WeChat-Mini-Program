@@ -1,0 +1,10 @@
+{
+  "component": true,
+  "navigationBarTitleText": "拉新有礼",
+  "navigationBarTextStyle": "black",
+  "navigationBarBackgroundColor": "#ffffff",
+  "usingComponents": {
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo"
+  }
+}

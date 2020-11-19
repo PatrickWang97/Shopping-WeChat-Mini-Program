@@ -1,0 +1,51 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="top-section">
+  <view>可提现佣金 (元)</view>
+  <view style="margin:0 auto;padding: 50rpx 0 80rpx;font-size: 96rpx;">{{ widthdrawData.can_withdraw_commission || 0.000 }}</view>
+</view><view class="commission-detail">
+  <view class="commission-detail-item">
+    <view>{{ widthdrawData.total_commission || 0.000 }}</view>
+    <view>累计佣金</view>
+  </view>
+  <view class="commission-detail-item">
+    <view>{{ widthdrawData.withdrew_commission || 0.000 }}</view>
+    <view>已提现佣金</view>
+  </view>
+  <view class="commission-detail-item">
+    <view>{{ nowCommission || 0.000 }}</view>
+    <view>生效佣金</view>
+  </view>
+  <view class="commission-detail-item">
+    <view>{{  ToHitCommission || 0.000 }}</view>
+    <view>待打款佣金</view>
+  </view>
+</view>
+<view class="middle-section">
+  <view class="withdraw-input-container">
+    <view class="withdraw-label">提现金额 (元)</view>
+    <view class="input-money"><text>¥</text><input bindinput="inputWithdrawCount" value="{{withdrawCount}}" adjust-position="false" /></view>
+  </view>
+  <view class="withdraw-input-container">
+    <view class="withdraw-label">提现至</view>
+    <view class="withdraw-style">
+      <view wx:if="{{transfer_type_value == 'wechat' || transfer_type_value == 'all'}}" class="{{ withdrawWay == 'wechat' ? 'selected' : '' }}" catchtap="selectWithdrawWay" data-type="wechat">微信零钱</view>
+      <view wx:if="{{transfer_type_value == 'offline' || transfer_type_value == 'all'}}" class="{{ withdrawWay == 'offline' ? 'selected' : '' }}" catchtap="selectWithdrawWay" data-type="offline">线下提现</view>
+    </view>
+  </view>
+  <view class="withdraw-tips">
+    <view class="middle-section-item">每次可提现佣金不低于 <text>{{ distributionInfo.withdraw_requirement || 0.000 }}</text> 元</view>
+    <view class="middle-section-item">每个月最多可提现 <text>{{ distributionInfo.withdraw_times_limit }}</text> 次</view>
+    <view class="middle-section-item">买家确认收货之后，佣金方可提现</view>
+  </view>
+</view>
+<view class="bottom-section">
+  <view class="withdraw-btn" bindtap="withdraw">提交申请</view>
+</view>
+<view class="page-dialog-wrap" hidden="{{hideWithdrawSuccess}}" catchtap="hideWithdrawSuccess">
+  <view class="withdrawSuccess">
+    <view>成功申请提现了</view>
+    <view>请耐心等待微信零钱到账</view>
+    <view class="close-withdraw-btn" catchtap="hideWithdrawSuccess">知道了</view>
+  </view>
+</view>

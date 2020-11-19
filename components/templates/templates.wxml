@@ -1,0 +1,2095 @@
+<import src="/components/wxParse/wxParse.wxml"/>
+
+<!-- 轮播 -->
+<wxs module="carouselModule">
+  var pxToRpx = function (size) {
+    return parseInt(size) * 2.34375;
+  }
+  module.exports.pxToRpx = pxToRpx;
+</wxs>
+<template name="zcCarousel">
+  <view class="swiper-view" style="{{data.style}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+    <swiper wx:if="{{!data.loading && !data.loadingFail && data.content.length > 0}}" indicator-dots="true" circular="true" autoplay="{{data.customFeature.autoplay}}" vertical="{{data.customFeature.vertical}}" interval="{{data.customFeature.interval*1000}}" duration="750" indicator-color="{{ data.customFeature.indicatorColor }}" indicator-active-color="{{ data.customFeature.indicatorActiveColor }}" >
+      <block wx:for="{{data.content}}" wx:key="index">
+        <block wx:if="{{item.customFeature.action == 'turn-to-xcx'}}">
+          <swiper-item>
+            <view style="height:100%;overflow:hidden;{{data.customFeature.picBorderRadius ? ('border-radius:'+ carouselModule.pxToRpx(data.customFeature.picBorderRadius) +'rpx;') : ''}}">
+            <navigator class="swiper-navigator" target="miniProgram" open-type="navigate" app-id="{{item.customFeature['xcx-appid']}}" path="{{item.customFeature['xcx-page-url'] || ''}}" version="release">
+              <image class="swiper-item" src="{{item.pic}}"/>
+            </navigator>
+            </view>
+          </swiper-item>
+        </block>
+        <block wx:else>
+            <swiper-item data-event-params="{{item.customFeature}}" 
+                         data-compid="{{ data.compId }}" 
+                         data-index="{{index}}"
+                         data-dataid="{{item.id}}"
+                         data-router="{{data.customFeature.link}}"
+                         catchtap="{{item.customFeature.action && item.customFeature.action != 'none' ? 'tapEventCommonHandler' : (data.customFeature.form && data.customFeature.segment) ? 'listVesselTurnToPage' : ''}}">
+              <view style="height:100%;overflow:hidden;{{data.customFeature.picBorderRadius ? ('border-radius:'+ carouselModule.pxToRpx(data.customFeature.picBorderRadius) +'rpx;') : ''}}">
+              <image class="swiper-item" src="{{item.pic}}"/>
+              <view  wx:if="{{item.customFeature.action == 'video-play'}}" class="carousel-video-play icon-play ico-moon"></view>
+              </view>
+            </swiper-item>
+          </block>
+      </block>
+    </swiper>
+    <template wx:if="{{data.loading}}" is="requestLoading"></template>
+    <template wx:if="{{data.content.length == 0}}" is="requestNone" data="{{data: '你还未添加轮播项~'}}"></template>
+    <template wx:if="{{data.loadingFail}}" is="requestFail" data="{{refreshEvent: 'getCarouselData', compId: data.compId}}"></template>
+  </view>
+</template>
+<template name="carouselVideoPlay">
+  <view class="carouselVideoPlay" hidden="{{!data.videoUrl}}" catchtouchmove>
+    <view class="carouselVideoPlay-inner" style="margin-top:{{data.carouselVideoTop}}px;">
+      <view class="carouselVideoPlay-close icon-closes ico-moon" data-compid="{{data.compId}}" bindtouchend="carouselVideoClose" ></view>
+      <video wx:if="{{data.videoUrl}}" src="{{data.videoUrl}}" controls autoplay='autoplay' bindfullscreenchange="carouselVideoFullscreen"></video>
+    </view>
+  </view>
+</template>
+
+<!-- 悬浮窗 -->
+<template name="zcSuspension">
+  <scroll-view class="element suspension" style="{{data.style}}{{data.customFeature['background-image']?'background:'+ data.customFeature['background-image']:''}}{{data.suspension_bottom == -1 ? '' : 'bottom: ' + data.suspension_bottom + 'rpx;'}}width:{{data.suspension_width}}rpx;height:{{data.suspension_height}}rpx;border-radius:0;"
+    bindanimationend="animationEnd" scroll-x="{{data.customFeature.mode == 1 ? true:false}}" scroll-y="{{data.customFeature.mode == 1 ? false:true}}"
+    data-compid="{{ data.compId }}">
+    <view class="suspension-content" style="height:100%;width:100%;position: relative;">
+      <view class="{{(data.customFeature.width && data.customFeature.height) ? 'suspension-wrap ':''}} {{data.customFeature.mode == 1 ? 'suspension-sideways' : ''}}"
+        style="{{(data.customFeature.width && data.customFeature.height) ? '':'height:100%;'}}">
+        <block wx:for="{{data.content}}" wx:key="index">
+          <block wx:if="{{item.customFeature.action == 'contact'}}">
+            <view class="suspension-box flex-column" style="{{data.customFeature.mode == 1 ? 'margin-right:':'margin-bottom:'}}{{data.suspension_margin}}rpx;">
+              <button open-type="contact" session-from="{{sessionFrom}}"></button>
+              <view wx:if="{{data.customFeature.openIcon}}" class="suspension-item diy" style="{{data.list_style}}{{data.customFeature.lineBackgroundImage?'background:'+ data.customFeature.lineBackgroundImage:''}}; margin-left:0;margin-right:0;margin-bottom:0; width:{{data.suspension_imgSize}}rpx;height:{{data.suspension_imgSize}}rpx;">
+                <image style="width:100%;height:100%;" src="{{item.pic}}"></image>
+              </view>
+              <view wx:if="{{data.customFeature.openText}}" class="suspension-title">{{item.title}}</view>
+            </view>
+          </block>
+          <block wx:elif="{{item.customFeature.action == 'turn-to-xcx'}}">
+            <view class="suspension-box flex-column" style="{{data.customFeature.mode == 1 ? 'margin-right:':'margin-bottom:'}}{{data.suspension_margin}}rpx;">
+              <view wx:if="{{data.customFeature.openIcon}}" class="suspension-item diy" style="{{data.list_style}}{{data.customFeature.lineBackgroundImage?'background:'+ data.customFeature.lineBackgroundImage:''}}; margin-left:0;margin-right:0;margin-bottom:0; width:{{data.suspension_imgSize}}rpx;height:{{data.suspension_imgSize}}rpx;">
+                <navigator target="miniProgram" open-type="navigate" app-id="{{item.customFeature['xcx-appid']}}" path="{{item.customFeature['xcx-page-url'] || ''}}"
+                  version="release">
+                  <image style="width:100%;height:100%;" src="{{item.pic}}"></image>
+                </navigator>
+              </view>
+              <view wx:if="{{data.customFeature.openText}}" class="suspension-title">{{item.title}}</view>
+            </view>
+          </block>
+          <block wx:else>
+            <view class="suspension-box flex-column" style="{{data.customFeature.mode == 1 ? 'margin-right:':'margin-bottom:'}}{{data.suspension_margin}}rpx;"
+              data-event-params="{{item.customFeature}}" catchtap="{{item.customFeature.action && item.customFeature.action != 'none' ? 'tapEventCommonHandler' : ''}}">
+              <view wx:if="{{data.customFeature.openIcon}}" class="suspension-item diy" style="{{data.list_style}}{{data.customFeature.lineBackgroundImage?'background:'+ data.customFeature.lineBackgroundImage:''}}; margin-left:0;margin-right:0;margin-bottom:0; width:{{data.suspension_imgSize}}rpx;height:{{data.suspension_imgSize}}rpx;">
+                <image class="old-and-new" style="width:100%;height:100%;" src="{{item.pic}}"></image>
+              </view>
+              <view wx:if="{{data.customFeature.openText}}" class="suspension-title">{{item.title}}</view>
+            </view>
+          </block>
+        </block>
+        <view class="old-suspension" wx:if="{{data.customFeature.appendComponent}}">
+          <view class="suspension-item" data-type="service" wx:if="{{data.customFeature.appendComponent.service}}"
+            style="{{data.list_style}}">
+            <icon class="ico-moon icon-service2 suspension-service">
+              <button open-type="contact" session-from="suspension"></button>
+            </icon>
+          </view>
+          <view class="suspension-item" data-router="myOrder" wx:if="{{data.customFeature.appendComponent.myOrder}}"
+            catchtap="suspensionTurnToPage" style="{{data.list_style}}">
+            <icon class="ico-moon icon-notebook"></icon>
+          </view>
+          <view class="suspension-item" data-router="shoppingCart" wx:if="{{data.customFeature.appendComponent.shoppingCart}}"
+            catchtap="suspensionTurnToPage" style="{{data.list_style}}">
+            <icon class="ico-moon icon-shoppingcart"></icon>
+          </view>
+          <view class="suspension-item" data-type="top" wx:if="{{data.customFeature.appendComponent.top}}" catchtap="suspensionScrollPageTop"
+            style="{{data.list_style}}">
+            <icon class="ico-moon icon-top"></icon>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</template>
+
+
+
+<!-- 商品列表 -->
+<wxs module="addshoppingcartImageModule">
+  var isImage = function(string) {
+    var a = string || 'addshoppingcart1';
+    return a.indexOf('addshoppingcart');
+  }
+  module.exports.isImage = isImage;
+</wxs>
+
+<!-- 积分商城样式 -->
+<template name="zcIntegralGoodsList">
+  <view class="{{data.topHover ? 'topHover' : ''}}" style="height:1px;"></view>
+  <view wx:if="{{data.customFeature.topHover}}" style="height:{{data.re_height}}px;"></view>
+  <scroll-view class="element goods-list scroll-ele goods-list-mode-{{data.customFeature.mode}} {{(data.customFeature.mode == 2 && data.curpage > 0) ? 'hor-request-status' : ''}}"
+               data-param="{{data.param}}"
+               data-compid="{{data.compId}}"
+               data-type="goods-list"
+               style="{{data.style}}"
+               scroll-y="{{(data.customFeature.mode == 2 || data.customFeature.vesselAutoheight != 0) ? false : true}}"
+               scroll-x="{{data.customFeature.mode == 2? true: false}}"
+               scroll-top="{{data.scrollTop}}"
+               data-curpage="{{data.curpage}}"
+               bindscrolltolower="goodsScrollFunc"
+               bindanimationend="animationEnd">
+    <view class="js-list-container" data-list-index="0" wx:if="{{data.customFeature.mode !== 3}}">
+      <view class="goods-list-item background-ele router js-to-detail"
+            wx:for="{{data.goods_data}}" wx:key="index" data-id="{{item.form_data.id}}"  style="{{data.list_style}};margin-bottom:{{data.customFeature.mode !== 0 ? '0px' : ''}}" data-contact="{{data.customFeature.ifUseContact}}" data-goods-type="{{item.form_data.goods_type}}" data-group="{{item.form_data.is_group_buy}}" data-presell="{{item.form_data.is_presell_goods}}" data-group-id="{{item.form_data.group_buy_activity_id}}" data-hidestock="{{data.customFeature.isHideStock || ''}}" data-is-show-virtual-price="{{data.customFeature.isShowVirtualPrice}}" data-app-id="{{item.form_data.app_id}}" 
+            catchtap="turnToGoodsDetail"
+            >
+        <view class="inner-content" style="vertical-align: top;">
+          <image class="list-img" src="{{item.form_data.cover}}" style="{{data.img_style}}position: relative;" mode="scaleToFill">
+              <image class="goods-subscript" wx:if="{{item.form_data.corner_mark > 0}}" src="{{item.form_data.corner_url}}"></image>
+          </image>
+          <view class="title-container" style="width: {{data.title_width.width}};">
+            <view class="title">{{item.form_data.title}}</view>
+            <block wx:if="{{data.customFeature.isShowVirtualPrice && data.customFeature.form == 'goods'}}">
+              <block wx:if="{{data.customFeature.mode == 0}}">
+                <view wx:if="{{data.customFeature.isHideSales}}" style="width: {{data.title_width.width}};position:absolute;bottom: 0;padding-left: 10px;height:60%;">
+                  <view class="price" style="margin-bottom:10rpx;{{'color:' + data.storeStyle.theme }}">
+                    <text style="font-size:28.125rpx;margin-right: 10rpx;" wx:if="{{item.form_data.goods_type != 1 && item.form_data.price != '0.00'}}">¥</text>
+                    <text wx:if="{{item.form_data.goods_type != 1 && item.form_data.price != '0.00'}}">{{(item.form_data.goods_type != '1' ? item.form_data.price : (item.form_data.price != '0.00' ? item.form_data.price : '免费'))}}</text>
+                    <text wx:if="{{item.form_data.max_can_use_integral != 0 && item.form_data.goods_type != 1 && item.form_data.price != '0.00'}}">+</text>
+                    <text wx:if="{{item.form_data.max_can_use_integral != 0}}">{{item.form_data.max_can_use_integral}}积分</text>
+                  </view>
+                  <view style="bottom:0;"><text class="sales">销量：{{item.form_data.sales}}</text><label wx:if="{{item.form_data.is_group_buy != 1 &&data.customFeature.isShoppingCart && (addshoppingcartImageModule.isImage(data.customFeature.addShoppingCartImageSrc) >= 0) && (data.customFeature.form == 'goods'||data.customFeature.form == 'tostore')}}" class="addShoppingcart ico-moon icon-{{data.customFeature.addShoppingCartImageSrc || 'addshoppingcart1'}}" data-id="{{item.form_data.id}}" data-buynow="{{data.customFeature.isBuyNow || ''}}" data-is-show-virtual-price="{{data.customFeature.isShowVirtualPrice}}" data-app-id="{{item.form_data.app_id}}" catchtap="{{ item.form_data.goods_type == 0 ? 'showGoodsShoppingcart' : 'showAddShoppingcart' }}"></label><label wx:if="{{item.form_data.is_group_buy != 1 && data.customFeature.isShoppingCart && (addshoppingcartImageModule.isImage(data.customFeature.addShoppingCartImageSrc) < 0) && (data.customFeature.form == 'goods'||data.customFeature.form == 'tostore')}}" class="addShoppingcart shoppingImage" data-id="{{item.form_data.id}}" data-buynow="{{data.customFeature.isBuyNow || ''}}" data-is-show-virtual-price="{{data.customFeature.isShowVirtualPrice}}" data-app-id="{{item.form_data.app_id}}" catchtap="{{ item.form_data.goods_type == 0 ? 'showGoodsShoppingcart' : 'showAddShoppingcart' }}"><image src="{{data.customFeature.addShoppingCartImageSrc}}"></image></label></view>
+                </view>
+                <view wx:if="{{!data.customFeature.isHideSales}}" style="width: {{data.title_width.width}};padding-left: 10px;">
+                  <view class="price" style="{{'color:' + data.storeStyle.theme }}">
+                    <text style="font-size:28.125rpx;margin-right: 10rpx;color: {{data.storeStyle.theme }}" wx:if="{{item.form_data.goods_type != 1 && item.form_data.price != '0.00'}}">¥</text>
+                    <text style="{{'color:' + data.storeStyle.theme }}" wx:if="{{item.form_data.goods_type != 1 && item.form_data.price != '0.00'}}">{{(item.form_data.goods_type != '1' ? item.form_data.price : (item.form_data.price != '0.00' ? item.form_data.price : '免费'))}}</text>
+                    <text style="{{'color:' + data.storeStyle.theme }}" wx:if="{{item.form_data.max_can_use_integral != 0 && item.form_data.goods_type != 1 && item.form_data.price != '0.00'}}">+</text>
+                    <text style="{{'color:' + data.storeStyle.theme }}" wx:if="{{item.form_data.max_can_use_integral != 0}}">{{item.form_data.max_can_use_integral}}积分</text>
+                  </view>
+                </view>
+              </block>
+              <block wx:else>
+                <view style="width: {{data.title_width.width}}">
+                  <view style="padding-left:0;">
+                    <view class="integral-flex-wrap">
+                      <text class="price" style="{{'color:' + data.storeStyle.theme }}" wx:if="{{item.form_data.price != '0.00'}}">¥{{item.form_data.price}}</text>
+                      <text>
+                        <text class="price" style="{{'color:' + data.storeStyle.theme }}" wx:if="{{item.form_data.max_can_use_integral != 0 && item.form_data.price != '0.00'}}">+</text>
+                        <text class="price" style="{{'color:' + data.storeStyle.theme }}" wx:if="{{item.form_data.max_can_use_integral != 0}}">{{item.form_data.max_can_use_integral}}积分</text>
+                      </text>
+                    </view>
+                  </view>
+                  <view wx:if="{{ data.customFeature.isHideSales }}" class="sales">销量：{{item.form_data.sales}}</view>
+                </view>
+              </block>
+            </block>
+            <block wx:else>
+              <view style="width: {{data.title_width.width}}">
+                <view class="integral-flex-wrap">
+                  <text class="price" wx:if="{{item.form_data.price != '0.00'}}" style="{{'color:' + data.storeStyle.theme }}">¥{{item.form_data.price}}</text>
+                  <text>
+                    <text class="price" style="{{'color:' + data.storeStyle.theme }}" wx:if="{{item.form_data.max_can_use_integral != 0 && item.form_data.price != '0.00'}}">+</text>
+                    <text class="price" style="{{'color:' + data.storeStyle.theme }}" wx:if="{{item.form_data.max_can_use_integral != 0}}">{{item.form_data.max_can_use_integral}}积分</text>
+                  </text>
+                </view>
+                <text wx:if="{{ data.customFeature.isHideSales }}" class="sales">销量：{{item.form_data.sales}}</text>
+              </view>
+            </block>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="js-list-container four-goods-list" data-list-index="0" wx:if="{{data.customFeature.mode === 3}}">
+      <view class="goods-list-item background-ele router js-to-detail"
+            wx:for="{{data.goods_data}}" wx:key="index" data-id="{{item.form_data.id}}" style="{{data.list_style}}" data-contact="{{data.customFeature.ifUseContact}}" data-goods-type="{{item.form_data.goods_type}}" data-group="{{item.form_data.is_group_buy}}" data-presell="{{item.form_data.is_presell_goods}}" data-group-id="{{item.form_data.group_buy_activity_id}}"  data-hidestock="{{data.customFeature.isHideStock || ''}}" data-is-show-virtual-price="{{data.customFeature.isShowVirtualPrice  || ''}}" data-app-id="{{item.form_data.app_id}}" 
+            catchtap="turnToGoodsDetail">
+        <view style="position: relative;">
+          <image class="goods-subscript" wx:if="{{item.form_data.corner_mark > 0}}" src="{{item.form_data.corner_url}}"></image>
+          <image class="list-img" src="{{item.form_data.cover}}" style="{{data.img_style}}" mode="scaleToFill"></image>
+        </view>
+        <view class="four-goods-content">
+          <view class="title">{{item.form_data.title}}</view>
+          <view class="price-box">
+            <text class="integral-price price" style="{{'color:' + data.storeStyle.theme }}" wx:if="{{item.form_data.price != '0.00'}}">¥{{item.form_data.price}}</text>
+            <text class="integral-price price" style="{{'color:' + data.storeStyle.theme }}" wx:if="{{item.form_data.max_can_use_integral != 0 && item.form_data.price != '0.00'}}">+</text>
+            <text class="integral-price price" style="{{'color:' + data.storeStyle.theme }}" wx:if="{{item.form_data.max_can_use_integral != 0}}">{{item.form_data.max_can_use_integral}}积分</text>
+            <text class="virtual_price" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.isShowVirtualPrice}}">¥{{item.form_data.virtual_price}}</text>
+            <label wx:if="{{!data.customFeature.isHideSales && data.customFeature.isShoppingCart && (addshoppingcartImageModule.isImage(data.customFeature.addShoppingCartImageSrc) >= 0)}}" class="addShoppingcart ico-moon icon-{{data.customFeature.addShoppingCartImageSrc || 'addshoppingcart1'}}" data-id="{{item.form_data.id}}" data-buynow="{{data.customFeature.isBuyNow || ''}}" data-is-show-virtual-price="{{data.customFeature.isShowVirtualPrice}}" data-app-id="{{item.form_data.app_id}}" catchtap="{{ item.form_data.goods_type == 0 ? 'showGoodsShoppingcart' : 'showAddShoppingcart' }}"></label>
+                <label wx:if="{{!data.customFeature.isHideSales && data.customFeature.isShoppingCart && (addshoppingcartImageModule.isImage(data.customFeature.addShoppingCartImageSrc) < 0)}}" class="addShoppingcart shoppingImage" data-id="{{item.form_data.id}}" data-buynow="{{data.customFeature.isBuyNow || ''}}" data-is-show-virtual-price="{{data.customFeature.isShowVirtualPrice}}" data-app-id="{{item.form_data.app_id}}" catchtap="{{ item.form_data.goods_type == 0 ? 'showGoodsShoppingcart' : 'showAddShoppingcart' }}"><image src="{{data.customFeature.addShoppingCartImageSrc}}"></image></label>
+          </view>
+          <view class="sales-box" wx:if="{{ data.customFeature.isHideSales }}">
+            <text class="sales">销量：{{item.form_data.sales}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <template wx:if="{{data.loading}}" is="requestLoading"></template>
+    <template wx:if="{{data.is_more == 0 && data.goods_data.length == 0}}" is="requestNone" data="{{data: '暂无商品数据~'}}"></template>
+    <template wx:if="{{data.loadingFail}}" is="requestFail" data="{{refreshEvent: 'goodsScrollFunc', compId: data.compId}}"></template>
+    <template wx:if="{{data.is_more == 0 && data.goods_data.length > 0 && data.customFeature.isShowFinishText}}" is="requestAll"></template>
+    <view class="loading-btn" wx:if="{{data.customFeature.vesselAutoheight == 1 && data.customFeature.loadingMethod == 1 && data.customFeature.mode != 2 && data.is_more && data.is_more != 0 && !data.loading && !data.loadingFail }}" data-compid="{{data.compId}}" bindtap="goodsScrollFunc">
+      <image wx:if="{{data.customFeature.loadingStyle == 'img'}}" mode="aspectFill" src="{{data.customFeature.loadingImg}}"></image>
+      <text wx:elif="{{data.customFeature.loadingStyle == 'text'}}" style="color: {{data.customFeature.loadingColor}};">{{data.customFeature.loadingText}}</text>
+    </view>
+  </scroll-view>
+  <view class="{{data.topHover ? 'bottomHover' : ''}}" style="height:1px;"></view>
+</template>
+
+<!-- 判断商品是否包邮 -->
+<wxs module="goodsExpressFree">
+  var isFree = function(goods) {
+    for (var i = 0; i < goods.form_data.pick_up_type.length; ++i) {
+      if (goods.form_data.pick_up_type[i] != 1) {
+        return false
+      } else {
+        var expressFeeSort = goods.form_data.goods_express_data ? goods.form_data.goods_express_data.express_fee_sort : [];
+        if (expressFeeSort.length == 1 && expressFeeSort[0] == 0) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+  }
+  module.exports.isFree = isFree;
+</wxs>
+<template name="zcGoodsList">
+  <view class="{{data.topHover ? 'topHover' : ''}}" style="height:1px;"></view>
+  <view wx:if="{{data.customFeature.topHover}}" style="height:{{data.re_height}}px;"></view>
+  <scroll-view class="element goods-list scroll-ele goods-list-mode-{{data.customFeature.mode}} {{(data.customFeature.mode == 2 && data.curpage > 0) ? 'hor-request-status' : ''}}"
+               data-param="{{data.param}}"
+               data-compid="{{data.compId}}"
+               data-type="goods-list"
+               style="{{data.style}}"
+               scroll-y="{{(data.customFeature.mode == 2 || data.customFeature.vesselAutoheight != 0) ? false : true}}"
+               scroll-x="{{data.customFeature.mode == 2? true: false}}"
+               scroll-top="{{data.scrollTop}}"
+               data-curpage="{{data.curpage}}"
+               bindscrolltolower="goodsScrollFunc"
+               bindanimationend="animationEnd">
+    <view class="js-list-container hotel_appointment" wx:if="{{data.customFeature.form == 'new_appointment' && ( data.customFeature.tpl_style == 3 || data.customFeature.tpl_style == 4 || data.customFeature.unit == 3)}}" data-goods-type="10" data-unit="1" data-tpl-id="{{data.customFeature.tpl_id}}" data-app-id="{{item.form_data.app_id}}" catchtap='turnToGoodsDetail'>
+      <view class='hotel-section hotel-area'>
+        <view class='hotel-box'>
+          <view class='hotel-h'>目的地</view>
+          <!-- <view class='hotel-p'>XX市XX区XX街道</view> -->
+        </view>
+        <view class='ico-moon icon-rightarrow'></view>
+      </view>
+      <wxs module="hotelDefaultTime">
+        var defaultTime = function(date) {
+        var date = getDate(date) || getDate(),
+        nextDate = getDate(getDate().setDate(date.getDate() + 1)),
+        dayList = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+        start_day = dayList[date.getDay()],
+        end_day = dayList[nextDate.getDay()],
+        start_date = date.getMonth() + 1 + '月' + date.getDate() + '日',
+        end_date = nextDate.getMonth() + 1 + '月' + nextDate.getDate() + '日';
+        return {
+        start_day: start_day,
+        end_day: end_day,
+        start_date: start_date,
+        end_date: end_date
+        }
+        }
+        module.exports = defaultTime
+      </wxs>
+      <view class='hotel-section hotel-time'>
+        <view class='enter-time'>
+          <view class='hotel-h'>{{hotelDefaultTime(data.customFeature.now_date).start_day}} 入住</view>
+          <view class='hotel-p'>{{hotelDefaultTime(data.customFeature.now_date).start_date}}</view>
+        </view>
+        <view class='dis-time'>
+          共1晚
+        </view>
+        <view class='leave-time'>
+          <view class='hotel-h'>{{hotelDefaultTime(data.customFeature.now_date).end_day}} 离店</view>
+          <view class='hotel-p'>{{hotelDefaultTime(data.customFeature.now_date).end_date}}</view>
+        </view>
+      </view>
+    </view>
+    <view class="js-list-container" data-list-index="0" wx:elif="{{data.customFeature.mode !== 3  && !( data.customFeature.tpl_style == 3 || data.customFeature.tpl_style == 4 || data.customFeature.unit == 3)}}">
+      <view class="goods-list-item background-ele router js-to-detail"
+            wx:for="{{data.goods_data}}" wx:key="index" data-id="{{item.form_data.id}}" style="{{data.list_style}}" data-goods-type="{{item.form_data.goods_type}}" data-group="{{item.form_data.is_group_buy}}" data-presell="{{item.form_data.is_presell_goods}}" data-group-id="{{item.form_data.group_buy_activity_id}}" data-tpl-id="{{data.customFeature.tpl_id}}" data-app-id="{{item.form_data.app_id}}" catchtap="turnToGoodsDetail">
+        <view class="inner-content">
+          <image class="list-img" src="{{item.form_data.cover}}" style="{{data.img_style}}position: relative;"
+            mode="scaleToFill">
+            <image class="goods-subscript"
+              wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 0}}"
+              src="{{item.form_data.corner_url}}"></image>
+          </image>
+          <view class="title-container" style="width: {{data.title_width.width}};">
+            <view class="title"><image class="title-subscript" wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 1}}" src="{{item.form_data.corner_url}}"></image>{{item.form_data.title}}</view>
+            <block wx:if="{{data.customFeature.isShowVirtualPrice && ( data.customFeature.form == 'goods' || data.customFeature.form == 'new_appointment')}}">
+              <block wx:if="{{data.customFeature.mode == 0}}">
+                <view wx:if="{{data.customFeature.isHideSales}}"
+                  style="width: {{data.title_width.width}};position:absolute;bottom: 0;padding-left: 10px;height:60%;">
+                  <block wx:if="{{item.form_data.is_vip_goods != 1}}">
+                    <view class="price" style="margin-bottom:10rpx;{{'color:' + data.storeStyle.theme }}">
+                      <text style="font-size:28.125rpx;margin-right: 10rpx;"
+                        wx:if="{{item.form_data.goods_type != 1 && item.form_data.price != '0.00'}}">¥</text>
+                      <text>{{(item.form_data.goods_type != '1' ? item.form_data.price : (item.form_data.price != '0.00' ? item.form_data.price : '免费'))}}</text>
+                      <text wx:if="{{item.form_data.is_tostore == 1}}" class='toStoreLogo'>到店付</text>
+                      <text wx:if="{{item.form_data.is_experience_goods == 1}}" class='vip-logo'>{{item.form_data.experience_activity_join_limit == 1?'新人':''}}体验价</text>
+                      <text class="virtual_price"
+                        wx:if="{{item.form_data.virtual_price != 0}}">¥{{item.form_data.virtual_price}}</text>
+                    </view>
+                  </block>
+                  <block wx:else>
+                    <view class="price member-price">
+                      <text class="member-vip-price"><text
+                          style="font-size:26rpx;">¥</text>{{item.form_data.vip_min_price}}</text>
+                      <text class="vip-logo" style="margin:0 10rpx 0 20rpx;">会员价</text>
+                      <text wx:if="{{item.form_data.is_tostore == 1}}" class='toStoreLogo'>到店付</text>
+                      <text wx:if="{{item.form_data.goods_type != 1 && item.form_data.price != '0.00'}}"
+                        style="font-size:24rpx;color:#999;">¥{{(item.form_data.goods_type != '1' ? item.form_data.price : (item.form_data.price != '0.00' ? item.form_data.price : '免费'))}}</text>
+                    </view>
+                  </block>
+                  <view style="bottom:0;">
+                    <text class="sales">销量：{{item.form_data.sales}}</text>
+                    <label
+                      wx:if="{{item.form_data.is_group_buy != 1 && data.customFeature.form != 'new_appointment'&& data.customFeature.form != 'appointment' &&data.customFeature.isShoppingCart && (addshoppingcartImageModule.isImage(data.customFeature.addShoppingCartImageSrc) >= 0) && (data.customFeature.form == 'goods'||data.customFeature.form == 'tostore')}}"
+                      class="addShoppingcart ico-moon icon-{{data.customFeature.addShoppingCartImageSrc || 'addshoppingcart1'}}"
+                      data-id="{{item.form_data.id}}" data-buynow="{{data.customFeature.isBuyNow || ''}}"
+                      data-is-show-virtual-price="{{data.customFeature.isShowVirtualPrice}}"
+                      data-app-id="{{item.form_data.app_id}}"
+                      catchtap="{{ item.form_data.goods_type == 0 ? 'showGoodsShoppingcart' : 'showAddShoppingcart' }}"></label>
+                    <label
+                      wx:if="{{item.form_data.is_group_buy != 1 && data.customFeature.isShoppingCart && (addshoppingcartImageModule.isImage(data.customFeature.addShoppingCartImageSrc) < 0) && (data.customFeature.form == 'goods'||data.customFeature.form == 'tostore')}}"
+                      class="addShoppingcart shoppingImage" data-id="{{item.form_data.id}}"
+                      data-buynow="{{data.customFeature.isBuyNow || ''}}"
+                      data-is-show-virtual-price="{{data.customFeature.isShowVirtualPrice}}"
+                      catchtap="{{ item.form_data.goods_type == 0 ? 'showGoodsShoppingcart' : 'showAddShoppingcart' }}">
+                      <image src="{{data.customFeature.addShoppingCartImageSrc}}"></image>
+                    </label>
+                  </view>
+                </view>
+                <view wx:if="{{!data.customFeature.isHideSales}}"
+                  style="width: {{data.title_width.width}};padding-left: 10px;">
+                  <block wx:if="{{item.form_data.is_vip_goods != 1}}">
+                    <view class="price" style="{{'color:' + data.storeStyle.theme }}">
+                      <text style="font-size:28.125rpx;margin-right: 10rpx;"
+                        wx:if="{{item.form_data.goods_type != 1 && item.form_data.price != '0.00'}}">¥</text>
+                      <text>{{(item.form_data.goods_type != '1' ? item.form_data.price : (item.form_data.price != '0.00' ? item.form_data.price : '免费'))}}</text>
+                      <text wx:if="{{item.form_data.is_tostore == 1}}" class='toStoreLogo'>到店付</text>
+                      <text wx:if="{{item.form_data.is_experience_goods == 1}}" class='vip-logo'>{{item.form_data.experience_activity_join_limit == 1?'新人':''}}体验价</text>
+                      <text class="virtual_price"
+                        wx:if="{{item.form_data.virtual_price != 0}}">¥{{item.form_data.virtual_price}}</text>
+                      <label
+                        wx:if="{{item.form_data.is_group_buy != 1 && data.customFeature.form != 'new_appointment'&& data.customFeature.form != 'appointment' && data.customFeature.isShoppingCart && (addshoppingcartImageModule.isImage(data.customFeature.addShoppingCartImageSrc) >= 0) }}"
+                        class="addShoppingcart ico-moon icon-{{data.customFeature.addShoppingCartImageSrc || 'addshoppingcart1'}}"
+                        data-id="{{item.form_data.id}}" data-buynow="{{data.customFeature.isBuyNow || ''}}"
+                        data-app-id="{{item.form_data.app_id}}"
+                        catchtap="{{ item.form_data.goods_type == 0 ? 'showGoodsShoppingcart' : 'showAddShoppingcart' }}"></label>
+                      <label
+                        wx:if="{{item.form_data.is_group_buy != 1 && data.customFeature.form != 'new_appointment'&& data.customFeature.form != 'appointment' &&data.customFeature.isShoppingCart && (addshoppingcartImageModule.isImage(data.customFeature.addShoppingCartImageSrc) < 0)}}"
+                        class="addShoppingcart shoppingImage" data-id="{{item.form_data.id}}"
+                        data-buynow="{{data.customFeature.isBuyNow || ''}}"
+                        catchtap="{{ item.form_data.goods_type == 0 ? 'showGoodsShoppingcart' : 'showAddShoppingcart' }}">
+                        <image src="{{data.customFeature.addShoppingCartImageSrc}}"></image>
+                      </label>
+                    </view>
+                  </block>
+                  <block wx:else>
+                    <view class="price member-price">
+                      <text class="member-vip-price"><text
+                          style="font-size:26rpx;">¥</text>{{item.form_data.vip_min_price}}</text>
+                      <text class="vip-logo" style="margin:0 20rpx 0 10rpx;">会员价</text>
+                      <text wx:if="{{item.form_data.is_tostore == 1}}" class='toStoreLogo'>到店付</text>
+                      <text wx:if="{{item.form_data.goods_type != 1 && item.form_data.price != '0.00'}}"
+                        style="font-size:24rpx;color:#999;">¥{{(item.form_data.goods_type != '1' ? item.form_data.price : (item.form_data.price != '0.00' ? item.form_data.price : '免费'))}}</text>
+                    </view>
+                  </block>
+                </view>
+              </block>
+              <block wx:else>
+                <view style="width: {{data.title_width.width}}">
+                  <block wx:if="{{item.form_data.is_vip_goods != 1}}">
+                    <view class='goods-list-price-box'>
+                      <text class="price" style="{{'color:' + data.storeStyle.theme }}">¥{{item.form_data.price}}</text>
+                      <text wx:if="{{item.form_data.is_tostore == 1}}" class='toStoreLogo'>到店付</text>
+                      <text wx:if="{{item.form_data.is_experience_goods == 1}}" class='vip-logo'>{{item.form_data.experience_activity_join_limit == 1?'新人':''}}体验价</text>
+                      <text class="virtual_price" style="margin-left: 0;"
+                        wx:if="{{item.form_data.virtual_price != 0}}">¥{{item.form_data.virtual_price}}</text>
+                    </view>
+                  </block>
+                  <block wx:else>
+                    <view class="price member-price">
+                      <text class="member-vip-price" style="{{'color:' + data.storeStyle.theme}}"><text
+                          style="font-size:26rpx;">¥</text>{{item.form_data.vip_min_price}}</text>
+                      <text class="vip-logo vip-logo-mode-1" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}">会员价</text>
+                      <text wx:if="{{item.form_data.is_tostore == 1}}" class='toStoreLogo'>到店付</text>
+                      <text wx:if="{{item.form_data.goods_type != 1 && item.form_data.price != '0.00'}}" style="font-size:24rpx;color:#999;margin-left: 10rpx;">¥{{(item.form_data.goods_type != '1' ? item.form_data.price : (item.form_data.price != '0.00' ? item.form_data.price : '免费'))}}</text>
+                    </view>
+                  </block>
+
+                  <text wx:if="{{data.customFeature.isHideSales}}" class="sales">销量：{{item.form_data.sales}}</text>
+                  <label
+                    wx:if="{{item.form_data.is_group_buy != 1 && data.customFeature.form != 'new_appointment'&& data.customFeature.form != 'appointment' && data.customFeature.isShoppingCart && (addshoppingcartImageModule.isImage(data.customFeature.addShoppingCartImageSrc) >= 0) }}"
+                    class="addShoppingcart ico-moon icon-{{data.customFeature.addShoppingCartImageSrc || 'addshoppingcart1'}}"
+                    data-id="{{item.form_data.id}}" data-buynow="{{data.customFeature.isBuyNow || ''}}"
+                    data-is-show-virtual-price="{{data.customFeature.isShowVirtualPrice}}"
+                    data-app-id="{{item.form_data.app_id}}"
+                    catchtap="{{ item.form_data.goods_type == 0 ? 'showGoodsShoppingcart' : 'showAddShoppingcart' }}"></label>
+                  <label
+                    wx:if="{{item.form_data.is_group_buy != 1 && data.customFeature.form != 'new_appointment'&& data.customFeature.form != 'appointment' && data.customFeature.isShoppingCart && (addshoppingcartImageModule.isImage(data.customFeature.addShoppingCartImageSrc) < 0) }}"
+                    class="addShoppingcart shoppingImage" data-id="{{item.form_data.id}}"
+                    data-buynow="{{data.customFeature.isBuyNow || ''}}"
+                    data-is-show-virtual-price="{{data.customFeature.isShowVirtualPrice}}"
+                    catchtap="{{ item.form_data.goods_type == 0 ? 'showGoodsShoppingcart' : 'showAddShoppingcart' }}">
+                    <image src="{{data.customFeature.addShoppingCartImageSrc}}"></image>
+                  </label>
+                </view>
+              </block>
+            </block>
+            <block wx:else>
+              <view style="width: {{data.title_width.width}}">
+                <text class="price" style="{{'color:' + data.storeStyle.theme }}">¥{{item.form_data.price}}</text>
+                <text wx:if="{{data.customFeature.isHideSales}}" class="sales">销量：{{item.form_data.sales}}</text>
+                <label 
+                  wx:if="{{item.form_data.is_group_buy != 1 && data.customFeature.form != 'new_appointment'&& data.customFeature.form != 'appointment' && data.customFeature.isShoppingCart && (addshoppingcartImageModule.isImage(data.customFeature.addShoppingCartImageSrc) >= 0)}}"
+                  class="addShoppingcart ico-moon icon-{{data.customFeature.addShoppingCartImageSrc || 'addshoppingcart1'}}"
+                  data-id="{{item.form_data.id}}" data-buynow="{{data.customFeature.isBuyNow || ''}}"
+                  data-is-show-virtual-price="{{data.customFeature.isShowVirtualPrice}}"
+                  data-app-id="{{item.form_data.app_id}}"
+                  catchtap="{{ item.form_data.goods_type == 0 ? 'showGoodsShoppingcart' : 'showAddShoppingcart' }}"></label>
+                <label
+                  wx:if="{{item.form_data.is_group_buy != 1 && data.customFeature.form != 'new_appointment'&& data.customFeature.form != 'appointment' && data.customFeature.isShoppingCart && (addshoppingcartImageModule.isImage(data.customFeature.addShoppingCartImageSrc) < 0)}}"
+                  class="addShoppingcart shoppingImage"
+                  data-id="{{item.form_data.id}}" data-buynow="{{data.customFeature.isBuyNow || ''}}"
+                  data-is-show-virtual-price="{{data.customFeature.isShowVirtualPrice}}"
+                  data-app-id="{{item.form_data.app_id}}"
+                  catchtap="{{ item.form_data.goods_type == 0 ? 'showGoodsShoppingcart' : 'showAddShoppingcart' }}">
+                  <image src="{{data.customFeature.addShoppingCartImageSrc}}"></image>
+                </label>
+              </view>
+            </block>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="js-list-container four-goods-list" data-list-index="0" wx:if="{{data.customFeature.mode === 3 && !( data.customFeature.tpl_style == 3 || data.customFeature.tpl_style == 4 || data.customFeature.unit == 3)}}">
+      <view class="goods-list-item background-ele router js-to-detail"
+            wx:for="{{data.goods_data}}" wx:key="index" data-id="{{item.form_data.id}}" style="{{data.list_style}}" data-goods-type="{{item.form_data.goods_type}}" data-group="{{item.form_data.is_group_buy}}" data-presell="{{item.form_data.is_presell_goods}}" data-group-id="{{item.form_data.group_buy_activity_id}}" data-tpl-id="{{data.customFeature.tpl_id}}" data-app-id="{{item.form_data.app_id}}" catchtap="turnToGoodsDetail">
+        <view style="position: relative;">
+          <image class="goods-subscript"
+            wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 0}}"
+            src="{{item.form_data.corner_url}}"></image>
+          <image class="list-img" src="{{item.form_data.cover}}" style="{{data.img_style}}" mode="scaleToFill"></image>
+        </view>
+        <view class="four-goods-content">
+          <view class="title">
+            <image class="title-subscript"
+              wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 1}}"
+              src="{{item.form_data.corner_url}}"></image>
+            {{item.form_data.title}}
+          </view>
+          <view class="price-box">
+            <block wx:if="{{item.form_data.is_vip_goods != 1}}">
+              <text class="integral-price price" style="{{'color:' + data.storeStyle.theme }}" wx:if="{{item.form_data.price != '0.00'}}">¥{{item.form_data.price}}</text>
+              <text class="integral-price price" style="{{'color:' + data.storeStyle.theme }}" wx:if="{{item.form_data.max_can_use_integral != 0 && item.form_data.price != '0.00'}}">+</text>
+              <text class="integral-price price" style="{{'color:' + data.storeStyle.theme }}" wx:if="{{item.form_data.max_can_use_integral != 0}}">{{item.form_data.max_can_use_integral}}积分</text>
+              <text wx:if="{{item.form_data.is_tostore == 1}}" class='toStoreLogo'>到店付</text>
+              <text wx:if="{{item.form_data.is_experience_goods == 1}}" class='vip-logo'>{{item.form_data.experience_activity_join_limit == 1?'新人':''}}体验价</text>
+              <text class="virtual_price" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.isShowVirtualPrice && data.customFeature.form == 'goods'}}">¥{{item.form_data.virtual_price}}</text>
+            </block>
+            <block wx:else>
+              <text class="member-vip-price"><text style="font-size:26rpx;">¥</text>{{item.form_data.vip_min_price}}</text>
+              <text class="vip-logo">会员价</text>
+              <text wx:if="{{item.form_data.is_tostore == 1}}" class='toStoreLogo'>到店付</text>
+              <text wx:if="{{item.form_data.goods_type != 1 && item.form_data.price != '0.00'}}" style="font-size:24rpx;color:#999;margin:0 10rpx 0 20rpx;">¥{{item.form_data.price}}</text>
+            </block>
+            <label
+              wx:if="{{!data.customFeature.isHideSales && data.customFeature.isShoppingCart && (addshoppingcartImageModule.isImage(data.customFeature.addShoppingCartImageSrc) >= 0)}}"
+              class="addShoppingcart ico-moon icon-{{data.customFeature.addShoppingCartImageSrc || 'addshoppingcart1'}}"
+              data-id="{{item.form_data.id}}" data-buynow="{{data.customFeature.isBuyNow || ''}}"
+              data-is-show-virtual-price="{{data.customFeature.isShowVirtualPrice}}"
+              data-app-id="{{item.form_data.app_id}}"
+              catchtap="{{ item.form_data.goods_type == 0 ? 'showGoodsShoppingcart' : 'showAddShoppingcart' }}"></label>
+            <label
+              wx:if="{{!data.customFeature.isHideSales && data.customFeature.isShoppingCart && (addshoppingcartImageModule.isImage(data.customFeature.addShoppingCartImageSrc) < 0)}}"
+              class="addShoppingcart shoppingImage" data-id="{{item.form_data.id}}"
+              data-buynow="{{data.customFeature.isBuyNow || ''}}"
+              data-is-show-virtual-price="{{data.customFeature.isShowVirtualPrice}}"
+              data-app-id="{{item.form_data.app_id}}"
+              catchtap="{{ item.form_data.goods_type == 0 ? 'showGoodsShoppingcart' : 'showAddShoppingcart' }}">
+              <image src="{{data.customFeature.addShoppingCartImageSrc}}"></image>
+            </label>
+          </view>
+          <view class="sales-box" wx:if="{{data.customFeature.isHideSales}}">
+            <text class="sales">销量：{{item.form_data.sales}}</text>
+            <label
+              wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.goods_type != 1 && data.customFeature.form != 'new_appointment' && data.customFeature.isShoppingCart && (addshoppingcartImageModule.isImage(data.customFeature.addShoppingCartImageSrc) >= 0)}}"
+              class="addShoppingcart ico-moon icon-{{data.customFeature.addShoppingCartImageSrc || 'addshoppingcart1'}}"
+              data-id="{{item.form_data.id}}" data-buynow="{{data.customFeature.isBuyNow || ''}}"
+              data-is-show-virtual-price="{{data.customFeature.isShowVirtualPrice}}"
+              data-app-id="{{item.form_data.app_id}}"
+              catchtap="{{ item.form_data.goods_type == 0 ? 'showGoodsShoppingcart' : 'showAddShoppingcart' }}"></label>
+            <label
+              wx:if="{{item.form_data.is_group_buy != 1 && data.customFeature.form != 'new_appointment' && data.customFeature.isShoppingCart && (addshoppingcartImageModule.isImage(data.customFeature.addShoppingCartImageSrc) < 0)}}"
+              class="addShoppingcart shoppingImage" data-id="{{item.form_data.id}}"
+              data-buynow="{{data.customFeature.isBuyNow || ''}}"
+              data-is-show-virtual-price="{{data.customFeature.isShowVirtualPrice}}"
+              data-app-id="{{item.form_data.app_id}}"
+              catchtap="{{ item.form_data.goods_type == 0 ? 'showGoodsShoppingcart' : 'showAddShoppingcart' }}">
+              <image src="{{data.customFeature.addShoppingCartImageSrc}}"></image>
+            </label>
+          </view>
+        </view>
+      </view>
+    </view>
+    <template wx:if="{{data.loading}}" is="requestLoading"></template>
+    <template wx:if="{{data.is_more == 0 && data.goods_data.length == 0  && !( data.customFeature.tpl_style == 3 || data.customFeature.tpl_style == 4 || data.customFeature.unit == 3)}}"
+      is="requestNone" data="{{data: '暂无商品数据~'}}"></template>
+    <template wx:if="{{data.loadingFail}}" is="requestFail"
+      data="{{refreshEvent: 'goodsScrollFunc', compId: data.compId}}"></template>
+    <template wx:if="{{data.is_more == 0 && data.goods_data.length > 0 && data.customFeature.isShowFinishText}}"
+      is="requestAll"></template>
+    <view class="loading-btn"
+      wx:if="{{data.customFeature.vesselAutoheight == 1 && data.customFeature.loadingMethod == 1 && data.customFeature.mode != 2 && data.is_more && data.is_more != 0 && !data.loading && !data.loadingFail }}"
+      data-compid="{{data.compId}}" bindtap="goodsScrollFunc">
+      <image wx:if="{{data.customFeature.loadingStyle == 'img'}}" mode="aspectFill"
+        src="{{data.customFeature.loadingImg}}"></image>
+      <text wx:elif="{{data.customFeature.loadingStyle == 'text'}}"
+        style="color: {{data.customFeature.loadingColor}};">{{data.customFeature.loadingText}}</text>
+    </view>
+  </scroll-view>
+  <view class="{{data.topHover ? 'bottomHover' : ''}}" style="height:1px;"></view>
+</template>
+
+<!-- 电商新样式样式 -->
+<template name="newGoodsList">
+  <view class="{{data.topHover ? 'topHover' : ''}}" style="height:1px;"></view>
+  <view wx:if="{{data.customFeature.topHover}}" style="height:{{data.re_height}}px;"></view>
+  <scroll-view class="new-goods-list {{(data.customFeature.mode == 2 && data.curpage > 0) ? 'hor-request-status' : ''}}" data-param="{{data.param}}" data-compid="{{data.compId}}" data-type="goods-list" style="{{data.style}}"
+    scroll-y="{{data.customFeature.mode == 2 ? false : true}}" scroll-x="{{data.customFeature.mode == 2 ? true : false}}" scroll-top="{{data.scrollTop}}" data-curpage="{{data.curpage}}" bindscrolltolower="goodsScrollFunc" bindanimationend="animationEnd">
+    <!-- 样式1 -->
+    <block wx:if="{{ data.customFeature.mode == 0 }}">
+      <view class="new-goods-list-one">
+        <view class="goods-content" wx:for="{{data.goods_data}}" wx:key="index" 
+          data-id="{{item.form_data.id}}" 
+          data-goods-type="{{item.form_data.goods_type}}"
+          data-app-id="{{item.form_data.app_id}}" 
+          style="{{data.list_style}}"
+          data-group="{{item.form_data.is_group_buy}}"
+          data-presell="{{item.form_data.is_presell_goods}}" 
+          data-group-id="{{item.form_data.group_buy_activity_id}}" 
+          data-stock="{{item.form_data.stock}}"
+          catchtap="turnToGoodsDetail">
+          <image class="goods-image" src="{{item.form_data.cover}}" style="{{data.img_style}}" mode="scaleToFill">
+            <image class="goods-subscript" wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 0}}" src="{{item.form_data.corner_url}}"></image>
+            <view class="sell-out" wx:if="{{item.form_data.stock == 0}}"><view class="sell-out-btn">已售罄</view></view>
+          </image>
+          <!-- 样式1-1 -->
+          <view wx:if="{{ data.customFeature.styleMode == '0-1' }}" class="goods-detail">
+            <view class="title">
+              <image class="title-subscript" wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 1}}" src="{{item.form_data.corner_url}}"></image>{{item.form_data.title}}</view>
+            <view class="discount-box">
+              <text class="discount" wx:if="{{item.form_data.price_break_discounts_activity_id > 0}}">满减</text>
+              <text class="express-new" style="margin-right:10rpx;" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" wx:if="{{ item.discountStr && item.form_data.integral == '1' }}">{{item.discountStr}}</text>
+              <text class="vip-logo" style="margin-right:10rpx;" wx:if="{{item.form_data.is_vip_goods == 1}}">会员价</text>
+              <text class="discount" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption != 3 && data.customFeature.priceOption != 3}}" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}"><block wx:if="{{item.form_data.is_vip_goods != 1}}">{{ item.form_data.discount }}折优惠</block>
+              <block wx:else>{{ item.form_data.vip_discount }}折优惠</block></text>
+              <text wx:if="{{goodsExpressFree.isFree(item) && data.customFeature.goodsType !== 'electronicGoods'}}" class="express" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}">包邮</text>
+            </view>
+            <view class="price-box">
+              <block wx:if="{{item.form_data.is_vip_goods != 1}}">
+                <text style="{{'color:' + data.storeStyle.theme}}" class="real-price">¥{{item.form_data.price}}</text>
+                <text wx:if="{{item.form_data.virtual_price != 0}}" class="virtual-price">¥{{item.form_data.virtual_price}}</text>
+              </block>
+              <block wx:else>
+                <text style="{{'color:' + data.storeStyle.theme}}" class="real-price">¥{{item.form_data.vip_min_price}}</text>
+                <text wx:if="{{item.form_data.price != 0}}" class="virtual-price" style="text-decoration:inherit;position:relative;top:2rpx;">¥{{item.form_data.price}}</text>
+              </block>
+            </view>
+            <view class="sales-box">
+              <text class="sales">{{item.form_data.sales}}人付款</text>
+            </view>
+            <label wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.stock > 0 && data.customFeature.goodsType !== 'electronicGoods'}}" style="{{'color:' + data.storeStyle.theme}}" class="shopping-icon ico-moon icon-addshoppingcart5" data-id="{{item.form_data.id}}" data-app-id="{{item.form_data.app_id}}" data-ispackage="{{item.form_data.is_package_goods}}"
+              catchtap="showGoodsShoppingcart" data-buynow="{{data.customFeature.isBuyNow}}" ></label>
+            <!-- 电子卡券标识 -->
+            <label wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.stock > 0 && data.customFeature.goodsType === 'electronicGoods'}}" style="{{'color:' + data.storeStyle.theme}}" class="shopping-icon ico-moon icon-ec-mark"></label> 
+          </view>
+          <!-- 样式1-1 -->
+          <!-- 样式1-2 -->
+          <view wx:if="{{ data.customFeature.styleMode == '0-2' }}" class="goods-detail one-two-mode">
+            <view class="title">
+              <image class="title-subscript" wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 1}}" src="{{item.form_data.corner_url}}"></image>{{item.form_data.title}}</view>
+            <block wx:if="{{item.form_data.is_vip_goods == 1}}">
+              <view class="price-box">
+                <text class="discount" wx:if="{{item.form_data.price_break_discounts_activity_id > 0}}">满减</text>
+                <text style="font-size:24rpx;color:#999;position:relative;top:6rpx" class="real-price">¥{{item.form_data.price}}</text>
+                <text style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" class="discount two-style-discount" wx:if="{{ item.discountStr && item.form_data.integral == '1' }}"><text
+                    style="{{'border-right-color:' + data.storeStyle.theme + '33'}}"
+                    class="trangel"></text>{{ item.discountStr }}</text>
+                <text style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}};position:relative;top:5rpx;" class="express-new two-style-discount vip-trangel" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption != 3 && data.customFeature.priceOption != 3}}"><text
+                    style="{{'border-right-color:' + data.storeStyle.theme + '33'}};margin-top:10rpx;"
+                    class="trangel"></text>{{ item.form_data.discount }}折</text>
+                <view>
+                  <text style="{{'color:' + data.storeStyle.theme }}" class="real-price">¥{{item.form_data.vip_min_price}}</text>
+                  <text style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" class="discount two-style-discount"><text
+                      style="{{'border-right-color:' + data.storeStyle.theme + '33'}}"
+                      class="trangel"></text>{{item.form_data.virtual_price != 0 ? '会员' + item.form_data.vip_discount +'折' : '会员价'}}</text>
+                </view>
+              </view>
+            </block>
+            <block wx:else>
+              <text class="virtual-price" wx:if="{{item.form_data.is_vip_goods != 1}}">{{item.form_data.virtual_price != 0 ? '¥' + item.form_data.virtual_price : ''}}</text>
+              <view class="price-box">
+                <text class="discount" wx:if="{{item.form_data.price_break_discounts_activity_id > 0}}">满减</text>
+                <text style="{{'color:' + data.storeStyle.theme }}" class="real-price">¥{{item.form_data.price}}</text>
+                <text style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" class="express-new two-style-discount" wx:if="{{ item.discountStr && item.form_data.integral == '1' }}"><text
+                    style="{{'border-right-color:' + data.storeStyle.theme + '33'}}"
+                    class="trangel"></text>{{ item.discountStr }}</text>
+                <text style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" class="discount two-style-discount" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption != 3 && data.customFeature.priceOption != 3}}"><text
+                    style="{{'border-right-color:' + data.storeStyle.theme + '33'}}"
+                    class="trangel"></text>{{ item.form_data.discount }}折</text>
+              </view>
+            </block>
+            <view class="sales-box">
+              <text wx:if="{{goodsExpressFree.isFree(item) && data.customFeature.goodsType !== 'electronicGoods'}}" class="express" style="{{'color:' + data.storeStyle.theme + ';border-color:' + data.storeStyle.theme}}">包邮</text>
+              <text class="sales">{{item.form_data.sales}}人付款</text>
+            </view>
+            <label wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.stock > 0 && data.customFeature.goodsType !== 'electronicGoods'}}" style="{{'color:' + data.storeStyle.theme}}" class="shopping-icon ico-moon icon-addshoppingcart5" data-id="{{item.form_data.id}}" data-app-id="{{item.form_data.app_id}}" data-ispackage="{{item.form_data.is_package_goods}}"
+              catchtap="showGoodsShoppingcart" data-buynow="{{data.customFeature.isBuyNow}}" ></label>
+            <!-- 电子卡券标识 -->
+            <label wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.stock > 0 && data.customFeature.goodsType === 'electronicGoods'}}" style="{{'color:' + data.storeStyle.theme}}" class="shopping-icon ico-moon icon-ec-mark"></label>
+          </view>
+          <!-- 样式1-2 -->
+          <!-- 样式1-3 -->
+          <view wx:if="{{ data.customFeature.styleMode == '0-3' }}" class="goods-detail one-three-mode">
+            <view class="title">
+              <image class="title-subscript" wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 1}}" src="{{item.form_data.corner_url}}"></image>
+              {{item.form_data.title}}
+            </view>
+            <block wx:if="{{item.form_data.is_vip_goods == 1}}">
+                <view class="price-box {{item.form_data.virtual_price != 0 && item.form_data.discount !== 'NaN' && item.form_data.is_vip_goods != 1 ? '' : 'mgt85'}}">
+                  <text style="{{'color:' + data.storeStyle.theme }}" class="real-price">¥{{item.form_data.vip_min_price}}</text>
+                  <text wx:if="{{ item.discountStr && item.form_data.integral == '1' }}" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" class="express-new two-style-discount"><text style="{{'border-right-color:' + data.storeStyle.theme + '33'}}" class="trangel"></text>{{item.discountStr}}</text>
+                  <text style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" class="discount two-style-discount"><text style="{{'border-right-color:' + data.storeStyle.theme + '33'}}" class="trangel"></text>{{item.form_data.virtual_price != 0 ? '会员' + item.form_data.vip_discount +'折' : '会员价'}}</text>
+                  <text wx:if="{{goodsExpressFree.isFree(item) && data.customFeature.goodsType !== 'electronicGoods'}}" class="express" style="{{'color:' + data.storeStyle.theme + ';border-color:' + data.storeStyle.theme}}">包邮</text>
+                </view>
+            </block>
+            <block wx:else>
+              <view wx:if="{{item.form_data.virtual_price != 0 && item.form_data.discount !== 'NaN' && item.form_data.is_vip_goods != 1}}" class="discount-sign ico-moon icon-download-sign {{ data.storeStyle.theme === '#FF7100' ? 'discount-sign-FF7100' : data.storeStyle.theme === '#3091F2' ? 'discount-sign-3091F2' : data.storeStyle.theme === '#F93D28' ? 'discount-sign-F93D28' : data.storeStyle.theme === '#69C4AA' ? 'discount-sign-69C4AA' : data.storeStyle.theme === '#D4A656' ? 'discount-sign-D4A656' : data.storeStyle.theme === '#030303' ? 'discount-sign-030303' :  data.storeStyle.theme === '#FE4070' ? 'discount-sign-FE4070' : data.storeStyle.theme === '#ffffff' ? 'discount-sign-ffffff' : ''}}">
+                <text>{{item.discountStr ? item.discountStr : item.form_data.discount + '折'}}</text>
+              </view>
+              <view class="price-box {{item.form_data.virtual_price != 0 && item.form_data.discount !== 'NaN' && item.form_data.is_vip_goods != 1 ? '' : 'mgt85'}}">
+                <text style="{{'color:' + data.storeStyle.theme }}" class="real-price">¥{{item.form_data.price}}</text>
+                <text wx:if="{{item.form_data.virtual_price != 0}}" class="virtual-price">¥{{item.form_data.virtual_price}}</text>
+                <text style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" class="express-new two-style-discount" wx:if="{{ item.discountStr && item.form_data.integral == '1' }}"><text
+                    style="{{'border-right-color:' + data.storeStyle.theme + '33'}}"
+                    class="trangel"></text>{{ item.discountStr }}</text>
+                <text wx:if="{{goodsExpressFree.isFree(item) && data.customFeature.goodsType !== 'electronicGoods'}}" class="express" style="{{'color:' + data.storeStyle.theme + ';border-color:' + data.storeStyle.theme}}">包邮</text>
+              </view>
+            </block>
+            <label wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.stock > 0 && data.customFeature.goodsType !== 'electronicGoods'}}" style="{{'color:' + data.storeStyle.theme}}" class="shopping-icon ico-moon icon-addshoppingcart5"  data-id="{{item.form_data.id}}" data-app-id="{{item.form_data.app_id}}" data-ispackage="{{item.form_data.is_package_goods}}"
+              catchtap="showGoodsShoppingcart" data-buynow="{{data.customFeature.isBuyNow}}" ></label>
+          </view>
+          <!-- 样式1-3 -->
+        </view>
+      </view>
+    </block>
+    <!-- 样式2 -->
+    <block wx:if="{{ data.customFeature.mode == 1 }}">
+      <view class="new-goods-list-two clearfix {{data.customFeature.styleMode == '1-2' ? 'new-three' : ''}}">
+        <block wx:if="{{ data.customFeature.styleMode != '1-2' }}">
+          <view class="goods-content old" wx:for="{{data.goods_data}}" wx:key="index" 
+                style="{{data.list_style}}"
+                data-id="{{item.form_data.id}}" 
+                data-goods-type="{{item.form_data.goods_type}}" 
+                data-group="{{item.form_data.is_group_buy}}" 
+                data-presell="{{item.form_data.is_presell_goods}}"
+                data-group-id="{{item.form_data.group_buy_activity_id}}" 
+                data-app-id="{{item.form_data.app_id}}" 
+                data-stock="{{item.form_data.stock}}"
+                catchtap="turnToGoodsDetail">
+            <image class="list-img" src="{{item.form_data.cover}}" style="{{data.img_style}}" mode="scaleToFill">
+              <image class="goods-subscript" wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 0}}" src="{{item.form_data.corner_url}}"></image>
+              <view class="sell-out" wx:if="{{item.form_data.stock == 0}}"><view class="sell-out-btn">已售罄</view></view>
+            </image>
+            <view class="title">
+              <image class="title-subscript" wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 1}}" src="{{item.form_data.corner_url}}"></image>{{item.form_data.title}}</view>
+            <!-- 样式2-1 -->
+            <view wx:if="{{ data.customFeature.styleMode == '1-1' }}" class="goods-detail">
+              <view class="discount-box">
+                <text class="discount" wx:if="{{item.form_data.price_break_discounts_activity_id > 0}}">满减</text>
+                <text class="express-new" style="margin-right:10rpx;" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" wx:if="{{ item.discountStr && item.form_data.integral == '1' }}">{{item.discountStr}}</text>
+                <text class="vip-logo" style="margin-right:10rpx;" wx:if="{{item.form_data.is_vip_goods == 1}}">会员价</text>
+                <text class="discount" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption != 3 && data.customFeature.priceOption != 3}}" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}"><block wx:if="{{item.form_data.is_vip_goods != 1}}">{{ item.form_data.discount }}折优惠</block>
+              <block wx:else>{{ item.form_data.vip_discount }}折优惠</block></text>
+                <text wx:if="{{goodsExpressFree.isFree(item) && data.customFeature.goodsType !== 'electronicGoods'}}" class="express" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}">包邮</text>
+              </view>
+              <view class="price-box">
+                <block wx:if="{{item.form_data.is_vip_goods != 1}}">
+                  <text style="{{'color:' + data.storeStyle.theme}}" class="real-price">¥{{item.form_data.price}}</text>
+                  <text wx:if="{{item.form_data.virtual_price != 0}}" class="virtual-price">¥{{item.form_data.virtual_price}}</text>
+                </block>
+                <block wx:else>
+                  <text style="{{'color:' + data.storeStyle.theme}}" class="real-price">¥{{item.form_data.vip_min_price}}</text>
+                  <text wx:if="{{item.form_data.price != 0}}" class="virtual-price" style="text-decoration:inherit;position:relative;top:2rpx;">¥{{item.form_data.price}}</text>
+                </block>
+              </view>
+              <view class="sales-box">
+                <text class="sales">{{item.form_data.sales}}人付款</text>
+                <label wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.stock > 0 && data.customFeature.goodsType !== 'electronicGoods'}}" style="{{'color:' + data.storeStyle.theme}}" class="shopping-icon ico-moon icon-addshoppingcart5" data-id="{{item.form_data.id}}" data-app-id="{{item.form_data.app_id}}" data-ispackage="{{item.form_data.is_package_goods}}"
+                  catchtap="showGoodsShoppingcart" data-buynow="{{data.customFeature.isBuyNow}}" ></label>
+                <!-- 电子卡券标识 -->
+                <label wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.stock > 0 && data.customFeature.goodsType === 'electronicGoods'}}" style="{{'color:' + data.storeStyle.theme}}" class="shopping-icon ico-moon icon-ec-mark"></label>
+              </view>
+            </view>
+            <!-- 样式2-1 -->
+            <!-- 样式2-3 -->
+            <view wx:if="{{ data.customFeature.styleMode == '1-3' }}" class="goods-detail two-two-mode">
+              <text class="express-new" style="margin-right:10rpx;" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" wx:if="{{ item.discountStr && item.form_data.integral == '1' }}">{{item.discountStr}}</text>
+              <block wx:if="{{item.form_data.is_vip_goods == 1}}">
+                <view class="price-box">
+                  <text class="discount" wx:if="{{item.form_data.price_break_discounts_activity_id > 0}}">满减</text>
+                  <text style="font-size:24rpx;color:#999;position:relative;top:6rpx;" class="real-price">¥{{item.form_data.price}}</text>
+                  <text style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}};position:relative;top:5rpx;" class="discount two-style-discount vip-trangel" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption != 3 && data.customFeature.priceOption != 3}}"><text
+                    style="{{'border-right-color:' + data.storeStyle.theme + '33'}};margin-top:10rpx;"
+                    class="trangel"></text>{{ item.form_data.discount }}折</text>
+                  <view>
+                    <text style="{{'color:' + data.storeStyle.theme }}" class="real-price">¥{{item.form_data.vip_min_price}}</text>
+                    <text style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" class="discount two-style-discount"><text
+                       style="{{'border-right-color:' + data.storeStyle.theme + '33'}}"
+                       class="trangel"></text>{{item.form_data.virtual_price != 0 ? '会员' + item.form_data.vip_discount +'折' : '会员价'}}</text>
+                  </view>
+                </view>
+              </block>
+              <block wx:else>
+                <text class="virtual-price" wx:if="{{item.form_data.is_vip_goods != 1}}">{{item.form_data.virtual_price != 0 ? '¥' + item.form_data.virtual_price : ''}}</text>
+                <view class="price-box">
+                  <text class="discount" wx:if="{{item.form_data.price_break_discounts_activity_id > 0}}">满减</text>
+                  <text style="{{'color:' + data.storeStyle.theme }}" class="real-price">¥{{item.form_data.price}}</text>
+                  <text style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" class="discount two-style-discount" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption != 3 && data.customFeature.priceOption != 3}}"><text style="{{'border-right-color:' + data.storeStyle.theme + '33'}}" class="trangel"></text>{{ item.form_data.discount }}折</text>
+                </view>
+              </block>
+              <view class="sales-box">
+                <text wx:if="{{goodsExpressFree.isFree(item) && data.customFeature.goodsType !== 'electronicGoods'}}" class="express" style="{{'color:' + data.storeStyle.theme + ';border-color:' + data.storeStyle.theme}}">包邮</text>
+                <text class="sales">{{item.form_data.sales}}人付款</text>
+                <label wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.stock > 0 && data.customFeature.goodsType !== 'electronicGoods'}}" style="{{'color:' + data.storeStyle.theme}}" class="shopping-icon ico-moon icon-addshoppingcart5" data-id="{{item.form_data.id}}" data-app-id="{{item.form_data.app_id}}" data-ispackage="{{item.form_data.is_package_goods}}"
+                  catchtap="showGoodsShoppingcart" data-buynow="{{data.customFeature.isBuyNow}}" ></label>
+                <!-- 电子卡券标识 -->
+              <label wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.stock > 0 && data.customFeature.goodsType === 'electronicGoods'}}" style="{{'color:' + data.storeStyle.theme}}" class="shopping-icon ico-moon icon-ec-mark"></label>
+              </view>
+            </view>
+            <!-- 样式2-3 -->
+          </view>
+        </block>
+        <block wx:else>
+          <view style="width:346rpx;margin-right:14rpx;float:left;">
+            <view class="goods-content-two-three" wx:for="{{data.goods_data}}" wx:key="index" 
+                  wx:if="{{index % 2 === 0}}" 
+                  data-id="{{item.form_data.id}}" 
+                  data-goods-type="{{item.form_data.goods_type}}" 
+                  catchtap="turnToGoodsDetail" 
+                  data-group="{{item.form_data.is_group_buy}}" 
+                  data-presell="{{item.form_data.is_presell_goods}}"
+                  data-group-id="{{item.form_data.group_buy_activity_id}}" 
+                  data-app-id="{{item.form_data.app_id}}" 
+                  data-stock="{{item.form_data.stock}}"
+                  style="margin-left:0;background:{{data.customFeature.lineBackgroundColor}};margin-bottom:16rpx">
+              <image class="list-img-two" src="{{item.form_data.cover}}" mode="widthFix">
+                <image class="goods-subscript" wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 0}}" src="{{item.form_data.corner_url}}"></image>
+                <view class="sell-out" wx:if="{{item.form_data.stock == 0}}"><view class="sell-out-btn">已售罄</view></view>
+              </image>
+              <view class="title-new">
+                <image class="title-subscript" wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 1}}" src="{{item.form_data.corner_url}}"></image>{{item.form_data.title}}</view>
+              <view class="goods-detail two-two-mode">
+                <!-- 是会员商品 -->
+                <block wx:if="{{item.form_data.is_vip_goods == 1}}">
+                  <!-- 用户是会员 -->
+                  <block wx:if="{{item.form_data.is_vip_user == 1}}">
+                    <view class="line-one">
+                      <text class="express-new" style="margin-right:10rpx;" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" wx:if="{{ item.discountStr && item.form_data.integral == '1' }}">{{item.discountStr}}</text>
+                      <text wx:if="{{goodsExpressFree.isFree(item) && data.customFeature.goodsType !== 'electronicGoods'}}" class="express-new" style="margin-right:10rpx;" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}">包邮</text>
+                    </view>
+                    <view class="line-two">
+                      <text style="margin-right:6rpx;{{'color:' + data.storeStyle.theme}}">
+                        <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                      <text class="price-before">{{item.form_data.vip_min_price_arr[0]}}</text>
+                      <text class="price-last">{{'.' + item.form_data.vip_min_price_arr[1]}}</text>
+                      </text>
+                      <text class="two-vip-price">会员价</text>
+                    </view>
+                    <view class="two_vir-price">原价¥{{item.form_data.price}}</view>
+                  </block>
+                  <!-- 用户不是会员 -->
+                  <block wx:else>
+                    <!-- 设置不对非会员展示会员价，原价加下划线 -->
+                    <block wx:if="{{data.vip_price != 1}}">
+                      <view class="line-one">
+                        <text class="express-new" style="margin-right:10rpx;" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" wx:if="{{ item.discountStr && item.form_data.integral == '1' }}">{{item.discountStr}}</text>
+                        <text wx:if="{{goodsExpressFree.isFree(item) && data.customFeature.goodsType !== 'electronicGoods'}}" class="express-new" style="margin-right:10rpx;" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}">包邮</text>
+                      </view>
+                      <view class="line-two" style="{{'color:' + data.storeStyle.theme}}">
+                        <text wx:if="{{item.form_data.min_price != item.form_data.max_price && data.customFeature.priceOption == 3}}">
+                        <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                        <text class="price-before">{{item.form_data.min_price_arr[0]}}</text>
+                        <text class="price-last">{{'.' + item.form_data.min_price_arr[1] + '~'}}</text>
+                        <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                        <text class="price-before">{{ item.form_data.max_price_arr[0]}}</text>
+                        <text class="price-last">{{'.' + item.form_data.max_price_arr[1]}}</text>
+                        </text>
+                        <text wx:if="{{data.customFeature.priceOption == 1 || (item.form_data.min_price == item.form_data.max_price && data.customFeature.priceOption == 3)}}">
+                          <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                        <text class="price-before">{{item.form_data.min_price_arr[0]}}</text>
+                        <text class="price-last">{{'.' + item.form_data.min_price_arr[1]}}</text>
+                        </text>
+                        <text wx:if="{{data.customFeature.priceOption == 2}}">
+                        <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                        <text class="price-before">{{item.form_data.max_price_arr[0]}}</text>
+                        <text class="price-last">{{'.' + item.form_data.max_price_arr[1]}}</text>
+                        </text>
+                      </view>
+                      <view class="virtual-price" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption == 3 && item.form_data.virtual_min_price != item.form_data.virtual_max_price}}">{{'¥' + item.form_data.virtual_min_price + '~¥' + item.form_data.virtual_max_price}}</view>
+                      <view class="virtual-price" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption == 2}}">{{'¥' + item.form_data.virtual_max_price}}</view>
+                      <view class="virtual-price" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption == 1}}">{{'¥' + item.form_data.virtual_min_price}}</view>
+                    </block>
+                    <!-- 对非会员展示会员价，原价第二行会员价 -->
+                    <block wx:else>
+                      <view class="line-one">
+                        <text class="express-new" style="margin-right:10rpx;" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" wx:if="{{ item.discountStr && item.form_data.integral == '1' }}">{{item.discountStr}}</text>
+                        <text wx:if="{{goodsExpressFree.isFree(item) && data.customFeature.goodsType !== 'electronicGoods'}}" class="express-new" style="margin-right:10rpx;" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}">包邮</text>
+                      </view>
+                      <view class="line-two" style="{{'color:' + data.storeStyle.theme}}">
+                        <text wx:if="{{item.form_data.min_price != item.form_data.max_price && data.customFeature.priceOption == 3}}">
+                        <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                        <text class="price-before">{{item.form_data.min_price_arr[0]}}</text>
+                        <text class="price-last">{{'.' + item.form_data.min_price_arr[1] + '~'}}</text>
+                        <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                        <text class="price-before">{{ item.form_data.max_price_arr[0]}}</text>
+                        <text class="price-last">{{'.' + item.form_data.max_price_arr[1]}}</text>
+                        </text>
+                        <text wx:if="{{data.customFeature.priceOption == 1 || (item.form_data.min_price == item.form_data.max_price && data.customFeature.priceOption == 3)}}">
+                          <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                        <text class="price-before">{{item.form_data.min_price_arr[0]}}</text>
+                        <text class="price-last">{{'.' + item.form_data.min_price_arr[1]}}</text>
+                        </text>
+                        <text wx:if="{{data.customFeature.priceOption == 2}}">
+                        <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                        <text class="price-before">{{item.form_data.max_price_arr[0]}}</text>
+                        <text class="price-last">{{'.' + item.form_data.max_price_arr[1]}}</text>
+                        </text>
+                      </view>
+                      <view class="two_vir-price">
+                        <text style="margin-right:12rpx;">
+                          <text>{{'¥' + item.form_data.vip_min_price}}</text>
+                        </text>
+                        <text class="two-vip-price">会员价</text>
+                      </view>
+                    </block>
+                  </block>
+                </block>
+                <!-- 不是会员商品 -->
+                <block wx:else>
+                  <view class="line-one">
+                    <text class="discount" wx:if="{{item.form_data.price_break_discounts_activity_id > 0}}">满减</text>
+                    <text class="express-new" style="margin-right:10rpx;" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" wx:if="{{ item.discountStr && item.form_data.integral == '1' }}">{{item.discountStr}}</text>
+                    <text wx:if="{{goodsExpressFree.isFree(item) && data.customFeature.goodsType !== 'electronicGoods'}}" class="express-new"  style="margin-right:10rpx;" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}">包邮</text>
+                  </view>
+                  <view class="line-two" style="{{'color:' + data.storeStyle.theme}}">
+                    <text wx:if="{{item.form_data.min_price != item.form_data.max_price && data.customFeature.priceOption == 3}}">
+                        <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                    <text class="price-before">{{item.form_data.min_price_arr[0]}}</text>
+                    <text class="price-last">{{'.' + item.form_data.min_price_arr[1] + '~'}}</text>
+                    <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                    <text class="price-before">{{ item.form_data.max_price_arr[0]}}</text>
+                    <text class="price-last">{{'.' + item.form_data.max_price_arr[1]}}</text>
+                    </text>
+                    <text wx:if="{{data.customFeature.priceOption == 1 || (item.form_data.min_price == item.form_data.max_price && data.customFeature.priceOption == 3)}}">
+                          <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                    <text class="price-before">{{item.form_data.min_price_arr[0]}}</text>
+                    <text class="price-last">{{'.' + item.form_data.min_price_arr[1]}}</text>
+                    </text>
+                    <text wx:if="{{data.customFeature.priceOption == 2}}">
+                        <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                    <text class="price-before">{{item.form_data.max_price_arr[0]}}</text>
+                        <text class="price-last">{{'.' + item.form_data.max_price_arr[1]}}</text>
+                    </text>
+                  </view>
+                  <view class="virtual-price" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption == 3 && item.form_data.virtual_min_price != item.form_data.virtual_max_price}}">{{'¥' + item.form_data.virtual_min_price + '~¥' + item.form_data.virtual_max_price}}</view>
+                  <view class="virtual-price" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption == 2}}">{{'¥' + item.form_data.virtual_max_price}}</view>
+                  <view class="virtual-price" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption == 1}}">{{'¥' + item.form_data.virtual_min_price}}</view>
+                </block>
+                <view class="two-to-pay" wx:if="{{item.form_data.is_group_buy != 1 && data.customFeature.isShoppingCart}}">
+                  <label wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.stock > 0 && data.customFeature.goodsType !== 'electronicGoods'}}" 
+                         class="shopping-icon ico-moon icon-community-group-goods-cart" 
+                         data-id="{{item.form_data.id}}" 
+                         data-app-id="{{item.form_data.app_id}}" 
+                         data-ispackage="{{item.form_data.is_package_goods}}" 
+                         catchtap="showGoodsShoppingcart" data-buynow="{{data.customFeature.isBuyNow}}"></label>
+                  <!-- 电子卡券标识 -->
+                  <label wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.stock > 0 && data.customFeature.goodsType === 'electronicGoods'}}" class="shopping-icon ico-moon icon-ec-mark"></label>
+                </view>
+              </view>
+            </view>
+          </view>
+          <view style="width:346rpx;float:left;">
+            <view class="goods-content-two-three" wx:for="{{data.goods_data}}" wx:key="index" 
+                  wx:if="{{index % 2 > 0}}" data-id="{{item.form_data.id}}" 
+                  data-goods-type="{{item.form_data.goods_type}}" 
+                  catchtap="turnToGoodsDetail" 
+                  data-group="{{item.form_data.is_group_buy}}" 
+                  data-presell="{{item.form_data.is_presell_goods}}"
+                  data-group-id="{{item.form_data.group_buy_activity_id}}" 
+                  data-app-id="{{item.form_data.app_id}}" 
+                  data-stock="{{item.form_data.stock}}"
+                  style="margin-left:0;background:{{data.customFeature.lineBackgroundColor}};margin-bottom:16rpx">
+              <image class="list-img-two" src="{{item.form_data.cover}}" mode="widthFix">
+                <image class="goods-subscript" wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 0}}" src="{{item.form_data.corner_url}}"></image>
+                <view class="sell-out" wx:if="{{item.form_data.stock == 0}}"><view class="sell-out-btn">已售罄</view></view>
+              </image>
+              <view class="title-new">
+                <image class="title-subscript" wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 1}}" src="{{item.form_data.corner_url}}"></image>{{item.form_data.title}}</view>
+              <view class="goods-detail two-two-mode">
+                <!-- 是会员商品 -->
+                <block wx:if="{{item.form_data.is_vip_goods == 1}}">
+                  <!-- 用户是会员 -->
+                  <block wx:if="{{item.form_data.is_vip_user == 1}}">
+                    <view class="line-one">
+                      <text class="express-new" style="margin-right:10rpx;" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" wx:if="{{ item.discountStr && item.form_data.integral == '1' }}">{{item.discountStr}}</text>
+                      <text wx:if="{{goodsExpressFree.isFree(item) && data.customFeature.goodsType !== 'electronicGoods'}}" class="express-new"  style="margin-right:10rpx;" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}">包邮</text>
+                    </view>
+                    <view class="line-two">
+                      <text style="margin-right:6rpx;{{'color:' + data.storeStyle.theme}}">
+                        <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                      <text class="price-before">{{item.form_data.vip_min_price_arr[0]}}</text>
+                      <text class="price-last">{{'.' + item.form_data.vip_min_price_arr[1]}}</text>
+                      </text>
+                      <text class="two-vip-price">会员价</text>
+                    </view>
+                    <view class="two_vir-price">原价¥{{item.form_data.price}}</view>
+                  </block>
+                  <!-- 用户不是会员 -->
+                  <block wx:else>
+                    <!-- 设置不对非会员展示会员价，原价加下划线 -->
+                    <block wx:if="{{data.vip_price != 1}}">
+                      <view class="line-one">
+                        <text class="express-new" style="margin-right:10rpx;" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" wx:if="{{ item.discountStr && item.form_data.integral == '1' }}">{{item.discountStr}}</text>
+                        <text wx:if="{{goodsExpressFree.isFree(item) && data.customFeature.goodsType !== 'electronicGoods'}}" class="express-new" style="margin-right:10rpx;" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}">包邮</text>
+                      </view>
+                      <view class="line-two" style="{{'color:' + data.storeStyle.theme}}">
+                        <text wx:if="{{item.form_data.min_price != item.form_data.max_price && data.customFeature.priceOption == 3}}">
+                        <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                        <text class="price-before">{{item.form_data.min_price_arr[0]}}</text>
+                        <text class="price-last">{{'.' + item.form_data.min_price_arr[1] + '~'}}</text>
+                        <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                        <text class="price-before">{{ item.form_data.max_price_arr[0]}}</text>
+                        <text class="price-last">{{'.' + item.form_data.max_price_arr[1]}}</text>
+                        </text>
+                        <text wx:if="{{data.customFeature.priceOption == 1 || (item.form_data.min_price == item.form_data.max_price && data.customFeature.priceOption == 3)}}">
+                          <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                        <text class="price-before">{{item.form_data.min_price_arr[0]}}</text>
+                        <text class="price-last">{{'.' + item.form_data.min_price_arr[1]}}</text>
+                        </text>
+                        <text wx:if="{{data.customFeature.priceOption == 2}}">
+                        <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                        <text class="price-before">{{item.form_data.max_price_arr[0]}}</text>
+                        <text class="price-last">{{'.' + item.form_data.max_price_arr[1]}}</text>
+                        </text>
+                      </view>
+                      <view class="virtual-price" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption == 3 && item.form_data.virtual_min_price != item.form_data.virtual_max_price}}">{{'¥' + item.form_data.virtual_min_price + '~¥' + item.form_data.virtual_max_price}}</view>
+                      <view class="virtual-price" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption == 2}}">{{'¥' + item.form_data.virtual_max_price}}</view>
+                      <view class="virtual-price" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption == 1}}">{{'¥' + item.form_data.virtual_min_price}}</view>
+                    </block>
+                    <!-- 对非会员展示会员价，原价第二行会员价 -->
+                    <block wx:else>
+                      <view class="line-one">
+                        <text class="express-new" style="margin-right:10rpx;" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" wx:if="{{ item.discountStr && item.form_data.integral == '1' }}">{{item.discountStr}}</text>
+                        <text wx:if="{{goodsExpressFree.isFree(item) && data.customFeature.goodsType !== 'electronicGoods'}}" class="express-new"  style="margin-right:10rpx;" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}">包邮</text>                        
+                      </view>
+                      <view class="line-two" style="{{'color:' + data.storeStyle.theme}}">
+                        <text wx:if="{{item.form_data.min_price != item.form_data.max_price && data.customFeature.priceOption == 3}}">
+                        <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                        <text class="price-before">{{item.form_data.min_price_arr[0]}}</text>
+                        <text class="price-last">{{'.' + item.form_data.min_price_arr[1] + '~'}}</text>
+                        <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                        <text class="price-before">{{ item.form_data.max_price_arr[0]}}</text>
+                        <text class="price-last">{{'.' + item.form_data.max_price_arr[1]}}</text>
+                        </text>
+                        <text wx:if="{{data.customFeature.priceOption == 1 || (item.form_data.min_price == item.form_data.max_price && data.customFeature.priceOption == 3)}}">
+                          <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                        <text class="price-before">{{item.form_data.min_price_arr[0]}}</text>
+                        <text class="price-last">{{'.' + item.form_data.min_price_arr[1]}}</text>
+                        </text>
+                        <text wx:if="{{data.customFeature.priceOption == 2}}">
+                        <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                        <text class="price-before">{{item.form_data.max_price_arr[0]}}</text>
+                        <text class="price-last">{{'.' + item.form_data.max_price_arr[1]}}</text>
+                        </text>
+                      </view>
+                      <view class="two_vir-price">
+                        <text style="margin-right:12rpx;">
+                          <text>{{'¥' + item.form_data.vip_min_price}}</text>
+                        </text>
+                        <text class="two-vip-price">会员价</text>
+                      </view>
+                    </block>
+                  </block>
+                </block>
+                <!-- 不是会员商品 -->
+                <block wx:else>
+                  <view class="line-one">
+                    <text class="express-new" style="margin-right:10rpx;" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" wx:if="{{ item.discountStr && item.form_data.integral == '1' }}">{{item.discountStr}}</text>
+                    <text wx:if="{{goodsExpressFree.isFree(item) && data.customFeature.goodsType !== 'electronicGoods'}}" class="express-new" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}">包邮</text>
+                  </view>
+                  <view class="line-two" style="{{'color:' + data.storeStyle.theme}}">
+                    <text wx:if="{{item.form_data.min_price != item.form_data.max_price && data.customFeature.priceOption == 3}}">
+                        <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                    <text class="price-before">{{item.form_data.min_price_arr[0]}}</text>
+                    <text class="price-last">{{'.' + item.form_data.min_price_arr[1] + '~'}}</text>
+                    <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                    <text class="price-before">{{ item.form_data.max_price_arr[0]}}</text>
+                    <text class="price-last">{{'.' + item.form_data.max_price_arr[1]}}</text>
+                    </text>
+                    <text wx:if="{{data.customFeature.priceOption == 1 || (item.form_data.min_price == item.form_data.max_price && data.customFeature.priceOption == 3)}}">
+                          <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                    <text class="price-before">{{item.form_data.min_price_arr[0]}}</text>
+                    <text class="price-last">{{'.' + item.form_data.min_price_arr[1]}}</text>
+                    </text>
+                    <text wx:if="{{data.customFeature.priceOption == 2}}">
+                        <text style="font-size:26rpx;font-weight:bold;">¥</text>
+                    <text class="price-before">{{item.form_data.max_price_arr[0]}}</text>
+                        <text class="price-last">{{'.' + item.form_data.max_price_arr[1]}}</text>
+                    </text>
+                  </view>
+                  <view class="virtual-price" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption == 3 && item.form_data.virtual_min_price != item.form_data.virtual_max_price}}">{{'¥' + item.form_data.virtual_min_price + '~¥' + item.form_data.virtual_max_price}}</view>
+                  <view class="virtual-price" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption == 2}}">{{'¥' + item.form_data.virtual_max_price}}</view>
+                  <view class="virtual-price" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption == 1}}">{{'¥' + item.form_data.virtual_min_price}}</view>
+                </block>
+                <view class="two-to-pay" wx:if="{{item.form_data.is_group_buy != 1 && data.customFeature.isShoppingCart}}">
+                  <label wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.stock > 0 && data.customFeature.goodsType !== 'electronicGoods'}}" class="shopping-icon ico-moon icon-community-group-goods-cart" 
+                         data-id="{{item.form_data.id}}" 
+                         data-app-id="{{item.form_data.app_id}}" 
+                         data-ispackage="{{item.form_data.is_package_goods}}" 
+                         catchtap="showGoodsShoppingcart" data-buynow="{{data.customFeature.isBuyNow}}"></label>
+                  <!-- 电子卡券标识 -->
+                  <label wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.stock > 0 && data.customFeature.goodsType === 'electronicGoods'}}" class="shopping-icon ico-moon icon-ec-mark"></label>
+                </view>
+              </view>
+            </view>
+          </view>
+        </block>
+      </view>
+    </block>
+    <!-- 样式3 -->
+    <block wx:if="{{ data.customFeature.mode == 2 }}">
+      <view class="new-goods-list-three">
+        <view class="goods-content" wx:for="{{data.goods_data}}" wx:key="index" 
+              data-id="{{item.form_data.id}}" 
+              data-goods-type="{{item.form_data.goods_type}}" 
+              data-app-id="{{item.form_data.app_id}}" 
+              catchtap="turnToGoodsDetail" 
+              data-group="{{item.form_data.is_group_buy}}"
+              data-presell="{{item.form_data.is_presell_goods}}" 
+              data-group-id="{{item.form_data.group_buy_activity_id}}" 
+              data-stock="{{item.form_data.stock}}"
+              style="{{data.list_style}}">
+          <image class="list-img" src="{{item.form_data.cover}}" style="{{data.img_style}}" mode="scaleToFill">
+            <image class="goods-subscript" wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 0}}" src="{{item.form_data.corner_url}}"></image>
+            <view class="sell-out" wx:if="{{item.form_data.stock == 0}}"><view class="sell-out-btn">已售罄</view></view>
+          </image>
+          <view class="title">
+            <image class="title-subscript" wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 1}}" src="{{item.form_data.corner_url}}"></image>{{item.form_data.title}}</view>
+          <!-- 样式3-1 -->
+          <view wx:if="{{ data.customFeature.styleMode == '2-1' }}" class="goods-detail">
+            <view class="discount-box">
+              <text class="discount" wx:if="{{item.form_data.price_break_discounts_activity_id > 0}}">满减</text>
+              <text class="express-new" style="margin-right:10rpx;" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" wx:if="{{ item.discountStr && item.form_data.integral == '1' }}">{{item.discountStr}}</text>
+              <text class="vip-logo" style="margin-right:10rpx;" wx:if="{{item.form_data.is_vip_goods == 1}}">会员价</text>
+              <text class="discount" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption != 3 && data.customFeature.priceOption != 3}}" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}"><block wx:if="{{item.form_data.is_vip_goods != 1}}">{{ item.form_data.discount }}折优惠</block>
+              <block wx:else>{{ item.form_data.vip_discount }}折优惠</block></text>
+              <text wx:if="{{goodsExpressFree.isFree(item) && data.customFeature.goodsType !== 'electronicGoods'}}" class="express" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}">包邮</text>
+            </view>
+            <view class="price-box">
+              <block wx:if="{{item.form_data.is_vip_goods != 1}}">
+                <text style="{{'color:' + data.storeStyle.theme}}" class="real-price">¥{{item.form_data.price}}</text>
+                <text wx:if="{{item.form_data.virtual_price != 0}}" class="virtual-price">¥{{item.form_data.virtual_price}}</text>
+              </block>
+              <block wx:else>
+                <text style="{{'color:' + data.storeStyle.theme}}" class="real-price">¥{{item.form_data.vip_min_price}}</text>
+                <text wx:if="{{item.form_data.price != 0}}" class="virtual-price" style="text-decoration:inherit;position:relative;top:2rpx;">¥{{item.form_data.price}}</text>
+              </block>
+            </view>
+            <view class="sales-box">
+              <text class="sales">{{item.form_data.sales}}人付款</text>
+              <label wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.stock > 0 && data.customFeature.goodsType !== 'electronicGoods'}}" style="{{'color:' + data.storeStyle.theme}}" 
+                     class="shopping-icon ico-moon icon-addshoppingcart5" 
+                     data-id="{{item.form_data.id}}" 
+                     data-app-id="{{item.form_data.app_id}}" 
+                     data-ispackage="{{item.form_data.is_package_goods}}"
+                     catchtap="showGoodsShoppingcart" data-buynow="{{data.customFeature.isBuyNow}}" data-detailtype="{{data.detail_type}}"></label>
+              <!-- 电子卡券标识 -->
+              <label wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.stock > 0 && data.customFeature.goodsType === 'electronicGoods'}}" style="{{'color:' + data.storeStyle.theme}}" class="shopping-icon ico-moon icon-ec-mark"></label> 
+            </view>
+          </view>
+          <!-- 样式3-1 -->
+          <!-- 样式3-2 -->
+          <view wx:if="{{ data.customFeature.styleMode == '2-2' }}" class="goods-detail three-two-mode">
+            <text class="express-new" style="margin-right:10rpx;margin-bottom:8rpx" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" wx:if="{{ item.discountStr && item.form_data.integral == '1' }}">{{item.discountStr}}</text>
+            <block wx:if="{{item.form_data.is_vip_goods == 1}}">
+              <view class="price-box">
+                <text class="discount" wx:if="{{item.form_data.price_break_discounts_activity_id > 0}}">满减</text>
+                <text style="font-size:24rpx;color:#999;position:relative;top:6rpx;" class="real-price">¥{{item.form_data.price}}</text>
+                <text style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}};position:relative;top:5rpx;" class="discount two-style-discount vip-trangel" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption != 3 && data.customFeature.priceOption != 3}}"><text
+                    style="{{'border-right-color:' + data.storeStyle.theme + '33'}};margin-top:10rpx;"
+                    class="trangel"></text>{{ item.form_data.discount }}折</text>
+                <view>
+                  <text style="{{'color:' + data.storeStyle.theme }}" class="real-price">¥{{item.form_data.vip_min_price}}</text>
+                  <text style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" class="discount two-style-discount"><text
+                       style="{{'border-right-color:' + data.storeStyle.theme + '33'}}"
+                       class="trangel"></text>{{item.form_data.virtual_price != 0 ? '会员' + item.form_data.vip_discount +'折' : '会员价'}}</text>
+                </view>
+              </view>
+            </block>
+            <block wx:else>
+              <view class="price-box">
+                <text class="discount" wx:if="{{item.form_data.price_break_discounts_activity_id > 0}}">满减</text>
+                <text style="{{'color:' + data.storeStyle.theme }}" class="real-price">¥{{item.form_data.price}}</text>
+                <text style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" class="discount two-style-discount" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption != 3 && data.customFeature.priceOption != 3}}"><text style="{{'border-right-color:' + data.storeStyle.theme + '33'}}" class="trangel"></text>{{ item.form_data.discount }}折</text>
+              </view>
+            </block>
+            <view class="sales-box">
+              <text wx:if="{{goodsExpressFree.isFree(item) && data.customFeature.goodsType !== 'electronicGoods'}}" class="express" style="{{'color:' + data.storeStyle.theme + ';border-color:' + data.storeStyle.theme}}">包邮</text>
+              <text class="sales">{{item.form_data.sales}}人付款</text>
+              <label wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.stock > 0 && data.customFeature.goodsType !== 'electronicGoods'}}" style="{{'color:' + data.storeStyle.theme}}" 
+                     class="shopping-icon ico-moon icon-addshoppingcart5" 
+                     data-id="{{item.form_data.id}}" 
+                     data-app-id="{{item.form_data.app_id}}"
+                     data-ispackage="{{item.form_data.is_package_goods}}"
+                     catchtap="showGoodsShoppingcart" data-buynow="{{data.customFeature.isBuyNow}}" data-detailtype="{{data.detail_type}}"></label>
+              <!-- 电子卡券标识 -->
+              <label wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.stock > 0 && data.customFeature.goodsType === 'electronicGoods'}}" style="{{'color:' + data.storeStyle.theme}}" class="shopping-icon ico-moon icon-ec-mark"></label> 
+            </view>
+          </view>
+          <!-- 样式3-2 -->
+        </view>
+      </view>
+    </block>
+    <!-- 样式4 -->
+    <block wx:if="{{ data.customFeature.mode == 3 }}">
+      <view class="new-goods-list-four">
+        <view class="{{ data.customFeature.styleMode == '3-3'? 'goods-content goods-padding' : 'goods-content'}}" wx:for="{{data.goods_data}}" wx:key="index" 
+              data-id="{{item.form_data.id}}" 
+              data-goods-type="{{item.form_data.goods_type}}" 
+              data-app-id="{{item.form_data.app_id}}" 
+              catchtap="turnToGoodsDetail" 
+              data-group="{{item.form_data.is_group_buy}}"
+              data-presell="{{item.form_data.is_presell_goods}}" 
+              data-group-id="{{item.form_data.group_buy_activity_id}}" 
+              data-stock="{{item.form_data.stock}}"
+              style="{{data.list_style}}">
+          <image class="{{ data.customFeature.styleMode == '3-3'? 'goods-image image-radius' : 'goods-image'}}" src="{{item.form_data.cover}}" style="{{data.img_style}}" mode="scaleToFill">
+            <image class="goods-subscript" wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 0}}" src="{{item.form_data.corner_url}}"></image>
+            <view class="sell-out" wx:if="{{item.form_data.stock == 0}}"><view class="sell-out-btn">已售罄</view></view>
+          </image>
+          <!-- 样式4-1 -->
+          <view wx:if="{{ data.customFeature.styleMode == '3-1' }}" class="goods-detail">
+            <view class="title">
+              <image class="title-subscript" wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 1}}" src="{{item.form_data.corner_url}}"></image>{{item.form_data.title}}</view>
+            <view class="discount-box">
+              <text class="express-new" style="margin-right:10rpx;" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" wx:if="{{ item.discountStr && item.form_data.integral == '1' }}">{{item.discountStr}}</text>
+              <text class="vip-logo" style="margin-right:10rpx;" wx:if="{{item.form_data.is_vip_goods == 1}}">会员价</text>
+              <text class="discount" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption != 3 && data.customFeature.priceOption != 3}}" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}"><block wx:if="{{item.form_data.is_vip_goods != 1}}">{{ item.form_data.discount }}折优惠</block>
+              <block wx:else>{{ item.form_data.vip_discount }}折优惠</block></text>
+              <text wx:if="{{goodsExpressFree.isFree(item) && data.customFeature.goodsType !== 'electronicGoods'}}" class="express" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}">包邮</text>
+              <text class="sales">{{item.form_data.sales}}人付款</text>
+            </view>
+            <view class="price-box">
+              <block wx:if="{{item.form_data.is_vip_goods != 1}}">
+                <text style="{{'color:' + data.storeStyle.theme}}" class="real-price">¥{{item.form_data.price}}</text>
+                <text wx:if="{{item.form_data.virtual_price != 0}}" class="virtual-price">¥{{item.form_data.virtual_price}}</text>
+              </block>
+              <block wx:else>
+                <text style="{{'color:' + data.storeStyle.theme}}" class="real-price">¥{{item.form_data.vip_min_price}}</text>
+                <text wx:if="{{item.form_data.price != 0}}" class="virtual-price" style="text-decoration:inherit;position:relative;top:2rpx;">¥{{item.form_data.price}}</text>
+              </block>
+              <label wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.stock > 0 && data.customFeature.goodsType !== 'electronicGoods'}}" 
+                     style="{{'color:' + data.storeStyle.theme}}" 
+                     class="shopping-icon ico-moon icon-addshoppingcart5" 
+                     data-id="{{item.form_data.id}}" 
+                     data-app-id="{{item.form_data.app_id}}" 
+                     data-ispackage="{{item.form_data.is_package_goods}}" 
+                     catchtap="showGoodsShoppingcart" data-buynow="{{data.customFeature.isBuyNow}}" data-detailtype="{{data.detail_type}}"></label>
+              <!-- 电子卡券标识 -->
+              <label wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.stock > 0 && data.customFeature.goodsType === 'electronicGoods'}}" style="{{'color:' + data.storeStyle.theme}}" class="shopping-icon ico-moon icon-ec-mark"></label>
+            </view>
+          </view>
+          <!-- 样式4-1 -->
+          <!-- 样式4-2 -->
+          <view wx:if="{{ data.customFeature.styleMode == '3-2' }}" class="goods-detail four-two-mode">
+            <view class="title">
+              <image class="title-subscript" wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 1}}" src="{{item.form_data.corner_url}}"></image>{{item.form_data.title}}</view>
+            <block wx:if="{{item.form_data.is_vip_goods == 1}}">
+              <view class="price-box">
+                <text style="{{'color:' + data.storeStyle.theme }}" class="real-price">¥{{item.form_data.vip_min_price}}</text>
+                <text wx:if="{{ item.discountStr && item.form_data.integral == '1' }}" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" class="express-new two-style-discount"><text style="{{'border-right-color:' + data.storeStyle.theme + '33'}}" class="trangel"></text>{{item.discountStr}}</text>
+                <text style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" class="discount two-style-discount"><text style="{{'border-right-color:' + data.storeStyle.theme + '33'}}" class="trangel"></text>{{item.form_data.virtual_price != 0 ? '会员' + item.form_data.vip_discount +'折' : '会员价'}}</text>
+                <text style="font-size:24rpx;color:#999;" class="real-price">¥{{item.form_data.price}}</text>
+              </view>
+            </block>
+            <block wx:else>
+              <view class="price-box">
+                <text style="{{'color:' + data.storeStyle.theme }}" class="real-price">¥{{item.form_data.price}}</text>
+                <text wx:if="{{item.form_data.virtual_price != 0}}" class="virtual-price">¥{{item.form_data.virtual_price}}</text>
+                <text wx:if="{{ item.discountStr && item.form_data.integral == '1' }}" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" class="express-new two-style-discount"><text style="{{'border-right-color:' + data.storeStyle.theme + '33'}}" class="trangel"></text>{{item.discountStr}}</text>
+                <text style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" class="discount two-style-discount" wx:if="{{item.form_data.virtual_price != 0 && data.customFeature.virtualPriceOption != 3 && data.customFeature.priceOption != 3}}"><text
+                  style="{{'border-right-color:' + data.storeStyle.theme + '33'}}"
+                  class="trangel"></text>{{ item.form_data.discount }}折</text>
+              </view>
+            </block>
+            <view class="discount-box">
+              <text wx:if="{{goodsExpressFree.isFree(item) && data.customFeature.goodsType !== 'electronicGoods'}}" class="express" style="{{'color:' + data.storeStyle.theme + ';border-color:' + data.storeStyle.theme}}">包邮</text>
+              <text class="sales">{{item.form_data.sales}}人付款</text>
+              <label wx:if="{{item.form_data.is_group_buy != 1 && data.customFeature.goodsType !== 'electronicGoods'}}" style="{{'color:' + data.storeStyle.theme}}" class="shopping-icon ico-moon icon-addshoppingcart5" data-id="{{item.form_data.id}}" data-app-id="{{item.form_data.app_id}}" data-detailtype="{{data.detail_type}}" catchtap="showGoodsShoppingcart" data-buynow="{{data.customFeature.isBuyNow}}"></label>
+              <!-- 电子卡券标识 -->
+              <label wx:if="{{item.form_data.is_group_buy != 1 && data.customFeature.goodsType === 'electronicGoods'}}" style="{{'color:' + data.storeStyle.theme}}" class="shopping-icon ico-moon icon-ec-mark"></label>
+            </view>
+          </view>
+          <!-- 样式4-2 -->
+          <!-- 样式4-3 -->
+          <view wx:if="{{ data.customFeature.styleMode == '3-3' }}" class="goods-detail four-three-mode">
+            <view class="title">{{item.form_data.title}}</view>
+            <view class="commodity-sign-box {{item.form_data.virtual_price == 0 ? 'show-real-price' : ''}}" >
+              <block wx:if="{{item.form_data.is_vip_goods == 1}}">
+                <view class="price-box">
+                  <text style="{{'color:' + data.storeStyle.theme }}" class="real-price">¥{{item.form_data.vip_min_price}}</text>
+                  <text wx:if="{{ item.discountStr && item.form_data.integral == '1' }}" style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" class="express-new two-style-discount"><text style="{{'border-right-color:' + data.storeStyle.theme + '33'}}" class="trangel"></text>{{item.discountStr}}</text>
+                  <text style="{{'color:' + data.storeStyle.theme + ';background:' + data.storeStyle.theme + '33'}}" class="discount two-style-discount"><text style="{{'border-right-color:' + data.storeStyle.theme + '33'}}" class="trangel"></text>{{item.form_data.virtual_price != 0 ? '会员' + item.form_data.vip_discount +'折' : '会员价'}}</text>
+                </view>
+              </block>
+              <block wx:else>
+                <view class="price-box">
+                  <text class="real-price {{item.form_data.virtual_price != 0 ? 'mgt10' : ''}}" style="{{'color:' + data.storeStyle.theme}}"><text class="fz10">￥</text>{{item.form_data.price}}</text>
+                  <text wx:if="{{item.form_data.virtual_price != 0}}" class="vitrual-price">市场价￥{{item.form_data.virtual_price}}</text>
+                  <text wx:if="{{item.form_data.virtual_price != 0 && item.form_data.discount !== 'NaN'}}" style="{{'color:' + data.storeStyle.theme + ';border-color:' + data.storeStyle.theme}}" class="commodity-font">{{item.form_data.discount}}折</text>
+                  <text wx:if="{{goodsExpressFree.isFree(item) && data.customFeature.goodsType !== 'electronicGoods'}}" class="express" style="{{'color:' + data.storeStyle.theme + ';border-color:' + data.storeStyle.theme}}">包邮</text>
+                </view>
+              </block>
+              <view wx:if="{{item.form_data.is_group_buy != 1 && data.customFeature.goodsType !== 'electronicGoods'}}" data-id="{{item.form_data.id}}" data-app-id="{{item.form_data.app_id}}" data-detailtype="{{data.detail_type}}" catchtap="showGoodsShoppingcart" data-buynow="{{data.customFeature.isBuyNow}}" class="purchase-btn {{ data.storeStyle.theme === '#FF7100' ? 'icon-commodity-sign-FF7100' : data.storeStyle.theme === '#3091F2' ? 'icon-commodity-sign-3091F2' : data.storeStyle.theme === '#F93D28' ? 'icon-commodity-sign-F93D28' : data.storeStyle.theme === '#69C4AA' ? 'icon-commodity-sign-69C4AA' : data.storeStyle.theme === '#D4A656' ? 'icon-commodity-sign-D4A656' : data.storeStyle.theme === '#030303' ? 'icon-commodity-sign-030303' : data.storeStyle.theme === '#FE4070' ? 'discount-sign-FE4070' : data.storeStyle.theme === '#ffffff' ? 'icon-commodity-sign-ffffff' : ''}}">立即购买</view>
+            </view>
+          </view>
+          <!-- 样式4-3 -->
+        </view>
+      </view>
+    </block>
+    <!-- 样式5 -->
+    <block wx:if="{{ data.customFeature.mode == 4 }}">
+      <view class="new-goods-list-five" wx:if="{{ data.customFeature.styleMode == '4-1' }}">
+        <view class="goods-content" wx:for="{{data.goods_data}}" wx:key="index" 
+              data-id="{{item.form_data.id}}" 
+              data-goods-type="{{item.form_data.goods_type}}" 
+              data-app-id="{{item.form_data.app_id}}" 
+              catchtap="turnToGoodsDetail" 
+              data-group="{{item.form_data.is_group_buy}}"
+              data-presell="{{item.form_data.is_presell_goods}}" 
+              data-group-id="{{item.form_data.group_buy_activity_id}}" 
+              data-stock="{{item.form_data.stock}}"
+              style="{{data.list_style}}">
+          <image class="goods-image" src="{{item.form_data.cover}}" mode="scaleToFill" style="{{data.img_style}}">
+            <image class="goods-subscript" wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 0}}" src="{{item.form_data.corner_url}}"></image>
+            <view class="sell-out" wx:if="{{item.form_data.stock == 0}}"><view class="sell-out-btn">已售罄</view></view>
+          </image>
+          <view class="good_detail">
+            <view class="title">
+              <image class="title-subscript" wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 1}}" src="{{item.form_data.corner_url}}"></image>
+              {{item.form_data.title}}
+            </view>
+            <text style="{{'color:' + data.storeStyle.theme}}" class="real-price">¥{{item.form_data.price}}</text>
+            <label wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.stock > 0 && data.customFeature.isShoppingCart && !(addshoppingcartImageModule.isImage(data.customFeature.addShoppingCartImageSrc) < 0) && data.customFeature.goodsType !== 'electronicGoods'}}" 
+                   style="{{'color:' + data.storeStyle.theme}}" 
+                   class="shopping-icon ico-moon icon-{{data.customFeature.addShoppingCartImageSrc}}" 
+                   data-id="{{item.form_data.id}}" 
+                   data-app-id="{{item.form_data.app_id}}"
+                   data-ispackage="{{item.form_data.is_package_goods}}" 
+                   catchtap="showGoodsShoppingcart" data-buynow="{{data.customFeature.isBuyNow}}"></label>
+            <label wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.stock > 0 && data.customFeature.isShoppingCart && (addshoppingcartImageModule.isImage(data.customFeature.addShoppingCartImageSrc) < 0) && data.customFeature.goodsType !== 'electronicGoods'}}" 
+                   style="{{'color:' + data.storeStyle.theme}}" 
+                   class="shopping-icon" 
+                   data-id="{{item.form_data.id}}" 
+                   data-app-id="{{item.form_data.app_id}}"
+                   data-ispackage="{{item.form_data.is_package_goods}}" 
+                   catchtap="showGoodsShoppingcart" data-buynow="{{data.customFeature.isBuyNow}}">
+                    <image class="image" src="{{data.customFeature.addShoppingCartImageSrc}}"></image>
+                   </label>
+            <!-- 电子卡券标识 -->
+            <label wx:if="{{item.form_data.is_group_buy != 1 && item.form_data.stock > 0 && data.customFeature.isShoppingCart && data.customFeature.goodsType === 'electronicGoods'}}"
+                  style="{{'color:' + data.storeStyle.theme}}" 
+                  class="shopping-icon ico-moon icon-ec-mark"></label>
+          </view>
+        </view>
+      </view>
+    </block>
+    <template wx:if="{{data.loading}}" is="requestLoading"></template>
+    <template wx:if="{{data.is_more == 0 && data.goods_data.length == 0}}" is="requestNone" data="{{data: '暂无商品数据~'}}"></template>
+    <template wx:if="{{data.loadingFail}}" is="requestFail" data="{{refreshEvent: 'goodsScrollFunc', compId: data.compId}}"></template>
+    <template wx:if="{{data.is_more == 0 && data.goods_data.length > 0 && data.customFeature.isShowFinishText}}" is="requestAll"></template>
+    <view class="loading-btn" wx:if="{{data.customFeature.vesselAutoheight == 1 && data.customFeature.loadingMethod == 1 && data.customFeature.mode != 2 && data.is_more && data.is_more != 0 && !data.loading && !data.loadingFail }}" data-compid="{{data.compId}}"
+      bindtap="goodsScrollFunc">
+      <image wx:if="{{data.customFeature.loadingStyle == 'img'}}" mode="aspectFill" src="{{data.customFeature.loadingImg}}"></image>
+      <text wx:elif="{{data.customFeature.loadingStyle == 'text'}}" style="color: {{data.customFeature.loadingColor}};">{{data.customFeature.loadingText}}</text>
+    </view>
+  </scroll-view>
+  <view class="{{data.topHover ? 'bottomHover' : ''}}" style="height:1px;"></view>
+</template>
+
+<wxs module="franchiseeListWxsModule">
+    var isInArray = function(arr , value) {
+      arr = arr || [];
+      return (arr.indexOf(value) > -1);
+    }
+    module.exports.isInArray = isInArray;
+</wxs>
+<template name="zcFranchiseeList">
+   <view class="element franchisee-list {{data.customFeature.isCardStyle ? 'location-title_' + data.customFeature.type : '' }}" style="{{data.style}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+    <view class="franchisee-title {{(!data.customFeature.isCardStyle && data.customFeature.childrenComps.position.show) || data.customFeature.type == 0 ? 'isShadow' : 'noShadow'}}" style="padding:{{data.customFeature.childrenComps.position.show || data.customFeature.type == 0 ? '23.4' : '10'}}rpx;">
+      <view class="franchisee-location" data-compid="{{data.compId}}" bindtap="tapFranchiseeLocation" wx:if="{{data.customFeature.childrenComps.position.show || data.customFeature.type == 0}}"><label class="ico-moon icon-fes_adress"></label> {{ data.location_address || '定位中...' }}</view>
+    </view>
+    <scroll-view class="scroll-ele {{data.customFeature.isCardStyle ? 'scroll-ele_' + data.customFeature.type : 'scroll-style_' + data.customFeature.type }}"
+                  data-param="{{data.param}}"
+                  data-compid="{{data.compId}}"
+                  data-type="franchisee-list"
+                  scroll-y="true"
+                  data-curpage="{{data.curpage}}"
+                  bindscrolltolower="franchiseeScrollFunc">
+      <view class="js-list-container" data-list-index="0">
+        <view class="franchisee-list-item background-ele router js-to-detail {{data.customFeature.mode == 1? 'double-franchisee-list': ''}} {{item.open_status == 0 ? 'not-open':''}} "
+              wx:for="{{data.franchisee_data}}" wx:key="index" data-appid="{{item.app_id}}" data-mode="{{item.mode_id}}" data-audit="{{item.is_audit}}" data-id="{{item.id}}" data-newpage="{{item.sub_app_bar['homepage-router'] || ''}}" data-newmode="{{item.sub_app_bar.mode_id || ''}}" style="{{data.list_style}}" catchtap="turnToFranchiseeDetail">
+          <block wx:if="{{data.customFeature.type == 1}}"> 
+            <view class="inner-content_1">
+              <view class="list-img-wrap">
+                <image class="list-img" src="{{item.picture}}" mode="aspectFill"></image>
+                <view class="list-sort" style="background: {{data.customFeature.topTagBackgroundColor}};" wx:if="{{data.customFeature.childrenComps.topTag.show && index < 3}}">TOP{{index + 1}}</view>
+                <view wx:if="{{item.open_status == 0}}" class="franchisee-not-open-mask">
+                  <view class="franchisee-list-status not-open-tip">休息中</view>
+                </view>
+                <view wx:if="{{item.is_audit == 2}}" class="franchisee-list-status franchisee-list-audit">待审核</view>
+              </view>
+              <view class="title-container">
+                <view class="franchisee-list-title-wrap">
+                  <view class="title">{{item.name}}</view>
+                  <view wx:if="{{item.distance && data.customFeature.childrenComps.position.show}}" class="franchisee-list-distance">{{item.distance}}</view>
+                </view>
+                <view class="franchisee-score-wrap">
+                  <view class="score" wx:if="{{data.customFeature.childrenComps.score.show}}">
+                    <block wx:for="{{[1,2,3,4,5]}}" wx:key="index" wx:for-item="star">
+                      <view class="score-star score-star-light" wx:if="{{star <= item.new_assess_score}}">
+                        <label class="ico-moon icon-star"></label>
+                      </view>
+                      <view class="score-star score-light-gray" wx:elif="{{star == item.new_assess_score + 0.5}}">
+                        <view class="score-star-left"></view>
+                        <view class="score-star-right"></view>
+                        <label class="ico-moon icon-star"></label>
+                      </view>
+                      <view class="score-star score-star-gray" wx:elif="{{star > item.new_assess_score}}">
+                        <label class="ico-moon icon-star"></label>
+                      </view>
+                    </block>
+                  </view>
+                  <view class="sale" wx:if="{{data.customFeature.childrenComps.viewCount.show}}">{{item.viewed_count}}人浏览</view>
+                </view>
+                <view class="franchisee-price-wrap">
+                  <label class="franchisee-price-style" wx:if="{{data.customFeature.childrenComps.averageCash.show}}">人均 ¥{{item.per_capita}}</label>
+                  <label class="franchisee-price-style">{{item.county_name}}</label>
+                  <label class="franchisee-price-style" wx:for="{{item.tags}}" wx:key="index" wx:for-item="label" wx:if="{{data.customFeature.childrenComps.tags.show}}">{{label}}</label>                  
+                </view>
+                <view class="franchisee-discount-wrap" wx:if="{{item.coupon_list.length > 0}}">
+                  <view class="franchisee-discount-lab {{item.showDiscountList ? 'discount-max-height' : ''}}">
+                    <block wx:for="{{item.coupon_list}}" wx:key="index" wx:for-item="coupon">
+                      <text class="discount" wx:if="{{coupon.type == 0}}">满{{coupon.condition}}减{{coupon.value}}</text>
+                      <text class="discount" wx:elif="{{coupon.type == 1}}">{{coupon.value}}折</text>
+                      <text class="discount" wx:elif="{{coupon.type == 2}}">{{coupon.value}}代金</text>
+                      <text class="discount" wx:elif="{{coupon.type == 5}}">通用券</text>
+                      <block wx:elif="{{coupon.type == 3}}">
+                        <text class="discount" wx:if="{{coupon.extra_condition == ''}}">直接兑换券</text>
+                        <text class="discount" wx:elif="{{coupon.extra_condition.price}}">消费满{{coupon.extra_condition.price}}兑换券</text>
+                        <text class="discount" wx:elif="{{coupon.extra_condition.goods_id}}">购买指定商品兑换券</text>
+                      </block>                    
+                    </block>
+                  </view>
+                  <view class="franchisee-discount-icon" wx:if="{{item.coupon_list.length > 3}}"><label class="ico-moon icon-{{item.showDiscountList ? 'downarrow' : 'uparrow'}}" data-compid='{{data.compId}}' data-index="{{index}}" catchtap="changeDiscountList"></label></view>
+                </view>
+              </view>
+            </view>
+          </block>
+
+          <block wx:elif="{{data.customFeature.type == 2}}">
+            <view class="inner-content_2">
+              <view class="info-container">
+                <view class="info-title-wrap">
+                  <view class="title">{{item.name}}</view>
+                  <view wx:if="{{item.distance && data.customFeature.childrenComps.position.show}}" class="franchisee-list-distance">{{item.distance}}</view>
+                </view>
+                <view class="franchisee-score-wrap">
+                  <view class="score" wx:if="{{data.customFeature.childrenComps.score.show}}">
+                    <block wx:for="{{[1,2,3,4,5]}}" wx:key="index" wx:for-item="star">
+                      <view class="score-star score-star-light" wx:if="{{star <= item.new_assess_score}}">
+                        <label class="ico-moon icon-star"></label>
+                      </view>
+                      <view class="score-star score-light-gray" wx:elif="{{star == item.new_assess_score + 0.5}}">
+                        <view class="score-star-left"></view>
+                        <view class="score-star-right"></view>
+                        <label class="ico-moon icon-star"></label>
+                      </view>
+                      <view class="score-star score-star-gray" wx:elif="{{star > item.new_assess_score}}">
+                        <label class="ico-moon icon-star"></label>
+                      </view>
+                    </block>
+                  </view>
+                  <label class="franchisee-price-style" wx:if="{{data.customFeature.childrenComps.averageCash.show}}">¥{{item.per_capita}}/人</label>
+                  <view class="sale" wx:if="{{data.customFeature.childrenComps.viewCount.show}}">{{item.viewed_count}}人浏览</view>
+                </view>
+                <view class="info-discount-label" wx:if="{{item.coupon_list.length > 0}}">
+                  <view class="info-label-title">优惠</view>
+                  <view class="info-label">
+                    <block wx:for="{{item.coupon_list}}" wx:key="index" wx:for-item="coupon" wx:for-index="i">
+                      <text wx:if="{{coupon.type == 0 && i < 2}}">满{{coupon.condition}}减{{coupon.value}}</text>
+                      <text wx:elif="{{coupon.type == 1 && i < 2}}">{{coupon.value}}折</text>
+                      <text wx:elif="{{coupon.type == 2 && i < 2}}">{{coupon.value}}代金</text>
+                      <text wx:elif="{{coupon.type == 5 && i < 2}}">通用券</text>
+                      <block wx:elif="{{coupon.type == 3}}">
+                        <text class="discount" wx:if="{{coupon.extra_condition == ''}}">直接兑换券</text>
+                        <text class="discount" wx:elif="{{coupon.extra_condition.price}}">消费满{{coupon.extra_condition.price}}兑换券</text>
+                        <text class="discount" wx:elif="{{coupon.extra_condition.goods_id}}">购买指定商品兑换券</text>
+                      </block> 
+                      <text wx:if="{{i === 0 && item.coupon_list.length >= 2}}">，</text>
+                    </block>
+                  </view>
+                </view>
+                <view class="info-recom-wrap" wx:if="{{data.customFeature.childrenComps.tags.show && item.tags.length > 0}}">
+                  <block wx:for="{{item.tags}}" wx:key="index">
+                    <view class="recom-title">{{item}}</view>
+                  </block>
+                </view>
+              </view>
+              <view class="list-img-wrap">
+                <image class="list-img" src="{{item.picture}}" mode="aspectFill"></image>
+                <view class="list-sort" style="background: {{data.customFeature.topTagBackgroundColor}};" wx:if="{{data.customFeature.childrenComps.topTag.show && index < 3}}">TOP{{index + 1}}</view>
+                <view wx:if="{{item.open_status == 0}}" class="franchisee-not-open-mask">
+                  <view class="franchisee-list-status not-open-tip">休息中</view>
+                </view>
+                <view wx:if="{{item.is_audit == 2}}" class="franchisee-list-status franchisee-list-audit">待审核</view>
+              </view>
+            </view>
+          </block>
+
+          <block wx:elif="{{data.customFeature.type == 3}}">
+            <view class="inner-content_3">
+              <view class="info-container">
+                <view class="info-title-wrap">
+                  <view class="title">{{item.name}}</view>
+                  <view class="list-sort" style="background: {{data.customFeature.topTagBackgroundColor}};" wx:if="{{data.customFeature.childrenComps.topTag.show && index < 3}}">TOP{{index + 1}}</view>
+                </view>
+                <view class="info-sale-wrap">
+                  <view class="info-detail">
+                    <view class="mg-rgt info-detail-score" wx:if="{{data.customFeature.childrenComps.score.show}}">{{item.assess_score}}分<view wx:if="{{data.customFeature.childrenComps.averageCash.show || data.customFeature.childrenComps.viewCount.show}}" class="mg-rgt-line">|</view></view>
+                    <view class="mg-rgt" wx:if="{{data.customFeature.childrenComps.averageCash.show}}">人均 ¥{{item.per_capita}}</view>
+                    <view class="mg-rgt" wx:if="{{data.customFeature.childrenComps.viewCount.show}}">{{item.viewed_count}}人浏览</view>
+                  </view>
+                  <view wx:if="{{item.distance && data.customFeature.childrenComps.position.show}}" class="franchisee-list-distance">{{item.distance}}</view>
+                </view>
+                <view class="info-discount-wrap" wx:if="{{item.coupon_list.length > 0 || item.open_status == 0}}">
+                  <view class="info-discount-label" wx:if="{{item.coupon_list.length > 0}}">
+                    <view class="info-label-title">优惠</view>
+                    <view class="info-label">
+                    <block wx:for="{{item.coupon_list}}" wx:key="index" wx:for-item="coupon" wx:for-index="i">
+                      <text wx:if="{{coupon.type == 0 && i < 2}}">满{{coupon.condition}}减{{coupon.value}}</text>
+                      <text wx:elif="{{coupon.type == 1 && i < 2}}">{{coupon.value}}折</text>
+                      <text wx:elif="{{coupon.type == 2 && i < 2}}">{{coupon.value}}代金</text>
+                      <text wx:elif="{{coupon.type == 5 && i < 2}}">通用券</text>
+                      <block wx:elif="{{coupon.type == 3}}">
+                        <text class="discount" wx:if="{{coupon.extra_condition == ''}}">直接兑换券</text>
+                        <text class="discount" wx:elif="{{coupon.extra_condition.price}}">消费满{{coupon.extra_condition.price}}兑换券</text>
+                        <text class="discount" wx:elif="{{coupon.extra_condition.goods_id}}">购买指定商品兑换券</text>
+                      </block> 
+                      <text wx:if="{{i === 0 && item.coupon_list.length >= 2}}">，</text>
+                    </block>
+                    </view>
+                  </view>
+                  <view class="info-weekend" wx:if="{{item.open_status == 0}}">休息中</view>
+                </view>
+                <view class="info-recom-wrap limite-line-two" wx:if="{{data.customFeature.childrenComps.tags.show && item.tags.length > 0}}">
+                  <block wx:for="{{item.tags}}" wx:key="index">
+                    <label class="recom-title">{{item}}</label>
+                  </block>
+                </view>
+              </view>
+              <view class="goods-container">
+                <block wx:for="{{item.highest_weight}}" wx:key="index" wx:for-item="goods">
+                  <view class="goods-item">
+                    <view class="goods-item-wrap">
+                      <image class="item-img" src="{{goods.form_data.cover}}" mode="aspectFill"/>
+                    </view>
+                    <view class="goods-item-name" wx:if="{{data.customFeature.childrenComps.goodsName.show}}">{{goods.form_data.title}}</view>
+                  </view>
+                </block>
+              </view>
+            </view>
+          </block>
+
+          <block wx:elif="{{data.customFeature.type == 4}}">
+            <view class="inner-content_4">
+              <view class="list-big-img">
+                <image class="big-img" src="{{item.carousel_imgs}}" mode="aspectFill"/>
+                <text class="list-label" wx:if="{{data.customFeature.childrenComps.viewCount.show}}">{{item.viewed_count}}人近期看过</text>
+                <view wx:if="{{item.open_status == 0}}" class="franchisee-not-open-mask">
+                  <view class="franchisee-list-status not-open-tip">休息中</view>
+                </view>
+              </view>
+              <view class="info-container">
+                <view class="info-title-wrap">
+                  <view class="title">{{item.name}}</view>
+                  <view class="info-group-buy" wx:if="{{item.is_group_buy}}">团</view>
+                </view>
+                <view class="info-detail">
+                  <view class="info-price-wrap">
+                    <view class="mg-rgt info-detail-score" wx:if="{{data.customFeature.childrenComps.score.show}}">{{item.assess_score}}分</view>
+                    <view class="mg-rgt" wx:if="{{data.customFeature.childrenComps.averageCash.show}}">¥{{item.per_capita}}/人</view>
+                    <view class="mg-rgt price-after-label" wx:if="{{data.customFeature.childrenComps.tags.show}}">
+                      <text class="mg-label" wx:for="{{item.tags}}" wx:key="index">{{item}}</text>
+                    </view>
+                  </view>
+                  <view wx:if="{{item.distance && data.customFeature.childrenComps.position.show}}" class="franchisee-list-distance">{{item.distance}}</view>
+                </view>   
+                <view class="info-label limite-line-two" wx:if="{{data.customFeature.childrenComps.goodsName.show}}">
+                  <block wx:for="{{item.highest_weight}}" wx:key="index" wx:for-item="goods" wx:for-index="i">
+                    <text class="info-label-word" wx:if="{{i < 2}}">{{goods.form_data.title}}</text>
+                  </block>
+                </view>               
+              </view>
+            </view>
+          </block>
+
+          <block wx:else>
+            <view class="franchisee-list-goods">
+              <view class="inner-content">
+                <view class="list-img-wrap" style="{{data.img_style}}">
+                  <image class="list-img" src="{{item.picture}}" mode="aspectFill"></image>
+                  <view wx:if="{{item.open_status == 0}}" class="franchisee-not-open-mask">
+                    <view class="franchisee-list-status not-open-tip">休息中</view>
+                  </view>
+                  <view wx:if="{{item.is_audit == 2}}" class="franchisee-list-status franchisee-list-audit">待审核</view>
+                </view>
+                <view class="title-container">
+                  <view class="franchisee-list-title-wrap">
+                    <view class="title">{{item.name}}</view>
+                    <view wx:if="{{item.distance}}" class="franchisee-list-distance">{{item.distance}}</view>
+                  </view>
+                  <view class="defaul" wx:if="{{item.per_capita}}">
+                    <!-- <view wx:if="{{item.mode_id == 0}}" class="franchisee-list-label franchisee-list-label1">门店</view>
+                    <view wx:elif="{{item.mode_id == 1}}" class="franchisee-list-label franchisee-list-label3">外卖</view>
+                    <view wx:elif="{{item.mode_id == 2}}" class="franchisee-list-label franchisee-list-label2">商城</view>
+                    <view wx:elif="{{item.mode_id == 3}}" class="franchisee-list-label franchisee-list-label5">到店</view>-->
+                    <view wx:if="{{item.per_capita}}" class="franchisee-list-averagePrice">¥{{item.per_capita}}/人</view>
+                  </view>
+                  <view class="franchisee-list-bottom clearfix ">
+                    <view wx:if="{{item.industry_type_name}}" class="franchisee-list-industry">{{item.industry_type_name}}</view>
+                  </view>
+                  <view class="discount-coupons" wx:if="{{item.coupon_list.length > 0}}" >
+                    <block wx:for="{{item.coupon_list}}" wx:key="index" wx:for-item="coupon" wx:for-index="j">
+                      <view class="coupons-cash" wx:if="{{coupon.type == 0 && j < 2}}">
+                        <label>减</label>
+                        进店领取{{coupon.value}}元优惠券
+                      </view>
+                      <view class="coupons-rebate" wx:elif="{{coupon.type == 1 && j < 2}}">
+                        <label>折</label>
+                        进店领取{{coupon.value}}折优惠
+                      </view>
+                    </block>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+      <template wx:if="{{data.loading}}" is="requestLoading"></template>
+      <template wx:if="{{data.is_more == 0 && data.franchisee_data.length == 0}}" is="requestNone" data="{{data: '暂无商家~'}}"></template>
+      <template wx:if="{{data.loadingFail}}" is="requestFail" data="{{refreshEvent: 'franchiseeScrollFunc', compId: data.compId}}"></template>
+      <template wx:if="{{data.is_more == 0 && data.franchisee_data.length > 0 && data.customFeature.isShowFinishText}}" is="requestAll"></template>
+      <view class="loading-btn" wx:if="{{data.customFeature.vesselAutoheight == 1 && data.customFeature.loadingMethod == 1 && data.customFeature.mode != 2 && data.is_more && data.is_more != 0 && !data.loading && !data.loadingFail}}" data-compid="{{data.compId}}" bindtap="franchiseeScrollFunc">
+        <image wx:if="{{data.customFeature.loadingStyle == 'img'}}" mode="aspectFill" src="{{data.customFeature.loadingImg}}"></image>
+        <text wx:elif="{{data.customFeature.loadingStyle == 'text'}}" style="color: {{data.customFeature.loadingColor}};">{{data.customFeature.loadingText}}</text>
+      </view>
+    </scroll-view>
+  </view>
+  <view class='waimai-nation-select' wx:if="{{data.showNationList}}">
+    <view class="nation-list-wrap">
+      <view class='waimai-nation-closed' catchtap='franchiseeHideNationList' data-compid="{{data.compId}}"><text class='ico-moon icon-closed '></text></view>
+      <view class="tip">
+        选择服务所在国家
+      </view>
+      <view class="list">
+        <view bindtap='franchiseeReLocalAddress' class="adressLabel" wx:for="{{data.nationList}}" data-nationCode="{{item.nation_code}}" data-nationname="{{item.nation_name}}" data-nationid="{{item.oversea_region_id}}"   data-compid="{{data.compId}}" data-address="{{data.location_address}}" data-latlng="{{data.addressInfo}}" wx:key="index" >
+          <view style='font-size:26rpx;color: #666666;'>
+            <!--<image src='{{item.picture}}' class='waimai-nation-pic'></image>-->
+            {{item.nation_name}}
+          </view>
+          <view><text class='ico-moon icon-rightarrow pull-right' style='color:#D2D2D2;font-size:20rpx;'></text></view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+
+
+
+
+<!-- 图片 -->
+<wxs module="pictureWxsModule">
+  var isArray = function(array) {
+    return array.join ? true : false;
+  }
+
+  var getRadius = function(data, radius = []) {
+    var a = getRegExp("(?<=border-radius:).*?(?=;)","ig");
+    var value = a.exec(data);
+    var result = 'border-radius:';
+    radius.forEach(function(item,index){
+      if (item === 1) {
+        result += value + ' ' 
+      } else {
+        result += '0 '
+      }
+    })
+    return result;
+  }
+  module.exports.getRadius = getRadius;
+  module.exports.isArray = isArray;
+</wxs>
+<template name="zcPictureBlock">
+  <block wx:if="{{real_value}}">
+    <template is="zcPicture" data="{{data:data, real_value:real_value.form_data[data.customFeature.segment], detail_data: detail_data,form:form, group_data: real_value, item: item}}"></template>
+  </block>
+  <block wx:elif="{{detail_data[data.customFeature.segment] && in_dynamic_vessel !== 'true'}}">
+    <template is="zcPicture" data="{{data:data, real_value:detail_data[data.customFeature.segment], detail_data: detail_data, item: item}}"></template>
+  </block>
+  <block wx:elif="{{in_dynamic_vessel === 'true'}}">
+    <template is="zcPicture" data="{{data:data, real_value:item.form_data[data.customFeature.segment], detail_data: detail_data, item: item}}"></template>
+  </block>
+  <block wx:else>
+    <template is="zcPicture" data="{{data:data, real_value:item.form_data[data.customFeature.segment], detail_data: detail_data, item: item}}"></template>
+  </block>
+</template>
+<template name="zcPicture">
+  <block wx:if="{{real_value && (data.customFeature.action !== 'call' || data.customFeature.phoneDisplayContent !== 'static')}}">
+    <block wx:if="{{pictureWxsModule.isArray(real_value)}}">
+      <block wx:if="{{data.customFeature.action == 'turn-to-xcx'}}">
+        <navigator target="miniProgram" open-type="navigate" app-id="{{data.customFeature['xcx-appid']}}" path="{{data.customFeature['xcx-page-url'] || ''}}" version="release">
+          <view class="element picture" style="{{data.style}} {{pictureWxsModule.getRadius(data.style, data.customFeature.customRadiusList)}}" wx:for="{{real_value}}" wx:key="index" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+            <image src="{{real_value[index]}}" mode="scaleToFill"></image>
+          </view>
+        </navigator>
+      </block>
+      <block wx:elif="{{ is_group}}">
+        <view class="element picture" style="{{data.style}} {{pictureWxsModule.getRadius(data.style, data.customFeature.customRadiusList)}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+          <image src="{{group_data.goods_img}}" mode="scaleToFill"></image>
+          <view class="sell-out" wx:if="{{ item.form_data.goods_stock[0].text == 0}}"><view class="sell-out-btn">已售罄</view></view>
+        </view>
+      </block>
+      <block wx:else>
+        <view data-compdata="{{ data }}" 
+              data-real-value="{{ real_value }}" 
+              class="element picture" 
+              style="{{data.style}} {{pictureWxsModule.getRadius(data.style, data.customFeature.customRadiusList)}}" 
+              wx:for="{{real_value}}" wx:key="index" 
+              data-event-params="{{data.customFeature}}" 
+              data-img="{{real_value[index]}}" 
+              data-imgArr="{{real_value}}" 
+              data-group-id="{{item.form_data.group_id[0].text}}" 
+              data-leader-token="{{item.form_data.leader_token[0].text}}" 
+              data-id="{{item.form_data.id[0].text || item.form_data.goods_id[0].text}}" 
+              data-ispackage="{{item.form_data.is_package_goods[0].text}}" 
+              catchtap="{{ data.customFeature.isAddCard ? 'showGoodsShoppingcart' : data.customFeature.action && data.customFeature.action != 'none' ? 'tapEventCommonHandler' : ''}}" 
+              bindanimationend="animationEnd" 
+              data-compid="{{ data.compId }}">
+          <image src="{{real_value[index]}}" mode="scaleToFill"></image>
+          <view class="sell-out" wx:if="{{ item.form_data.stock[0].text == 0}}"><view class="sell-out-btn">已售罄</view></view>
+        </view>
+      </block>
+    </block>
+    <block wx:else>
+      <block wx:if="{{data.customFeature.action == 'turn-to-xcx'}}">
+        <navigator target="miniProgram" open-type="navigate" app-id="{{data.customFeature['xcx-appid']}}" path="{{data.customFeature['xcx-page-url'] || ''}}" version="release">
+          <view class="element picture" style="{{data.style}} {{pictureWxsModule.getRadius(data.style, data.customFeature.customRadiusList)}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+            <image src="{{real_value}}" mode="scaleToFill"></image>
+          </view>
+        </navigator>
+      </block>
+      <block wx:else>
+        <view data-compdata="{{ data }}" 
+              class="element picture" 
+              style="{{data.style}} {{pictureWxsModule.getRadius(data.style, data.customFeature.customRadiusList)}}"
+              data-event-params="{{data.customFeature}}" 
+              data-img="{{real_value}}" 
+              data-imgArr="{{real_value}}" 
+              data-group-id="{{item.form_data.group_id[0].text}}"
+              data-leader-token="{{item.form_data.leader_token[0].text}}"  
+              data-id="{{item.form_data.id[0].text || item.form_data.goods_id[0].text}}" 
+              data-ispackage="{{item.form_data.is_package_goods[0].text}}" 
+              catchtap="{{ data.customFeature.isAddCard ? 'showGoodsShoppingcart' : data.customFeature.action && data.customFeature.action != 'none' ? 'tapEventCommonHandler' : ''}}" 
+              bindanimationend="animationEnd" 
+              data-compid="{{ data.compId }}">
+          <image src="{{real_value}}" mode="scaleToFill"></image>
+          <view class="sell-out" wx:if="{{ item.form_data.stock[0].text == 0 || item.form_data.goods_stock[0].text == 0}}"><view class="sell-out-btn">已售罄</view></view>
+        </view>
+      </block>
+    </block>
+  </block>
+  <block wx:elif="{{data.customFeature.action == 'turn-to-xcx'}}">
+    <navigator target="miniProgram" open-type="navigate" app-id="{{data.customFeature['xcx-appid']}}" path="{{data.customFeature['xcx-page-url'] || ''}}" version="release">
+      <view class="element picture" style="{{data.style}} {{pictureWxsModule.getRadius(data.style, data.customFeature.customRadiusList)}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+        <image wx:if="{{!data.customFeature.backgroundType}}" src="{{data.content}}" mode="scaleToFill"></image>
+      </view>
+    </navigator>
+  </block>
+  <block wx:else>
+    <view data-compdata="{{ data }}" 
+          data-real-value="{{ real_value }}" 
+          class="element picture" style="{{data.style}} {{pictureWxsModule.getRadius(data.style, data.customFeature.customRadiusList)}}" 
+          data-event-params="{{data.customFeature}}" 
+          data-img="{{data.content}}" 
+          data-imgArr="{{data.content}}" 
+          data-group-id="{{item.form_data.group_id[0].text}}" 
+          data-leader-token="{{item.form_data.leader_token[0].text}}" 
+          data-id="{{item.form_data.id[0].text || item.form_data.goods_id[0].text}}" 
+          data-ispackage="{{item.form_data.is_package_goods[0].text}}" 
+          catchtap="{{ data.customFeature.isAddCard ? 'showGoodsShoppingcart' : data.customFeature.action && data.customFeature.action != 'none' ? 'tapEventCommonHandler' : ''}}" 
+          bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+      <image wx:if="{{!data.customFeature.backgroundType}}" src="{{data.content}}" mode="scaleToFill"></image>
+    </view>
+  </block>
+</template>
+
+
+<!-- 按钮 -->
+<wxs module="buttonWxsModule">
+var isArray = function(array) {
+  return array instanceof Array;
+}
+module.exports.isArray = isArray;
+</wxs>
+<template name="zcButtonBlock">
+  <block wx:if="{{real_value}}">
+    <template is="zcButton" data="{{data:data, real_value:real_value.form_data[data.customFeature.segment], sessionFrom: sessionFrom, item: item}}"></template>
+  </block>
+  <block wx:elif="{{ detail_data[data.customFeature.segment] && in_dynamic_vessel !== 'true' }}">
+    <template is="zcButton" data="{{data:data, real_value:detail_data[data.customFeature.segment], sessionFrom: sessionFrom, item: item}}"></template>
+  </block>
+  <block wx:elif="{{ in_dynamic_vessel === 'true' }}">
+    <template is="zcButton" data="{{data:data, real_value:item.form_data[data.customFeature.segment], sessionFrom: sessionFrom, item: item}}"></template>
+  </block>
+  <block wx:else>
+    <template is="zcButton" data="{{data:data, real_value:item.form_data[data.customFeature.segment], sessionFrom: sessionFrom, item: item}}"></template>
+  </block>
+</template>
+<template name="zcButton">
+  <block wx:if="{{real_value}}">
+    <block wx:if="{{buttonWxsModule.isArray(real_value)}}">
+      <block wx:if="{{data.customFeature.action == 'share'}}">
+        <button class="element button" open-type="{{data.customFeature.action}}" style="{{data.style}}" data-desc="{{data.customFeature.desc}}"  data-image="{{data.customFeature.shareImage || ''}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+          <view class="wxParse">
+            <template is="wxParse" data="{{wxParseData: real_value}}"/>
+          </view>
+        </button>
+      </block>
+      <block wx:elif="{{data.customFeature.action == 'contact'}}">
+        <button class="element button" open-type="{{data.customFeature.action}}" session-from="{{sessionFrom}}" style="{{data.style}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+          <view class="wxParse">
+            <template is="wxParse" data="{{wxParseData: real_value}}"/>
+          </view>
+        </button>
+      </block>
+      <block wx:elif="{{data.customFeature.action == 'turn-to-xcx'}}">
+        <navigator target="miniProgram" open-type="navigate" app-id="{{data.customFeature['xcx-appid']}}" path="{{data.customFeature['xcx-page-url'] || ''}}" version="release">
+          <label class="element button" style="{{data.style}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+            <view class="wxParse">
+              <template is="wxParse" data="{{wxParseData: real_value}}"/>
+            </view>
+          </label>
+        </navigator>
+      </block>
+      <block wx:else>
+        <label class="element button" 
+              style="{{data.style}}" 
+              data-event-params="{{data.customFeature}}" 
+              data-group-id="{{item.form_data.group_id[0].text}}" 
+              data-leader-token="{{item.form_data.leader_token[0].text}}" 
+              data-id="{{item.form_data.id[0].text || item.form_data.goods_id[0].text}}" 
+              data-ispackage="{{item.form_data.is_package_goods[0].text}}" 
+              catchtap="{{ data.customFeature.isAddCard ? 'showGoodsShoppingcart' : data.customFeature.action && data.customFeature.action != 'none' ? 'tapEventCommonHandler' : ''}}" 
+              bindanimationend="animationEnd" 
+              data-compid="{{ data.compId }}">
+          <view class="wxParse">
+            <template is="wxParse" data="{{wxParseData: real_value}}"/>
+          </view>
+        </label>
+      </block>
+    </block>
+    <block wx:else>
+      <block wx:if="{{data.customFeature.action == 'share'}}">
+        <button class="element button" open-type="{{data.customFeature.action}}" style="{{data.style}}" data-desc="{{data.customFeature.desc}}"  data-image="{{data.customFeature.shareImage || ''}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+          {{real_value}}
+        </button>
+      </block>
+      <block wx:elif="{{data.customFeature.action == 'contact'}}">
+        <button class="element button" open-type="{{data.customFeature.action}}" session-from="{{sessionFrom}}" style="{{data.style}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+          {{data.content}}
+        </button>
+      </block>
+      <block wx:elif="{{data.customFeature.action == 'turn-to-xcx'}}">
+        <navigator target="miniProgram" open-type="navigate" app-id="{{data.customFeature['xcx-appid']}}" path="{{data.customFeature['xcx-page-url'] || ''}}" version="release">
+          <label class="element button" style="{{data.style}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+            {{real_value}}
+          </label>
+        </navigator>
+      </block>
+      <block wx:else>
+        <label class="element button" 
+              style="{{data.style}}" 
+              data-event-params="{{data.customFeature}}" 
+              data-group-id="{{item.form_data.group_id[0].text}}" 
+              data-id="{{item.form_data.id[0].text || item.form_data.goods_id[0].text}}" 
+              data-leader-token="{{item.form_data.leader_token[0].text}}" 
+              data-ispackage="{{item.form_data.is_package_goods[0].text}}" 
+              catchtap="{{ data.customFeature.isAddCard ? 'showGoodsShoppingcart' : data.customFeature.action && data.customFeature.action != 'none' ? 'tapEventCommonHandler' : ''}}" 
+              bindanimationend="animationEnd" 
+              data-compid="{{ data.compId }}">{{real_value}}</label>
+      </block>
+    </block>
+  </block>
+  <block wx:else>
+    <block wx:if="{{data.customFeature.action == 'share' }}">
+      <button class="element button" open-type="{{data.customFeature.action}}" style="{{data.style}}" data-desc="{{data.customFeature.desc}}"  data-image="{{data.customFeature.shareImage || ''}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+        {{data.content}}
+      </button>
+    </block>
+    <block wx:elif="{{data.customFeature.action == 'contact'}}">
+      <button class="element button" open-type="{{data.customFeature.action}}" session-from="{{sessionFrom}}" style="{{data.style}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+        {{data.content}}
+      </button>
+    </block>
+    <block wx:elif="{{data.customFeature.action == 'turn-to-xcx'}}">
+      <navigator target="miniProgram" open-type="navigate" app-id="{{data.customFeature['xcx-appid']}}" path="{{data.customFeature['xcx-page-url'] || ''}}" version="release">
+        <label class="element button" style="{{data.style}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+          {{data.content}}
+        </label>
+      </navigator>
+    </block>
+    <block wx:else>
+      <label class="element button" 
+            style="{{data.style}}" 
+            data-event-params="{{data.customFeature}}" 
+            data-compid="{{ data.compId }}" 
+            data-group-id="{{item.form_data.group_id[0].text}}" 
+            data-leader-token="{{item.form_data.leader_token[0].text}}" 
+            data-id="{{item.form_data.id[0].text || item.form_data.goods_id[0].text}}" 
+            data-ispackage="{{item.form_data.is_package_goods[0].text}}" 
+            catchtap="{{ data.customFeature.isAddCard ? 'showGoodsShoppingcart' : data.customFeature.action && data.customFeature.action != 'none' ? 'tapEventCommonHandler' : ''}}" 
+            bindanimationend="animationEnd">{{data.content}}</label>
+    </block>
+  </block>
+</template>
+
+
+<!-- 文本 -->
+<wxs module="textWxsModule">
+  var isArray = function(array) {
+    return array instanceof Array;
+  }
+  module.exports.isArray = isArray;
+</wxs>
+<template name="zcTextBlock">
+  <block wx:if="{{data.customFeature.segment == 'default_map' && real_value}}">
+    <!-- 在动态列表中的双栏中绑定地图 -->
+    <template is="zcText" data="{{data:data, real_value:real_value.form_data[data.customFeature.segment],  form_data: real_value.form_data, item: item}}"></template>
+  </block>
+  <block wx:elif="{{data.customFeature.segment == 'default_map'}}">
+    <!-- 动态列表,动态容器 与详情页绑定地图 --> 
+    <template is="zcText" data="{{data:data, real_value:item.form_data[data.customFeature.segment], parent_form:item.form, form_data: item.form_data, detail_data: detail_data, item: item}}"></template>
+  </block>
+  <block wx:elif="{{real_value}}">
+    <template is="zcText" data="{{data:data, real_value:real_value.form_data[data.customFeature.segment], parent_form:item.form, detail_data: detail_data, item: item}}"></template>
+  </block>
+  <block wx:elif="{{detail_data[data.customFeature.segment] && in_dynamic_vessel !== 'true'}}">
+    <template is="zcText" data="{{data:data, real_value:detail_data[data.customFeature.segment], parent_form:item.form, detail_data: detail_data, item: item}}"></template>
+  </block>
+  <block wx:elif="{{in_dynamic_vessel === 'true'}}">
+    <template is="zcText" data="{{data:data, real_value:item.form_data[data.customFeature.segment], parent_form:item.form, detail_data: detail_data, item: item}}"></template>
+  </block>
+  <block wx:else>
+    <template is="zcText" data="{{data:data, real_value:item.form_data[data.customFeature.segment], parent_form:item.form, detail_data: detail_data, item: item}}"></template>
+  </block>
+</template>
+<template name="zcText">
+  <block wx:if="{{real_value && (data.customFeature.action !== 'call' || data.customFeature.phoneDisplayContent !== 'static')}}">
+    <block wx:if="{{textWxsModule.isArray(real_value)}}">
+      <block wx:if="{{data.customFeature.action == 'turn-to-xcx'}}">
+        <navigator target="miniProgram" open-type="navigate" app-id="{{data.customFeature['xcx-appid']}}" path="{{data.customFeature['xcx-page-url'] || ''}}" version="release">
+          <view class="element text {{data.customFeature.isWordWrap == 1 ? 'text-word-wrap' : '' }}" style="{{data.style}}{{data.customFeature.isWordWrap == 1 ? '-webkit-line-clamp:' + data.customFeature['word-wrap'] : ''}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}">
+            <block wx:if="{{ parent_form === 'form' }}">
+              {{ real_value }}
+            </block>
+            <block wx:else>
+              <view class="wxParse">
+                <template is="wxParse" data="{{wxParseData: real_value}}" />
+              </view>
+            </block>
+          </view>
+        </navigator>
+      </block>
+      <block wx:else>
+        <view data-compdata="{{ data }}" 
+              data-real-value="{{ real_value }}" 
+              class="element text {{data.customFeature.isWordWrap == 1 ? 'text-word-wrap' : '' }}" 
+              style="{{data.style}}{{data.customFeature.isWordWrap == 1 ? '-webkit-line-clamp:' + data.customFeature['word-wrap'] : ''}}" 
+              data-event-params="{{data.customFeature}}"
+              data-group-id="{{item.form_data.group_id[0].text}}" 
+              data-leader-token="{{item.form_data.leader_token[0].text}}" 
+              data-id="{{item.form_data.id[0].text || item.form_data.goods_id[0].text}}" 
+              data-ispackage="{{item.form_data.is_package_goods[0].text}}" 
+              catchtap="{{ data.customFeature.isAddCard ? 'showGoodsShoppingcart' : data.customFeature.action && data.customFeature.action != 'none' ? 'tapEventCommonHandler' : ''}}" 
+              bindanimationend="animationEnd" 
+              data-compid="{{ data.compId }}">
+          <block wx:if="{{ parent_form === 'form' }}">{{ real_value }}</block>
+          <block wx:else>
+            <view class="wxParse">
+              <template is="wxParse" data="{{wxParseData: real_value}}" />
+            </view>
+          </block>
+        </view>
+      </block>
+    </block>
+    <block wx:else>
+      <block wx:if="{{data.customFeature.action == 'turn-to-xcx'}}">
+        <navigator target="miniProgram" open-type="navigate" app-id="{{data.customFeature['xcx-appid']}}" path="{{data.customFeature['xcx-page-url'] || ''}}" version="release">
+          <text class="element text {{data.customFeature.isWordWrap == 1 ? 'text-word-wrap' : '' }}" style="{{data.style}}{{data.customFeature.isWordWrap == 1 ? '-webkit-line-clamp:' + data.customFeature['word-wrap'] : ''}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}" selectable>{{data.customFeature.phoneDisplayContent === 'static' ? data.content : real_value}}</text>
+        </navigator>
+      </block>
+      <block wx:else>
+        <text data-compdata="{{ data }}" 
+              class="element text {{data.customFeature.isWordWrap == 1 ? 'text-word-wrap' : '' }}" 
+              style="{{data.style}}{{data.customFeature.isWordWrap == 1 ? '-webkit-line-clamp:' + data.customFeature['word-wrap'] : ''}}" 
+              data-event-params="{{data.customFeature}}" 
+              data-group-id="{{item.form_data.group_id[0].text}}" 
+              data-leader-token="{{item.form_data.leader_token[0].text}}" 
+              data-id="{{item.form_data.id[0].text || item.form_data.goods_id[0].text}}" 
+              data-ispackage="{{item.form_data.is_package_goods[0].text}}" 
+              catchtap="{{ data.customFeature.isAddCard ? 'showGoodsShoppingcart' : data.customFeature.action && data.customFeature.action != 'none' ? 'tapEventCommonHandler' : ''}}" 
+              bindanimationend="animationEnd" 
+              data-compid="{{ data.compId }}" selectable>{{data.customFeature.phoneDisplayContent === 'static' ? data.content : real_value}}</text>
+      </block>
+    </block>
+  </block>
+  <block wx:elif="{{data.customFeature.segment == 'default_map' && form_data}}">
+    <!-- 动态列表绑定地图 -->
+    <text class="element text {{data.customFeature.isWordWrap == 1 ? 'text-word-wrap' : '' }}" style="{{data.style}}{{data.customFeature.isWordWrap == 1 ? '-webkit-line-clamp:' + data.customFeature['word-wrap'] : ''}}" data-latitude="{{form_data.region_lat}}"
+      data-longitude="{{form_data.region_lng}}" data-address="{{(form_data.region_string || '') + (form_data.region_detail || '')}}" data-event-params="{{data.customFeature}}" catchtap="{{data.customFeature.action && data.customFeature.action != 'none' ? 'tapEventCommonHandler' : ''}}" selectable>{{(form_data.region_string || '') + (form_data.region_detail || '')}}</text>
+  </block>
+  <block wx:elif="{{data.customFeature.segment == 'default_map'}}">
+    <!-- 详情页绑定地图 -->
+    <text class="element text {{data.customFeature.isWordWrap == 1 ? 'text-word-wrap' : '' }}" style="{{data.style}}{{data.customFeature.isWordWrap == 1 ? '-webkit-line-clamp:' + data.customFeature['word-wrap'] : ''}}" data-latitude="{{detail_data.region_lat}}"
+      data-longitude="{{detail_data.region_lng}}" data-address="{{(detail_data.region_string || '') + (detail_data.region_detail || '')}}" catchtap="textToMap" selectable>{{((detail_data.region_string || '') + (detail_data.region_detail || '')) || detail_data.default_map[0].text}}</text>
+  </block>
+  <block wx:elif="{{data.customFeature.action == 'turn-to-xcx'}}">
+    <navigator target="miniProgram" open-type="navigate" app-id="{{data.customFeature['xcx-appid']}}" path="{{data.customFeature['xcx-page-url'] || ''}}" version="release">
+      <text class="element text {{data.customFeature.isWordWrap == 1 ? 'text-word-wrap' : '' }}" style="{{data.style}}{{data.customFeature.isWordWrap == 1 ? '-webkit-line-clamp:' + data.customFeature['word-wrap'] : ''}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}" selectable>{{data.content}}</text>
+    </navigator>
+  </block>
+  <block wx:else>
+    <text data-compdata="{{ data }}" 
+          data-real-value="{{ real_value }}" 
+          class="element text {{data.customFeature.isWordWrap == 1 ? 'text-word-wrap' : '' }}" 
+          style="{{data.style}}{{data.customFeature.isWordWrap == 1 ? '-webkit-line-clamp:' + data.customFeature['word-wrap'] : ''}}" 
+          data-event-params="{{data.customFeature}}" 
+          data-compid="{{ data.compId }}" 
+          data-group-id="{{item.form_data.group_id[0].text}}" 
+          data-leader-token="{{item.form_data.leader_token[0].text}}" 
+          data-id="{{item.form_data.id[0].text || item.form_data.goods_id[0].text}}" 
+          data-ispackage="{{item.form_data.is_package_goods[0].text}}" 
+          catchtap="{{ data.customFeature.isAddCard ? 'showGoodsShoppingcart' : data.customFeature.action && data.customFeature.action != 'none' ? 'tapEventCommonHandler' : ''}}" 
+          bindanimationend="animationEnd" selectable>{{data.content}}</text>
+  </block>
+</template>
+
+
+<!-- 横线 -->
+<template name="zcBreakline">
+  <view class="element breakline" style="{{data.style}}" bindanimationend="animationEnd" data-compid="{{ data.compId }}"></view>
+</template>
+
+<!-- 公告 -->
+<template name="dqAnnounce">
+  <component-announce announce="{{data}}"></component-announce>
+</template>
+
+
+<!-- 广告 -->
+<template name="zcAdvertising">
+  <view class="element advertising">
+    <ad unit-id="{{data.customFeature['advertisingId']}}" style="{{data.style}}"></ad>
+  </view>
+</template>
+
+<!-- 公众号 -->
+<template name="zcOfficialAccount">
+  <view class="element officialAccount">
+    <official-account style="{{data.style}}"></official-account>
+  </view>
+</template>
+
+<!-- 加载loading -->
+<template name="requestLoading">
+  <view class="loading-wrap">
+    <view class="loading-view">
+      <view class="loading-dot1"></view>
+      <view class="loading-dot2"></view>
+    </view>
+  </view>
+</template>
+
+<!-- 加载没有数据 -->
+<template name="requestNone">
+  <view class="request-none">
+    <image src="http://cdn.jisuapp.cn/static/webapp/images/request-none.png" mode="widthFix"></image>
+    <view>{{data || '暂无数据'}}</view>
+  </view>
+</template>
+
+<!-- 加载失败 -->
+<template name="requestFail">
+  <view class="request-fail">
+    <view>数据加载失败~ </view>
+    <button class="request-refresh-btn" data-compid="{{compId}}" bindtap="{{refreshEvent}}">刷新重试</button>
+  </view>
+</template>
+
+<!-- 加载完所有数据 -->
+<template name="requestAll">
+  <view class="request-all">没有更多了</view>
+</template>
+
+<!-- 满减弹窗 -->
+<template name="priceBreakModal">
+  <block wx:if="{{show}}">
+    <view class="priceBreakMask"></view>
+    <view class="discount_modal" style="{{'color: ' + storeStyle.theme}}">
+      <view class="discount_title">
+        优惠<text class="ico-moon icon-closes discount_modal_close" bindtap="closePriceBreakModal"></text>
+      </view>
+      <view class="discount_name" style="{{'color: ' + storeStyle.theme}}">满减优惠</view>
+      <view class="discount_time" style="{{'color: ' + storeStyle.theme}}">活动时间：{{time}}</view>
+      <view class="discount_info" style="{{'color: ' + storeStyle.theme}}">
+        <view>活动内容：</view>
+        <view>
+          <view style="{{'color: ' + storeStyle.theme}};margin-bottom: 24rpx;" wx:for="{{rule}}" wx:for-item="item" wx:key="index">{{item}}</view>
+        </view>
+      </view>
+      <view class="discount_info_close" bindtap="closePriceBreakModal" style="{{'background:'+ storeStyle.theme }}">关闭</view>
+    </view>
+  </block>
+</template>

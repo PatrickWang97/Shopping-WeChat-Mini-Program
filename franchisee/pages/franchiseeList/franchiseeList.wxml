@@ -1,0 +1,23 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="page">
+  <view class="franchisee-list">
+    <view class="franchisee-item" wx:for="{{franchiseeList}}" wx:key="id" bindtap="turnToFranchiseeEnterStatus" data-appid="{{item.app_id}}">
+      <image class="franchisee-item-picture" src="{{item.picture}}" mode="aspectFill"></image>
+      <view class="franchisee-item-info">
+        <view class="franchisee-item-title">{{item.name}}</view>
+        <view class="franchisee-item-cate">{{item.category_names}}</view>
+      </view>
+      <view class="franchisee-item-status">
+        <block wx:if="{{item.is_audit == 2}}">
+          <text>待审核</text>
+        </block>
+        <block wx:elif="{{item.is_audit == 3}}">
+          <text>审核失败</text>
+        </block>
+        <label class="ico-moon icon-rightarrow"></label>
+      </view>
+    </view>
+  </view>
+  <view class="franchisee-add" bindtap="turnToFranchiseeEnter">添加店铺</view>
+</view>

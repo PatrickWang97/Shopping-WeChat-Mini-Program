@@ -1,0 +1,32 @@
+<!--pages/invoiceList/invoiceList.wxml-->
+<view class="invoice-main">
+  <scroll-view scroll-y="true" bindscrolltolower="scrollToListBottom">
+    <view class="invoice-item" wx:for="{{invoiceList}}" wx:for-index="idx" wx:for-item="invoiceData">
+      <view class="item-title">
+        <text class="item-time">申请时间：{{invoiceData.add_time}}</text>
+        <text class="item-status" style="color: #48C533" wx:if="{{invoiceData.status == 1}}">开票成功</text>
+        <text class="item-status" style="color: #FF7100" wx:elif="{{invoiceData.status == 0}}">开票中</text>
+        <text class="item-status" style="color: #F2303E" wx:else>{{invoiceData.status == 2 ? "取消开票" : "开票失败"}}</text>
+      </view>
+      <view class="item-content">
+        <text>订单编号：{{invoiceData.order_id}}</text>
+        <text>订单类型：{{invoiceData.order_type}}</text>
+        <text>开票金额：<text class="price">¥{{invoiceData.invoice_price}}</text></text>
+      </view>
+      <view class="item-footer" wx:if="{{invoiceData.status == 0}}">
+        <view class="item-btn" catchtap="goInvoicePage" data-order-id="{{invoiceData.order_id}}" data-index="{{idx}}">修改开票信息</view>
+      </view>
+      <view class="item-footer" wx:elif="{{invoiceData.status == 1}}">
+        <view class="invoice-text" wx:if="{{invoiceData.liberal_invoice_type == '007'}}">已开纸票，请联系商家领取</view>
+        <view class="invoice-details" wx:else>
+          <view class="item-btn save" catchtap="saveInWeChat" data-order-id="{{invoiceData.order_id}}">保存到微信卡包</view>
+          <view class="item-btn" catchtap="checkInvoice" data-order-id="{{invoiceData.order_id}}" data-invoice-type="{{invoiceData.liberal_invoice_type}}">查看发票</view>
+        </view> 
+      </view>
+      <view class="item-footer" wx:elif="{{invoiceData.status == 3 || invoiceData.status == 4}}">
+        <view class="item-btn restart" catchtap="resetInvoice" data-order-id="{{invoiceData.order_id}}" data-invoice-type="{{invoiceData.liberal_invoice_type}}" data-index="{{idx}}">重试开票</view>
+      </view>
+    </view>
+  </scroll-view>
+  <view hidden="{{ !noMore }}" class="noMoreNewDataTip">已经没有新数据了</view>
+</view>

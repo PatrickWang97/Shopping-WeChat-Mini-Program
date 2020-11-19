@@ -1,0 +1,66 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="search-content">
+  <view class="search-input">
+    <text class="ico-moon icon-search"></text>
+    <input focus="{{autoFocus}}" placeholder="请输入团长姓名/小区名称" type="text" bindconfirm="searchLeaderFn" value="{{inputValue}}" bindinput="searchInputing"></input>
+    <view class="ico-moon icon-closed search-input-closed" hidden="{{inputValue.length == 0}}" bindtap="clearInputText"></view>
+  </view>
+  <view class="community-group-location" bindtap="changeLocation">
+    <text class="icon-goods-location ico-moon" style="color:#666"></text>
+    <text class="ellipsis location-name">{{localAddress || "定位中"}}</text>
+    <text class="arrow-down"></text>
+  </view>
+</view>
+<view class="community-list">
+  <view class="community-list-content" style='margin-top: 24rpx;position: relative;' bindtap="turnBack" wx:if="{{nowCommunityCity != ''}}">
+    <view class="current-community" wx:if="{{nowCommunityCity != ''}}">当前社区</view>
+    <view class="list-content-item">
+      <image class="now-avatar" src="{{nowCommunityCity.logo}}"></image>
+      <view class="now-nick-name">
+        <text>{{nowCommunityCity.nick_name}}</text>
+        <text class="now-distance-name" wx:if="{{nowCommunityCity.distance}}">距离你{{nowCommunityCity.distance}}</text>
+      </view>
+    </view>
+    <view class="list-address-item">
+      <view>
+        <text class="icon-comRoom ico-moon"></text>
+        <label>小区名称：</label>
+      </view>
+      <view style="word-break:break-all;">{{nowCommunityCity.housing_estate}}</view>
+    </view>
+    <view class="list-address-item">
+      <view>
+        <text class="icon-goods-location ico-moon"></text>
+        <label>提货地点：</label>
+      </view>
+      <view style="word-break:break-all;">{{nowCommunityCity.address_detail}}</view>
+    </view>
+  </view>
+  <view class="community-list-title" wx:if="{{addressList.length}}"><text style="color: #999;">-</text> 其他社区 <text style="color: #999;">-</text></view>
+  <view class="community-list-content" bindtap="changeHomeCommunity" data-index="{{index}}" data-parm="{{item}}" wx:for="{{addressList}}" wx:key="id">
+    <view class="list-content-item">
+      <image class="avatar" src="{{item.logo}}"></image>
+      <text class="nick-name ellipsis">{{item.nick_name}}</text>
+      <text class="distance-name" wx:if="{{item.distance}}">距离你{{item.distance}}</text>
+    </view>
+    <view class="list-address-item">
+      <view>
+        <text class="icon-comRoom ico-moon"></text>
+        <label>小区名称：</label>
+      </view>
+      <view style="word-break:break-all;">{{item.housing_estate}}</view>
+    </view>
+    <view class="list-address-item">
+      <view>
+        <text class="icon-goods-location ico-moon"></text>
+        <label>提货地点：</label>
+      </view>
+      <view style="word-break:break-all;">{{item.address_detail}}</view>
+    </view>
+  </view>
+</view>
+<view class="community-apply">
+  <text>没有您要找的小区？立即</text>
+  <text style="color:#ff7100" catchtap="userCenterTurnToPage" data-router="toMyGroupCenter">成为团长</text>
+</view>

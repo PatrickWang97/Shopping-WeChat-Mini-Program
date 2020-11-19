@@ -1,0 +1,8 @@
+{
+    "navigationBarTitleText":"确认支付",
+    "usingComponents":{
+        "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+        "component-behavior-track": "/components/behaviorTrack/behaviorTrack"
+    }
+}

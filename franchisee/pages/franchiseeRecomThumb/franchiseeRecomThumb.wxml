@@ -1,0 +1,35 @@
+<view class="foods-info">
+  <view class="foods-top">
+    <view class="foods-top-left">
+      <view class="foods-left-num" wx:if="{{foodsInfo.approval['index'] > 0 && foodsInfo.approval['index'] < 4}}">{{'0' + foodsInfo.approval['index']}}</view>
+      <view class="foods-left-title">
+        <view class="foods-left-name">{{foodsInfo.title}}</view>
+        <view class="foods-left-price">¥ {{foodsInfo.price}}</view>
+      </view>
+    </view>
+    <view class="foods-top-right {{foodsInfo.approval['status'] ? 'active' : ''}}" data-id="{{foodsInfo.id}}" data-goodstype="{{foodsInfo.goods_type}}" catchtap="clickThumb">
+      <view class="foods-right-icon"><label class="ico-moon {{foodsInfo.approval['status'] ? 'icon-news-like' : 'icon-community-group-thumb'}}"></label></view>
+      <text class="foods-right-count">{{foodsInfo.approval.total_approval ? foodsInfo.approval.total_approval : 0}}</text>
+    </view>
+  </view>
+
+  <block wx:if="{{foodsInfo.video_url || foodsInfo.img_urls.length > 0}}">
+    <swiper class="foods-swiper" bindchange="swiperChange">
+      <swiper-item class="swiper-item" wx:if="{{foodsInfo.video_url}}">
+        <video src="{{foodsInfo.video_url}}" style="width:100%;" />
+      </swiper-item>
+      <block wx:for="{{foodsInfo.img_urls}}" wx:key="index">
+        <swiper-item>
+          <image src="{{item}}" mode="aspectFill"/>
+        </swiper-item>
+      </block>
+    </swiper>
+    <view class="current-num">{{current + 1}}/{{foodsInfo.video_url ? foodsInfo.img_urls.length + 1 : foodsInfo.img_urls.length}}</view>
+  </block>
+  
+  <block wx:else>
+    <view class="foods-swiper">
+      <image src="{{foodsInfo.cover}}" />     
+    </view>
+  </block>
+</view>

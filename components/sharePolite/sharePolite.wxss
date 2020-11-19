@@ -1,0 +1,114 @@
+@import "/utils/font_icon.wxss";
+.share-polite-mask{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 50;
+}
+.share-polite-content{
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 0;
+}
+.share-polite-header{
+  position: relative;
+}
+.share-polite-img{
+  width: 100%;
+  height: 338rpx;
+}
+.receive-times{
+  position: absolute;
+  left: 220rpx;
+  bottom: 30rpx;
+  font-size: 24rpx;
+  color: #fff;
+}
+.share-polite-body{
+  background: #fff;
+  padding: 20rpx 34rpx 43rpx;
+  width: 600rpx;
+  margin: 0 auto;
+  box-sizing: border-box;
+  position: relative;
+  top: -8rpx;
+  left: -1rpx;
+  border-bottom-left-radius: 10rpx;
+  border-bottom-right-radius: 10rpx;
+}
+.share-type-list{
+  display: flex;
+  justify-content: space-between;
+}
+.space-around{
+   justify-content: space-around;
+}
+.share-type-image{
+  width: 120rpx;
+  height: 120rpx;
+  display: block;
+}
+.share-type-name{
+  color: #FA4B53;
+  font-size: 28rpx;
+  line-height: 28rpx;
+  text-align: center;
+  width: 120rpx;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.share-polite-des{
+  margin:32rpx 0 24rpx;
+  padding: 36rpx;
+  background:rgba(255,247,246,1);
+}
+.first-des{
+  font-size:28rpx;
+  font-weight:bold;
+  color:rgba(51,51,51,1);
+  line-height: 28rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sec-des{
+  font-size:26rpx;
+  color:rgba(250,75,83,1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.third-des{
+  font-size:26rpx;
+  color:rgba(153,153,153,1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.maTop18{
+  margin-top: 18rpx;
+}
+.maTop60{
+  margin-top: 60rpx;
+}
+.share-polite-remark{
+  font-size:24rpx;
+  line-height: 24rpx;
+  text-align: center;
+  color:rgba(153,153,153,1);
+}
+.close-share-window{
+  margin: 36rpx auto 0;
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  border: solid 4rpx #fff;
+  text-align: center;
+  line-height: 60rpx;
+  color: #fff;
+  font-size: 36rpx;
+}

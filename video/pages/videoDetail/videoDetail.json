@@ -1,0 +1,11 @@
+{
+    "navigationBarTitleText":"视频详情",
+    "navigationBarTextStyle":"black",
+    "navigationStyle":"custom",
+    "usingComponents":{
+        "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+        "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+        "component-topNavBar": "/components/topNavBar/topNavBar",
+        "component-behavior-track": "/components/behaviorTrack/behaviorTrack"
+    }
+}

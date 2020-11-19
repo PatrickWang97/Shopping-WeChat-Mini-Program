@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText":"优惠券",
+  "usingComponents":{
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+    "component-topNavBar": "/components/topNavBar/topNavBar",
+    "component-behavior-track": "/components/behaviorTrack/behaviorTrack"
+  }
+}

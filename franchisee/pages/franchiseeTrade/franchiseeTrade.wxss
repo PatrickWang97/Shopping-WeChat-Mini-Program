@@ -1,0 +1,238 @@
+page {
+  width: 100%;
+  height: 100%;
+}
+view {
+  box-sizing: border-box;
+}
+.limit-line1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.franchisee-circle {
+  width: 100%;
+  height: 100%;
+}
+.franchisee-circle .franchisee-search {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height:108rpx;
+  padding: 0 30rpx;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background:#fff;
+  box-shadow:0px 4rpx 8rpx rgba(0,0,0,0.05);
+}
+.franchisee-search-ipt {
+  width:620rpx;
+  height:58rpx;
+  background:#F5F5F5;
+  border-radius:29rpx;
+  display: flex;
+  align-items: center;
+  padding-left: 43rpx;
+}
+.franchisee-search-ipt {
+  font-size: 28rpx;
+  color: #888;
+}
+.franchisee-search-ipt .search-ipt {
+  margin: 0 20rpx;
+  width: 462rpx;
+}
+.franchisee-search-ipt .icon-close-btn {
+  color: #C8C8C8;
+  font-size: 34rpx;
+}
+.franchisee-search-cancel {
+  color: #333;
+  font-size: 28rpx;
+}
+.search-result {
+  width: 100%;
+  height: 100%;
+  padding: 118rpx 30rpx 30rpx;
+}
+.result-item {
+  height: 88rpx;
+  line-height: 88rpx;
+}
+.franchisee-circle-list {
+  margin-top: 110rpx;  
+  background: #fff;
+}
+.circle-current {
+  height: 88rpx;
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 30rpx;
+}
+.circle-current-left,
+.circle-div-title,
+.circle-hot-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+}
+.circle-current-left {
+  display: flex;
+  align-items: center;
+}
+.current-text {
+  display: inline-block;
+  max-width: 400rpx;
+  margin-right: 20rpx;
+}
+.circle-current-right {
+  font-size: 26rpx;
+  color: #777;
+  display: flex;
+  align-items: center;
+}
+.circle-current-right .icon-style {
+  padding-left: 10rpx;
+}
+.circle-wrap {
+  padding: 0 30rpx;
+  background:#F8F8F8;
+}
+.circle-wrap-head {
+  height: 90rpx;
+  display: flex;
+  align-items: center;
+  border-bottom: 1rpx solid #eee;
+}
+.circle-wrap-head .tab-bar {
+  width: 180rpx;
+  position: relative;
+  display: inline-block;
+  padding: 26rpx 0;
+  margin-left: 40rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+}
+.circle-wrap .orange {
+  color: #EC6147;
+}
+.tab-bar-active {
+  position: absolute;
+  bottom: 0;
+  width:100%;
+  height:5rpx;
+  background:linear-gradient(95deg,rgba(239,127,49,1) 0%,rgba(236,97,71,1) 100%);
+  border-radius:3rpx
+}
+.circle-scroll {
+  display: flex;
+  overflow: hidden;
+}
+.circle-scroll-two,
+.circle-scroll-three {
+  width: 220rpx;
+  max-height: 580rpx;
+}
+.circle-scroll-item {
+  padding: 40rpx 0 0 40rpx;
+  font-size:30rpx;
+  color: #333;
+  word-break: break-all;
+}
+.one-circle {
+  background: #fff;
+}
+.circle-div {
+  padding: 30rpx 30rpx 0;
+  background: #fff;
+}
+.circle-div-title {
+  padding: 30rpx 30rpx 24rpx;
+}
+.circle-hot-title {
+  padding-bottom: 24rpx;
+}
+.circle-div-wrap {
+  width: 675rpx;
+  display: flex;
+  flex-wrap: wrap;
+}
+.circle-div-item {
+  width:200rpx;
+  height:70rpx;
+  display: flex;
+  color: #333;
+  font-size: 26rpx;
+  align-items: center;
+  justify-content: center;
+  background:#fff;
+  margin-bottom: 20rpx;
+  margin-right: 24rpx;
+  border:1rpx solid #CCC;
+  border-radius:6px;
+}
+.circle-scroll-item:last-child {
+  padding-bottom: 20rpx;
+}
+.pad-bot {
+  padding-bottom: 5rpx;
+  border-bottom: 1rpx solid #eee;
+}
+.bor-bottom {
+  border-bottom: 1rpx solid #eee;
+}
+.circle-list-item {
+  height: 88rpx;
+  line-height: 88rpx;
+  font-size: 28rpx;
+  margin: 0rpx 50rpx 0rpx 30rpx;
+}
+.strtoupper-title {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  color: #888;
+  margin: 0;
+  padding: 0 30rpx;
+  border: none;
+  background: #f8f8f8;
+}
+.fixTitle {
+  position: fixed;
+  top: 108rpx;
+  left: 0;
+  z-index: 9;
+}
+.slide {
+  position: fixed;
+  right: 10rpx;
+  top: 234rpx;
+  width: 56rpx;
+  font-size: 24rpx;
+  color: #333;
+  font-weight: 600;
+  text-align: center;
+}
+.slide-title {
+  letter-spacing: 4rpx;
+}
+.slide-item {
+  color: #333;
+}
+.circle-group {
+  position: relative;
+}
+.circle-item_bg {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: -1;
+}

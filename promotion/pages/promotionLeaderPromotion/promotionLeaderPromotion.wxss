@@ -1,0 +1,93 @@
+page {
+  padding-top: 100rpx;
+}
+.tab-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  font-size: 28rpx;
+  line-height: 46rpx;
+  color: #999;
+}
+.tab-bar-item {
+  padding: 26rpx 0;
+  border-bottom: 1px solid #e5e5e5;
+  width:50%;
+  display:inline-block;
+  text-align:center;
+}
+.tab-bar-item.active {
+  color: #333;
+  border-bottom: 1px solid #ff7100;
+}
+.tab-content {
+  text-align: center;
+}
+.promotion-title {
+  margin: 134rpx auto 46rpx;
+  font-size: 36rpx;
+  color: #333;
+}
+.recruit-qrcode {
+  margin-bottom: 20rpx;
+  width: 376rpx;
+  height: 376rpx;
+}
+.table-header {
+  display: -webkit-flex;
+  display: flex;
+  height: 100rpx;
+  line-height: 100rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+.table-header view {
+  -webkit-flex: 1;
+  flex: 1;
+}
+.table-body {
+  margin: 20rpx 0;
+  font-size: 29rpx;
+  color: #666;
+}
+.table-row {
+  display: -webkit-flex;
+  display: flex;
+  border-top: 1px solid #cacaca;
+}
+.table-cell {
+  -webkit-flex: 1;
+  flex: 1;
+  padding: 0 20rpx;
+  line-height: 80rpx;
+  border-right: 1px solid #cacaca;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+.table-cell:last-child {
+  border-right: 1px solid #cacaca;
+}
+.navigator-footer {
+  position: fixed;
+  bottom: 56rpx;
+  left: 0;
+  right: 0;
+  font-size: 28rpx;
+  text-align: center;
+}
+.navitaor-btn {
+  margin: 0 10px;
+  display: inline-block;
+  width: 118rpx;
+  height: 56rpx;
+  line-height: 56rpx;
+  border-radius: 4px;
+  color: #fff;
+  background-color: #ff7100;
+}
+.navigator-btn.disbaled {
+  background-color: #dedede;
+}

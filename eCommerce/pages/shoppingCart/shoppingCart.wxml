@@ -1,0 +1,879 @@
+<wxs module="toFixedModule">
+  var toFixed = function(num,t) {
+    return num.toFixed(t);
+  }
+  module.exports.toFixed = toFixed;
+</wxs>
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-sinkingModal></component-sinkingModal>
+<component-goodsShoppingCart id="component-goodsShoppingCart" bind:afterSelectedGoods="afterSelectedGoods"></component-goodsShoppingCart>
+<component-behavior-track></component-behavior-track>
+<import src="../../../components/templates/templates.wxml" />
+<template is="priceBreakModal" data="{{...priceBreakDisModal}}"></template>
+<view class="shoppingCart_discount_mask" hidden="{{!showDiscountDetailModal}}"></view>
+
+<view class="shoppingCart-noLogin" wx:if="{{ !hasLogin }}">
+  <image src="http://cdn.jisuapp.cn/static/webapp/images/xcx-goods/shopping-cart-null.png"></image>
+  <view class="shoppingCart-noLogin-status">您还没有登录</view>
+  <view class="shoppingCart-noLogin-tip">请登录获取购物车信息</view>
+  <view class="shoppingCart-noLogin-btn" style="{{'background:' + storeStyle.theme }}" bindtap="shoppingCartGoLogin">登录/注册</view>
+</view>
+<view wx:if="{{!isFranchisee && hasLogin}}">
+  <!-- 优惠明细弹窗 -->
+  <view class="shoppingCart_discount_wrap" hidden="{{!showDiscountDetailModal}}">
+    <view class="shoppingCart_discount_title">优惠明细
+      <text class="ico-moon icon-closes" bindtap="closeDiscountDetailModal"></text>
+    </view>
+    <view class="shoppingCart_discount_item">
+      <view>商品总价</view>
+      <view class="shoppingCart_price" style="{{ 'color:' + storeStyle.theme }}">¥{{priceToPay}}</view>
+    </view>
+    <view class="shoppingCart_discount_item">
+      <view>满减满折</view>
+      <view class="shoppingCart_price discount" style="{{ 'color:' + storeStyle.theme }}">-¥{{totalCutPrice}}</view>
+    </view>
+    <view class="shoppingCart_discount_item">
+      <view>共优惠</view>
+      <view class="shoppingCart_price discount" style="{{ 'color:' + storeStyle.theme }}">-¥{{totalCutPrice}}</view>
+    </view>
+    <view class="shoppingCart_discount_item">
+      <view>合计</view>
+      <view class="shoppingCart_price" style="{{ 'color:' + storeStyle.theme }}">¥{{TotalPrice}}</view>
+    </view>
+  </view>
+  <view style="{{originGoodsList.length ? 'padding-bottom: 100rpx' : ''}}">
+    <block wx:if="{{originGoodsList.length}}">
+      <view class="new-header">
+        <view class="cart-header" style="padding-bottom:{{showAddress || allTypeNum == 1 || cartType == 2 || cartType == 3 ? '30rpx' : '0'}}">
+          <block wx:if="{{typeNum >= 2}}">
+            <view class="cart-type-box">
+              <text wx:if="{{hasGoodsTypeObj['hasGoods']}}" style="{{ (cartType == 0 ? ';background:' + storeStyle.theme : '')}}" class="{{ cartType == 0 ? 'selected' : ''}}" catchtap="changeCartType" data-type="0">基础</text>
+              <text wx:if="{{hasGoodsTypeObj['hasCommunity']}}" style="{{ cartType == 'community' ? 'background:' + storeStyle.theme : '' }}" class="{{ cartType == 'community' ? 'selected' : ''}}" catchtap="changeCartType" data-type="community">社区团购</text>
+              <text wx:if="{{hasGoodsTypeObj['hasTostore']}}" style="{{ (cartType == 3 ? ';background:' + storeStyle.theme : '')}}" class="{{ cartType == 3 ? 'selected' : ''}}" catchtap="changeCartType" data-type="3">到店</text>
+              <text wx:if="{{hasGoodsTypeObj['hasWaimai']}}" style="{{ cartType == 2 ? 'background:' + storeStyle.theme : '' }}" class="{{ cartType == 2 ? 'selected' : ''}}" catchtap="changeCartType" data-type="2">外卖</text>
+            </view>
+          </block>
+          <block wx:else>
+            <view class="cart-type-box new">
+              <text class="single-circles" style="border-color:{{storeStyle.theme}}"></text>
+              <text wx:if="{{hasGoodsTypeObj['hasGoods']}}" catchtap="changeCartType" data-type="0">基础</text>
+              <text wx:if="{{hasGoodsTypeObj['hasCommunity']}}" catchtap="changeCartType" data-type="community">社区团购</text>
+              <text wx:if="{{hasGoodsTypeObj['hasTostore']}}" catchtap="changeCartType" data-type="3">到店</text>
+              <text wx:if="{{hasGoodsTypeObj['hasWaimai']}}" catchtap="changeCartType" data-type="2">外卖</text>
+            </view>
+          </block>
+          <view style="{{'color:' + (storeStyle.theme || '#ff7100')}}" class="pull-right ico-moon icon-success-tip shopping-cart-editor" wx:if="{{editing}}" catchtap="switchToEdit"></view>
+          <text class="pull-right ico-moon icon-shopping-cart-set shopping-cart-editor" wx:if="{{!editing}}" catchtap="switchToEdit"></text>
+          <text class="new-edit" wx:if="{{editing}}" catchtap="switchToEdit" style="color:{{storeStyle.theme}}">完成</text>
+          <text class="new-edit" wx:if="{{!editing}}" catchtap="switchToEdit">管理</text>
+        </view>
+        <block wx:if="{{cartType == 0}}">
+          <view class="goods-location-box" catchtap="selectGoodsSameJourney" wx:if="{{showAddress}}" style="padding-bottom:{{allTypeNum == 1 || cartType == 2 || cartType == 3 ? '30rpx' : '0'}}">
+            <text class="ico-moon icon-goods-location"></text>
+            <text class="address-box">{{selectSameJourney ? selectSameJourney.address_info.province.text + selectSameJourney.address_info.city.text + selectSameJourney.address_info.district.text + selectSameJourney.detail_address : currentLocationData.formatted_addresses.recommend || '暂无地址,请点击选择地址'}}</text>
+            <text class="trangel"></text>
+          </view>
+          <view class="goods-delivery-method" wx:if="{{allTypeNum > 1}}">
+            <text catchtap="filterDeliveryMethod" data-type="-1" class="{{ deliveryMethod == -1 ? 'selected' :  ''}}">全部
+              <text class="bottom-line" style="{{'background:' + storeStyle.theme}}"></text>
+            </text>
+            <text catchtap="filterDeliveryMethod" data-type="1" wx:if="{{tabExpress == 1}}" class="{{ deliveryMethod == 1 ? 'selected' :  ''}}">快递
+              <text class="bottom-line" style="{{'background:' + storeStyle.theme}}"></text>
+            </text>
+            <text catchtap="filterDeliveryMethod" data-type="3" wx:if="{{tabDelivery == 1}}" class="{{ deliveryMethod == 3 ? 'selected' :  ''}}">自提
+              <text class="bottom-line" style="{{'background:' + storeStyle.theme}}"></text>
+            </text>
+            <text catchtap="filterDeliveryMethod" data-type="2" wx:if="{{tabIntraCity == 1}}" class="{{ deliveryMethod == 2 ? 'selected' :  ''}}">同城
+              <text class="bottom-line" style="{{'background:' + storeStyle.theme}}"></text>
+            </text>
+            <text catchtap="filterDeliveryMethod" data-type="4" wx:if="{{tabDining == 1}}" class="{{ deliveryMethod == 4 ? 'selected' :  ''}}">点餐
+              <text class="bottom-line" style="{{'background:' + storeStyle.theme}}"></text>
+            </text>
+          </view>
+        </block>
+      </view>
+    </block>
+    <view class="cart-head" wx:if="{{cartType == 'community'}}">
+      <image class="cart-avatar" src="{{leaderInfo.logo}}"></image>
+      <view class='cart-detail-box'>
+        <view class="cart-name">{{leaderInfo.nick_name?(leaderInfo.nick_name + '-') : '暂无团长'}}{{leaderInfo.housing_estate}}</view>
+        <view class="cart-address">自提地址：{{leaderInfo.address_detail || "暂未设置"}}</view>
+      </view>
+    </view>
+    <view class="shoppingCart-null" wx:if="{{ !originGoodsList.length }}">
+      <image src="http://cdn.jisuapp.cn/static/webapp/images/xcx-goods/shopping-cart-null.png"></image>
+      <view class="shoppingCart-null-label">购物车空空哒</view>
+      <view class="go-home-page" style="{{'background:' + storeStyle.theme }}" bindtap="goToHomepage">去逛逛</view>
+    </view>
+    <view class="shoppingCart-wrap page" id="shoppingCart">
+      <view class="shoppingCart-goods-list">
+        <block wx:for="{{ actIdArr }}" wx:key="indexs" wx:for-item="items" wx:for-index="indexs">
+          <view class="shoppingCart_goods_discount_wrap" style="{{ 'color:' + storeStyle.theme }}" wx:if="{{newCartList[items].goodsList.length > 0 && items > 0}}">
+            <view class="shoppingCart_goods_discount left" data-id="{{items}}" bindtap="toCheckDiscountInfo">
+              <view class="shoppingCart_goods_discount_icon" style="{{ 'background-color:' + storeStyle.theme }}">满减</view>
+              <view class="ellipsis shoppingCart_goods_info">{{newCartList[items].title}}</view>
+            </view>
+            <view class="shoppingCart_goods_discount right" data-id="{{items}}" bindtap="toAddOnItem" style="{{ 'color:' + storeStyle.theme }}">
+              <text>去凑单</text><text class="ico-moon icon-rightarrow icon"></text>
+            </view>
+          </view>
+          <view wx:for="{{ newCartList[items].goodsList }}" wx:for-item="goods" wx:key="index">
+            <label data-index="{{ index }}" style="{{ goods.selected ? 'color:' + storeStyle.theme : '' }}" class="shoppingCart-check-box {{ goods.selected ? 'checked ico-moon icon-success-tip' : '' }}" data-type="{{ item.type }}" data-activity-id="{{items}}" catchtap="clickSelectGoods"></label>
+            <view class="shoppingCart-goods-content" style="padding-bottom:{{!goods.is_package_goods && !goods.showPackageInfo ? '30':'0'}}rpx;" catchtap="{{goods.is_seckill == 1 ? 'goSeckillDetail' : 'turnToGoodsDetail'}}" data-index="{{index}}" data-id="{{goods.goods_id}}" data-goods-type="{{goods.goods_type}}" data-group="{{goods.is_group_buy}}"
+              data-presell="{{item.is_presell_goods}}" data-group-id="{{item.group_buy_activity_id}}" data-app-id="{{item.app_id}}">
+              <view class="shoppingCart-goods-cover">
+                <image src="{{ goods.cover }}"></image>
+              </view>
+              <view class="goods-content-box">
+                <view class="shoppingCart-goods-title">
+                  <text wx:if="{{goods.is_group_buy == 1}}" class="is-seckill">拼团</text>
+                  <text wx:if="{{goods.is_seckill == 1}}" class="is-seckill">秒杀</text>{{ goods.title }}</view>
+                  <view class="shoppingCart-goods-model" wx:if="{{ goods.model_value }}">
+                    <view style="display: table-cell;">
+                      <view  catchtap="{{cartType == 'community' ? '' : 'openGoodsModelValue'}}"
+                          data-id="{{goods.goods_id}}" 
+                          data-cartid="{{goods.id}}"
+                          data-model-id="{{goods.model_id}}" 
+                          data-num="{{goods.num}}" 
+                          data-index="{{index}}" 
+                          data-attributes="{{goods.attributes}}">
+                      <text wx:for="{{goods.model_value}}" 
+                            wx:for-item="model" 
+                            wx:key="index" >{{ model }}{{index == goods.model_value.length - 1 ? '' : '，'}} </text>
+                    </view>
+                    </view>
+                    <text  wx:if="{{cartType != 'community'}}"
+                          catchtap="openGoodsModelValue"   
+                          data-id="{{goods.goods_id}}" 
+                          data-cartid="{{goods.id}}" 
+                          data-model-id="{{goods.model_id}}" 
+                          data-num="{{goods.num}}" 
+                          data-index="{{index}}" 
+                          data-attributes="{{goods.attributes}}" 
+                          class="ico-moon icon-downarrow" 
+                          style="display: table-cell;"></text>
+                </view>
+                <view style="margin-bottom: 10rpx;">
+                  <view class="goods-min_sales_nums" style="color:#FF7100;background:rgba(255,113,0,.1)" wx:if="{{ goods.min_sales_nums > 1 }}">{{goods.min_sales_nums}}件起卖</view>
+                  <view class="goods-min_sales_nums" style="color:#F9443B;background:rgba(250,68,59,.1);" wx:if="{{ goods.stock <= 10 }}">库存紧张</view>
+                </view>
+                <view class="shoppingCart-price-box">
+                  <text class="real-price" style="{{'color:' + storeStyle.theme }}" wx:if="{{goods.integral != '2' || (goods.price != 0 && goods.price != '0.00')}}">¥{{ goods.price }}</text>
+                  <text class="real-price" style="{{'color:' + storeStyle.theme }}" wx:if="{{goods.integral == '2' && (goods.price != 0 || goods.price != '0.00')}}">+</text>
+                  <text class="real-price" style="{{'color:' + storeStyle.theme }}" wx:if="{{goods.integral == '2'}}">{{ goods.max_can_use_integral}}积分</text>
+                  <view class="goods-number-box pull-right" catchtap="stopPropagation">
+                    <view class="goods-num-mius" bindtap="clickMinusButton" data-activity-id="{{items}}" data-type="{{ item.type }}" data-index="{{ index }}">-</view>
+                    <input type="number" class="goods-num-box" value="{{ goods.num }}" data-activity-id="{{items}}" data-type="{{ item.type }}" data-index="{{ index }}" bindblur="inputGoodsCount" />
+                    <view class="goods-num-plus {{goods.stock == goods.num ? 'noMore' :''}}" data-activity-id="{{items}}" data-type="{{ item.type }}" bindtap="clickPlusButton" data-index="{{ index }}">+</view>
+                  </view>
+                  <text class="vip-logo" wx:if="{{goods.cart_vip_goods == 1}}">会员价</text>
+                </view>
+              </view>
+            </view>
+            <!-- 餐饮3.0 新增商品属性 -->
+            <view class="goods-attributes-wrap" wx:if="{{goods.is_package_goods != 1 && goods.attributes_id && goods.attributes_id != 0}}">
+              <view class="goods-attributes-item" wx:for="{{goods.attributes}}" wx:key="index" wx:for-item="attributes">
+                <view>
+                  <text>{{attributes.name}}：</text>
+                  <view wx:for="{{attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                    <text>{{elem.name}}</text>
+                    <text class="attributes-add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                    <text wx:if="{{elem_index != attributes.elem.length -1}}">，</text>
+                  </view>
+                </view>
+              </view>
+            </view>
+          <!-- 餐饮3.0 新增套餐 -->
+          <view class="package-info-wrap" wx:if="{{goodsList[index].is_package_goods == 1}}" style="max-height:{{goodsList[index].showPackageInfo?'auto':''}};margin-top:{{goodsList[index].showPackageInfo?'20rpx':''}};">
+            <view class="package-info-content" hidden='{{!goodsList[index].showPackageInfo}}'>
+              <view class="package-info-item" wx:for="{{goodsList[index].package_goods}}" wx:key="index" wx:for-item="package">
+                <view class="package-info-l">
+                  <block wx:if="{{package.is_require == 1 && package.is_multi_select == 1 && package.selected_num >= package.min_sales_nums && package.selected_num > 1}}">
+                    <view class="package-info-title">
+                      <view style="display:flex;">
+                        <text class="package-info-require" wx:if="{{package.is_require == 1}}">必</text>
+                        <text class="package-info-require" wx:if="{{package.is_require == 1}}">标配</text>
+                        <text class="package-info-name">{{package.title}}</text>
+                      </view>
+                      <view>
+                        <text class="package-info-num">x{{package.min_sales_nums}}</text>
+                      </view>
+                      </view>
+                      <view class="package-info-model">
+                        <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                        <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                      </view>
+                      <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                        <text>{{_attributes.name}} : </text>
+                        <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                          <text>{{elem.name}}</text>
+                          <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                          <text wx:if="{{elem_index != _attributes.elem.length -1}}">，</text>
+                        </view>
+                      </view>
+                      <block wx:if="{{package.selected_num - package.min_sales_nums > 0}}">
+                        <view class="package-info-title">
+                          <view>
+                            <text class="package-info-name">{{package.title}}</text>
+                          </view>
+                          <view>
+                            <text class="package-info-add_price" wx:if="{{package.added_price > 0}}">+¥{{package.added_price}}</text>
+                            <text class="package-info-num">x{{package.selected_num - package.min_sales_nums}}</text>
+                          </view>
+                        </view>
+                        <view class="package-info-model">
+                          <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                          <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                        </view>
+                        <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                          <text>{{_attributes.name}} : </text>
+                          <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                            <text>{{elem.name}}</text>
+                            <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                            <text wx:if="{{elem_index != _attributes.elem.length -1}}">，</text>
+                          </view>
+                        </view>
+                      </block>
+                    </block>
+                    <block wx:else>
+                      <view class="package-info-title">
+                        <view style="display: flex;">
+                          <text class="package-info-require" wx:if="{{package.is_require == 1}}">必</text>
+                          <text class="package-info-require" wx:if="{{package.is_require == 1}}">标配</text>
+                          <text class="package-info-name">{{package.title}}</text>
+                        </view>
+                        <view>
+                          <text class="package-info-add_price" wx:if="{{package.added_price > 0}}">+¥{{package.added_price}}</text>
+                          <text class="package-info-num">x{{package.selected_num}}</text>
+                        </view>
+                      </view>
+                      <view class="package-info-model">
+                        <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                        <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                      </view>
+                      <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                        <text>{{_attributes.name}} : </text>
+                        <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                          <text>{{elem.name}}</text>
+                          <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                          <text wx:if="{{elem_index != _attributes.elem.length -1}}">，</text>
+                        </view>
+                      </view>
+                    </block>
+                  </view>
+                </view>
+              </view>
+              <view class='goods-showMore'>
+                <view class='goods-more package-info' hidden='{{goodsList[index].showPackageInfo}}' data-index='{{index}}' data-status='1' catchtap='showPackageInfoFn' style="{{ 'color:' + storeStyle.theme }}">
+                  展开套餐明细
+                  <text class='ico-moon icon-downarrow package-info-icon'></text>
+                </view>
+                <view class='goods-more package-info' hidden='{{!goodsList[index].showPackageInfo}}' data-index='{{index}}' data-status='0' catchtap='showPackageInfoFn' style="{{ 'color:' + storeStyle.theme }}">
+                  收起
+                  <text class='ico-moon icon-uparrow package-info-icon'></text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </block>
+      </view>
+      <view class="shoppingCart-goods-list unable-goods-list" wx:if="{{ unableData.length }}">
+        <view class="fast-goods-header" style="padding:0;border-bottom: 1rpx solid #f3f3f3;">失效商品</view>
+        <view wx:for="{{ unableData }}" wx:for-item="goods" wx:key="index" style="padding:0;" catchtap="turnToGoodsDetail" data-id="{{goods.goods_id}}" data-goods-type="{{goods.goods_type}}" data-group="{{goods.is_group_buy}}"
+            data-presell="{{item.is_presell_goods}}" data-group-id="{{item.group_buy_activity_id}}" data-app-id="{{item.app_id}}">
+          <view class="shoppingCart-goods-content">
+            <view class="shoppingCart-goods-cover">
+              <image src="{{ goods.cover }}"></image>
+            </view>
+            <view class="goods-content-box">
+              <view class="shoppingCart-goods-title">
+                <text wx:if="{{goods.is_seckill == 1}}" class="is-seckill">秒杀</text>{{ goods.title }}</view>
+              <view class="ellipsis shoppingCart-goods-model" wx:if="{{ goods.model_value_str }}">{{ goods.model_value_str }}</view>
+              <view class="shoppingCart-price-box">
+                <text>已失效，去看看其它商品吧</text>
+                <text class="ico-moon icon-communityPage-read pull-right" bindtap="deleteUnableGoods" data-index="{{ index }}"></text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="fast-goods" wx:if="{{ cartConfig.convenient_shopping.goods && cartType == 0 }}">
+      <view class="fast-goods-header" catchtap="showFastGoods">
+        <text class="fast-ellipsis">{{ cartConfig.convenient_shopping.name }}</text>
+        <text class="pull-right ico-moon icon-rightarrow {{ showFastGoods ? 'show' : '' }}"></text>
+      </view>
+      <block wx:if="{{ showFastGoods }}">
+        <view wx:for="{{ cartConfig.convenient_shopping.goods }}" wx:for-item="goods" wx:key="index">
+          <view class="shoppingCart-goods-content">
+            <view class="shoppingCart-goods-cover">
+              <image src="{{ goods.cover }}"></image>
+            </view>
+            <view class="goods-content-box">
+              <view class="shoppingCart-goods-title">
+                <text wx:if="{{goods.is_seckill == 1}}" class="is-seckill">秒杀</text>{{ goods.title }}</view>
+              <view class="ellipsis shoppingCart-goods-model" wx:if="{{ goods.model_value_str }}">{{ goods.model_value_str }}</view>
+              <view class="shoppingCart-price-box">
+                <text class="real-price" style="{{'color:' + storeStyle.theme }}">¥{{ goods.price }}</text>
+                <text class="seckill-price" wx:if="{{goods.is_seckill == 1}}">¥{{ goods.original_price }}</text>
+                <view catchtap="selectGoodsDetail" data-goods-id="{{ goods.id }}" class="pull-right addShoppingcart ico-moon icon-addshoppingcart3"></view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+  <!-- 优惠明细弹窗 -->
+  <view class="shoppingCart_discount_wrap" hidden="{{!showDiscountDetailModal}}">
+    <view class="shoppingCart_discount_title">优惠明细
+      <text class="ico-moon icon-closes" bindtap="closeDiscountDetailModal"></text>
+    </view>
+    <view class="shoppingCart_discount_item">
+      <view>商品总价</view>
+      <view class="shoppingCart_price" style="{{ 'color:' + storeStyle.theme }}">¥{{priceToPay}}</view>
+    </view>
+    <view class="shoppingCart_discount_item">
+      <view>满减满折</view>
+      <view class="shoppingCart_price discount" style="{{ 'color:' + storeStyle.theme }}">-¥{{totalCutPrice}}</view>
+    </view>
+    <view class="shoppingCart_discount_item">
+      <view>共优惠</view>
+      <view class="shoppingCart_price discount" style="{{ 'color:' + storeStyle.theme }}">-¥{{totalCutPrice}}</view>
+    </view>
+    <view class="shoppingCart_discount_item">
+      <view>合计</view>
+      <view class="shoppingCart_price" style="{{ 'color:' + storeStyle.theme }}">¥{{TotalPrice}}</view>
+    </view>
+  </view>
+
+  <view class="shoppingCart-bottom-nav" wx:if="{{ originGoodsList.length }}">
+    <label style="{{ selectAll ? 'color:' + storeStyle.theme : '' }}" class="shoppingCart-check-box {{ selectAll ? 'checked ico-moon icon-success-tip' : '' }}" bindtap="clickSelectAll"></label>
+    <text class="select-all" style="{{ selectAll ? 'color:' + storeStyle.theme : '' }}">全选</text>
+    <block wx:if="{{!editing}}">
+      <form report-submit="true" bindsubmit="goToPay" data-type="{{pickUpType}}">
+        <button formType="submit" style="{{'background:' + storeStyle.theme }}" class="pull-right shoppingCart-goto-pay">结算({{ goodsCountToPay }})</button>
+      </form>
+      <view class="pull-right total-price-box">
+        <view class="shoppingCart-all-price" style="{{'color:' + storeStyle.theme }}">¥{{ TotalPrice }}</view>
+        <view class="no-contain-freight" wx:if="{{totalCutPrice > 0}}" style="{{ 'color:' + storeStyle.theme }}" bindtap="closeDiscountDetailModal">优惠减免¥{{totalCutPrice}} <text class="ico-moon icon-uparrow"></text></view>
+        <view class="no-contain-freight" wx:else>不含运费</view>
+      </view>
+    </block>
+    <block wx:else>
+      <text class="pull-right mutiple-delete-btn" catchtap="showDeleteWindow">删除</text>
+      <form wx:if="{{cartType == 0 && !franchiseeId}}" report-submit="true" bindsubmit="addFavoriteGoods">
+        <button class="pull-right add-to-favorites" formType="submit">移入收藏夹</button>
+      </form>
+    </block>
+  </view>
+  <view class="settlement-mask" catchtap="closeSettlement" catchtouchmove="stopPropagation" wx:if="{{ showSettlementMask }}">
+    <!-- 餐饮 2.0.1 -->
+    <view class="goods-pick-box canyin" catchtap="stopPropagation">
+      <view class="goods-pick-header canyin">请选择配送方式
+        <view class="ico-moon icon-closes hidePickMask" catchtap="closeSettlement"></view>
+      </view>
+      <view class="new-goods-pick-content">
+        <view data-type="1" data-cart-id="{{canUsePickUpType[1].cart_list}}" bindtap="checkedPickRadioFn" wx:if="{{canUsePickUpType[1].cart_list.length}}" class="{{pickUpType == 1 ? 'active':''}}">
+          <view class="pick-detail-item-bg" style="{{pickUpType == 1 ? 'box-shadow: 0px 6px 16px 0px rgba(237,76,6,0.18);' : ''}}">
+            <text class="pick-detail-item-bg-theme" style="{{pickUpType == 1 ? 'background:'+ (storeStyle.theme || '#ff7100;') : 'background:#F7F7F7;'}}"></text>
+            <text class="pick-detail-item-bg-mask"></text>
+            <text class="pick-detail-item-icon ico-moon icon-express-{{pickUpType == 1 ? 'active' : 'default'}} {{pickUpType == 1 ? 'active':''}}"></text>
+          </view>
+          <view class="pick-detail-item-name {{pickUpType == 1 ? 'active':''}}">快递</view>
+        </view>
+        <view data-type="3" data-cart-id="{{canUsePickUpType[3].cart_list}}" bindtap="checkedPickRadioFn" wx:if="{{canUsePickUpType[3].cart_list.length}}" class="{{pickUpType == 3 ? 'active':''}}">
+          <view class="pick-detail-item-bg" style="{{pickUpType == 3 ? 'box-shadow: 0px 6px 16px 0px rgba(237,76,6,0.18);' : ''}}">
+            <text class="pick-detail-item-bg-theme" style="{{pickUpType == 3 ? 'background:'+ (storeStyle.theme || '#ff7100;') : 'background:#F7F7F7;'}}"></text>
+            <text class="pick-detail-item-bg-mask"></text>
+            <text class="pick-detail-item-icon ico-moon icon-selfDelivery-{{pickUpType == 3 ? 'active' : 'default'}} {{pickUpType == 3 ? 'active':''}}"></text>
+          </view>
+          <view class="pick-detail-item-name {{pickUpType == 3 ? 'active':''}}">自提</view>
+        </view>
+
+
+        <view data-type="2" data-cart-id="{{canUsePickUpType[2].cart_list}}" bindtap="checkedPickRadioFn" wx:if="{{canUsePickUpType[2].cart_list.length}}" class="{{pickUpType == 2 ? 'active':''}}">
+          <view class="pick-detail-item-bg" style="{{pickUpType == 2 ? 'box-shadow: 0px 6px 16px 0px rgba(237,76,6,0.18);' : ''}}">
+            <text class="pick-detail-item-bg-theme" style="{{pickUpType == 2 ? 'background:'+ (storeStyle.theme || '#ff7100;') : 'background:#F7F7F7;'}}"></text>
+            <text class="pick-detail-item-bg-mask"></text>
+            <text class="pick-detail-item-icon ico-moon icon-intraCity-{{pickUpType == 2 ? 'active' : 'default'}} {{pickUpType == 2 ? 'active':''}}"></text>
+          </view>
+          <view class="pick-detail-item-name {{pickUpType == 2 ? 'active':''}}">同城</view>
+        </view>
+
+
+        <view data-type="4" bindtap="checkedPickRadioFn" data-cart-id="{{canUsePickUpType[4].cart_list}}" wx:if="{{canUsePickUpType[4].cart_list.length}}" class="{{pickUpType == 4 ? 'active':''}}">
+          <view class="pick-detail-item-bg" style="{{pickUpType == 4 ? 'box-shadow: 0px 6px 16px 0px rgba(237,76,6,0.18);' : ''}}">
+            <text class="pick-detail-item-bg-theme" style="{{pickUpType == 4 ? 'background:'+ (storeStyle.theme || '#ff7100;') : 'background:#F7F7F7;'}}"></text>
+            <text class="pick-detail-item-bg-mask"></text>
+            <text class="pick-detail-item-icon ico-moon icon-dining-{{pickUpType == 4 ? 'active' : 'default'}} {{pickUpType == 4 ? 'active':''}}"></text>
+          </view>
+          <view class="pick-detail-item-name {{pickUpType == 4 ? 'active':''}}">堂食</view>
+        </view>
+      </view>
+
+      <view class="new-settlement-good-list">
+        <block wx:if="{{toPayGoodsList.length > 5}}">
+          <scroll-view scroll-x="true">
+            <image wx:for="{{ toPayGoodsList }}" wx:key="index" src="{{item.cover}}"></image>
+          </scroll-view>
+        </block>
+        <block wx:else>
+          <view>
+            <image wx:for="{{ toPayGoodsList }}" wx:key="index" src="{{item.cover}}"></image>
+          </view>
+        </block>
+        <view>共{{toPayGoodsList.length}}件</view>
+      </view>
+
+
+      
+      <view style="background:#fff;">
+        <view class="intraCityData-note" wx:if="{{pickUpType == 2 && (intraCityData.in_business_time != 1 || intraCityData.is_enough_price != 1)}}" style="{{'color:' + storeStyle.theme + ';background:' + storeStyle.theme + '1A'}}">
+        <text wx:if="{{intraCityData.in_business_time != 1}}">不在营业时间</text>
+        <text wx:elif="{{intraCityData.is_enough_price != 1}}">未达到起送价 还差{{intraCityData.min_deliver_price_balance}}元</text>
+       </view>
+      </view>
+      <view class="goods-pick-foot">
+        <view class="goods-pick-foot-l">
+          <view style="display:inline-block;vertical-align: middle;">合计：</view>
+          <view style="color:#333;display:inline-block;vertical-align: middle;">
+            <view style="color:{{storeStyle.theme || '#FF7100'}};font-size:34rpx;font-weight:bold;">¥{{toFixedModule.toFixed(canUsePickUpType[pickUpType].goods_price - totalCutPrice, 2)}}</view>
+            <view style="color:#999;font-size:22rpx;">
+              <view wx:if="{{pickUpType == 1 && (canUsePickUpType[pickUpType].express_data.express_fee || canUsePickUpType[pickUpType].express_data.express_fee == 0)}}">不含运费</view>
+              <view wx:if="{{pickUpType == 2 && (canUsePickUpType[pickUpType].intra_city_data.express_fee || canUsePickUpType[pickUpType].intra_city_data.express_fee == 0)}}">不含配送费</view>
+            </view>
+          </view>
+
+        </view>
+        <view class="goods-pick-foot-r" style="background:{{(intraCityData.in_business_time != 1 || intraCityData.is_enough_price != 1) && pickUpType == 2 ? '#E0E0E0' : storeStyle.theme}};" bindtap="{{(intraCityData.in_business_time != 1 || intraCityData.is_enough_price != 1) && pickUpType == 2 ? '' : 'confirmGoodsPick'}}">确定</view>
+      </view>
+    </view>
+  </view>
+  <view class="settlement-mask" catchtap="closeGoodsModelValue" catchtouchmove="stopPropagation" wx:if="{{ showGoodsModelValue }}">
+    <view class="page-bottom-dialog" catchtap="stopPropagation">
+      <view class="pay-close-dialog page-dialog-close ico-moon icon-closes" bindtap="closeGoodsModelValue"></view>
+      <!-- 弹窗头部 -->
+      <view class="dialog-goods-header">
+        <view class="thumb">
+          <view class="thumb-wrap">
+            <image data-src="{{ selectGoodsModelInfo.imgurl || goodsInfo.cover}}" catchtap="clickPlusImages" class="pay-goods-cover" src="{{ selectGoodsModelInfo.imgurl || goodsInfo.cover}}"></image>
+          </view>
+        </view>
+        <view class="pay-goods-baseinfo">
+          <view class="pay-goods-price">
+            <block wx:if="{{goodsInfo.is_vip_goods != 1}}">
+              <view class="pay-current-price">
+                <text style="font-size:28rpx;" style="{{ 'color:' + storeStyle.theme }}" wx:if="{{selectGoodsModelInfo.price != '0.00'}}">¥{{ selectGoodsModelInfo.price}}</text>
+                <block wx:if="{{goodsInfo.integral == '2'}}">
+                  <text wx:if="{{ selectGoodsModelInfo.price != '0.00' && goodsInfo.max_can_use_integral != 0 }}" style="{{ goodsInfo.goods_type != 0 ? '' : 'color:' + storeStyle.theme }}">+</text>
+                  <text wx:if="{{ goodsInfo.max_can_use_integral != 0 }}" style="{{ goodsInfo.goods_type != 0 ? '' : 'color:' + storeStyle.theme }}">{{ goodsInfo.max_can_use_integral }}积分</text>
+                </block>
+                <block wx:else>
+                  <text class="goods-price-discount" wx:if="{{ priceDiscountStr != '' }}">{{ priceDiscountStr }}</text>
+                </block>
+                <text class="virtualPrice" wx:if="{{ isShowVirtualPrice && selectGoodsModelInfo.virtualPrice != 0 && selectGoodsModelInfo.models_text }}">¥{{selectGoodsModelInfo.virtualPrice}}</text>
+              </view>
+            </block>
+            <block wx:else>
+              <view class="pay-current-price member-status">
+                <view class="member-price">
+                  <text>¥</text>
+                  <text>{{selectGoodsModelInfo.vipPrice ? selectGoodsModelInfo.vipPrice : appBECStoreConfig.detail_fields_one.vip_price != 1 ? (goodsInfo.highPrice > goodsInfo.lowPrice && goodsInfo.lowPrice != 0 ? (goodsInfo.lowPrice+' ~ '+goodsInfo.highPrice) : goodsInfo.price) : goodsInfo.vip_price}}</text>
+                </view>
+                <view class="member-logo" wx:if="{{selectGoodsModelInfo.vipPrice != selectGoodsModelInfo.price}}" style="bottom:0;">会员价</view>
+                <view class="memebr-origin-price" style="color:#999;">
+                  <text class="virtualPrice" wx:if="{{ isShowVirtualPrice && selectGoodsModelInfo.virtualPrice != 0 && selectGoodsModelInfo.models_text }}">¥{{selectGoodsModelInfo.virtualPrice}}</text>
+                </view>
+              </view>
+            </block>
+          </view>
+          <view class="pay-goods-stock" wx:if="{{showStock}}">库存 {{ selectGoodsModelInfo.stock}}</view>
+          <view wx:if="{{!selectGoodsModelInfo.models_text && goodsInfo.model.length > 0}}" class="pay-checked-text clearfix">请选择
+            <text wx:for="{{goodsInfo.model}}" wx:key="index" wx:if="{{selectGoodsModelInfo.models[index] == ''}}">{{item.name}} </text>
+          </view>
+          <view wx:if="{{selectGoodsModelInfo.models_text}}" class="pay-checked-text clearfix">已选：{{ selectGoodsModelInfo.models_text }}</view>
+        </view>
+      </view>
+      <!-- 弹窗内容部分 -->
+      <scroll-view class="payDialog-content" scroll-y="true">
+        <view class="pay-goods-models" hidden="{{ !goodsInfo.model_items.length }}">
+          <view wx:for="{{ goodsInfo.model }}" wx:for-item="model" wx:for-index="modelIndex" wx:key="index">
+            <text class="model-title">{{ model.name }}</text>
+            <label class="pills-list">
+              <label wx:for="{{ model.subModelName }}" wx:for-item="name" wx:key="index" data-model-index="{{ modelIndex }}" data-submodel-index="{{ index }}" class="subModel {{ selectGoodsModelInfo.models[modelIndex] == model.subModelId[index] ? 'select' : '' }}"
+                data-submodel-id="{{ model.subModelId[index] }}" data-sales="{{selectGoodsModelInfo.buyCount}}"  catchtap="selectGoodsSubModel"  style="{{ selectGoodsModelInfo.models[modelIndex] == model.subModelId[index] ? 'background:' + storeStyle.theme : '' }}">{{ name }}</label>
+            </label>
+          </view>
+        </view>
+        <view class="pay-goods-attrs" hidden="{{ !goodsInfo.attributes.length }}">
+          <view class="pay-goods-attrs-item" wx:for="{{ goodsInfo.attributes }}" wx:for-item="attr" wx:for-index="attrIndex" wx:key="index">
+            <text class="attr-title">{{ attr.name }}</text>
+            <label class="pills-list">
+              <label wx:for="{{ attr.elem }}" wx:for-item="elem" wx:key="index" data-attr-index="{{ attrIndex }}" data-subattr-index="{{ index }}" data-status="{{ selectAttrInfo.attrs[attrIndex].elem[index].is_selected && selectAttrInfo.attrs[attrIndex].elem[index].attributes_id == attr.id ? '1' : '0' }}"
+                class="subModel {{ selectAttrInfo.attrs[attrIndex].elem[index].is_selected && selectAttrInfo.attrs[attrIndex].elem[index].attributes_id == attr.id ? 'select' : '' }}" bindtap="selectSubAttrs" style="background:{{ selectAttrInfo.attrs[attrIndex].elem[index].is_selected && selectAttrInfo.attrs[attrIndex].elem[index].attributes_id == attr.id ? storeStyle.theme : '' }}">{{ elem.name }} {{elem.price > 0 ? '+¥'+ elem.price : ''}} 
+              </label>
+            </label>
+          </view>
+        </view>
+      </scroll-view>
+      <!-- 购买数量 -->
+      <view class="payDialog-buy-num">
+        <view class="clearfix">
+          <text style=" vertical-align: middle;color:#B0B0B0;font-size:30rpx;">数量</text>
+          <text style=" vertical-align: middle;color:#B0B0B0;" wx:if="{{selectGoodsModelInfo.min_sales_nums > 1}}">（{{selectGoodsModelInfo.min_sales_nums}}件起卖）</text>
+            <view class="good-number-box pull-right">
+              <view class="goods-minus {{selectGoodsModelInfo.buyCount <= selectGoodsModelInfo.min_sales_nums || selectGoodsModelInfo.buyCount <= 1 ? 'disabled' : ''}}" catchtap="clickGoodsMinusButton">-</view>
+              <input class="goods-count" type="number" value="{{ selectGoodsModelInfo.buyCount }}" bindblur="inputBuyCount" />
+              <view class="goods-plus {{selectGoodsModelInfo.buyCount >= selectGoodsModelInfo.stock ? 'disabled' : ''}}" catchtap="clickGoodsPlusButton">+</view>
+            </view>
+        </view>
+      </view>
+      <!-- 弹窗底部 -->
+      <view class="dialog-bottom">
+        <view style="{{ 'background:' + storeStyle.theme }}" class="btn-orange pay-buy-next" data-type="singel" catchtap="sureAddToShoppingCart" data-cartid="{{delid}}" data-index="{{ selectGoodsModelInfo.index }}">确定</view>
+      </view>
+    </view>
+  </view>
+</view>
+
+
+<!-- 多商家购物车 start -->
+<view class="franchisee-cart" wx:if="{{isFranchisee && hasLogin}}">
+  <view style="{{(originShopsList.length || goodsList.length) ? 'padding-bottom: 114rpx' : ''}}">
+    <!-- 头部 start -->
+    <block wx:if="{{originShopsList.length || (cartType != 0 && goodsList.length)}}">
+      <view class="cart-header-wrapper">
+        <!-- 店铺类型 -->
+        <view class="header-cart-type">
+          <view class="cart-type-single" wx:if="{{hasGoodsTypeArray.length == 1}}">
+            <text class="single-mark" style="background-color:{{storeStyle.theme}};"></text>
+            <text wx:if="{{hasGoodsTypeArray[0] == 'hasGoods'}}">基础</text>
+            <text wx:if="{{hasGoodsTypeArray[0] == 'hasCommunity'}}">社区团购</text>
+            <text wx:if="{{hasGoodsTypeArray[0] == 'hasTostore'}}">到店</text>
+            <text wx:if="{{hasGoodsTypeArray[0] == 'hasWaimai'}}">外卖</text>
+          </view>
+          <view class="cart-type-multiple" wx:if="{{hasGoodsTypeArray.length > 1}}" style="{{cartType == -1 ? 'background-color:' +  storeStyle.theme : ''}}">
+            <view class="{{cartType == 0 ? 'active' : ''}}" data-type="0" data-is-franchisee="1" wx:if="{{hasGoodsTypeObj['hasGoods']}}" style="{{cartType == 0 ? 'background-color:' +  storeStyle.theme : ''}}" catchtap="changeCartType">基础</view>
+            <view class="{{cartType == 'community' ? 'active' : ''}}" data-type="community" data-is-franchisee="1" wx:if="{{hasGoodsTypeObj['hasCommunity']}}" style="{{cartType == 'community' ? 'background-color:' +  storeStyle.theme : ''}}" catchtap="changeCartType">社区团购</view>
+            <view class="{{cartType == 3 ? 'active' : ''}}" data-type="3" data-is-franchisee="1" wx:if="{{hasGoodsTypeObj['hasTostore']}}" style="{{cartType == 3 ? 'background-color:' +  storeStyle.theme : ''}}" catchtap="changeCartType">到店</view>
+            <view class="{{cartType == 2 ? 'active' : ''}}" data-type="2" data-is-franchisee="1" wx:if="{{hasGoodsTypeObj['hasWaimai']}}" style="{{cartType == 2 ? 'background-color:' +  storeStyle.theme : ''}}" catchtap="changeCartType">外卖</view>
+          </view>
+          <view class="cart-type-edit" catchtap="switchToEdit">
+            <text class="ico-moon icon-shopping-cart-set" wx:if="{{!editing}}"></text>
+            <text class="ico-moon icon-success-tip" wx:else style="color:{{storeStyle.theme}};"></text>
+            <text class="edti-txt" style="color:{{editing ? storeStyle.theme : '#999'}};">{{editing ? '完成' : '管理'}}</text>
+          </view>
+        </view>
+        <block wx:if="{{cartType == 0}}">
+          <!-- 地址 -->
+          <view class="header-address" catchtap="selectGoodsSameJourney" wx:if="{{showAddress}}">
+            <text class="ico-moon icon-goods-location"></text>
+            <text class="address-txt">{{selectSameJourney ? selectSameJourney.address_info.province.text + selectSameJourney.address_info.city.text + selectSameJourney.address_info.district.text + selectSameJourney.detail_address : currentLocationData.formatted_addresses.recommend || '暂无地址,请点击选择地址'}}</text>
+            <text class="address-trangel"></text>
+          </view>
+          <!-- 取货方式 -->
+          <view class="heaer-delivery-method">
+            <view class="delivery-method-item {{deliveryMethod == 1 ? 'active' :  ''}}" data-type="1" data-is-franchisee="1" catchtap="filterDeliveryMethod">
+              <view class="item-txt">快递
+                <text class="item-line" style="background-color:{{deliveryMethod == 1 ? storeStyle.theme : ''}};"></text>
+              </view>
+            </view>
+            <view class="delivery-method-item {{deliveryMethod == 3 ? 'active' :  ''}}" data-type="3" data-is-franchisee="1" catchtap="filterDeliveryMethod">
+              <view class="item-txt">自提
+                <text class="item-line" style="background-color:{{deliveryMethod == 3 ? storeStyle.theme : ''}};"></text>
+              </view>
+            </view>
+            <view class="delivery-method-item {{deliveryMethod == 2 ? 'active' :  ''}}" data-type="2" data-is-franchisee="1" catchtap="filterDeliveryMethod">
+              <view class="item-txt">同城
+                <text class="item-line" style="background-color:{{deliveryMethod == 2 ? storeStyle.theme : ''}};"></text>
+              </view>
+            </view>
+          </view>
+        </block>
+      </view>
+    </block>
+    <!-- 头部 end -->
+
+    <!-- 店铺商品 start -->
+    <block wx:if="{{originShopsList.length && cartType == 0}}">
+      <!-- 电商 -->
+      <view class="cart-shops-list" style="{{isShowBottom ? 'padding-bottom:98rpx;' : ''}}">
+        <view class="cart-shop-item" wx:for="{{shopsList}}" wx:key="index" wx:for-item="shop" wx:for-index="shopIndex">
+          <view class="shop-info">
+            <view class="shop-info-txt">
+              <label class="{{shop.selected ? 'ico-moon icon-success-tip' : 'cart-check-box'}}" data-app-id="{{shop.app_id}}" data-index="{{shopIndex}}" style="color:{{storeStyle.theme}};" bindtap="clickSelectShops"></label>
+              <text class="info-title" data-app-id="{{shop.app_id}}" catchtap="goToSubShopPage">{{shop.name}}</text>
+              <text class="ico-moon icon-rightarrow"></text>
+            </view>
+            <view class="shop-coupon-btn" data-app-id="{{shop.app_id}}" catchtap="goToCouponListPage">
+              <view style="background-color:{{storeStyle.theme}};"></view>
+              <text style="color:{{storeStyle.theme}}">领券</text>
+            </view>
+          </view>
+          <!-- 联盟优惠 -->
+          <view class="shop-league-coupon" wx:if="{{shop.extraBenefit}}">
+            <view>
+              <text class="coupon-mark">联盟</text>
+              <text>{{shop.extraBenefit}}</text>
+            </view>
+            <view catchtap="goToHomepage">
+              <text class="coupon-btn">去凑单</text>
+              <text class="ico-moon icon-rightarrow"></text>
+            </view>
+          </view>
+          <!-- 商品列表 -->
+          <view class="shop-goods-list">
+            <view class="goods-item {{index != shop.cartList.length - 1 ? 'thin-bd-b' : ''}}" wx:for="{{shop.cartList}}" wx:for-item="goods" wx:key="index">
+              <label class="{{goods.selected ? 'ico-moon icon-success-tip' : 'cart-check-box'}}" data-index="{{index}}" data-shop-index="{{shopIndex}}" data-type="{{ item.type }}" data-is-franchisee="1" style="color:{{goods.selected ? storeStyle.theme : ''}};" catchtap="clickSelectGoods"></label>
+              <view class="item-cover">
+                <image src="{{goods.cover}}" mode="aspectFill"></image>
+              </view>
+              <view class="item-txt">
+                <view class="item-txt-title">
+                  <text class="title-seckill" wx:if="{{goods.is_group_buy == 1}}">拼团</text>
+                  <text class="title-seckill" wx:if="{{goods.is_seckill == 1}}">秒杀</text>
+                  <text>{{goods.title}}</text>
+                </view>
+                <view class="item-txt-model" wx:if="{{goods.model_value_str}}">
+                  <text>{{goods.model_value_str}}</text>
+                </view>
+                <view class="item-txt-price-num">
+                  <view class="item-txt-price">
+                    <text class="price-real" wx:if="{{goods.integral != '2' || (goods.price != 0 && goods.price != '0.00')}}" style="color:{{storeStyle.theme}};">¥{{goods.price}}</text>
+                    <text class="price-real" wx:if="{{goods.integral == '2' && (goods.price != 0 || goods.price != '0.00')}}" style="color:{{storeStyle.theme}};">+</text>
+                    <text class="price-real" wx:if="{{goods.integral == '2'}}" style="color:{{storeStyle.theme}};">{{ goods.max_can_use_integral}}积分</text>
+                  </view>
+                  <view class="item-txt-num">
+                    <view class="num-mins" data-type="{{goods.type}}" data-index="{{index}}" data-shop-index="{{shopIndex}}" data-is-franchisee="1" data-app-id="{{goods.app_id}}" bindtap="clickMinusButton">-</view>
+                    <input type="number" value="{{goods.num}}" data-type="{{goods.type}}" data-index="{{index}}" data-shop-index="{{shopIndex}}" data-is-franchisee="1" data-app-id="{{goods.app_id}}" bindblur="inputGoodsCount" />
+                    <view class="num-plus" data-type="{{goods.type}}" data-index="{{index}}" data-shop-index="{{shopIndex}}" data-is-franchisee="1" data-app-id="{{goods.app_id}}" bindtap="clickPlusButton">+</view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+          <!-- 本店优惠 -->
+          <view class="shop-common-coupon" wx:if="{{!shopsBenefit[deliveryMethod][shop.app_id].no_use_benefit}}">
+            <view class="common-coupon-mark" style="border-color:{{storeStyle.theme}};">
+              <view class="bg" style="background-color:{{storeStyle.theme}};"></view>
+              <view class="bd" style="border-color:{{storeStyle.theme}};"></view>
+              <text style="color:{{storeStyle.theme}};">本店优惠</text>
+            </view>
+            <text>{{shopsBenefit[deliveryMethod][shop.app_id].title}}</text>
+          </view>
+          <!-- 快捷商品 -->
+          <view class="shop-fast-goods" wx:if="{{shopsListConfig[shop.app_id].cart_config.convenient_shopping.goods && cartType == 0}}">
+            <view class="fast-goods-title thin-bd-t" catchtap="showFastGoods">
+              <text>{{shopsListConfig[shop.app_id].cart_config.convenient_shopping.name}}</text>
+              <text class="ico-moon icon-{{showFastGoods ? 'uparrow' : 'downarrow'}}"></text>
+            </view>
+            <view class="fast-goods-list" wx:if="{{showFastGoods}}">
+              <view class="fast-goods-item" wx:for="{{shopsListConfig[shop.app_id].cart_config.convenient_shopping.goods}}" wx:for-item="goods" wx:key="index">
+                <view class="item-cover">
+                  <image src="{{goods.cover}}" mode="aspectFill"></image>
+                </view>
+                <view class="item-txt">
+                  <view class="item-txt-title">
+                    <text class="title-seckill" wx:if="{{goods.is_seckill == 1}}">秒杀</text>
+                    <text>{{goods.title}}</text>
+                  </view>
+                  <view class="item-txt-model" wx:if="{{goods.model_value_str}}">
+                    <text>{{goods.model_value_str}}</text>
+                  </view>
+                  <view class="item-txt-price-num">
+                    <view class="item-txt-price">
+                      <text class="price-real" style="color:{{storeStyle.theme}};">¥{{goods.price}}</text>
+                      <text class="price-virtual" wx:if="{{goods.is_seckill == 1}}">¥{{goods.original_price}}</text>
+                    </view>
+                    <view class="item-txt-num">
+                      <view class="num-plus" data-goods-id="{{goods.id}}" data-app-id="{{goods.app_id}}" catchtap="selectGoodsDetail">+</view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+          <!-- 各个店铺单独结算 -->
+          <view class="bottom-pay thin-bd-t" wx:if="{{isSeparatePay}}">
+            <view class="bottom-total">
+              <view class="total-txt">
+                <text style="color:{{storeStyle.theme}};">¥{{shop.priceToPay}}</text>
+              </view>
+              <text class="total-tip">不含运费</text>
+            </view>
+            <form report-submit="true" bindsubmit="goToPay" data-app-id="{{shop.app_id}}">
+              <button class="bottom-btn" formType="submit" style="background: linear-gradient(90deg,{{storeStyle.secondary}},{{storeStyle.theme}});" disabled="{{!requestFinish}}">去结算</button>
+            </form>
+          </view>
+        </view>
+      </view>
+    </block>
+    <!-- 到店 外卖 -->
+    <block wx:if="{{originGoodsList.length && cartType != 0}}" style="{{isShowBottom ? 'padding-bottom:98rpx;' : ''}}">
+      <view class="cart-shops-list">
+        <view class="cart-shop-item">
+          <view class="shop-goods-list" wx:if="{{goodsList.length > 0}}">
+            <view class="goods-item {{index != goodsList.length - 1 ? 'thin-bd-b' : ''}}" wx:for="{{goodsList}}" wx:for-item="goods" wx:key="index">
+              <label class="{{goods.selected ? 'ico-moon icon-success-tip' : 'cart-check-box'}}" data-index="{{index}}" data-type="{{ item.type }}" style="color:{{goods.selected ? storeStyle.theme : ''}};" catchtap="clickSelectGoods"></label>
+              <view class="item-cover">
+                <image src="{{goods.cover}}" mode="aspectFill"></image>
+              </view>
+              <view class="item-txt">
+                <view class="item-txt-title">
+                  <text class="title-seckill" wx:if="{{goods.is_group_buy == 1}}">拼团</text>
+                  <text class="title-seckill" wx:if="{{goods.is_seckill == 1}}">秒杀</text>
+                  <text>{{goods.title}}</text>
+                </view>
+                <view class="item-txt-model" wx:if="{{goods.model_value_str}}">
+                  <text>{{goods.model_value_str}}</text>
+                </view>
+                <view class="item-txt-price-num">
+                  <view class="item-txt-price">
+                    <text class="price-real" wx:if="{{goods.integral != '2' || (goods.price != 0 && goods.price != '0.00')}}" style="color:{{storeStyle.theme}};">¥{{goods.price}}</text>
+                    <text class="price-real" wx:if="{{goods.integral == '2' && (goods.price != 0 || goods.price != '0.00')}}" style="color:{{storeStyle.theme}};">+</text>
+                    <text class="price-real" wx:if="{{goods.integral == '2'}}" style="color:{{storeStyle.theme}};">{{ goods.max_can_use_integral}}积分</text>
+                  </view>
+                  <view class="item-txt-num">
+                    <view class="num-mins" data-type="{{item.type}}" data-index="{{index}}" bindtap="clickMinusButton">-</view>
+                    <input type="number" value="{{goods.num}}" data-type="{{item.type}}" data-index="{{index}}" bindinput="inputGoodsCount" />
+                    <view class="num-plus" data-type="{{item.type}}" data-index="{{index}}" bindtap="clickPlusButton">+</view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+    <block wx:if="{{cartType == 0 && originShopsList.length && !shopsList.length && requestFinish}}">
+      <view class="shoppingCart-goods-null">
+        <view>暂无{{deliveryMethod == 1 ? '快递' : deliveryMethod == 2 ? '同城配送' : '上门自提'}}商品</view>
+      </view>
+    </block>
+    <!-- 购物车为空 -->
+    <block wx:if="{{!originGoodsList.length && requestFinish}}">
+      <view class="shoppingCart-null">
+        <image src="http://cdn.jisuapp.cn/static/webapp/images/xcx-goods/shopping-cart-null.png"></image>
+        <view class="shoppingCart-null-label">购物车空空哒</view>
+        <view class="go-home-page" style="{{'background:' + storeStyle.theme }}" bindtap="goToHomepage">去逛逛</view>
+      </view>
+    </block>
+    <!-- 店铺商品 start -->
+
+    <!-- 失效商品 start -->
+    <block wx:if="{{unableData.length}}">
+      <view class="cart-unable-goods-wrapper">
+        <text class="cart-unable-goods-title">失效商品</text>
+        <view class="unable-goods-list" style="height:{{showMoreUnableGoods ? 'auto' : '216rpx'}};">
+          <view class="unable-goods-item thin-bd-b" wx:for="{{unableData}}" wx:for-item="goods" wx:key="index">
+            <label class="cart-check-box"></label>
+            <view class="item-cover">
+              <image src="{{goods.cover}}" mode="aspectFill"></image>
+            </view>
+            <view class="item-txt">
+              <view class="item-txt-title">
+                <text class="title-seckill" wx:if="{{goods.is_seckill == 1}}">秒杀</text>
+                <text>{{goods.title}}</text>
+              </view>
+              <view class="item-txt-model" wx:if="{{goods.model_value_str}}">
+                <text>{{goods.model_value_str}}</text>
+              </view>
+              <view class="item-txt-tip">
+                <text>已失效，去看看其它商品吧</text>
+                <text class="ico-moon icon-communityPage-read" data-index="{{index}}" bindtap="deleteUnableGoods"></text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="unable-goods-more" wx:if="{{unableData.length > 1}}" catchtap="toggleMoreUnableData">
+          <text>{{showMoreUnableGoods ? '收起更多' : '查看更多'}}</text>
+          <text class="ico-moon icon-{{showMoreUnableGoods ? 'uparrow' : 'downarrow'}}"></text>
+        </view>
+      </view>
+    </block>
+    <!-- 失效商品 end -->
+  </view>
+
+  <!-- 底部结算栏 start -->
+  <view class="cart-bottom-wrapper" wx:if="{{(originGoodsList.length && cartType == 0 && !isSeparatePay ) || (originGoodsList.length &&  cartType != 0) || editing}}" style="{{isShowBottom ? 'bottom: 98rpx' : ''}};">
+    <view class="cart-bottom-content thin-bd-t">
+      <view class="bottom-select">
+        <label class="{{selectAll ? 'ico-moon icon-success-tip' : 'cart-check-box'}}" style="color:{{selectAll ? storeStyle.theme : ''}};" bindtap="clickSelectAll"></label>
+        <text class="select-txt" style="color:{{selectAll ? storeStyle.theme : ''}};" bindtap="clickSelectAll">全选</text>
+      </view>
+      <block wx:if="{{!editing}}">
+        <view class="bottom-pay">
+          <view class="bottom-total">
+            <view class="total-txt">合计：
+              <text style="color:{{storeStyle.theme}};">¥{{ priceToPay }}</text>
+            </view>
+            <text class="total-tip">不含运费</text>
+          </view>
+          <form report-submit="true" data-is-franchisee="1" bindsubmit="goToPay" data-type="{{pickUpType}}">
+            <button class="bottom-btn" formType="submit" style="background: linear-gradient(90deg,{{storeStyle.secondary}},{{storeStyle.theme}});" disabled="{{!requestFinish}}">结算({{goodsCountToPay}})</button>
+          </form>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="bottom-edit">
+          <view class="edit-delete" catchtap="showDeleteWindow">删除</view>
+        </view>
+      </block>
+    </view>
+  </view>
+  <!-- 底部结算栏 end -->
+
+  <!-- 同城配送提示 start -->
+  <view class="settlement-mask" wx:if="{{showSettlementMask}}">
+    <view class="settlement-box">
+      <view class="settlement-title">同城配送</view>
+      <view class="settlement-type-list">
+        <block wx:for="{{canUsePickUpType}}" wx:key="index" wx:for-item="shop">
+          <view class="settlement-type">
+            <view class="settlement-type-content {{shop[2].intra_city_data.is_enough_price != 1 || shop[2].intra_city_data.in_distance != 1 ? 'no-achieve-intra-box' : ''}}">
+              <view>
+                <text class="settlement-type-title">{{shop.shop_name}}</text>
+                <text class="settlement-type-express">配送费{{shop[2].intra_city_data.express_fee}}元</text>
+              </view>
+              <view>
+                <text class="settlement-type-count">共{{shop[2].goods_num}}件，合计：</text>
+                <text class="settlement-type-price" style="color:{{storeStyle.theme}};">¥{{shop[2].goods_price}}</text>
+              </view>
+              <view class="no-achieve-intra" style="color:{{storeStyle.theme}};" wx:if="{{shop[2].intra_city_data.in_business_time != 1}}">不在营业时间</view>
+              <view class="no-achieve-intra" style="color:{{storeStyle.theme}};" wx:elif="{{shop[2].intra_city_data.is_enough_price != 1}}">未达到起送价 还差{{shop[2].intra_city_data.min_deliver_price_balance}}元</view>
+              <view class="no-achieve-intra" style="color:{{storeStyle.theme}};" wx:elif="{{shop[2].intra_city_data.in_distance != 1}}">不在配送范围</view>
+            </view>
+            <view class="settlement-btn-box">
+              <view wx:if="{{shop[2].intra_city_data.in_business_time == 1 && shop[2].intra_city_data.is_enough_price == 1 && shop[2].intra_city_data.in_distance != 1}}" class="settlement-btn" style="{{'margin-left: 20rpx;color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}"
+                catchtap="selectGoodsSameJourney" data-app-id="{{shop.app_id}}">修改地址</view>
+            </view>
+          </view>
+        </block>
+      </view>
+    </view>
+    <view class="close-settlement-mask" catchtap="closeSettlement">关闭</view>
+  </view>
+  <!-- 同城配送提示 end -->
+</view>
+<!-- 多商家购物车 end -->
+
+
+<view wx:if="{{ cartConfig.shopping_by_scanning_code == 1 }}" class="scan-it" catchtap="scanShopping" catchtouchmove="scanMove" style="{{'box-shadow: 0 0 6rpx' + storeStyle.theme + ';background:' + storeStyle.theme + ';top:' + widowTop + 'px;'}}">
+  <text class="ico-moon icon-shopping-scan"></text>
+  <view class="scan-it-word">扫码购</view>
+</view>
+<view class="delete-tip-window" wx:if="{{ showDeleteWindow }}">
+  <view class="delete-box">
+    <view class="delete-tip">
+      <text wx:if="{{delete_min_sales_nums}}">该商品起卖数是{{delete_min_sales_nums}},</text>
+      <text>确定要删除所选商品吗？</text>
+    </view>
+    <view class="delete-btn-box">
+      <text bindtap="cancelDelete">取消</text>
+      <text wx:if="{{ deleteType == 'singel'}}" style="{{'color:' + storeStyle.theme}}" data-type="singel" class="sure-delete" bindtap="sureDeleteGoods">确定</text>
+      <text wx:else class="sure-delete" style="{{'color:' + storeStyle.theme}}" data-type="mutiple" bindtap="sureDeleteGoods">确定</text>
+    </view>
+  </view>
+</view>

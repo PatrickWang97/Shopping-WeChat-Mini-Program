@@ -1,0 +1,121 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<scroll-view class="franchisee-cooperation page" scroll-y bindscroll="franchiseeCooScroll" scroll-into-view="{{scrollInto}}">
+  <view class="franchiseeCoo-banner">
+    <block wx:if="{{ configData.carousel_imgs.length }}">
+      <swiper class="franchisee-swiper" indicator-dots="true" autoplay="true" circular="true" interval="5000" duration="1000" indicator-active-color="#eee">
+        <block wx:for="{{ configData.carousel_imgs }}" wx:key="index">
+          <swiper-item>
+            <image src="{{ item }}" mode="aspectFill"></image>
+          </swiper-item>
+        </block>
+      </swiper>
+    </block>
+    <block wx:else>
+      <image class="franchiseeCoo-banner-default" src="{{cdnUrl + '/static/webapp/images/franchisee/coo-banner.jpg'}}" mode="aspectFill"></image>
+    </block>
+  </view>
+
+  <view class="franchiseeCoo-section franchiseeCoo-adv">
+    <view class="franchiseeCoo-title">
+      <label class="franchiseeCoo-title-icon franchiseeCoo-title-icon-left"></label>
+      <text>平台优势</text>
+      <label class="franchiseeCoo-title-icon franchiseeCoo-title-icon-right"></label>
+    </view>
+    <view class="franchiseeCoo-adv-content">
+      <view class="franchiseeCoo-adv-item">
+        <image class="franchiseeCoo-adv-icon" src="{{cdnUrl + '/static/webapp/images/franchisee/coo-adv1.png'}}" mode="aspectFill"></image>
+        <view class="franchiseeCoo-adv-text1">提升门店曝光率</view>
+        <view class="franchiseeCoo-adv-text2">完善的社交分享功能</view>
+      </view>
+      <view class="franchiseeCoo-adv-item">
+        <image class="franchiseeCoo-adv-icon" src="{{cdnUrl + '/static/webapp/images/franchisee/coo-adv2.png'}}" mode="aspectFill"></image>
+        <view class="franchiseeCoo-adv-text1">提升门店曝光率</view>
+        <view class="franchiseeCoo-adv-text2">完善的社交分享功能</view>
+      </view>
+      <view class="franchiseeCoo-adv-item">
+        <image class="franchiseeCoo-adv-icon" src="{{cdnUrl + '/static/webapp/images/franchisee/coo-adv3.png'}}" mode="aspectFill"></image>
+        <view class="franchiseeCoo-adv-text1">提升门店曝光率</view>
+        <view class="franchiseeCoo-adv-text2">完善的社交分享功能</view>
+      </view>
+      <view class="franchiseeCoo-adv-item">
+        <image class="franchiseeCoo-adv-icon" src="{{cdnUrl + '/static/webapp/images/franchisee/coo-adv4.png'}}" mode="aspectFill"></image>
+        <view class="franchiseeCoo-adv-text1">提升门店曝光率</view>
+        <view class="franchiseeCoo-adv-text2">完善的社交分享功能</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="franchiseeCoo-section franchiseeCoo-agent">
+    <view class="franchiseeCoo-title">
+      <label class="franchiseeCoo-title-icon franchiseeCoo-title-icon-left"></label>
+      <text>抢占互联网风口红利</text>
+      <label class="franchiseeCoo-title-icon franchiseeCoo-title-icon-right"></label>
+    </view>
+    <view class="franchiseeCoo-agent-content">
+      <view class="franchiseeCoo-agent-li">
+        <label class="franchiseeCoo-agent-lil">技术服务方：</label>
+        <view class="franchiseeCoo-agent-lir">{{configData.card_info.name}}</view>
+      </view>
+      <view class="franchiseeCoo-agent-li">
+        <label class="franchiseeCoo-agent-lil">公司地址：</label>
+        <view class="franchiseeCoo-agent-lir"><text class="franchiseeCoo-agent-text">{{configData.card_info.address + configData.card_info.address_detail}}</text><label class="franchiseeCoo-agent-icon ico-moon icon-fesadress"></label></view>
+      </view>
+      <view class="franchiseeCoo-agent-li">
+        <label class="franchiseeCoo-agent-lil">联系电话：</label>
+        <view class="franchiseeCoo-agent-lir"><text class="franchiseeCoo-agent-text">{{configData.card_info.phone}}</text><label class="franchiseeCoo-agent-icon ico-moon icon-franchisee-phone" data-phone="{{configData.card_info.phone}}" bindtap="makePhoneCall"></label></view>
+      </view>
+      <view class="franchiseeCoo-agent-li">
+        <label class="franchiseeCoo-agent-lil">公司介绍：</label>
+        <view class="franchiseeCoo-agent-lir">{{configData.card_info.profile}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="franchiseeCoo-section franchiseeCoo-cooperation" id="franchiseeCoo-cooperation">
+    <view class="franchiseeCoo-title">
+      <label class="franchiseeCoo-title-icon franchiseeCoo-title-icon-left"></label>
+      <text>合作联系</text>
+      <label class="franchiseeCoo-title-icon franchiseeCoo-title-icon-right"></label>
+    </view>
+    <view class="franchiseeCoo-form-wrap">
+      <form class="franchiseeCoo-form" bindsubmit="formSubmit">
+        <view class="form-item">
+          <label class="form-title">姓名</label>
+          <view class="form-item-right">
+            <input class="form-input" type="text" placeholder="请输入您的姓名" name="nick_name" maxlength="10" value="{{nickName}}" />
+          </view>
+        </view>
+        <view class="form-item">
+          <label class="form-title">联系电话</label>
+          <view class="form-item-right">
+            <input class="form-input form-phone" type="number" placeholder="请输入您的联系电话" name="phone" value="{{phone}}" />
+            <button wx:if="{{userPhone}}" class="form-phone-get" bindtap="getUserPhone">快速获取</button>
+            <button wx:else class="form-phone-get" open-type="getPhoneNumber"  bindgetphonenumber="getPhoneNumber">快速获取</button>
+          </view>
+        </view>
+        <view class="form-item">
+          <label class="form-title">咨询行业</label>
+          <view class="form-item-right">
+            <input class="form-input" type="text" placeholder="请输入要咨询的行业" name="con_industry" maxlength="30" value="{{conIndustry}}" />
+          </view>
+        </view>
+        <button class="form-btn" formType="submit">我要合作</button>
+      </form>
+    </view>
+    <view class="franchiseeCoo-cooperation-tip">填写你的资料，我们会有专业的技术人员和你沟通</view>
+  </view>
+
+  <view class="franchiseeCoo-section franchiseeCoo-service">
+    <image class="franchiseeCoo-service-qrcode" src="{{configData.ser_qr_code}}" mode="aspectFill"></image>
+    <view class="franchiseeCoo-service-text">客服二维码</view>
+  </view>
+
+  <view class="form-btn-wrap {{isForm ? '' : 'btn-fixed'}}">
+    <button class="form-btn" bindtap="goToForm">我要合作</button>
+  </view>
+
+  <view class="sidebar">
+    <view class="ico-moon icon-telephone" data-phone="{{configData.tel_phone}}" bindtap="makePhoneCall"></view>
+  </view>
+</scroll-view>

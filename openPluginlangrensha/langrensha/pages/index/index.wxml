@@ -1,0 +1,58 @@
+<view class='backGroundView'>
+</view>
+<!-- <button open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="onGotUserInfo">获取用户信息</button> -->
+<block wx:if="{{login}}">
+<view class="login"><view class="login_text">请给予访问信息授权</view>
+<view class="login_btn"><button type="primary" size="default" bindtap='openSet'>确定</button></view></view>
+
+</block>
+<view class='mainpage'>
+  <image src="{{imgBaseUrl}}back.png" class='back'></image>
+  <image class='bigTitle' mode='aspectFit' src='{{imgBaseUrl}}bigtitle.png'>
+  </image>
+
+  <movable-area class="topSlider">
+    <!-- 滑动条 -->
+    <view class="outside"></view>
+    <view class='sliderLineBack'>
+    <!-- <view class="outside" style='width:{{(count-3)*40+30}}rpx;'></view> -->
+      <view class='lightLine' style='width:{{(count-3)*40+30}}rpx;'></view>
+    </view>
+    <!-- 滑动器 -->
+    <movable-view bindtouchmove="scroll" id="the-id" direction="horizontal" x="{{x}}" y="-18" class='slider'>
+      <view class='slider-box'>
+        <image class='slider' mode="aspectFit" src="{{imgBaseUrl}}numchoose.png">
+        </image>
+        <view class='countText'>{{count}}</view>
+      </view>
+    </movable-view>
+  </movable-area>
+
+  <view class='topText'>滑动选择游戏人数</view>
+  
+  <view class='backPad'>
+    <!-- 卡片棋盘 -->
+    <view class='cardPad' wx:for='{{cardList}}' bindtap='onTapCard' id='{{index}}'>
+      <view class='cardItem'>
+        <view class='cardBackground'></view>
+        <!-- 标签与数字 -->
+        <image wx:if='{{countList[index]}}' class='cardTag' mode='aspectFit' src='{{imgBaseUrl}}tabicon.png'></image>
+        <view wx:if='{{countList[index]}}' class='tagNumber'>{{countList[index]}}</view>
+
+
+        <!-- 图片本体 -->
+        <image class='cardImage' mode='aspectFit' src='{{imgBaseUrl}}animal{{countList[index]==0 ? "Black":""}}/{{index}}.png' />
+        <view class='nameText'>{{item}}</view>
+      </view>
+    </view>
+
+  </view>
+</view>
+<label>
+<image class='submitButton' mode='aspectFit' src='{{imgBaseUrl}}sendToFriend.jpg' >1241</image>
+<button open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="toRoomPage" style='display:none'>获取用户信息</button>
+</label>
+
+<!-- <navigator class='bottomTitle' url='../desc/desc'>查看背景介绍</navigator> -->
+<navigator class="intro_word" url='../desc/desc'>背景介绍</navigator>
+ <view class="version" bindtap='version'></view>

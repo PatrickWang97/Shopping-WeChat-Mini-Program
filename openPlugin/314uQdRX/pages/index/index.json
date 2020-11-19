@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "2048",
+  "navigationBarBackgroundColor":"#faf8ee",
+  "backgroundColorTop":"#faf8ee",
+  "navigationBarTextStyle":"black",
+  "enablePullDownRefresh": false,
+  "disableScroll": true
+}

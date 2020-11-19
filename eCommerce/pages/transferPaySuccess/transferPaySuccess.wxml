@@ -1,0 +1,298 @@
+<component-reward-point rewardPointObj="{{rewardPointObj}}" shareGiftsObj="{{shareGiftsObj}}" collectGiftsObj="{{collectGiftsObj}}" collectGetObj="{{collectGetObj}}"></component-reward-point>
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view>
+  <view class="top-block">
+      <view class="success-block"></view>
+      <view class="transfer-mess">
+        <view class="beneficiary">{{ appTitle }}</view>
+      <view class="price-block">
+        ¥<text class="actually-price">{{ totalPayment }}</text>
+        <text class="original-price">¥{{ orderInfo.original_price }}</text>
+      </view>
+    </view>
+    <view class="discount-wrapper">
+      <view class="discount-item" wx:if="{{ orderInfo.store_benefit_info && orderInfo.store_benefit_info.discount_price && orderInfo.store_benefit_info.discount_price != 0 }}">
+        <text>店铺满减</text>
+        <text>-¥{{ orderInfo.store_benefit_info.discount_price }}</text>
+      </view>
+      <view class="discount-item" wx:if="{{ (orderInfo.selected_benefit_info.discount_type === 'vip' || orderInfo.selected_benefit_info.discount_type === 'paid_vip' || orderInfo.selected_benefit_info.discount_type === 'vip_benefit_day') && orderInfo.selected_benefit_info.discount_price && orderInfo.selected_benefit_info.discount_price != 0 }}">
+        <text>会员卡优惠</text>
+        <text>-¥{{ orderInfo.selected_benefit_info.discount_price }}</text>
+      </view>
+      <view class="discount-item" wx:if="{{ orderInfo.selected_benefit_info.discount_type === 'coupon' && orderInfo.selected_benefit_info.discount_price && orderInfo.selected_benefit_info.discount_price != 0 }}">
+        <text>优惠券减免</text>
+        <text>-¥{{ orderInfo.selected_benefit_info.discount_price }}</text>
+      </view>
+      <view class="discount-item" wx:if="{{ orderInfo.selected_benefit_info.discount_type === 'integral' && orderInfo.selected_benefit_info.discount_price && orderInfo.selected_benefit_info.discount_price != 0 }}">
+      <text>积分抵扣</text>
+        <text>-¥{{ orderInfo.selected_benefit_info.discount_price }}</text>
+      </view>
+      <!-- 自定义优惠 -->
+      <view class="discount-item" wx:if="{{ combinationBenefit.store_benefit && combinationBenefit.store_benefit.discount_price && combinationBenefit.store_benefit.discount_price != 0 }}">
+        <text>店铺满减</text>
+        <text>-¥{{ combinationBenefit.store_benefit.discount_price }}</text>
+      </view>
+      <view class="discount-item" wx:if="{{ combinationBenefit.vip_benefit_discount_price && combinationBenefit.vip_benefit_discount_price != 0 }}">
+        <text>会员卡优惠</text>
+        <text>-¥{{ combinationBenefit.vip_benefit_discount_price }}</text>
+      </view>
+      <view class="discount-item" wx:if="{{ combinationBenefit.coupon_benefit_discount_price && combinationBenefit.coupon_benefit_discount_price != 0 }}">
+        <text>优惠券减免</text>
+        <text>-¥{{ combinationBenefit.coupon_benefit_discount_price }}</text>
+      </view>
+      <view class="discount-item" wx:if="{{ combinationBenefit.integral_benefit && combinationBenefit.integral_benefit.discount_price && combinationBenefit.integral_benefit.discount_price != 0 }}">
+      <text>积分抵扣</text>
+        <text>-¥{{ combinationBenefit.integral_benefit.discount_price }}</text>
+      </view>
+      <view class="discount-item" wx:if="{{ orderInfo.use_balance && orderInfo.use_balance != 0 }}">
+        <text>储值抵扣</text>
+        <text>-¥{{ orderInfo.use_balance }}</text>
+      </view>
+      <view class="discount-item" wx:if="{{ orderInfo.coupon_fee && orderInfo.coupon_fee != 0 }}">
+        <text>社交立减金</text>
+        <text>-¥{{ orderInfo.coupon_fee }}</text>
+      </view>
+      <view class="discount-item" wx:if="{{ orderInfo.send_integral_info && orderInfo.send_integral_info.consume_send_integral }}">
+        <text>获得积分</text>
+        <text class="count">+{{ orderInfo.send_integral_info.consume_send_integral }}</text>
+      </view>
+      <view class="discount-item" wx:if="{{ orderInfo.settlement_activity && orderInfo.settlement_activity.item_price && orderInfo.settlement_activity.marketing_type == 1}}">
+        <text>充值储值</text>
+        <text class="count">+{{ orderInfo.settlement_activity.item_price }}</text>
+      </view>
+      <view class="discount-item" wx:if="{{ orderInfo.settlement_activity && orderInfo.settlement_activity.item_price && orderInfo.settlement_activity.marketing_type == 2}}">
+        <text>购买付费会员</text>
+        <text class="count">+{{ orderInfo.settlement_activity.item_price }}</text>
+      </view>
+    </view>
+    <view class="btn-wrapper">
+      <view class="btn ok-btn" bindtap="transferSuccessCallback">完成</view>
+      <view class="btn view-btn" bindtap="goToOrderDetail">查看订单</view>
+    </view>
+
+    <view class="settlement-activity" wx:if="{{ settlement_activity }}">
+      <view class="balance-item" wx:if="{{ settlement_activity.marketing_type == 1 }}">
+        <view class="row">
+          <text class="title">充值成功</text>
+          <text class="price">+{{  settlement_activity.item_price }}</text>
+        </view>
+        <view class="row">
+          <text class="time">{{ settlement_activity.payment_time }}</text>
+          <navigator class="navigate" open-type="navigate" path="{{ settlement_activity.path }}" url="{{ settlement_activity.path }}">
+            查看储值
+            <label class="ico-moon icon-rightarrow"></label>
+          </navigator>
+        </view>
+      </view>
+      <block wx:if="{{ settlement_activity.marketing_type == 2 }}">
+        <view class="card-title">
+          获得以下会员卡
+        </view>
+        <view class="card-item">
+          <view class="card-detail">
+            <image class="cover-thumb" src="{{ userInfo.cover_thumb }}"></image>
+            <view class="title-warpper">
+              <view class="nickname">{{ userInfo.nickname }}</view>
+              <view class="card-name">{{ settlement_activity.card_title }}</view>
+            </view>
+            <navigator class="card-navigate" open-type="navigate" path="{{ settlement_activity.path }}" url="{{ settlement_activity.path }}">
+              查看权益
+            </navigator>
+          </view>
+          <view class="row">
+            <text class="number">NO.{{ settlement_activity.card_no }}</text>
+            <text class="extra-date">{{ settlement_activity.expired_time }}</text>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <ad class="ad-block" wx:if="{{ transferConfig.ad_id  }}" unit-id="{{ transferConfig.ad_id }}"></ad>
+
+  <view class="pay-gift">
+    <component-payFinishGift orderId="{{ orderId }}" franchisee="{{ franchisee }}"></component-payFinishGift>
+  </view>
+    
+  <!-- 拉新有礼 -->
+  <view class="invite-wrap" wx:if="{{showInviteModal}}">
+    <view class="newcomer-mask" catchtouchmove="stopPropagation" bindtap="closeInviteModal"></view>
+    <view class="invite-model-wrap">
+      <view class="newcomer-banner">
+        <image src="https://develop.zhichiwangluo.com/zhichi_frontend/static/webapp/images/xcx-newcomer/newcomer-banner.png"></image>
+      </view>
+      <view class="invite-model-text">
+        <view style="text-align:center;">邀请好友，参与拉新</view>
+        <view>您可获得额外的奖励呦~</view>
+      </view>
+      <view class="invite-model-button">
+        <view class="check-acitvity" bindtap="checkActivity">查看活动</view>
+        <button class="invite-friend" open-type="share">邀请好友</button>
+      </view>
+    </view> 
+  </view>
+</view>
+  <view class="activity" wx:if="{{ payActivity }}">
+    <view class="copyWriting">
+      <view class="line"></view>
+      <text class="text">活动</text>
+    </view>
+    <!-- <view class="get-reward-text" wx:if="{{ benefitConfig.type ===  'coupon' || (benefitConfig.type ===  'vipcard_permission' && vipCardInfo.isShow) || benefitConfig.type ===  'integral' || benefitConfig.type ===  'balance' || benefitConfig.type ===  'lucky_wheel' || benefitConfig.type ===  'golden_eggs' }}">
+      本次交易获得{{ benefitConfig.type ===  'coupon' ? '优惠券' :
+                    benefitConfig.type ===  'vipcard_permission' ? '会员卡' :
+                    benefitConfig.type ===  'integral' ? '积分' :
+                    benefitConfig.type ===  'balance' ? '储值金' :
+                    benefitConfig.type ===  'lucky_wheel' ? '大转盘' :
+                    benefitConfig.type ===  'golden_eggs' ? '砸金蛋' :  '' }}奖励
+    </view> -->
+    
+    <view class="collect" wx:if="{{ payActivity ===  'collectme' }}">
+      <view class="text">集集乐个数: {{ collectBenefitData.star_num }}</view>
+      <view class="star-block {{ starData && starData.length === 6 ? 'star-six' : '' }}">
+        <block wx:for="{{ starData }}" wx:key="index">
+          <image class="star" wx:if="{{ item == 'light' }}" src="http://www.zhichiwangluo.com/zhichi_frontend/static/webapp/images/transfer/start@2x.png"></image>
+          <image class="star" wx:elif="{{ item== 'dark' }}" src="http://www.zhichiwangluo.com/zhichi_frontend/static/webapp/images/transfer/star-empty@2x.png"></image>
+        </block>
+      </view>
+      <view class="star-full" wx:if="{{ collectBenefitData.star_num == collectBenefitData.collect_num }}">
+        <view class="star-full-text">满</view>
+      </view>
+      <view class="about">消费满{{ collectBenefitData.value }}元，累计一颗心，积满可获得优惠券{{ collectBenefitData.coupon_title }}一张</view>
+    </view>
+    
+    <!-- <view class="coupon" wx:if="{{ payActivity ===  'coupon' }}">
+      <view class="coupon-item" wx:for="{{couponList}}" wx:key="id">
+        <view class="info">
+          <view class="coupon-title">{{item.title}}</view>
+          <view class="use-condition" wx:if="{{ item.type == 0 }}">使用条件：满{{ item.condition }}元，减{{ item.value }}元</view>
+          <view class="use-condition" wx:if="{{ item.type == 1 }}">使用条件: 打{{ item.value }}折</view>
+          <view class="use-condition" wx:if="{{ item.type == 2 }}">使用条件：可抵扣{{ item.value }}元</view>
+          <view class="use-condition" wx:if="{{ item.type == 3 }}">
+            <text wx:if="{{ item.extra_condition == '' }}" >使用条件: 直接兑换{{ item.coupon_goods_info.title }} </text>
+            <text wx:elif="{{ item.extra_condition.price }}" >使用条件: 消费满{{ item.extra_condition.price }}元可兑换{{ item.coupon_goods_info.title }}</text>
+            <text wx:elif="{{ item.extra_condition.goods_id }}" >使用条件: 购买{{ item.condition_goods_info.title }}可兑换{{ item.coupon_goods_info.title }}</text>
+          </view>
+          <view class="use-condition" wx:if="{{ item.type == 4 }}">使用条件: 储值金可充值{{ item.value }}元</view>
+          <view class="use-condition" wx:if="{{ item.type == 5 }}">使用条件: {{ item.extra_condition }}</view>
+          <view class="pending-btn2" wx:if="{{ couponList.length === 1 }}" data-couponId="{{ item.id }}">已领取</view>
+        </view>
+        <view class="background-word-area">
+          <view class="background-circle"></view>
+          <view class="background-word" wx:if="{{ item.type == 0 }}">减</view>
+          <view class="background-word" wx:if="{{ item.type == 1 }}">折</view>
+          <view class="background-word" wx:if="{{ item.type == 2 }}">代</view>
+          <view class="background-word" wx:if="{{ item.type == 3 }}">兑</view>
+          <view class="background-word" wx:if="{{ item.type == 4 }}">储</view>
+          <view class="background-word" wx:if="{{ item.type == 5 }}">通</view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="vip-card" wx:if="{{ payActivity ===  'vipcard_permission' && vipCardInfo.isShow }}" style="background-image: url(http://www.zhichiwangluo.com/zhichi_frontend/static/webapp/images/transfer/vip-card-default.png)">
+      <image class="card-img" src="{{ vipCardInfo.logo ? vipCardInfo.logo : 'http://www.zhichiwangluo.com/zhichi_frontend/static/webapp/images/transfer/default-vip-card-logo.png' }}" />
+      <view class="card-info">
+        <view class="card-name">{{ vipCardInfo.app_name  + ' ' + vipCardInfo.title }}</view>
+        <view class="card-mess" wx:if="{{ vipCardInfo.discount != 0 }}">开卡可享 {{ vipCardInfo.discount }}折</view>
+        <view class="card-mess" wx:elif="{{ vipCardInfo.coupon_list && vipCardInfo.coupon_list != '' }}">开卡可享 赠送优惠券</view>
+        <view class="card-mess" wx:elif="{{ vipCardInfo.integral != 0 }}">开卡可享 赠送{{ vipCardInfo.integral }}积分</view>
+      </view>
+      <view class="card-btn" bindtap="handleVipCard" wx:if="{{ !isRecvVipCard }}">立即开卡</view>
+      <view class="card-btn" bindtap="goToUserCenter" wx:if="{{ isRecvVipCard }}">立即使用</view>
+    </view>
+    
+    <view class="integral" wx:if="{{ payActivity === 'integral' }}">
+      <view class="integral-block">
+        <view class="text">获得额外积分</view>
+        <view class="num">+{{ orderInfo.send_integral_info.pay_success_benefit_send_integral }}</view>
+      </view>
+    </view>
+    
+    <view class="recharge" wx:if="{{ payActivity ===  'balance' }}">
+      <view class="recharge-block">
+        <view class="text">获得额外储值金</view>
+        <view class="num">+{{ benefitConfig.balance }}</view>
+      </view>
+    </view>
+    
+    <view class="turntable" bindtap="goToWheelDetail" wx:if="{{ payActivity ===  'lucky_wheel' }}">
+      <view class="tip">立即前往</view>
+    </view>
+    
+    <view class="gold-egg" bindtap="goToGoldenEggs" wx:if="{{ payActivity ===  'golden_eggs' }}">
+      <view class="tip">立即前往</view>
+    </view>
+    
+    <view id="scratch" wx:if="{{ payActivity === 'scratch_card' }}">
+
+      <view class="scratchFail" hidden="{{scratchIsFail}}">
+        <image src="http://www.zhichiwangluo.com/static/webapp/images/transfer/scratch-bg.png"></image>
+
+          <view class="failText">很遗憾没有中奖哦</view>
+          <view class="failBtn" bindtap='failBtnClick'>再来一次</view>
+        </view>
+      </view>
+
+      <view class="scratchWinning" hidden="{{scratchIsPrize}}">
+        <image src="http://www.zhichiwangluo.com/static/webapp/images/transfer/scratch-bg2.png"></image>
+        <view class="winningTitle">
+          <view class="winningText">恭喜你获得了</view>
+          <view class="winningText winningValue">{{scratchPrizeTitle}}</view>
+            <view wx:if="{{ifWxCoupon}}" class="btnGroup">
+                <view class="winningBtn" bindtap='toAddCard'>立即领取</view>
+                <view class="winningBtn" bindtap='shadeClose' data-type="1">再来一次</view>
+            </view>
+            <view wx:else class="winningBtn" bindtap='winningBtnClick'>再来一次</view>
+        </view>
+      </view>
+
+      <view class="scratchDurMax" hidden='{{!scratchIsDurMax}}'>
+        <image src="http://www.zhichiwangluo.com/static/webapp/images/transfer/scratch-bg.png"></image>
+        <view class="durMaxTitle">
+          <view class="durMaxText">对不起，您的刮奖次数不足，</view>
+          <view class="durMaxText">分享即可获取次数哦~</view>
+        </view>
+      </view>
+
+      <view class="scratchLimit" hidden='{{!scratchIsLimit}}'>
+        <image src="http://www.zhichiwangluo.com/static/webapp/images/transfer/scratch-bg.png"></image>
+        <view class="limitTitle">
+          <view class="limitText">今日刮奖次数已达到上限，</view>
+          <view class="limitText">明日可继续参与刮奖哦~</view>
+        </view>
+      </view>
+
+      <view class="scratchComfort" hidden='{{scratchIsComfort}}'>
+        <image src="http://www.zhichiwangluo.com/static/webapp/images/transfer/scratch-bg2.png"></image>
+        <view class="comfortTitle">
+          <view wx:if="{{ifGetComfort}}" class="comfortText">已领取，在微信卡包中查看哦~</view>
+          <view wx:else class="comfortText" class="comfortText">又没中奖，送你一个小礼品</view>
+          <view wx:if="{{!ifWxCoupon && !ifGetComfort}}" class="comfortText">>在优惠券卡包进行查收哦~</view>
+            <view wx:if="{{ifWxCoupon}}" class="btnGroup">
+                <view class="comfortBtn" bindtap='toAddCard'>立即领取</view>
+                <view class="comfortBtn" bindtap='shadeClose' data-type="2">知道了</view>
+            </view>
+            <block wx:else>
+                <view wx:if="{{!ifGetComfort}}" class="comfortText">在优惠券卡包进行查收哦~</view>
+                <view class="comfortBtn" bindtap='comfortBtnClick'>知道了</view>
+            </block>
+        </view>
+      </view>
+
+      <view class="scratchDegree" hidden='{{!scratchIsDegree}}'>
+        <image src="http://www.zhichiwangluo.com/static/webapp/images/transfer/scratch-bg.png"></image>
+        <view class="degreeTitle">
+          <view class="degreeText">对不起，您本次获取的刮奖次数不足</view>
+        </view>
+      </view>
+      <view hidden='{{hideScratchCanvas}}' class="scratch_wp" style="width: {{scratch.width}}px; height: {{scratch.height}}px;" >
+        <canvas class="scratch-canvas" style="width: {{scratch.width}}px; height: {{scratch.height}}px;" canvas-id="scratch" bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd" disable-scroll="{{!scratchIsScroll}}">
+          <cover-view class="showArea" wx:if='{{isShowScratchBtn}}'>
+            <cover-view class="showTitle">赢取优惠大奖</cover-view>
+            <cover-view class="showBtn" bindtap="startScratch">点我刮奖</cover-view>
+          </cover-view>
+        </canvas>
+      </view>
+    </view> -->
+  </view>
+

@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "适用店铺",
+  "usingComponents": {
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift"
+  },
+  "enablePullDownRefresh": true
+}

@@ -1,0 +1,20 @@
+<view class="discount_page">
+	<view class="discount_title">满减</view>
+	<block wx:for="{{priceBreakDiscountData}}" wx:key="index" wx:if="{{ id == item.id }}">
+		<view class="discount_time" wx:if="{{item.start_time === '0'}}">活动时间：长期</view>
+		<view class="discount_time" wx:else>活动时间：{{item.start_time}} 至 {{item.end_time}}</view>
+		<view class="discount_info">
+			<view style="display:inline-block;">活动内容：</view>
+			<view style="display:inline-block;" class="">
+				<view class="discount_item" wx:for="{{item.ladder}}" wx:key="ladder_index" wx:for-item="ladder" wx:for-index="ladder_index">
+					满{{ladder.least_amount}}<block wx:if="{{ladder.reduce_amount}}">减{{ladder.reduce_amount}}元</block><block wx:else>打{{ladder.reduce_discount}}折</block>
+				</view>
+			</view>
+			<!-- 循环奖励 -->
+			<view wx:if="{{item.ladder.length == 0}}" class="discount_item">
+				每满{{item.cycle.least_amount}}元
+				减{{item.cycle.reduce_amount}}元
+			</view>
+		</view>
+	</block>
+</view>

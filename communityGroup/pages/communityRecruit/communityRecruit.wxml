@@ -1,0 +1,13 @@
+<import src="../../../components/wxParse/wxParse.wxml"/>
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="{{showBtn ? 'recurit-box' : 'recurit-all-box'}}">
+  <scroll-view>
+    <view  class="recurit-list">
+      <template is="wxParse" data="{{ wxParseData: wxParseDescription.nodes }}" />
+    </view>
+  </scroll-view>
+</view>
+<view class="bottom-button" catchtap='goToApply' wx:if="{{showBtn}}">
+  <view  class="apply-btn">申请社区团长</view>
+</view>

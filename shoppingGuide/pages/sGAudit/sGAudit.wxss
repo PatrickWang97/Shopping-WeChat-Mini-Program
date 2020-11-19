@@ -1,0 +1,187 @@
+.audit-form-container {
+  min-height: 100vh;
+  color: #333;
+  background-color: #fff;
+}
+.audit-form-container .audit-status {
+  background-color: #fff;
+}
+.audit-form-container .status-check {
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 28rpx;
+  text-align: center;
+  color: #3091f2;
+  background-color: #eaf4fe;
+}
+.audit-form-container .status-fail {
+  padding: 30rpx 38rpx  30rpx 20px;
+  margin-bottom: 16rpx;
+  background-color: #fff;
+}
+.audit-form-container .status-fail .fail-title {
+  font-size: 34rpx;
+}
+.audit-form-container .status-fail .fail-reason {
+  padding: 28rpx 30rpx;
+  border-radius: 10rpx;
+  margin-top: 20rpx;
+  font-size: 24rpx;
+  color: #f2303e;
+  background-color: #feeaea;
+}
+.audit-form-container .status-fail .reson-item {
+  display: inline-block;
+  position: relative;
+  padding: 8rpx 0 8rpx 20rpx;
+  line-height: 1.4;
+  word-wrap: break-word;
+  white-space: normal;
+}
+.audit-form-container .status-fail .reson-item::before {
+  content: '*';
+  position: absolute;
+  top: 16rpx;
+  left: 0;
+}
+.audit-form-container .status-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  font-size: 34rpx;
+}
+.audit-form-container .status-success image {
+  width: 287rpx;
+  height: 237rpx;
+  margin-top: 112rpx;
+  margin-bottom: 30rpx;
+}
+.audit-form-container .form-list {
+  padding: 0 30rpx;
+  font-size: 28rpx;
+  background-color: #fff;
+}
+.audit-form-container .form-item {
+  display: flex;
+  padding: 32rpx 0;
+}
+.audit-form-container .form-item.input input {
+  width: 500rpx;
+}
+.audit-form-container .form-item.input .item-content {
+  width: 520rpx;
+}
+.audit-form-container .form-item .placeholder,
+.audit-form-container .form-item.input .disabled,
+.audit-form-container .form-item.picker picker[disabled] .picker-select .selected{
+  color: #999;
+}
+.audit-form-container .form-item.picker {
+  justify-content: space-between;
+}
+.audit-form-container .form-item.picker .picker-select {
+  display: flex;
+  align-items: center;
+  color: #999;
+}
+.audit-form-container .form-item.picker .picker-select .icon-rightarrow {
+  padding: 0 15rpx;
+  font-size: 30rpx;
+}
+.audit-form-container .form-item.picker .picker-select .selected {
+  color: #333;
+}
+.audit-form-container .form-item .item-title {
+  position: relative;
+  width: 140rpx;
+  padding-right: 30rpx;
+  color: #999;
+}
+.audit-form-container .form-item .item-title.required::before {
+  position: absolute;
+  left: -20rpx;
+  top: 8rpx;
+  content: '*';
+  color: red;
+}
+.audit-form-container .form-item .photos-upload {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 10px;
+  margin-right: 15rpx;
+  border: 1px dashed #979797;
+  font-size: 22rpx;
+  color: #666;
+  background-color: #f9f9f8;
+}
+.audit-form-container .form-item .photos-upload .icon-goods-add-image {
+  padding-bottom: 10rpx;
+  color: #333;
+  font-size: 45rpx;
+  font-weight: bold;
+}
+.audit-form-container .photos .photos-list {
+  display: flex;
+}
+.audit-form-container .photos .photos-item {
+  position: relative;
+  width: 160rpx;
+  height: 160rpx;
+  margin-right: 15rpx;
+}
+.audit-form-container .photos .photos-item image {
+  width: 100%;
+  height: 100%;
+}
+.audit-form-container .photos .photos-item .photos-remove {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30rpx;
+  height: 30rpx;
+  font-size: 22rpx;
+  text-align: center;
+  line-height: 30rpx;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.5);
+}
+.audit-form-container .submit-btn {
+  padding: 60rpx 0;
+  background-color: #fff;
+}
+.audit-form-container .submit-btn button {
+  width: 375rpx;
+  height: 80rpx;
+  margin-top: 0 auto;
+  border-radius: 4rpx;
+  font-size: 28rpx;
+  line-height: 80rpx;
+  text-align: center;
+  color: #fff;
+  background-color: #3091F2;
+}
+.thin-bd-b {
+  position: relative;
+}
+.thin-bd-b:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  width: 100%;
+  background-color: #d5d5de;
+  transform: scaleY(0.5);
+  box-sizing: border-box;
+}
+.thin-bd-b:before {
+  bottom: 0;
+}
+.loading-wrap {
+  margin-top: 100rpx;
+}

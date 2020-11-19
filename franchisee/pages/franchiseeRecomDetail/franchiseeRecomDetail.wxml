@@ -1,0 +1,81 @@
+<import src="../../../components/wxParse/wxParse.wxml"/>
+<scroll-view scroll-y style="height: 100%;" bindscrolltolower="bindscrolltolower">
+<view class="foods-recom">
+  <view class="recommend-foods-sec" wx:if="{{recommendInfo.sec_title.isOpen}}">{{recommendInfo.sec_title.name}}<label>({{recommendInfo.goodsList.length}})</label></view>
+  <scroll-view scroll-x="true" scroll-left="{{scrollLeft}}rpx" class="recommend-content-list">
+    <block wx:for="{{recommendInfo.goodsList}}" wx:key="index">
+      <view class="recommend-item" data-id="{{item['goods-id']}}" catchtap="changeFood">
+        <view class="recommend-item-pic {{foodId == item['goods-id'] ? 'selected' : ''}}">
+          <image class="recommend-item-img" src="{{item['goods-cover']}}" mode="aspectFill"/>
+          <image class="recommend-item-lab" wx:if="{{item['corner-mark'] > 0 && (item['corner-position'] === 0 || item['corner-position'] === undefined)}}" src="{{item['corner-url']}}"/>          
+        </view>
+        <view class="recommend-item-name">{{item['goods-name']}}</view>
+      </view>
+    </block>
+  </scroll-view>
+</view>
+<view class="foods-content">
+  <view class="foods-top-left">
+    <view class="foods-left-num" wx:if="{{foodsInfo.approval['index'] > 0 && foodsInfo.approval['index'] < 4}}">{{'0' + foodsInfo.approval['index']}}</view>
+    <view class="foods-left-title">
+      <view class="foods-left-title_wrap">
+        <view class="foods-left-name">{{foodsInfo.title}}</view>
+        <image class="foods-left-label" wx:if="{{foodsInfo.corner_mark > 0 && foodsInfo.corner_position == 1}}" src="{{foodsInfo.corner_url}}"/>           
+      </view>
+      <view class="foods-left-price">¥ {{foodsInfo.price}}</view>
+    </view>
+  </view>
+  <view class="foods-top-right {{foodsInfo.approval['status'] ? 'active' : ''}}" data-id="{{foodsInfo.id}}" data-goodstype="{{foodsInfo.goods_type}}" catchtap="clickThumb">
+    <view class="foods-right-icon"><label class="ico-moon {{foodsInfo.approval['status'] ? 'icon-news-like' : 'icon-community-group-thumb'}}"></label></view>
+    <text class="foods-right-count">{{foodsInfo.approval.total_approval ? foodsInfo.approval.total_approval : 0}}</text>
+  </view>
+</view>
+<view class="foods-video" wx:if="{{foodsInfo.video_url}}">
+  <video src="{{foodsInfo.video_url}}" controls />
+</view>
+<swiper class="foods-swiper" indicator-dots="{{true}}" wx:elif="{{foodsInfo.img_urls}}">
+  <block wx:for="{{foodsInfo.img_urls}}" wx:key="index">
+  <swiper-item>
+    <image src="{{item}}" mode="aspectFill"/>
+  </swiper-item>
+  </block>
+</swiper>
+<view class="foods-detail {{showAll ? '' : 'limitHeight'}}" id="foodDetail" hidden="{{hasVideo}}">
+  <template is="wxParse" data="{{ wxParseData: wxParseDescription.nodes }}" />
+</view>
+<view class="foods-detail-btn" hidden="{{isHidden}}"><text catchtap="changeDetailHeight">{{showAll ? '收起' : '查看更多'}}</text></view>
+<view class="food-comment">
+  <view class="comment-title">网友评论<label class="comment-title-label">({{commentTotal}})</label></view>
+  <view class="comment-section" wx:if="{{commentList.length > 0}}">
+    <view wx:for="{{ commentList }}" class="comPage-comment-item" wx:key="index">
+      <view class="comPage-comment-info">
+        <image class="comPage-comment-photo" src="{{ item.buyer_headimgurl }}"></image>
+        <view>
+          <view class="comPage-comment-person">
+            <view class="comPage-comment-name">{{ item.buyer_nickname }}</view>
+            <view class="comPage-comment-date">{{item.add_time}}</view>
+          </view>
+          <view class="comPage-comment-star">
+            <label class="ico-moon icon-star {{ item.assess_info.score >= 1 ? 'light' : '' }}"></label>
+            <label class="ico-moon icon-star {{ item.assess_info.score >= 2 ? 'light' : '' }}"></label>
+            <label class="ico-moon icon-star {{ item.assess_info.score >= 3 ? 'light' : '' }}"></label>
+            <label class="ico-moon icon-star {{ item.assess_info.score >= 4 ? 'light' : '' }}"></label>
+            <label class="ico-moon icon-star {{ item.assess_info.score >= 5 ? 'light' : '' }}"></label>
+        </view>
+        </view>
+      </view>
+      <view class="comPage-comment-assess">
+        <view class="comPage-comment-content">
+          <text>{{ item.isShowShort ? item.assess_info.short_content : item.assess_info.content}}</text>
+          <label data-index="{{index}}" class="all-word-btn" catchtap="toShowAll" wx:if="{{item.isShowShort}}">全文</label>
+        </view>
+        <view wx:if="{{ item.assess_info.img_arr.length > 0 }}" class="comPage-comment-pics">
+          <image wx:for="{{ item.assess_info.img_arr }}" wx:key="index" wx:for-item="imgSrc" src="{{ imgSrc }}" data-src="{{ imgSrc }}" data-srcarr="{{ item.assess_info.img_arr }}" catchtap="clickPlusImages"></image>
+        </view>
+      </view>
+    </view>
+    <view class="no-more" wx:if="{{commentList.length > 0 && listInfo.is_more === 0}}">没有更多啦</view>
+  </view>
+  <view class="no-comment" wx:else>暂无评论</view>
+</view>
+</scroll-view>

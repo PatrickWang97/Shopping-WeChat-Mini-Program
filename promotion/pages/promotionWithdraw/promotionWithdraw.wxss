@@ -1,0 +1,138 @@
+page {
+  background-color: #fff;
+}
+.top-section {
+  padding-top: 70rpx;
+  font-size: 28rpx;
+  text-align: center;
+  color: #fff;
+  background: url('http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/promotion/withdraw-record-bg.png');
+  background-size: 100% 100%;
+}
+.commission-detail {
+  display: -webkit-flex;
+  display: flex;
+  padding: 20rpx 0;
+  color: #FFFFFF;
+  background: #FF8600;
+  font-size: 26rpx;
+  box-shadow:0 -6px 10px 0px RGBA(255, 113, 0, 0.3);
+  text-align: center;
+  margin-top: -1px;
+}
+.commission-detail-item {
+  -webkit-flex: 1;
+  flex: 1;
+  padding: 10rpx 0;
+}
+.commission-detail-item view:first-child {
+  margin-bottom: 10rpx;
+}
+.commission-detail-item view:last-child {
+  color: rgba(255,255,255,0.8);
+}
+.middle-section {
+  margin-bottom: 42rpx;
+  font-size: 32rpx;
+}
+.withdraw-input-container {
+  padding: 40rpx 30rpx 0;
+}
+.withdraw-input-container input {
+  width: 450rpx;
+  display: inline-block;
+  vertical-align: middle;
+}
+.middle-section-item {
+  position: relative;
+  margin-bottom: 10rpx;
+  padding-left: 60rpx;
+  font-size: 24rpx;
+  color: #999;
+}
+.middle-section-item:before {
+  content: '';
+  position: absolute;
+  left: 35rpx;
+  top: 12rpx;
+  display: block;
+  width: 6rpx;
+  height: 6rpx;
+  background: #ff7100;
+}
+.withdraw-btn {
+  margin: 0 auto;
+  display: block;
+  width: 690rpx;
+  height: 88rpx;
+  line-height: 88rpx;
+  border-radius: 8rpx;
+  text-align: center;
+  color: #fff;
+  background-color: #ff7100;
+}
+.withdrawSuccess {
+  width: 560rpx;
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -250rpx;
+  margin-left: -280rpx;
+  text-align: center;
+  font-size: 28rpx;
+  border-radius: 8rpx;
+  color: #666;
+  padding-top: 100rpx;
+}
+.close-withdraw-btn {
+  border-top: 1px solid #EBEBEB;
+  padding: 20rpx 0;
+  color: #ff7100;
+  font-size: 30rpx;
+  margin-top: 52rpx;
+}
+.withdraw-label {
+  color: #999999;
+  font-size: 26rpx;
+}
+.input-money {
+  margin-top: 20rpx;
+  color: #333333;
+  font-size: 52rpx;
+  padding-bottom: 10rpx;
+  border-bottom: 1px solid #F3F3F3;
+}
+.input-money text {
+  display: inline-block;
+  vertical-align: middle;
+}
+.withdraw-tips {
+  margin-top: 30rpx;
+}
+.withdraw-style  {
+  margin-top: 30rpx;
+}
+.withdraw-style view {
+  display: inline-block;
+  width: 222rpx;
+  height: 82rpx;
+  line-height: 82rpx;
+  text-align: center;
+  font-size: 26rpx;
+  color: #333;
+  border-radius: 2rpx;
+  border: 1px solid #c1c1c1;
+  margin-right: 30rpx;
+}
+.withdraw-style .selected {
+  border-color: #FF7100;
+  color: #ff7100;
+}
+.withdrawSuccess image {
+  width:337rpx;
+  height:259rpx;
+  position:absolute;
+  top:-170rpx;
+  left:110rpx;
+}

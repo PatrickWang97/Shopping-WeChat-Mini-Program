@@ -1,0 +1,21 @@
+<view class="traceGoodsList-page">
+  <view class="traceGoodsList-list">
+    <view class="trace-company-list" wx:for="{{goodsData}}" wx:key="" data-index="{{index}}" catchtap="selectSinglePackage">
+      <view class="trace-company-item">{{item.form_data.dispatch_flow_prefix}}：{{item.form_data.express.express_name}} {{item.form_data.express.express_no}}</view>
+      <block wx:for="{{item.form_data.goods_info}}" wx:for-item="goods" wx:key="" wx:for-index="goodsIndex">
+        <view class="trace-goods-item">
+          <image class="trace-goods-image" src="{{goods.cover}}"></image>
+            <view class="trace-goods-content">
+              <view class="trace-goods-content-title">{{goods.goods_name}}</view>
+              <view class="trace-goods-content-model" v-if="goods.model_value">
+                 <text class="model-value-content" wx:for="{{goods.model_name}}" wx:for-item="mitem" wx:for-index="mindex" wx:key="">{{mitem}}: {{goods.model_value[mindex]}}</text>
+              <view class="trace-goods-num">x{{goods.num}}</view>
+            </view>
+          </view>
+        </view>
+         <view class="trace-goods-line" wx:if="{{goodsIndex + 1 < item.goodsInfo.length}}"></view>
+      </block>
+    </view>
+
+  </view>
+</view>

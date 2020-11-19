@@ -1,0 +1,39 @@
+<view class="comment-head">
+  <view class="comment-title">评论 <label class="comment-title-num">({{commentNums[0]}})</label></view>
+  <view class="comPage-top-section">
+    <label bindtap="clickCommentLabel" data-type="0" class="comPage-comment-label {{ commentType == 0 ? 'active' : '' }}">全部</label>
+    <label bindtap="clickCommentLabel" data-type="1" class="comPage-comment-label {{ commentType == 1 ? 'active' : '' }}">好评(<label class="comPage-positive-comment">{{ commentNums[1] }}</label>)</label>
+    <label bindtap="clickCommentLabel" data-type="2" class="comPage-comment-label {{ commentType == 2 ? 'active' : '' }}">中评(<label class="comPage-neutral-comment">{{ commentNums[2] }}</label>)</label>
+    <label bindtap="clickCommentLabel" data-type="3" class="comPage-comment-label {{ commentType == 3 ? 'active' : '' }}">差评(<label class="comPage-negative-comment">{{ commentNums[3] }}</label>)</label>
+    <label bindtap="clickCommentLabel" data-type="4" class="comPage-comment-label {{ commentType == 4 ? 'active' : '' }}">有图(<label class="comPage-pic-comment">{{ commentNums[4] }}</label>)</label>
+  </view>
+</view>
+<view class="comment-section" wx:if="{{commentArr.length > 0}}">
+  <view wx:for="{{ commentArr }}" class="comPage-comment-item" wx:key="index">
+    <view class="comPage-comment-info">
+      <image class="comPage-comment-photo" src="{{ item.buyer_headimgurl }}"></image>
+      <view>
+        <view class="comPage-comment-name">{{ item.buyer_nickname }}</view>
+        <view class="comPage-comment-date">{{item.add_time}}</view>
+      </view>
+    </view>
+    <view class="comPage-comment-assess">
+      <view class="comPage-comment-star" wx:if="{{showStar}}">
+        <label class="ico-moon icon-star {{ item.assess_info.score >= 1 ? 'light' : '' }}"></label>
+        <label class="ico-moon icon-star {{ item.assess_info.score >= 2 ? 'light' : '' }}"></label>
+        <label class="ico-moon icon-star {{ item.assess_info.score >= 3 ? 'light' : '' }}"></label>
+        <label class="ico-moon icon-star {{ item.assess_info.score >= 4 ? 'light' : '' }}"></label>
+        <label class="ico-moon icon-star {{ item.assess_info.score >= 5 ? 'light' : '' }}"></label>
+      </view>
+      <view class="comPage-comment-content {{showStar ? '' : 'comPage-comment-content_pad'}}">
+        <text>{{ item.isShowShort ? item.assess_info.short_content : item.assess_info.content}}</text>
+        <label data-index="{{index}}" class="all-word-btn" catchtap="toShowAll" wx:if="{{item.isShowShort}}">全文</label>
+      </view>
+      <view wx:if="{{ item.assess_info.img_arr.length > 0 }}" class="comPage-comment-pics">
+        <image wx:for="{{ item.assess_info.img_arr }}" wx:key="index" wx:for-item="imgSrc" src="{{ imgSrc }}" data-src="{{ imgSrc }}" data-srcarr="{{ item.assess_info.img_arr }}" catchtap="clickPlusImages"></image>
+      </view>
+    </view>
+  </view>
+  <view class="no-more" wx:if="{{commentArr.length > 0 && listInfo.is_more === 0}}">没有更多啦</view>
+</view>
+<view class="no-comment" wx:else>暂无评论</view>

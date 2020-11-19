@@ -1,0 +1,7 @@
+{
+    "navigationBarTitleText":"选择小区",
+    "usingComponents":{
+        "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+        "component-newcomer-gift": "/components/newcomerGift/newcomerGift"
+    }
+}

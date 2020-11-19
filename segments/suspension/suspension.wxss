@@ -1,0 +1,97 @@
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.suspension-box {
+  text-align: center;
+  position: relative;
+}
+.suspension-box button{
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:100%;
+  height:100%;
+  z-index:1;
+  opacity:0;
+}
+.suspension-box:last-child {
+  margin:0 !important;
+}
+.suspension-wrap {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.suspension-title {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.app .suspension {
+  color: #fff;
+  font-size: 20px;
+  position: fixed !important;
+  right: 0;
+  z-index: 20;
+}
+.app .suspension-sideways {
+  display: flex;
+  align-items: center;
+}
+.suspension-item {
+  display: block;
+  background-color: rgba(0, 0, 0, 0.5);
+  text-align: center;
+  position: relative;
+}
+.suspension-item.diy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.suspension-item > icon{
+  line-height: 72rpx;
+  font-size: inherit;
+}
+.suspension-service{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  vertical-align: top;
+}
+.suspension-service contact-button{
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.suspension-item navigator{
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.suspension-item navigator image{
+  display: block;
+}
+.suspension-item button {
+  height:100%;
+  width:100%;
+  opacity:0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.old-suspension .suspension-item {
+  width: 70rpx;
+  height: 70rpx;
+}
+.suspension .old-and-new {
+  width: 35rpx;
+  height: 35rpx;
+}

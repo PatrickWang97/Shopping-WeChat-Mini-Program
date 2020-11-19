@@ -1,0 +1,7 @@
+{
+    "navigationBarTitleText":"视频所有评论",
+    "usingComponents":{
+        "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+        "component-newcomer-gift": "/components/newcomerGift/newcomerGift"
+    }
+}

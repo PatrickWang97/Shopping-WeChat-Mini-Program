@@ -1,0 +1,668 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-topNavBar topNavBarData="{{topNavBarData}}"></component-topNavBar>
+<component-community-publish communityPublish="{{communityPublish}}"></component-community-publish>
+<component-community-publish-type communityPublishType="{{communityPublishType}}"></component-community-publish-type>
+<component-sinkingModal></component-sinkingModal>
+<component-behavior-track></component-behavior-track>
+<wxs module="communityPageTool">
+  module.exports = {
+    showMoreButton: function (topic, mode, requirePhone, vistorUserToken) {
+      // 联系他 分享 删除话题
+      validators = [
+        !!(requirePhone == 1 && topic.phone),
+        mode == 0 || mode == 2,
+        topic.user_token == vistorUserToken
+      ];
+      for (i = 0, l = validators.length; i < l; i++) {
+        if (validators[i]) {
+          return true;
+        }
+      }
+      return false;
+    },
+    operateMoreThenOne: function (data) {
+      // 联系他 分享 删除话题
+      validators = [
+        !!data.phone,
+        data.mode == 0 || data.mode == 2,
+        data.isAuthor
+      ];
+      res = 0;
+      for (i = 0, l = validators.length; i < l; i++) {
+        res = res + validators[i];
+      }
+      return res > 1;
+    }
+  };
+</wxs>
+<view class="communityPage-wrap" id="communityPage" scroll-y="true" scroll-x="false" bindscrolltolower="scrollTolower" bindscroll="scrollEvent" lower-threshold="100" scroll-top="{{backTop}}">
+  <view class="communityPage-head {{communityInfo.require_article_post == 1 ? '' : 'fullSearch'}}" hidden="{{communityInfo.article_style == 3}}">
+    <view class="communityPage-search">
+      <view class="communityPage-search-btn" catchtap="bindconfirmInput">
+        <icon class="ico-moon icon-search"></icon>
+      </view>
+      <input class="communityPage-search-input" id="communityPage-search-input" type="text" maxlength="64" bindinput="bindKeyInput" bindconfirm="bindconfirmInput" placeholder="搜索" placeholder-style="color: #59607b;" />
+    </view>
+    <view class="communityPage-notify-btn ico-moon icon-communityPage-news{{(sectionCommentLikeCounts.comment_count > 0 || sectionCommentLikeCounts.like_count > 0) && ' have-messages' || ''}}" wx:if="{{communityInfo.require_article_post == 1}}" catchtap="turnToNotify" style="color:{{communityInfo.theme_color}};"></view>
+    <view class="communityPage-topic-btn ico-moon icon-usercenter" wx:if="{{communityInfo.require_article_post == 1}}" catchtap="turnToUsercenter" style="color:{{communityInfo.theme_color}};"></view>
+  </view>
+  <view class="communityPage-banner" hidden="{{communityInfo.article_style == 3}}">
+    <swiper class="communityPage-carousel" circular="true" id="communityPage-carousel" wx:if="{{carouselImg.length > 0}}" indicator-dots="{{true}}" autoplay="{{true}}" interval="5000" duration="1000" indicator-color="rgba(255,255,255,.45)" indicator-active-color="rgba(255,255,255,1)">
+      <swiper-item wx:for="{{carouselImg}}" wx:key="index" data-id="{{item.id}}" catchtap="turnToDetail">
+        <image src="{{item.carousel_img}}" class="slide-image" lazy-load="{{true}}"></image>
+      </swiper-item>
+    </swiper>
+  </view>
+  <view class="communityPage-main" hidden="{{communityInfo.article_style == 3}}">
+    <view class="communityPage-info {{hasCarousel ? '' : 'nobanner'}}" style="background-image: url({{hasCarousel ? '' : communityInfo.background_pic || communityInfo.img}});">
+      <image class="communityPage-img" src="{{communityInfo.img}}" lazy-load="{{true}}"></image>
+      <view>
+        <text class="communityPage-title">{{communityInfo.name}}</text>
+        <view class="communityPage-num">
+          <text wx:if="{{communityInfo.require_article_post == 1}}">话题<text class="communityPage-topic-num">{{communityInfo.xcx_article_count}}</text></text>
+          <text wx:if="{{communityInfo.require_article_post == 1}}">回复<text class="communityPage-comment-num">{{communityInfo.xcx_comment_count}}</text></text>
+        </view>
+        <view class="communityPage-headImg">
+          <image class="headImg" wx:if="{{memberInfo[0].headimgurl}}" src="{{memberInfo[0].headimgurl}}"></image>
+          <image class="headImg" wx:if="{{memberInfo[1].headimgurl}}" src="{{memberInfo[1].headimgurl}}"></image>
+          <image class="headImg" wx:if="{{memberInfo[2].headimgurl}}" src="{{memberInfo[2].headimgurl}}"></image>
+          <image class="headImg" wx:if="{{memberInfo[3].headimgurl}}" src="{{memberInfo[3].headimgurl}}"></image>
+          <image class="headImg" wx:if="{{memberInfo[4].headimgurl}}" src="{{memberInfo[4].headimgurl}}"></image>
+          <text class='communityPage-description'>{{memberCount}}个用户参与</text>
+        </view>
+      </view>
+    </view>
+    <!-- 新增公告、简介、成员 -->
+    <view class="notice-section">
+      <view class="notice-items">
+        <view class="notice-item {{currentTab == 0 ? 'current' : ''}}" data-current='0' bindtap="clickTab">公告</view>
+        <view class="notice-item {{currentTab == 1 ? 'current' : ''}}" data-current='1' bindtap="clickTab">简介</view>
+        <view class="notice-item {{currentTab == 2 ? 'current' : ''}}" data-current='2' bindtap="clickTab">成员</view>
+      </view>
+
+      <view class="notice-content">
+        <view class="content-announce {{currentTab == 0 ? 'show':'hidden'}}" wx:if="{{communityInfo.section_notice[0]}}">
+          <view class="announce-icon ico-moon icon-announce2"></view>
+          <swiper class="announce-textList" vertical="{{true}}" autoplay="{{true}}" circular="{{true}}" interval="5000">
+            <block wx:for="{{communityInfo.section_notice}}" wx:key="index">
+              <swiper-item>
+                <view class="announce-one" data-text="{{item}}" catchtap="announceModal">{{item}}</view>
+              </swiper-item>
+            </block>
+          </swiper>
+        </view>
+
+        <view class="announceModal" style="display:{{closeDec ? 'block' : 'none'}}" catchtap="closeIcon">
+          <view class="announce-description" catchtap="showIcon">
+          <view class="closeButton" catchtap="closeIcon">
+            <image src="http://cdn.jisuapp.cn/static/webapp/images/close.png"></image>
+          </view>
+          <view class="closeModal">{{noticeDec}}</view>
+          </view>
+        </view>
+
+        <view class="content-desc {{currentTab == 1 ? 'show':'hidden'}}" data-text="{{communityInfo.description}}" style="{{currentTab == 1 ? 'display: -webkit-box;':''}}" catchtap="announceModal">
+          <text class="desc-text">{{communityInfo.description}}</text>
+        </view>
+
+        <view class="content-member {{currentTab == 2 ? 'show':'hidden'}}">
+          <view class="member-item" wx:for="{{memberInfo}}" wx:key="">
+            <view class="member-icon" catchtap="turnToUsercenter" data-usertoken="{{item.user_token}}">
+              <image src="{{item.headimgurl}}"></image>
+            </view>
+            <text class="member-name">{{item.nickname}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="category-section">
+      <view class="communityPage-category" id="communityPage-topic">
+        <view wx:for="{{category}}" wx:key="index" class="navli {{categoryActive == item.value ? 'active':''}}" style="color:{{(activeCategory.attr == item.attr && activeCategory.value == item.value) ? communityInfo.theme_color : ''}};border-color:{{(activeCategory.attr == item.attr && activeCategory.value == item.value) ? communityInfo.theme_color : ''}};"
+          data-value="{{item.value}}" data-attr="{{item.attr}}" data-index="{{index}}" catchtap="tapCategory">{{item.name}}</view>
+      </view>
+      <view class="sort-present-aside" bindtap="tapShowSortModal">
+        <text>{{currentSortbyName || '默认排序'}}</text>
+        <icon class="ico-moon icon-{{sortModal.show ? 'up' : 'down'}}arrow"></icon>
+      </view>
+    </view>
+  </view>
+  <view class="communityPage-type-3-header" hidden="{{communityInfo.article_style != 3}}">
+    <image class="communityPage-header-background" src="{{communityInfo.background_pic || communityInfo.img}}"></image>
+    <view class="communityPage-header-name">{{communityInfo.name}}</view>
+    <image class="communityPage-header-image" src="{{communityInfo.headimgurl}}"></image>
+  </view>
+  <view class="communityPage-list">
+    <view class="communityPage-ul" id="communityPage-ul">
+      <view wx:for="{{sectionList}}" wx:key="index" wx:for-index="sInd">
+        <!-- 卡片样式设置 -->
+        <view class="tcommunity-topic-type-2" wx:if="{{!item.article_type && !item.wechat_id && communityInfo.article_style == 0}}" data-liked="{{item.is_liked}}" data-id="{{item.id}}" data-phone="{{item.phone}}" catchtap="turnToDetail">
+          <view>
+            <view class="card-headimgurl" catchtap="turnToUsercenter" data-usertoken="{{item.user_token}}" data-sourcetype="{{item.source_type}}">
+              <image src="{{item.headimgurl}}" data-headimgurl="{{item.headimgurl}}" lazy-load="{{true}}"></image>
+            </view>
+            <view class="card-authorInfo">
+              <text class="card-publish-author">{{item.nickname}}</text>
+              <text wx:if="{{item.top_flag == 1}}" class="community-stick"></text>
+              <text wx:if="{{item.hot_flag == 1}}" class="community-hot"></text>
+              <view class="card-publish-time">{{item.add_time}}</view>
+            </view>
+            <text class="ico-moon icon-more" data-index="{{sInd}}" catchtap="showTopicOperateModal"></text>
+          </view>
+          <view class="card-title">{{item.title}}</view>
+          <view class="card-description" style="color:#333;font-size:30rpx;">{{item.content.text}}</view>
+          <view class="card-decImg" wx:if="{{item.content.imgs && item.content.imgs[0]}}">
+            <image src="{{item.content.imgs[0]}}" mode="aspectFill" data-img="{{item.content.imgs[0]}}" data-imgArr="{{item.content.imgs}}" catchtap="tapPrevewPictureHandler" lazy-load="{{true}}"></image>
+          </view>
+          <view wx:if="{{item.content.type == 2 && item.content.url.article}}" class="tcommunity-topic-link">
+            <view class="link-logo-wrap">
+              <image class="link-logo" src="{{item.content.url.article.cover || item.content.url.article.logo}}" mode="aspectFill" alt="" lazy-load="{{true}}"></image>
+              <label wx:if="{{item.content.url.article.type == 4}}" class="ico-moon icon-news-video-play"></label>
+            </view>
+            <text class="link-text">{{item.content.url.article.title}}</text>
+          </view>
+          <view wx:if="{{item.content.type == 2 && item.content.url.video}}" class="tcommunity-topic-video">
+            <image class="video-cover" src="{{item.content.url.video.cover || ''}}" mode="aspectFill" alt="" lazy-load="{{true}}"></image>
+            <label class="ico-moon icon-news-video-play"></label>
+          </view>
+          <view class="card-goods" data-id="{{item.form_data.list_recommend.recommend_goods[0].id}}" wx:if="{{item.form_data.list_recommend.recommend_goods}}" data-goods-type="{{item.form_data.list_recommend.recommend_goods[0].goods_type}}" data-app-id="{{item.form_data.list_recommend.recommend_goods[0].app_id}}" catchtap="turnToGoodsDetail" >
+            <view class="card-goods-img">
+              <image src="{{item.form_data.list_recommend.recommend_goods[0].image}}"></image>
+            </view>
+            <view class="card-goods-dec">
+              <view class="card-goods-title">{{item.form_data.list_recommend.recommend_goods[0].name}}</view>
+              <view class="card-goods-price">¥{{item.form_data.list_recommend.recommend_goods[0].price}}</view>
+            </view>
+            <view class="card-goods-button">去购买</view>
+          </view>
+
+          <view class="card-bottom">
+            <view class="card-reading" data-id="{{item.id}}" data-index="{{sInd}}" catchtap="turnToDetail"><text class="ico-moon icon-communityPage-read icon-communityPage-read-cover"></text>{{item.read_count}}</view>
+            <view style="width:50%;text-align:right;">
+              <view class="card-thumbs" data-id="{{item.id}}" data-liked="{{item.is_liked}}" data-index="{{sInd}}" data-like-count="{{item.like_count}}" catchtap="articleLike">
+                <text class="ico-moon icon-community-group-thumb" style="font-size: 30rpx;"></text>
+                <text class="card-num">{{item.like_count}}</text>
+              </view>
+              <view wx:if="{{communityInfo.require_article_post == 1 && communityInfo.require_article_comment == 1}}" class="card-reply" data-comment-id="0" data-parent-comment-id="0" data-article-id="{{item.id}}" data-section-id="{{item.section_id}}" data-index="{{sInd}}" catchtap="turnComment" data-replyto="{{item.nickname}}" data-agent-user-token="{{item.agent_user_token}}">
+                <text class="ico-moon icon-goods-customer-service"></text>
+                <text class="card-num">{{item.comment_count}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <!-- 朋友圈样式 -->
+        <view wx:if="{{!item.article_type && !item.wechat_id && communityInfo.article_style == 2}}" class="communityPage-li friendType-li" data-liked="{{item.is_liked}}" data-phone="{{item.phone}}" data-id="{{item.id}}" catchtap="turnToDetail">
+          <view class="community-li-top">
+            <view class="community-li-cover" catchtap="turnToUsercenter" data-usertoken="{{item.user_token}}" data-sourcetype="{{item.source_type}}">
+              <image src="{{item.headimgurl}}" data-headimgurl="{{item.headimgurl}}" lazy-load="{{true}}"></image>
+            </view>
+            <view class="community-li-author">
+              <text class="community-li-name">{{item.nickname}}</text>
+              <text wx:if="{{item.top_flag == 1}}" class="community-stick"></text>
+              <text wx:if="{{item.hot_flag == 1}}" class="community-hot"></text>
+              <text class="ico-moon icon-more" data-index="{{sInd}}" catchtap="showTopicOperateModal"></text>
+              <text class="communityPage-li-title">{{item.title}}</text>
+            </view>
+          </view>
+          <view class="communityPage-li-content">
+            <text wx:for="{{item.content_text}}" wx:key="index" wx:for-item="ii" wx:for-index="iind" class="text-p">{{ii}}<text wx:if="{{item.isellipsis && iind == item.content_text.length - 1}}" class="ellipsis-a">全文</text></text>
+            <view wx:if="{{item.content.type == 2 && item.content.url.article}}" class="tcommunity-topic-link">
+              <view class="link-logo-wrap">
+                <image class="link-logo" src="{{item.content.url.article.cover || topic.content.url.article.logo}}" mode="aspectFill" alt="" lazy-load="{{true}}"></image>
+                <label wx:if="{{item.content.url.article.type == 4}}" class="ico-moon icon-news-video-play"></label>
+              </view>
+              <text class="link-text">{{item.content.url.article.title}}</text>
+            </view>
+            <view wx:if="{{item.content.type == 2 && item.content.url.video}}" class="tcommunity-topic-video">
+              <image class="video-cover" src="{{item.content.url.video.cover || ''}}" mode="aspectFill" alt="" lazy-load="{{true}}"></image>
+              <label class="ico-moon icon-news-video-play"></label>
+            </view>
+          </view>
+          <view wx:if="{{item.content.imgs && item.content.imgs[0]}}">
+            <view class="communityPage-li-imgli-wrap">
+              <view wx:for="{{item.content.imgs}}" wx:key="index" wx:for-item="it" wx:for-index="itIdx" wx:if="{{itIdx < 9}}" style="display:inline-block" class="communityPage-li-imgli">
+                <image src="{{it}}" mode="aspectFill" alt="" data-img="{{it}}" data-imgArr="{{item.content.imgs}}" catchtap="tapPrevewPictureHandler" lazy-load="{{true}}"></image>
+              </view>
+            </view>
+          </view>
+          <!-- 目前限制只能添加一个商品 -->
+          <view wx:if="{{item.form_data.list_recommend.recommend_goods}}" class="community-topic-one-goods" catchtap="turnToGoodsDetail" data-id="{{item.form_data.list_recommend.recommend_goods[0].id}}" data-goods-type="{{item.form_data.list_recommend.recommend_goods[0].goods_type}}" data-app-id="{{item.form_data.list_recommend.recommend_goods[0].app_id}}">
+            <view class="topic-goods-left">
+              <image src="{{item.form_data.list_recommend.recommend_goods[0].image}}" lazy-load="{{true}}"></image>
+            </view>
+            <view class="topic-goods-right">
+              <view class="topic-goods-name">
+                <text>{{item.form_data.list_recommend.recommend_goods[0].name}}</text>
+              </view>
+              <view class="topic-goods-price">¥
+                <text>{{item.form_data.list_recommend.recommend_goods[0].price}}</text>
+                <button>购买</button>
+              </view>
+            </view>
+          </view>
+
+          <!-- 供以后版本使用可以添加多个商品，商品左右滑动显示 -->
+          <!-- <view class="multi-community-goods-part" wx:if="{{item.form_data.list_recommend.recommend_goods}}">
+            <view class="multi-community-goods">
+              <view class="community-topic-goods" catchtap="turnToGoodsDetail" data-id="{{item.form_data.list_recommend.recommend_goods[0].id}}">
+                <view class="topic-goods-left">
+                  <image src="{{item.form_data.list_recommend.recommend_goods[0].image}}" lazy-load="{{true}}"></image>
+                </view>
+                <view class="topic-goods-right">
+                  <view class="topic-goods-name">
+                    <text>{{item.form_data.list_recommend.recommend_goods[0].name}}</text>
+                  </view>
+                  <view class="topic-goods-price">
+                    <text>¥ {{item.form_data.list_recommend.recommend_goods[0].price}}</text>
+                    <button>购买</button>
+                  </view>
+                </view>
+              </view>
+              <view class="community-topic-goods" catchtap="topicTurnToGoodsDetail" data-id="{{item.form_data.list_recommend.recommend_goods[0].id}}">
+                <view class="topic-goods-left">
+                  <image src="{{item.form_data.list_recommend.recommend_goods[0].image}}" lazy-load="{{true}}"></image>
+                </view>
+                <view class="topic-goods-right">
+                  <view class="topic-goods-name">
+                    <text>{{item.form_data.list_recommend.recommend_goods[0].name}}</text>
+                  </view>
+                  <view class="topic-goods-price">
+                    <text>¥ {{item.form_data.list_recommend.recommend_goods[0].price}}</text>
+                    <button>购买</button>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view> -->
+
+          <view class="communityPage-li-center">
+            <text class="community-li-time">{{item.add_time}}</text>
+            <!-- <view class="community-li-address" wx:if="{{item.address}}">
+              <label class="ico-moon icon-community-location"></label>{{item.address}}</view> -->
+            <view class="community-li-read" data-id="{{item.id}}" data-index="{{sInd}}" catchtap="turnToDetail">
+              <text>{{item.read_count}}浏览量</text>
+            </view>
+            <view class="community-li-comment" catchtap="showCommentBox" data-index="{{sInd}}">
+              <view class="li-comments">
+                <image src="http://cdn.jisuapp.cn/static/webapp/images/comments.png"></image>
+              </view>
+              <view class="comment-box {{item.showCom ? 'show' : ''}}">
+                <view data-id="{{item.id}}" data-liked="{{item.is_liked}}" data-index="{{sInd}}" data-like-count="{{item.like_count}}" catchtap="articleLike">
+                  <label class="ico-moon {{item.is_liked == 1 ? 'icon-community-thumb-up' : 'icon-collect'}}"></label>
+                  <text>{{item.like_count > 0 ? item.like_count : '点赞'}}</text>
+                </view>
+                <view wx:if="{{communityInfo.require_article_post == 1 && communityInfo.require_article_comment == 1}}" data-comment-id="0" data-parent-comment-id="0" data-article-id="{{item.id}}" data-section-id="{{item.section_id}}" data-index="{{sInd}}" catchtap="turnComment" data-replyto="{{item.nickname}}" data-agent-user-token="{{item.agent_user_token}}">
+                  <label class="ico-moon icon-community_message"></label>
+                  <text>{{item. forum_comment_count > 0 ? item. forum_comment_count : '评论'}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+          <view class="communityPage-li-likes {{item.comment.length ? 'border' : ''}}" wx:if="{{communityInfo.article_style == 2 && item.like_count > 0}}">
+            <label class="ico-moon icon-community_like"></label>
+            <text wx:for="{{item.like}}" wx:key="index" wx:for-index="likeIdx">
+              <text wx:if="{{likeIdx > 0}}">,</text><text>{{item.nickname}}</text>
+            </text>
+          </view>
+          <view class="commuinty-li-replyList" wx:if="{{communityInfo.article_style == 2 && item.comment.length}}">
+            <view wx:for="{{item.comment}}" wx:for-index="replyIdx" wx:for-item="replyItem" wx:key="replyIdx">{{replyItem.nickname}}
+              <view class="replyto" wx:if="{{replyItem.content.reply_to}}">
+                <text>回复</text>{{replyItem.content.reply_to.nickname}}</view>：{{replyItem.content.text}}</view>
+            <view style="color: {{communityInfo.theme_color}}">查看全部回复
+              <text class="ico-moon icon-downarrow"></text>
+            </view>
+          </view>
+        </view>
+        <!-- 不变样式 -->
+        <view wx:if="{{!item.article_type && !item.wechat_id && communityInfo.article_style == 1}}" class="communityPage-li" data-liked="{{item.is_liked}}" data-phone="{{item.phone}}" data-id="{{item.id}}" catchtap="turnToDetail">
+          <view class="community-li-top">
+            <view class="community-li-cover" catchtap="turnToUsercenter" data-usertoken="{{item.user_token}}" data-sourcetype="{{item.source_type}}">
+              <image wx:if="{{item.headimgurl}}" src="{{item.headimgurl}}"></image>
+              <image wx:else src="http://cdn.jisuapp.cn/zhichi_frontend/static/pc2/user/images/default-avatar2.jpg"></image>
+            </view>
+            <view class="community-li-author">
+              <text class="community-li-name">{{item.nickname}}</text>
+              <text wx:if="{{item.top_flag == 1}}" class="community-stick"></text>
+              <text wx:if="{{item.hot_flag == 1}}" class="community-hot"></text>
+              <text wx:if="{{communityPageTool.showMoreButton(item, communityInfo.article_style, communityInfo.require_phone, vistorUserToken)}}" class="ico-moon icon-more" data-index="{{sInd}}" catchtap="showTopicOperateModal"></text>
+            </view>
+          </view>
+          <text class="communityPage-li-title">{{item.title}}</text>
+          <view class="communityPage-li-content">
+            <text wx:for="{{item.content_text}}" wx:key="index" wx:for-item="ii" wx:for-index="iind" class="text-p">{{ii}}<text wx:if="{{item.isellipsis && iind == item.content_text.length - 1}}" class="ellipsis-a">全文</text></text>
+            <view wx:if="{{item.content.type == 2 && item.content.url.article}}" class="tcommunity-topic-link">
+              <view class="link-logo-wrap">
+                <image class="link-logo" src="{{item.content.url.article.cover || topic.content.url.article.logo}}" mode="aspectFill" alt="" lazy-load="{{true}}"></image>
+                <label wx:if="{{item.content.url.article.type == 4}}" class="ico-moon icon-news-video-play"></label>
+              </view>
+              <text class="link-text">{{item.content.url.article.title}}</text>
+            </view>
+            <view wx:if="{{item.content.type == 2 && item.content.url.video}}" class="tcommunity-topic-video">
+              <image class="video-cover" src="{{item.content.url.video.cover || ''}}" mode="aspectFill" alt="" lazy-load="{{true}}"></image>
+              <label class="ico-moon icon-news-video-play"></label>
+            </view>
+          </view>
+          <view wx:if="{{item.content.imgs && item.content.imgs[0]}}">
+            <view class="communityPage-li-imgli-wrap">
+              <view wx:for="{{item.content.imgs}}" wx:key="index" wx:for-item="it" wx:for-index="itIdx" wx:if="{{itIdx < 9}}" style="display:inline-block" class="communityPage-li-imgli">
+                <image src="{{it}}" mode="aspectFill" alt="" data-img="{{it}}" data-imgArr="{{item.content.imgs}}" catchtap="tapPrevewPictureHandler" lazy-load="{{true}}"></image>
+              </view>
+            </view>
+          </view>
+          <view wx:if="{{item.form_data.list_recommend.recommend_goods}}" class="communityPage-li-goods" catchtap="turnToGoodsDetail" data-id="{{item.form_data.list_recommend.recommend_goods[0].id}}" data-goods-type="{{item.form_data.list_recommend.recommend_goods[0].goods_type}}" data-app-id="{{item.form_data.list_recommend.recommend_goods[0].app_id}}">
+            <view class="goods-left">
+              <image src="{{item.form_data.list_recommend.recommend_goods[0].image}}" lazy-load="{{true}}"></image>
+            </view>
+            <view class="goods-center">
+              <view class="goods-name">
+                <text>{{item.form_data.list_recommend.recommend_goods[0].name}}</text>
+              </view>
+              <view class="goods-price">¥
+                <text>{{item.form_data.list_recommend.recommend_goods[0].price}}</text>
+              </view>
+            </view>
+            <view class="goods-right">
+              <button>去购买</button>
+            </view>
+          </view>
+
+          <view class="communityPage-li-foot">
+            <view class="communityPage-li-foot-top">
+              <view class="community-li-time">{{item.add_time}}</view>
+              <view class="communityPage-li-location" wx:if="{{item.address}}">
+                <label class="ico-moon icon-community-location"></label>{{item.address}}</view>
+            </view>
+            <view class="comunityPage-shareBox-wrap">
+              <view class="comunityPage-li-shareBox">
+                <button class="communityPage-li-info" data-id="{{item.id}}" data-index="{{sInd}}" open-type="share" catchtap="stopPropagation">
+                  <icon class="ico-moon icon-community_share"></icon>
+                  <text>分享</text>
+                </button>
+                <button class="communityPage-li-info" data-id="{{item.id}}" data-index="{{sInd}}" catchtap="turnToDetail">
+                  <icon class="ico-moon icon-communityPage-read"></icon>
+                  <text>{{item.read_count > 0 ? item.read_count : '浏览'}}</text>
+                </button>
+                <button wx:if="{{communityInfo.require_article_post == 1 && communityInfo.require_article_comment == 1}}" class="communityPage-li-info" data-comment-id="0" data-parent-comment-id="0" data-article-id="{{item.id}}" data-section-id="{{item.section_id}}" data-index="{{sInd}}" catchtap="turnComment" data-replyto="{{item.nickname}}" data-agent-user-token="{{item.agent_user_token}}">
+                  <icon class="ico-moon icon-community_message"></icon>
+                  <text wx:if="{{item.forum_comment_count > 0}}">{{item.forum_comment_count}}</text>
+                  <text wx:else>评论</text>
+                </button>
+                <button class="communityPage-li-info" data-id="{{item.id}}" data-liked="{{item.is_liked}}" data-index="{{sInd}}" catchtap="articleLike" data-like-count="{{item.like_count}}" style="color:{{item.is_liked == 1 ? '#59607b' : ''}}">
+                  <icon class="ico-moon {{item.is_liked == 1 ? 'icon-community-thumb-up' : 'icon-collect'}}"></icon>
+                  <text wx:if="{{item.like_count > 0}}">{{item.like_count}}</text>
+                  <text wx:else>点赞</text>
+                </button>
+              </view>
+            </view>
+          </view>
+        </view>
+
+         <!-- 第四种样式 -->
+        <view wx:if="{{!item.article_type && !item.wechat_id && communityInfo.article_style == 3}}" class="communityPage-li friendType-li margin-top0" data-liked="{{item.is_liked}}" data-phone="{{item.phone}}" data-id="{{item.id}}" catchtap="turnToDetail">
+          <view class="community-li-top">
+            <view class="community-li-style-4" catchtap="turnToUsercenter" data-usertoken="{{item.user_token}}" data-sourcetype="{{item.source_type}}">
+              <text>{{item.day}}</text>
+              <text class="community-li-month">{{item.month}}月</text>
+            </view>
+            <view class="community-li-author community-li-author-4">
+              <text class="community-li-name community-li-name-4">{{item.nickname}}</text>
+              <text wx:if="{{item.top_flag == 1}}" class="community-stick "></text>
+              <text wx:if="{{item.hot_flag == 1}}" class="community-hot"></text>
+              <text class="communityPage-li-title communityPage-li-title-4">{{item.title}}</text>
+            </view>
+          </view>
+          <view class="communityPage-li-content communityPage-li-content-4">
+            <text wx:for="{{item.content_text}}" wx:key="index" wx:for-item="ii" wx:for-index="iind" class="text-p">{{ii}}<text wx:if="{{item.isellipsis && iind == item.content_text.length - 1}}" class="ellipsis-a">全文</text></text>
+            <view wx:if="{{item.content.type == 2 && item.content.url.article}}" class="tcommunity-topic-link">
+              <view class="link-logo-wrap">
+                <image class="link-logo" src="{{item.content.url.article.cover || topic.content.url.article.logo}}" mode="aspectFill" alt="" lazy-load="{{true}}"></image>
+                <label wx:if="{{item.content.url.article.type == 4}}" class="ico-moon icon-news-video-play"></label>
+              </view>
+              <text class="link-text">{{item.content.url.article.title}}</text>
+            </view>
+            <view wx:if="{{item.content.type == 2 && item.content.url.video}}" class="tcommunity-topic-video">
+              <image class="video-cover" src="{{item.content.url.video.cover || ''}}" mode="aspectFill" alt="" lazy-load="{{true}}"></image>
+              <label class="ico-moon icon-news-video-play"></label>
+            </view>
+          </view>
+          <view class="style-4-padding">
+            <view wx:if="{{item.content.imgs && item.content.imgs[0]}}">
+              <view class="communityPage-li-imgli-wrap">
+                <view wx:for="{{item.content.imgs}}" wx:key="index" wx:for-item="it" wx:for-index="itIdx" wx:if="{{itIdx < 9}}" style="display:inline-block" class="communityPage-li-imgli">
+                  <image src="{{it}}" mode="aspectFill" alt="" data-img="{{it}}" data-imgArr="{{item.content.imgs}}" catchtap="tapPrevewPictureHandler" lazy-load="{{true}}"></image>
+                </view>
+              </view>
+            </view>
+            <!-- 目前限制只能添加一个商品 -->
+            <view wx:if="{{item.form_data.list_recommend.recommend_goods}}" class="community-topic-one-goods community-topic-one-goods-4" catchtap="turnToGoodsDetail" data-id="{{item.form_data.list_recommend.recommend_goods[0].id}}" data-goods-type="{{item.form_data.list_recommend.recommend_goods[0].goods_type}}"
+              data-app-id="{{item.form_data.list_recommend.recommend_goods[0].app_id}}">
+              <view class="topic-goods-left">
+                <image src="{{item.form_data.list_recommend.recommend_goods[0].image}}" lazy-load="{{true}}"></image>
+              </view>
+              <view class="topic-goods-right topic-goods-right-4">
+                <view class="topic-goods-name">
+                  <text>{{item.form_data.list_recommend.recommend_goods[0].name}}</text>
+                </view>
+                <view class="topic-goods-price">¥
+                  <text>{{item.form_data.list_recommend.recommend_goods[0].price}}</text>
+                  <button>购买</button>
+                </view>
+              </view>
+            </view>
+            <view class="communityPage-li-center style-4-li-center">
+              <text class="community-li-time">{{item.add_time}}</text>
+              <view class="community-li-read" data-id="{{item.id}}" data-index="{{sInd}}" catchtap="turnToDetail">
+                <text>{{item.read_count}}浏览量</text>
+              </view>
+              <text class="community-li-detete" wx:if="{{item.topicMoreOperationModal.isAuthor}}"  data-data="{{item.topicMoreOperationModal}}" catchtap="deleteTopicAct">删除</text>
+              <view class="community-li-comment" catchtap="showCommentBox" data-index="{{sInd}}">
+                <view class="li-comments">
+                  <image src="http://cdn.jisuapp.cn/static/webapp/images/comments.png"></image>
+                </view>
+                <view class="comment-box {{item.showCom ? 'show' : ''}}">
+                  <view data-id="{{item.id}}" data-liked="{{item.is_liked}}" data-index="{{sInd}}" data-like-count="{{item.like_count}}" catchtap="articleLike">
+                    <label class="ico-moon {{item.is_liked == 1 ? 'icon-community-thumb-up' : 'icon-collect'}}"></label>
+                    <text>{{item.like_count > 0 ? item.like_count : '点赞'}}</text>
+                  </view>
+                  <view wx:if="{{communityInfo.require_article_post == 1 && communityInfo.require_article_comment == 1}}" data-comment-id="0" data-parent-comment-id="0" data-article-id="{{item.id}}" data-section-id="{{item.section_id}}" data-index="{{sInd}}" catchtap="turnComment"
+                    data-replyto="{{item.nickname}}" data-agent-user-token="{{item.agent_user_token}}">
+                    <label class="ico-moon icon-community_message"></label>
+                    <text>{{item. forum_comment_count > 0 ? item. forum_comment_count : '评论'}}</text>
+                  </view>
+                </view>
+              </view>
+            </view>
+            <view class="communityPage-li-likes {{item.comment.length ? 'border' : ''}}" wx:if="{{communityInfo.article_style == 3 && item.like_count > 0}}">
+              <label class="ico-moon icon-community_like"></label>
+              <text wx:for="{{item.like}}" wx:key="index" wx:for-index="likeIdx">
+                  <text wx:if="{{likeIdx > 0}}">,</text>
+              <text>{{item.nickname}}</text>
+              </text>
+            </view>
+            <view class="commuinty-li-replyList" wx:if="{{communityInfo.article_style == 3 && item.comment.length}}">
+              <view wx:for="{{item.comment}}" wx:for-index="replyIdx" wx:for-item="replyItem" wx:key="replyIdx">{{replyItem.nickname}}
+                <view class="replyto" wx:if="{{replyItem.content.reply_to}}">
+                  <text>回复</text>{{replyItem.content.reply_to.nickname}}</view>：<text style="color:#333">{{replyItem.content.text}}</text></view>
+              <view style="color: {{communityInfo.theme_color}}">查看全部回复
+                <text class="ico-moon icon-downarrow"></text>
+              </view>
+            </view>
+          </view>
+
+        </view>
+
+        <!-- 微信广告 -->
+        <ad class="ad-block" wx:if="{{item.wechat_id }}" unit-id="{{item.id}}"></ad>
+        <!-- 广告推荐位  样式一 无图样式-->
+        <view wx:if="{{item.article_type == 3 && item.style == 1}}" catchtap="turnToAdDetail" class="advertise-recommend" data-id="{{item.id}}" data-article-type="{{item.article_type}}" data-event-params="{{item.form_data.event}}">
+          <view class="advertise-author-logo" catchtap="topicTurnToUsercenter">
+            <image src="{{item.cover}}" alt="头像" lazy-load="{{true}}"></image>
+          </view>
+          <view class="advertise-top-right">
+            <view class="advertise-author-name">{{item.app_name}}</view>
+            <view class="advertise-extension">推广</view>
+            <view class="advertise-text">{{item.title}}</view>
+            <view class="advertise-dec">{{item.content}}</view>
+            <view class="advertise-publish-info">
+              <view class="advertise-publish-time">{{item.add_time}}</view>
+            </view>
+          </view>
+        </view>
+        <!-- 广告推荐位  样式二  图片或者视频在下-->
+        <view wx:if="{{item.article_type == 3 && item.style == 2}}" catchtap="turnToAdDetail" class="advertise-recommend" data-id="{{item.id}}" data-article-type="{{item.article_type}}" data-event-params="{{item.form_data.event}}">
+          <view class="advertise-author-logo" catchtap="topicTurnToUsercenter">
+            <image src="{{item.cover}}" alt="头像" lazy-load="{{true}}"></image>
+          </view>
+          <view class="advertise-top-right">
+            <view class="advertise-author-name">{{item.app_name}}</view>
+            <view class="advertise-extension">推广</view>
+            <view class="advertise-text">{{item.title}}</view>
+            <view class="advertise-dec">{{item.content}}</view>
+            <view class="advertise-image" wx:if="{{item.imgs != ''}}">
+              <image src="{{item.imgs}}"></image>
+            </view>
+            <view class="advertise-image" catchtap="stopEvent"  data-index="{{sInd}}" data-id="{{item.video_data.video_id}}" wx:if="{{item.video_data != ''}}">
+              <video id="ad_video" poster="{{item.video_data.video_lib_img}}" src="{{video_url}}" controls></video>
+            </view>
+            <view class="advertise-publish-info">
+              <view class="advertise-publish-time">{{item.add_time}}</view>
+            </view>
+          </view>
+        </view>
+        <!-- 广告推荐位 样式三 图片或者视频在上-->
+        <view wx:if="{{item.article_type == 3 && item.style == 3}}" catchtap="turnToAdDetail" class="advertise-recommend" data-id="{{item.id}}" data-article-type="{{item.article_type}}" data-event-params="{{item.form_data.event}}">
+          <view class="advertise-author-logo" catchtap="topicTurnToUsercenter">
+            <image src="{{item.cover}}" alt="头像" lazy-load="{{true}}"></image>
+          </view>
+          <view class="advertise-top-right">
+            <view class="advertise-author-name">{{item.app_name}}</view>
+            <view class="advertise-extension">推广</view>
+            <view class="advertise-image" wx:if="{{item.imgs != ''}}">
+              <image src="{{item.imgs}}"></image>
+            </view>
+            <view class="advertise-image" catchtap="stopEvent" data-index="{{sInd}}" data-id="{{item.video_data.video_id}}" wx:if="{{item.video_data != ''}}">
+              <video id="ad_video" src="{{video_url}}" poster="{{item.video_data.video_lib_img}}" controls></video>
+            </view>
+            <view class="advertise-text">{{item.title}}</view>
+            <view class="advertise-dec">{{item.content}}</view>
+            <view class="advertise-publish-info">
+              <view class="advertise-publish-time">{{item.add_time}}</view>
+            </view>
+          </view>
+        </view>
+        <!-- 广告推荐位 样式四 多图样式 图片在下-->
+        <view wx:if="{{item.article_type == 3 && item.style == 4}}" catchtap="turnToAdDetail" class="advertise-recommend" data-id="{{item.id}}" data-article-type="{{item.article_type}}" data-event-params="{{item.form_data.event}}">
+          <view class="advertise-author-logo" catchtap="topicTurnToUsercenter">
+            <image src="{{item.cover}}" alt="头像" lazy-load="{{true}}"></image>
+          </view>
+          <view class="advertise-top-right">
+            <view class="advertise-author-name" style="margin-bottom:7rpx">{{item.app_name}}</view>
+            <view class="advertise-extension">推广</view>
+            <view class="advertise-text">{{item.title}}</view>
+            <view class="advertise-dec">{{item.content}}</view>
+            <view class="advertise-image-list" wx:if="{{item.imgs != ''}}" wx:for="{{item.imgs}}" wx:key="index" wx:for-item="one">
+              <image src="{{one}}"></image>
+            </view>
+            <view class="advertise-publish-info">
+              <view class="advertise-publish-time">{{item.add_time}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view wx:if="{{!!!sectionList.length}}" class="communityPage-li-none">
+        <image src="http://cdn.jisuapp.cn/static/webapp/images/none.png" mode="aspectFill" alt="" lazy-load="{{true}}"></image>
+        <text>暂无内容</text>
+      </view>
+      <view wx:if="{{getSectionData.nomore && sectionList.length > 0}}" class="communityPage-li-nomore">没有更多了</view>
+    </view>
+  </view>
+
+  <view class="communityPage-btns-group" style="{{suspensionStyle || 'bottom:40rpx;right:30rpx;'}}">
+    <view wx:if="{{communityInfo.require_article_post == 1}}" class="communityPage-publish-btn" catchtap="turnToPublish" style="background-color:{{communityInfo.theme_color}};">
+      <!-- <label class="ico-moon icon-community-edit"></label> -->
+      <image src="https://cdn.jisuapp.cn/static/webapp/images/community/suspension-edit1.png"></image>
+    </view>
+    <view class="communityPage-service-btn" wx:if="{{communityInfo.require_custom_service == 1}}" style="background-color:{{communityInfo.theme_color}};">
+      <!-- <label class="ico-moon icon-news-custom"></label> -->
+      <image src="https://cdn.jisuapp.cn/static/webapp/images/community/suspension-customer1.png"></image>
+      <button open-type="contact" size="20" session-from="goodsDetail"></button>
+    </view>
+    <view class="communityPage-backtop-btn" wx:if="{{showBackTopBtn}}" catchtap="backPageTop" style="background-color:{{communityInfo.theme_color}};">
+      <!-- <label class="ico-moon icon-community-go-top"></label> -->
+      <image src="https://cdn.jisuapp.cn/static/webapp/images/community/suspension-top1.png"></image>
+    </view>
+  </view>
+</view>
+<view class="actionSheet-wrap" hidden="{{!showActionSheet}}" catchtouchmove=" ">
+  <view class="actionSheet-buttons">
+    <button class="phoneNum-btn">{{phoneNumCall}}</button>
+    <button class="call-btn" catchtap="makePhoneCall">呼叫</button>
+    <button class="cancel-btn" catchtap="closeActionSheet">取消</button>
+  </view>
+</view>
+
+<!-- 话题排序选择弹窗 -->
+<view wx:if="{{sortModal.show}}" class="topic-sort-modal" catchtap="tapCloseSortModal">
+  <view class="modal-main" bindtap="tapSelectSortItem">
+    <view wx:for="{{sortModal.data}}" wx:key="index" data-orderby="{{item.value}}" data-name="{{item.name}}" class="btn {{listOtherParam.orderby === item.value ? 'active': ''}}">{{item.name}}</view>
+  </view>
+</view>
+
+<!-- ++++++++2019-3-28-11:11 -->
+<!-- 新版评论框 -->
+<view class="communityPage-comment-mask" wx:if="{{showReplyBox}}" bindtap="cancelReply">
+</view>
+<view class="communityPage-comment-box" id="comment-box" wx:if="{{showReplyBox}}" style="bottom: {{ replyBoxFocus ? keyboardHeight : 0 }};">
+  <view class="communityPage-comment-top">
+    <textarea class="communityPage-comment-input" id="" placeholder="{{replyPlaceholder}}" placeholder-style="color: #d8d8d8; font-size: 28rpx;" maxlength="-1" value="{{replyParam.text}}" auto-focus="{{showReplyBox}}" show-confirm-bar="{{false}}" fixed="{{true}}"
+      adjust-position="{{false}}" bindinput="replyInput" bindfocus="replyFocus" bindblur="replyBlur" bindlinechange="replyLineChange" style="height: {{commentContentHeight + 20}}rpx"></textarea>
+    <!-- 放置图片、位置 -->
+    <view class="communityPage-comment-others" wx:if="{{replyParam.comment_img_url || replyParam.address}}">
+      <view class="communityPage-comment-others-image" wx:if="{{replyParam.comment_img_url}}" style="margin-bottom: {{replyParam.address ? '36' : '0'}}rpx;">
+        <image src="{{replyParam.comment_img_url}}" mode="aspectFill" catchtap="replyImagePreview" lazy-load="{{true}}"></image>
+        <view class="image-close-icon-box" catchtap="replyImageDelete">
+          <icon class="image-close-icon ico-moon icon-closes"></icon>
+        </view>
+      </view>
+      <view class="communityPage-comment-others-location" wx:if="{{replyParam.address}}" catchtap="replyLocationDelete">
+        <text>{{replyParam.address}}</text>
+        <icon class="location-close-icon ico-moon icon-closes"></icon>
+      </view>
+    </view>
+  </view>
+  <!-- 上传图片按钮、选择位置按钮、发布按钮 -->
+  <view class="communityPage-comment-bottom">
+    <view class="communityPage-comment-bottom-left">
+      <icon class="communityPage-comment-bottom-icon ico-moon icon-news-input-image" catchtap="replyImageChoose"></icon>
+      <icon class="communityPage-comment-bottom-icon ico-moon icon-community-location" catchtap="replyLocationChoose"></icon>
+    </view>
+    <view class="communityPage-comment-bottom-right">
+      <view class="communityPage-comment-bottom-right-cancel" catchtap="cancelReply">
+        <text>取消</text>
+      </view>
+      <view class="communityPage-comment-bottom-right-send" catchtap="submitReply">
+        <text>发布</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 联系ta底部弹窗 -->
+<template name="topicMoreOperationModal">
+  <view wx:if="{{data.show}}" class="topic-operation-modal" catchtap="cancelTopicMoreOperate">
+    <view class="modal-inner">
+      <view class="action-list">
+        <view wx:if="{{data.phone}}" data-tel="{{data.phone}}" catchtap="showActionSheet">联系TA</view>
+        <view wx:if="{{data.mode == 0 || data.mode == 2}}"><button class="share-button" data-id="{{data.articleId}}" data-index="{{data.index}}" open-type="share" catchtap="onShareAppMessage">分享</button></view>
+        <view wx:if="{{data.isAuthor}}" class="delete-issue" data-data="{{data}}" catchtap="deleteTopicAct">删除动态</view>
+        <view wx:if="{{!communityPageTool.operateMoreThenOne(data)}}"  catchtap="cancelTopicMoreOperate">取消</view>
+      </view>
+      <view wx:if="{{communityPageTool.operateMoreThenOne(data)}}" class="cancel-concact" catchtap="cancelTopicMoreOperate">取消</view>
+    </view>
+  </view>
+</template>
+<!-- 卡片模式/朋友圈模式/不变样式 -->
+<view>
+  <template is="topicMoreOperationModal" data="{{data: topicMoreOperationModal}}"></template>
+</view>

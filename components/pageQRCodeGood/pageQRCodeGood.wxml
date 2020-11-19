@@ -1,0 +1,30 @@
+<!-- 组件引用路径path  基于引用页面的当前文件夹 -->
+<view class="page-qr-code-dialog" catchtap="hideShareDialog" catchtouchmove="stopPropagation" style='top:{{pageQRCodeData.shareDialogShow}}'>
+  <view class="page-qr-code" hidden="{{ !pageQRCodeData.shareMenuShow }}" catchtap='stopPropagation' wx:if="{{showShare && (!pageQRCodeData.drawType || pageQRCodeData.drawType == 1)}}">
+    <canvas style="width:239px; height: 370px;" canvas-id="goodsImage" class="{{ pageQRCodeData.goodsInfo.isGroup ? 'group-canvas' : 'goods-share-canvas' }}"></canvas>
+  </view>
+  <view class="page-qr-code" hidden="{{ !pageQRCodeData.shareMenuShow }}" style="top:40%;" catchtap='stopPropagation' wx:if="{{showShare && pageQRCodeData.drawType > 1}}">
+    <canvas type="2d" id="canvas2d" class="canvas2d" style="width:{{pageQRCodeData.canvasStyle.width}}rpx;height:{{pageQRCodeData.canvasStyle.height}}rpx;"></canvas>
+  </view>
+  <view class="page-bottom-dialog" style='position: absolute;  bottom: -320px;  left: 0;  width: 750rpx;  background-color: rgba(238, 238, 238, 1);'
+    animation="{{pageQRCodeData.animation}}" hidde="{{ !pageQRCodeData.shareMenuShow }}" >
+    
+    <view class="buttonthree">
+      <view class="button_dialog">
+        <button class="btn_one" open-type="share" style="margin-top:0">
+          <text style="background:linear-gradient(45deg,rgba(61,221,61,1) 0%,rgba(131,240,93,1) 100%);box-shadow:0px 3px 8px 0px rgba(20,193,24,0.3);;" class="ico-moon icon-share-friend" open-type="share"></text>
+          <button class="btn_one" open-type="share">分享好友</button>
+        </button> 
+      </view> 
+      <view wx:if="{{showShare}}" class="button_dialog">
+        <text style="background:linear-gradient(45deg,rgba(48,162,246,1) 0%,rgba(45,201,252,1) 100%);box-shadow:0px 3px 8px 0px rgba(48,162,246,0.3);" class="ico-moon icon-bargain-save" catchtap="savePageCode"></text>
+        <view style="margin-top:24rpx;line-height:28rpx;" catchtap="savePageCode">保存海报</view>
+      </view>
+      <view wx:if="{{pageQRCodeData.recommend_status}}" class="button_dialog">
+        <text style="background:linear-gradient(45deg,rgba(255,138,23,1) 0%,rgba(255,186,0,1) 100%);box-shadow:0px 3px 8px 0px rgba(255,149,23,0.3);" class="ico-moon icon-shop-good-share"  catchtap="getUserFn"></text>
+        <button class="btn_one" catchtap="getUserFn">好物分享</button>
+      </view>
+    </view>
+    <button class="button" catchtap="hideShareDialog">取消</button>
+  </view>
+</view>

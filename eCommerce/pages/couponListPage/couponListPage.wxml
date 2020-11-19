@@ -1,0 +1,77 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-topNavBar topNavBarData="{{topNavBarData}}"></component-topNavBar>
+<view class="goods-coupon-list page">
+  <view class="franchisee-goods-coupon-container">
+    <view class="coupon_ticket" wx:for="{{couponList}}" wx:key="index" data-id="{{item.id}}" bindtap="turnToCouponDetail">
+      <view class="ticket-wrap" wx:if="{{item.type==0}}">
+        <view class="price">¥<span>{{item.value}}</span></view>
+        <view class="coupon_right">
+          <view class="coupon_name">
+            <view wx:if="{{item.category == 1}}" class="coupon-league-mark">
+              <view></view>
+              <text>联盟</text>
+            </view>
+            <text>{{item.title}}</text>
+          </view>
+          <view>消费满{{item.condition}}元减{{item.value}}</view>
+          <view class="coupon-time">{{item.expire == '-1' ?  (item.start_use_date + '至' + item.end_use_date) : item.expire == '0' ? '领取当天生效,有效期1天' : ('领取'+ (item.react > 0 ? item.react + '天后' : '当天') + '生效，有效期'+ item.expire +'天')}} {{ item.exclude_holiday == 0 ? '':'除去法定节假日'}} {{item.exclude_weekend == 0 ? '':'周一至周五'}} {{ item.start_use_time }}-{{ item.end_use_time }}</view>
+        </view>
+      </view>
+      <view class="ticket-wrap" wx:elif="{{item.type==1}}">
+        <view class="price"><span>{{item.value}}折</span></view>
+        <view class="coupon_right">
+           <view class="coupon_name">
+            <view wx:if="{{item.category == 1}}" class="coupon-league-mark">
+              <view></view>
+              <text>联盟</text>
+            </view>
+            <text>{{item.title}}</text>
+          </view>
+          <view>打{{item.value}}折优惠</view>
+          <view class="coupon-time">{{item.expire == '-1' ?  (item.start_use_date + '至' + item.end_use_date) : item.expire == '0' ? '领取当天生效,有效期1天' : ('领取'+ (item.react > 0 ? item.react + '天后' : '当天') + '生效，有效期'+ item.expire +'天')}} {{ item.exclude_holiday == 0 ? '':'除去法定节假日'}} {{item.exclude_weekend == 0 ? '':'周一至周五'}} {{ item.start_use_time }}-{{ item.end_use_time }}</view>
+        </view>
+      </view>
+      <view class="ticket-wrap" wx:elif="{{item.type==2}}">
+        <view class="price">¥<span>{{item.value}}</span></view>
+        <view class="coupon_right">
+           <view class="coupon_name">
+            <view wx:if="{{item.category == 1}}" class="coupon-league-mark">
+              <view></view>
+              <text>联盟</text>
+            </view>
+            <text>{{item.title}}</text>
+          </view>
+          <view>可抵扣{{item.value}}元</view>
+          <view class="coupon-time">{{item.expire == '-1' ?  (item.start_use_date + '至' + item.end_use_date) : item.expire == '0' ? '领取当天生效,有效期1天' : ('领取'+ (item.react > 0 ? item.react + '天后' : '当天') + '生效，有效期'+ item.expire +'天')}} {{ item.exclude_holiday == 0 ? '':'除去法定节假日'}} {{item.exclude_weekend == 0 ? '':'周一至周五'}} {{ item.start_use_time }}-{{ item.end_use_time }}</view>
+        </view>
+      </view>
+      <view class="ticket-wrap" wx:elif="{{item.type==3}}">
+        <view class="price"><span>兑换券</span></view>
+        <view class="coupon_right">
+           <view class="coupon_name">
+            <view wx:if="{{item.category == 1}}" class="coupon-league-mark">
+              <view></view>
+              <text>联盟</text>
+            </view>
+            <text>{{item.title}}</text>
+          </view>
+          <view wx:if="{{item.extra_condition == ''}}">直接兑换{{item.coupon_goods_info.title}}</view>
+          <view wx:if="{{item.extra_condition.price}}">消费满{{item.extra_condition.price}}元可兑换{{item.coupon_goods_info.title}}</view>
+          <view wx:if="{{item.extra_condition.goods_id}}">购买{{item.condition_goods_info.title}}可兑换{{item.coupon_goods_info.title }}</view>
+          <view class="coupon-time">{{item.expire == '-1' ?  (item.start_use_date + '至' + item.end_use_date) : item.expire == '0' ? '领取当天生效,有效期1天' : ('领取'+ (item.react > 0 ? item.react + '天后' : '当天') + '生效，有效期'+ item.expire +'天')}} {{ item.exclude_holiday == 0 ? '':'除去法定节假日'}} {{item.exclude_weekend == 0 ? '':'周一至周五'}} {{ item.start_use_time }}-{{ item.end_use_time }}</view>
+        </view>
+      </view>
+      <view class="ticket-wrap" wx:elif="{{ item.type == 5 }}">
+        <view class="price">通用券</view>
+        <view class="coupon_right">
+          <view class="coupon_name">
+            <text>{{item.title}}</text>
+          </view>
+          <view>{{ item.extra_condition }}</view>
+          <view class="coupon-time">{{item.expire == '-1' ?  (item.start_use_date + '至' + item.end_use_date) : item.expire == '0' ? '领取当天生效,有效期1天' : ('领取'+ (item.react > 0 ? item.react + '天后' : '当天') + '生效，有效期'+ item.expire +'天')}} {{ item.exclude_holiday == 0 ? '':'除去法定节假日'}} {{item.exclude_weekend == 0 ? '':'周一至周五'}} {{ item.start_use_time }}-{{ item.end_use_time }}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

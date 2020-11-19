@@ -1,0 +1,49 @@
+<component-reward-point rewardPointObj="{{rewardPointObj}}" shareGiftsObj="{{shareGiftsObj}}" collectGiftsObj="{{collectGiftsObj}}" collectGetObj="{{collectGetObj}}"></component-reward-point>
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="makeCom-wrap page" id="makeComment">
+  <view class="takeoutTitle"><image src="{{takeoutInfo.cover}}"></image><text>{{takeoutInfo.title}}</text></view>
+  <view class="takeoutEvaluate" style="height: 80rpx;margin-top: 16rpx;line-height: 80rpx;padding: 0 30rpx;background-color: #fff;border-bottom: 1px solid #f3f3f3;font-size: 28rpx;">商品评价</view>
+  <view style="background-color: #fff;">
+    <view class="makeCom-item makeCom-goods-comment" wx:for="{{ goodsInfo }}" wx:key="index" wx:for-index="goodsIndex">
+      <view style="padding:0 0 30rpx;font-size: 32rpx;word-break: break-all;">{{item.goods_name}}
+        <view class="makeCommentLeval pull-right" style="color:#dcdcdc">
+          <text class="ico-moon icon-star" bindtap="setGoodsScore" data-score="5" data-goods-index="{{goodsIndex}}" style="{{ submitData.goods[goodsIndex].info.level <= 5 ? 'color:#fc9e20;' : 'color:#dcdcdc;' }}"></text>
+          <text class="ico-moon icon-star" bindtap="setGoodsScore" data-score="4" data-goods-index="{{goodsIndex}}" style="{{ submitData.goods[goodsIndex].info.level <= 4 ? 'color:#fc9e20;' : 'color:#dcdcdc;' }}"></text>
+          <text class="ico-moon icon-star" bindtap="setGoodsScore" data-score="3" data-goods-index="{{goodsIndex}}" style="{{ submitData.goods[goodsIndex].info.level <= 3 ? 'color:#fc9e20;' : 'color:#dcdcdc;' }}"></text>
+          <text class="ico-moon icon-star" bindtap="setGoodsScore" data-score="2" data-goods-index="{{goodsIndex}}" style="{{ submitData.goods[goodsIndex].info.level <= 2 ? 'color:#fc9e20;' : 'color:#dcdcdc;' }}"></text>
+          <text class="ico-moon icon-star" bindtap="setGoodsScore" data-score="1" data-goods-index="{{goodsIndex}}" style="{{ submitData.goods[goodsIndex].info.level == 1 ? 'color:#fc9e20;' : 'color:#dcdcdc;' }}"></text>
+        </view>
+        <view style="font-size:24rpx;color:#666;"></view></view>
+      <view> 
+        <textarea data-goods-index="{{ goodsIndex }}" bindinput="commentInput" class="makeCom-textarea" placeholder="说说哪里满意，来帮助大家选择" auto-height wx:if="{{isShowTextArea}}"/>
+      </view>
+      <view class="makeCom-pic-container">
+        <view wx:for="{{ submitData.goods[goodsIndex].info.img_arr }}" wx:key="index" wx:for-item="imgUrl" class="makeCom-pic-wrap">
+          <image src="{{ imgUrl }}" mode="aspectFit"></image>
+          <label class="makeCom-remove-pic" bindtap="removePic" data-goods-index="{{ goodsIndex }}" data-pic-index="{{ index }}">×</label>
+        </view>
+        <view wx:if="{{submitData.goods[goodsIndex].info.img_arr.length<3}}" class="makeCom-upload-pic" bindtap="chooseImage" data-goods-index="{{ goodsIndex }}"><view class="ico-moon icon-addassessimg" style="display:block; font-size: 60rpx;"></view><text>添加图片</text></view>
+      </view>
+    </view>
+  </view>  
+  <view class="makeCom-item" style="padding:0;line-height:30px;margin: 16rpx 0 0;border-bottom: none; ">
+    <view style="font-size:28rpx; height:80rpx;line-height:80rpx;padding: 0 30rpx;">评价商家服务</view>
+    <view style="font-size: 32rpx; height:80rpx;line-height:80rpx;padding: 0 30rpx">服务态度：<view class="makeCommentLeval pull-right"  style="color:#dcdcdc">
+      <text class="ico-moon icon-star" style="{{ submitData.takeout_serve_score >= 1 ? 'color:#fc9e20;' : 'color:#dcdcdc;' }}" bindtap="setScore" data-score="1" ></text>
+      <text class="ico-moon icon-star" style="{{ submitData.takeout_serve_score >= 2 ? 'color:#fc9e20;' : 'color:#dcdcdc;' }}" bindtap="setScore" data-score="2" ></text>
+      <text class="ico-moon icon-star" style="{{ submitData.takeout_serve_score >= 3 ? 'color:#fc9e20;' : 'color:#dcdcdc;' }}" bindtap="setScore" data-score="3" ></text>
+      <text class="ico-moon icon-star" style="{{ submitData.takeout_serve_score >= 4 ? 'color:#fc9e20;' : 'color:#dcdcdc;' }}" bindtap="setScore" data-score="4" ></text>
+      <text class="ico-moon icon-star" style="{{ submitData.takeout_serve_score >= 5 ? 'color:#fc9e20;' : 'color:#dcdcdc;' }}" bindtap="setScore" data-score="5" ></text>
+      </view></view>
+    <view style="font-size: 32rpx; height:80rpx;line-height:80rpx;padding: 0 30rpx">配送服务：<view class="makeCommentLeval pull-right"  style="color:#dcdcdc">
+      <text class="ico-moon icon-star" style="{{ submitData.takeout_score >= 1 ? 'color:#fc9e20;' : 'color:#dcdcdc;' }}" bindtap="setDescScore" data-score="1" ></text>
+      <text class="ico-moon icon-star" style="{{ submitData.takeout_score >= 2 ? 'color:#fc9e20;' : 'color:#dcdcdc;' }}" bindtap="setDescScore" data-score="2" ></text>
+      <text class="ico-moon icon-star" style="{{ submitData.takeout_score >= 3 ? 'color:#fc9e20;' : 'color:#dcdcdc;' }}" bindtap="setDescScore" data-score="3" ></text>
+      <text class="ico-moon icon-star" style="{{ submitData.takeout_score >= 4 ? 'color:#fc9e20;' : 'color:#dcdcdc;' }}" bindtap="setDescScore" data-score="4" ></text>
+      <text class="ico-moon icon-star" style="{{ submitData.takeout_score >= 5 ? 'color:#fc9e20;' : 'color:#dcdcdc;' }}" bindtap="setDescScore" data-score="5" ></text>
+      </view></view>
+  </view>
+  <view class="makeCom-bottom-nav" bindtap="makeComment"><label class="makeCom-make-comment btn btn-orange">发表评价</label></view>
+</view>
+

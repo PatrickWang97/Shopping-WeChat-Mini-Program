@@ -1,0 +1,80 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="page hidden-modal" wx:if="{{openMenu}}">
+  <view class="order-status-pannel">
+    <view>
+      <text>订单状态</text>
+      <label class="ico-moon icon-uparrow" catchtap="openTab"></label>
+    </view>
+    <view>
+      <view catchtap="clickOrderTab" class="{{ currentTabIndex == 0 ? 'active-menu' : '' }}" data-index="0">全部</view>
+      <view catchtap="clickOrderTab" class="{{ currentTabIndex == 1 ? 'active-menu' : '' }}" data-index="1">待结算</view>
+      <view catchtap="clickOrderTab" class="{{ currentTabIndex == 2 ? 'active-menu' : '' }}" data-index="2">待发货</view>
+      <view catchtap="clickOrderTab" class="{{ currentTabIndex == 3 ? 'active-menu' : '' }}" data-index="3">待团长收货</view>
+      <view catchtap="clickOrderTab" class="{{ currentTabIndex == 4 ? 'active-menu' : '' }}" data-index="4">团员提货中</view>
+      <view catchtap="clickOrderTab" class="{{ currentTabIndex == 5 ? 'active-menu' : '' }}" data-index="5">已完成</view>
+      <view catchtap="clickOrderTab" class="{{ currentTabIndex == 6 ? 'active-menu' : '' }}" data-index="6">退款中</view>
+    </view>
+  </view>
+</view>
+<view class="myOrder-wrap page" >
+  <view class="tostore-list-submenu myOrder-tab-list" wx:if="{{!openMenu}}">
+    <view class="tostore-sub-box {{ currentTabIndex == 0 ? 'active' : '' }}" catchtap="clickOrderTab" data-index="0">全部</view>
+    <view class="tostore-sub-box {{ currentTabIndex == 1 ? 'active' : '' }}" catchtap="clickOrderTab" data-index="1">待结算</view>
+    <view class="tostore-sub-box {{ currentTabIndex == 2 ? 'active' : '' }}" catchtap="clickOrderTab" data-index="2">待发货</view>
+    <view class="tostore-sub-box {{ currentTabIndex == 3 ? 'active' : '' }}" catchtap="clickOrderTab" data-index="3">待团长收货</view>
+    <view class="tostore-sub-box {{ currentTabIndex == 4 ? 'active' : '' }}" catchtap="clickOrderTab" data-index="4">团员提货中</view>
+    <view class="tostore-sub-box {{ currentTabIndex == 5 ? 'active' : '' }}" catchtap="clickOrderTab" data-index="5">已完成</view>
+    <view class="tostore-sub-box {{ currentTabIndex == 6 ? 'active' : '' }}" catchtap="clickOrderTab" data-index="6">退款中</view>
+  </view>
+  <view class="drop-down" catchtap="openTab" wx:if="{{!openMenu}}">
+    <label class="ico-moon icon-downarrow"></label>
+  </view>
+  <view class="lengthOneBody">
+    <view class="scrollContainer">
+      <scroll-view lower-threshold="10" scroll-y="true">
+        <view class="myOrder-list-item" wx:for="{{orderList}}" wx:key="id" wx:for-index="groupindex">
+          <view class="myOrder-list-title">
+            <text class="title-name"><text class="pull-right" style="font-size:26rpx;color:#ff7100">{{statusTitle[item.status]}}</text></text>
+            <text class="icon-comTime ico-moon" style="float:left;color: #d2d2d2;margin-right:12rpx"></text>
+            <text class="title-time">{{item.period_time}}</text>
+          </view>
+          <view class="myOrder-list-content">
+            <view class="myOrder-list-goods">
+              <block wx:for="{{orderList[groupindex].goods_info_arr}}" wx:for-item="itemName" wx:key="goods_id" >
+                <view class="goods-item" data-status="{{item.status}}" data-start="{{item.group_info.start_date}}" data-end="{{item.group_info.end_date}}" data-id="{{item.group_order_id}}" data-title="{{item.group_info.title}}" bindtap="childOrder">
+                  <view class="goods-img"><image src="{{itemName.cover}}"></image></view>
+                  <view class="goods-describe">
+                    <text class="goods-describe-title">{{itemName.goods_name}}</text>
+                    <text class="goods-describe-model">{{item.model_name || ''}}</text>
+                    <text class="goods-describe-price">¥{{itemName.price}}<text>x{{itemName.num}}</text></text>
+                  </view>
+                </view>
+              </block>
+            </view>
+          </view>
+          <view class="myOrder-list-footer">
+            <view class="list-footer-label">
+              <label>当前已有</label>
+              <label class="colorRed">{{item.group_buyer_num}}人</label>
+              <label>下单，商品数量</label>
+              <label class="colorRed">{{item.group_goods_num}}件</label>
+              <view style="margin-top:10rpx;">
+                <label style="margin-left:80rpx">合计：</label>
+                <label class="colorOrigin" style="font-size:28rpx;">¥{{item.group_total_price}}</label>
+              </view>
+            </view>
+            <view class="list-footer-btn">
+              <text wx:if="{{item.status == 2}}" class="checkLogistic" data-index="{{groupindex}}"
+                  data-franchisee="{{ item.app_id }}" bindtap="checkLogistics">查看物流</text>
+              <text wx:if="{{item.status == 2}}" data-index="{{groupindex}}" data-id="{{item.group_order_id}}" bindtap="sureReceipt">确认收货</text>
+              <text wx:if="{{item.status == 3}}" bindtap="checkWriteOffCode">订单核销</text>
+              <text data-status="{{item.status}}" data-start="{{item.group_info.start_date}}" data-end="{{item.group_info.end_date}}" data-id="{{item.group_order_id}}" data-title="{{item.group_info.title}}" bindtap="childOrder">查看子订单</text>
+            </view>
+          </view>
+        </view>
+        <view wx:if="{{ isMore == 0 }}" class="noMoreNewDataTip">已经没有新数据了</view>
+      </scroll-view>
+    </view>
+  </view>
+</view>

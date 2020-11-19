@@ -1,0 +1,14 @@
+{"navigationBarTitleText":"订单列表",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "component-reward-point": "/components/rewardPointModal/rewardPointModal",
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+    "component-sinkingModal": "/components/sinkingModal/sinkingModal",
+    "franchiseeTabbar": "/components/franchiseeTabbar/franchiseeTabbar",
+    "component-behavior-track": "/components/behaviorTrack/behaviorTrack",
+    "write-off-code": "/components/writeOffCode/writeOffCode"
+  }
+}

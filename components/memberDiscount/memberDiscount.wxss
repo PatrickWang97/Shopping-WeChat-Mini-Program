@@ -1,0 +1,412 @@
+@charset 'utf-8';
+@import "/utils/font_icon.wxss";
+page{
+  font-size: 24rpx;
+}
+.member-discount{
+  top: 0;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 997;
+}
+.discount-wrapper{
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  background-color: #fff;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  box-sizing: border-box;
+}
+.discount-wrapper .title{
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20rpx;
+  margin: 36rpx 0 26rpx 0;
+}
+.discount-wrapper .icon-close-btn{
+  font-size: 44rpx;
+  line-height: 34rpx;
+  color: #d5d5d5;
+}
+.discount-wrapper .title .title-text{
+  font-size: 32rpx;
+  line-height: 34rpx;
+}
+.discount-wrapper .title .icon-closes{
+  border: 1rpx solid #d2d2d2;
+  border-radius: 50%;
+  width: 34rpx;
+  height: 34rpx;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: #D2D2D2;
+  font-size: 24rpx;
+}
+.tip-mess{
+  width: calc(100% - 30rpx);
+  position: relative;
+  display: flex;
+  align-items: center;
+  line-height: 60rpx;
+  padding: 0 20rpx;
+  background-color: #FFFAEE;
+  color: #FF7100;
+  font-size: 22rpx;
+  border-top-right-radius: 30rpx;
+  border-bottom-right-radius: 30rpx;
+  box-sizing: border-box;
+}
+.tip-mess .icon-remind{
+  font-size: 30rpx;
+  margin-right: 5rpx;
+}
+.tip-mess .icon-closes{
+  position: absolute;
+  right: 20rpx;
+  width:50rpx;
+  text-align:center;
+}
+.tab{
+  position: relative;
+}
+.tab-bar{
+  display: flex;
+  width: 100%;
+  line-height: 80rpx;
+}
+.tab-bar .tab-item{
+  flex: 1;
+  text-align: center;
+}
+.tab-bar .tab-item.active .tab-item-text{
+  color: #FF7100;
+  border-bottom: 2rpx solid #FF7100;
+  display:inline-block;
+  padding:0 10rpx;
+}
+.my-discount{
+  width: 100%;
+  padding: 24rpx 25rpx 108rpx;
+  background-color: #F7F7F7;
+  box-sizing: border-box;
+}
+.my-coupon{
+  height: 622rpx;
+}
+.my-card{
+  height: 500rpx;
+}
+.my-integral{
+  height: 580rpx;
+}
+.coupon-item{
+  width: 100%;
+  position: relative;
+  background-color: #fff;
+  margin-bottom: 25rpx;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 2rpx 4rpx 12rpx rgba(0,0,0,0.1)
+}
+.coupon-item .info{
+  padding: 57rpx 27rpx 0 27rpx;
+}
+.coupon-item .info .coupon-title{
+  width: 560rpx;
+  font-size: 32rpx;
+  margin-bottom: 26rpx;
+}
+.text-overflow{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.use-condition{
+  width: 560rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.integral-item .info .icon-success-tip, .coupon-item .info .icon-success-tip{
+  position: absolute;
+  right: 30rpx;
+  top: calc(50% - 32rpx);
+  font-size: 44rpx;
+  color: #FF4D65;
+}
+.integral-item .info .icon-no-use, .coupon-item .info .icon-no-use{
+  position: absolute;
+  right: 30rpx;
+  top: calc(50% - 32rpx);
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  border: 2rpx solid #d9d9d9;
+}
+.coupon-item .time-block{
+  display: flex;
+  justify-content: space-between;
+  line-height: 58rpx;
+  margin-top: 30rpx;
+  position: relative;
+}
+.coupon-item .effective-time{
+  font-size: 24rpx;
+}
+.coupon-item .maturity-time{
+  font-size: 22rpx;
+}
+.coupon-item .disabled-text{
+  font-size: 24rpx;
+}
+.coupon-item .time-block:before{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 4rpx;
+  width: calc(100% - 10rpx);
+  border-top: 2rpx dashed #dbdbdb;
+}
+.card-item{
+  position: relative;
+  padding: 50rpx 31rpx;
+  border-radius: 10rpx;
+  background-size: 100% 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom:20rpx;
+}
+.card-item .card-img-block{
+  display: inline-block;
+  width: 80rpx;
+  height: 80rpx;
+  margin-right: 10rpx;
+  background-color: #fff;
+  border-radius: 50%;
+}
+.card-item .card-img{
+  width: 60rpx;
+  height: 50rpx; 
+  display: inline-block;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  margin-right: 20rpx;
+}
+.app-logo-img{
+  width: 80rpx;
+  height: 80rpx; 
+  display: inline-block;
+  position: relative;
+  border-radius: 50%;
+  margin-right: 20rpx;
+}
+.card-item .card-info{
+  display: inline-block;
+  width: 300rpx;
+  color: #fff;
+}
+.card-item .card-info .card-name{
+  width: 400rpx;
+  font-size: 26rpx;
+  margin-bottom: 17rpx;
+}
+.card-item .card-info .card-mark {
+  display: inline-block;
+  padding: 0 10rpx;
+  margin-right: 14rpx;
+  border-radius:10rpx 10rpx 10rpx 0;
+  color: #FF7011;
+  font-size: 22rpx;
+  background-color: #FFEA00;
+}
+.card-item .card-info .card-mess{
+  width: 400rpx;
+  font-size: 24rpx;
+}
+.card-item .card-btn{
+  position: absolute;
+  right: 30rpx;
+  display: inline-block;
+  padding: 8rpx 20rpx;
+  text-align: center;
+  font-size: 22rpx;
+  background: rgba(255,168,0,1);
+  border-radius: 23rpx;
+  box-shadow: 1rpx 1rpx 1rpx rgba(255,157,18,1);
+  color: #fff;
+}
+.integral-item{
+  width: 100%;
+  position: relative;
+  background-color: #fff;
+  margin-bottom: 25rpx;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 2rpx 4rpx 12rpx rgba(0,0,0,0.1);
+}
+.integral-item .info{
+  padding: 50rpx 27rpx 30rpx 27rpx
+}
+.integral-item .info .integral-title{
+  font-size: 32rpx;
+  margin-bottom: 26rpx;
+}
+.integral-item .info .integral-title .red-text{
+  font-size: 26rpx;
+}
+.background-word-area{
+  position: absolute;
+  right: -64rpx;
+  top: -70rpx;
+  padding: 10rpx;
+  border-radius: 50%;
+  color: #fff;
+  opacity: 0.1;
+}
+.background-word-area .background-circle{
+  width: 180rpx;
+  height: 180rpx;
+  line-height: 180rpx;
+  border-radius: 50%;
+}
+.background-word-area .background-word{
+  position: absolute;
+  bottom: 50rpx;
+  left: 50rpx;
+  font-size: 64rpx;
+  line-height: 64rpx;
+}
+.no-use-btn{
+  width: calc(100% + 50rpx);
+  line-height: 88rpx;
+  text-align: center;
+  font-size: 30rpx;
+  color: #333333;
+  background-color: #fff;
+  margin: 0 -30rpx;
+  position: absolute;
+  bottom: 0;
+}
+.empty{
+  width: calc(100% - 40rpx);
+  padding: 20rpx;
+  text-align: center;
+  font-size: 24rpx;
+  color: #D2D2D2;
+}
+.empty-img{
+  width: 157rpx;
+  height: 157rpx;
+  display: block;
+  margin: 126rpx auto 35rpx auto;
+}
+.my-timecard{
+  height: 732rpx;
+}
+.TC-info,.TC-info view{
+    box-sizing: border-box;
+}
+.TC-info {
+  width: 690rpx;
+  height: 326rpx;
+  margin: 30rpx 5rpx;
+  background: no-repeat;
+  background-size: cover;
+  box-shadow: 0 10rpx 20rpx 0 rgba(45, 46, 61, 0.4);
+  border-radius: 18rpx;
+  color: #ebdac5;
+  position: relative;
+  overflow: hidden;
+}
+.TC-title {
+  font-size: 40rpx;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  word-break: break-all;
+  word-wrap: break-word;
+  overflow: hidden;
+  padding: 40rpx 40rpx 0 40rpx;
+  font-weight: bold;
+}
+.TC-info-bottom {
+  position: absolute;
+  left: 0;
+  bottom: 30rpx;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40rpx;
+  font-size: 26rpx;
+}
+.TC-price {
+  display: flex;
+}
+.TC-price>view:first-child {
+  font-size: 40rpx;
+  font-weight: bold;
+}
+.TC-price>view:first-child::first-letter {
+  font-size: 26rpx;
+  font-weight: bold;
+}
+.TC-price>view:last-child {
+  font-size: 26rpx;
+  font-weight: bold;
+  position: relative;
+  top: 14rpx;
+}
+.TC-used{
+  color: #515359;
+  font-size: 26rpx;
+  position: absolute;
+  right: 0;
+  top: 0;
+  border-top: 90rpx solid #EBDAC5;
+  border-left: 90rpx solid transparent; 
+}
+.TC-used>.ico-moon{
+  position: absolute;
+  top: -80rpx;
+  right: 14rpx;
+}
+.timecard-item:last-child{
+  margin-bottom: 80rpx;
+}
+.serveCard-logo {
+  width: 70rpx;
+  font-size: 20rpx;
+  line-height: 28rpx;
+  padding: 6rpx 10rpx;
+  text-align: center;
+  border-radius: 4rpx;
+  margin-right: 6rpx;
+}
+.TC-item .serveCard-logo {
+  background: linear-gradient(136deg, rgba(241, 213, 180, 1) 0%, rgba(235, 218, 197, 1) 100%);
+  color: #505259;
+}
+.VC-item .serveCard-logo {
+  background: rgba(255, 255, 255);
+  color: #ff8087;
+  opacity: 0.8;
+}
+.VC-item .TC-info{
+  color: #FFF;
+}
+.VC-price>view {
+  font-size: 40rpx;
+  font-weight: bold;
+}
+.VC-price>view::first-letter {
+  font-size: 26rpx;
+  font-weight: bold;
+}

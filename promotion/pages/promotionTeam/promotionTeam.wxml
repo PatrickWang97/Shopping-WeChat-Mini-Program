@@ -1,0 +1,41 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="team-search">
+  <view class="team-search-contain"><text class="ico-moon icon-search"></text><input type="text" confirm-type="search" bindconfirm="searchUser" value="{{ userName }}" placeholder="下级人员搜索：请输入用户名或手机号" /></view>
+</view>
+<view class="filter-menu">
+  <view catchtap="toggleSubordinateClassicMask">下级分类<text class="triangle"></text></view>
+</view>
+<view class="team-contain">
+  <view class="team-content" wx:for="{{ personArr }}" wx:key="index">
+    <image class="people-cover" src="{{ item.logo }}"></image>
+    <view class="team-detail">
+      <view class="team-name-box">
+        <text class="team-name">{{ item.name }}</text>
+        <text class="people-level pull-right">{{ item.lower_level == 1 ? '一级' : '二级' }}下级</text>
+      </view>
+      <view class="subordinate-number">
+        <text>下级人数: {{ item.subordinates }}</text>
+        <text class="pull-right"><text class="symbol-money">¥</text><text class="contribution-money">{{ item.current_total_commission }}</text></text>
+      </view>
+      <view class="team-phone-box">
+        <text class="ico-moon icon-promotion-team-phone"></text>
+        <text>{{ item.phone || '无' }}</text>
+        <text class="pull-right">贡献佣金</text>
+      </view>
+      <view class="team-time-box">
+        <text class="ico-moon icon-promotion-team-time"></text>
+        <text>{{ item.create_time }}</text>
+        <button wx:if="{{isGuide && item.user_openid}}" class="team-contact pull-right" bindtap="navigateToXcx" data-open-id="{{item.user_openid}}">联系客户</button>
+      </view>
+    </view>
+  </view>
+</view>
+<view class="subordinate-classic-mask" wx:if="{{ showSubordinateClassicMask }}" bindtap="hideSubordinateClassicMask">
+  <view class="subordinate-classic" catchtap="stopPropagation">
+    <view class="{{ selectedClassic == -1 ? 'selected' : '' }}" data-index="-1" catchtap="clickClassic">全部</view>
+    <view class="{{ selectedClassic == 1 ? 'selected' : '' }}" data-index="1" catchtap="clickClassic">一级</view>
+    <view class="{{ selectedClassic == 2 ? 'selected' : '' }}" data-index="2" catchtap="clickClassic">二级</view>
+  </view>
+</view>
+

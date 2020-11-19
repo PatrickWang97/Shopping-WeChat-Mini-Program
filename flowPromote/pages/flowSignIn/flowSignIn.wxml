@@ -1,0 +1,64 @@
+<component-getuserinfo showGetUserInfo="{{showGetUserInfo}}" />
+<component-behavior-track></component-behavior-track>
+<view class="flow-wrapper">
+  <view class="flow-title">申请免费制作</view>
+  <view class="flow-tips">输入您的信息，我们将在3个工作日内联系您</view>
+  <view class="flow-picker-title">手机号码</view>
+  <view class="get-phone-wrapper">
+    <input placeholder="请输入手机号" bindinput="phoneInput" type="number" value="{{phone}}" class="phone-input" maxlength='11'></input>
+    <button class="get-phone-button" catchtap="getUser" wx:if="{{!userInfo.nickname}}">一键获取</button>
+    <button class="get-phone-button" open-type="getPhoneNumber" bindgetphonenumber="getPhone" wx:if="{{userInfo.nickname}}">
+      一键填写
+    </button>
+  </view>
+  <view class="flow-picker-title">所属行业</view>
+  <view class="flow-picker-wrapper">
+    <picker bindchange="bindPickerFisrtChange" range-key="name" range="{{firstData}}" class="flow-picker-input" value="{{firstId}}">
+      <view class="" wx:if="{{!firstId}}" style="color: #808080">请选择</view>
+      <view class="picker">{{firstData[firstId].name}}</view>
+    </picker>
+  </view>
+  <view class="flow-picker-wrapper" wx:if="{{secData.length}}">
+    <picker bindchange="bindPickerSecChange" range-key="name" range="{{secData}}" class="flow-picker-input" value="{{secId}}">
+      <view class="" wx:if="{{!secId}}" style="color: #808080">请选择</view>
+      <view class="picker">{{secData[secId].name}}</view>
+    </picker>
+  </view>
+  <button class="flow-button" catchtap="getUser" wx:if="{{!phone && !userInfo.nickname}}">
+    提交
+  </button>
+  <button class="flow-button" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" wx:if="{{!phone && userInfo.nickname}}">
+    提交
+  </button>
+  <button class="flow-button" catchtap="postCrm" wx:if="{{phone && userInfo.nickname}}">提交</button>
+  <view class="flow-contact-tab">
+    <view bindtap='callPhone'>
+      <text class="ico-moon icon-takeout-cellphone icon-style"></text>
+      电话客服
+    </view>
+    <view bindtap='openDialog'>
+      <text class="ico-moon icon-full-weixin icon-style"></text>
+      微信客服
+    </view>
+  </view>
+</view>
+<view style="width:100%;height:130rpx;overflow:hidden;margin-top:10px;position: fixed;bottom: 40rpx;">
+  <image style="width:100%;height:100%;" src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/tec-support-new.png" mode="aspectFill"></image>
+</view>
+<view class="dialog-box" hidden="{{dialogCheck}}">
+  <view class="dialog-mask" bindtap='closeDialog'></view>
+  <view class='dialog-container'>
+    <view class="ico-moon icon-closes" bindtap='closeDialog'></view>
+    <view class="dialog-header">
+      <image class="dialog-headurl" src="https://cdn.jisuapp.cn/static/webapp/images/flow-signln/headurl.png"></image>
+      <view class="dialog-header-tip">
+        <view>添加您的专属客服，</view>
+        <view>获得一对一服务</view>
+      </view>
+    </view>
+    <view class="dialog-qrcode-box">
+      <image class="dialog-qrcode" src="http://develop.zhichiwangluo.com/static/zc_kefu_img/zhichi_qrcode_2.png" show-menu-by-longpress="true"></image>
+      <view class="dialog-opera-tips">请长按保存二维码，并扫码添加客服，获得专业解答与服务</view>
+    </view>
+  </view>
+</view>

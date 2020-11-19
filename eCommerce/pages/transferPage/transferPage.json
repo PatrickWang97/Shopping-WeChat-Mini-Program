@@ -1,0 +1,14 @@
+{
+    "navigationBarTitleText":"当面付",
+    "navigationBarTextStyle":"black",
+    "navigationStyle":"custom",
+    "usingComponents":{
+        "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+        "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+        "component-memberDiscount": "/components/memberDiscount/memberDiscount",
+        "component-topNavBar": "/components/topNavBar/topNavBar",
+        "franchiseeTabbar": "/components/franchiseeTabbar/franchiseeTabbar",
+        "component-paySettlementGift": "/components/paySettlementGift/paySettlementGift",
+        "component-behavior-track": "/components/behaviorTrack/behaviorTrack"
+    }
+}

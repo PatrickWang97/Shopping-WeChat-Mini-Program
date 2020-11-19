@@ -1,0 +1,39 @@
+page {
+  background-color: #f3f3f3;
+}
+.facility-box{
+  padding: 0 35rpx;
+  margin-bottom: 20rpx;
+  background-color: #fff;
+}
+.facility-item{
+  font-size: 26rpx;
+  border-top: 1px solid #F3F3F3;
+  line-height: 94rpx;
+}
+.facility-head{
+  font-size: 28rpx;
+  color: #333;
+  line-height: 100rpx;
+  font-weight: bold;
+}
+.facility-icon{
+  color: #F46267;
+  padding: 10rpx;
+  background-color: rgba(244,98,103,0.16);
+  border-radius: 50%;
+  margin-right: 20rpx;
+  line-height: 1em;
+}
+.facility-pay-icon{
+  font-size: 34rpx;
+  padding-left: 10rpx;
+  margin-right: 20rpx;
+  vertical-align: top;
+}
+.facility-weixin{
+  color: #62D526;
+}
+.facility-alipay{
+  color: #1AACEB;
+}

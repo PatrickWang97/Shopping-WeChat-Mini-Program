@@ -1,0 +1,44 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-behavior-track></component-behavior-track>
+<view class="comp-search">
+  <view class="search-wrap">
+    <icon size="14" type="search" bindtap="searchList" />
+    <input id="search" value="{{inputContent}}" bindinput="bindChange" bindconfirm="searchList" focus="true" name="input" placeholder="请输入搜索关键词" confirm-type="search" focus />
+    <view class="cross {{inputContent == '' ? 'hide' : ''}}" bindtap="clearSearch">
+      <text class="ico-moon icon-closes"></text>
+    </view>
+  </view>
+  <button class="cancel" bindtap="navigateBack">取消</button>
+</view>
+<view class="associative" wx:if="{{associativeList.length}}">
+  <view wx:for="{{ associativeList }}" wx:key="item" class="associative-item" bindtap="quickSearch" data-tag="{{item}}">{{ item }}</view>
+</view>
+<view class="quick-search" wx:if="{{!associativeList.length}}">
+  <view class="history">
+    <view class="title">
+      <text class="left">历史搜索</text>
+      <text class="right" bindtap="clearHistory">清空</text>
+    </view>
+    <view class="content {{ hasQuickTags || hotSearch ? 'border-bottom' : '' }}">
+      <view class="history-item" wx:for="{{history}}" wx:key="index" data-tag="{{item}}" bindtap="quickSearch">{{item}}</view>
+    </view>
+  </view>
+  <view class="recommend" wx:if="{{hasQuickTags}}">
+    <view class="title">
+      <text class="left">相关推荐</text>
+    </view>
+    <view class="content {{ hotSearch ? 'border-bottom' : '' }}">
+      <view class="history-item" wx:for="{{quickTags}}" wx:key="index" data-tag="{{item}}" bindtap="quickSearch">{{item}}</view>
+    </view>
+  </view>
+  <view class="hot-keywords" wx:if="{{hotSearch}}">
+    <view class="title">
+      <text class="left">热门搜索</text>
+      <image src="https://img.zhichiwangluo.com/zcimgdir/album/file_5d79acb881046.png"></image>
+    </view>
+    <view class="content">
+      <view class="history-item" wx:for="{{hotTags}}" wx:key="index" data-tag="{{item.keyword}}" bindtap="quickSearch">{{item.keyword}}</view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,118 @@
+page{
+  height: 100%;
+  background: #f3f3f3;
+}
+.comment-head {
+  border-top: 1rpx solid #ebebeb;
+  padding: 30rpx 30rpx 10rpx;
+  background: #fff;
+}
+.comment-title {
+  font-size: 36rpx;
+}
+.comment-title-num {
+  font-size: 28rpx;
+  color: #999;
+}
+.comPage-top-section {
+  padding: 20rpx 0rpx 10rpx;
+}
+.comPage-comment-item {
+  padding-top: 6rpx;
+}
+.comPage-comment-label {
+  display: inline-block;
+  padding: 10rpx 20rpx;
+  border-radius: 30rpx;
+  font-size: 26rpx;
+  color: #666;
+  background: #F3F3F3;
+  margin: 10rpx 18rpx 10rpx 0;
+}
+.comPage-top-section .active {
+  background: #FFEBEC;
+  color: #FF4451;
+}
+.comment-section {
+  padding: 20rpx 44rpx 0 20rpx;
+  margin-top: 20rpx;
+  background: #fff;
+}
+.comPage-comment-info {
+  display: flex;
+  align-items: center; 
+}
+.comPage-comment-name {
+  font-size: 30rpx;
+  color: #333;
+}
+.comPage-comment-date {
+  font-size: 22rpx;
+  color: #999;
+}
+.comPage-comment-photo {
+  display: block;
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 20rpx;
+}
+.comPage-comment-assess {
+  width: 572rpx;
+  margin-left: 108rpx;
+  padding-bottom: 20rpx;
+  position: relative;
+  top: -16rpx;
+  left: 0;
+  border-bottom: 1rpx solid #EBEBEB;
+}
+.comPage-comment-star .icon-star.light {
+  margin-right: 4rpx;
+  font-size: 22rpx;
+  color: #FFAC11;
+}
+.comPage-comment-star .icon-star {
+  margin-right: 4rpx;
+  font-size: 22rpx;
+  color: #CECECE;
+}
+.comPage-comment-content {
+  font-size: 26rpx;
+  color: #333;
+  line-height: 1.7;
+  word-break: break-all;
+}
+.comPage-comment-content_pad {
+  padding-top: 15rpx;
+}
+.comPage-comment-pics {
+  width: 570rpx;
+  padding-top: 10rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  padding-bottom: 10rpx;
+}
+.comPage-comment-pics image {
+  display: inline-block;
+  width:163rpx;
+  height:163rpx;
+  border-radius:6rpx;
+  margin-right: 10rpx;
+}
+.no-comment {
+  padding-top: 30rpx;
+  text-align: center;
+  color: #666;
+}
+.no-more {
+  text-align: center;
+  padding-bottom: 20rpx;
+  color: #666;
+  font-size: 24rpx;
+}
+.all-word-btn {
+  display: block;
+  color: #ff3b49;
+  cursor: pointer;
+}

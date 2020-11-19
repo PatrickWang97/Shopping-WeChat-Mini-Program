@@ -1,0 +1,78 @@
+page {
+  background: #F4F4F4;
+}
+.top-section {
+  height: 180rpx;
+  margin-bottom: 30rpx;
+}
+.top-section image {
+  width: 100%;
+  height: 100%;
+}
+.level-content {
+  padding: 0 20rpx;
+}
+.bottom-section {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  background:#fff;
+  padding:40rpx 0;
+}
+.level-image-box {
+  width: 180rpx;
+  height: 180rpx;
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 30rpx;
+  background: url('http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/promotion/lv.png');
+  background-size: 100% 100%;
+  text-align: center;
+  line-height: 160rpx;
+}
+.level-image-box text {
+  color: #fff;
+  font-style: italic;
+  font-weight: 600;
+}
+.level-image-box text:first-child {
+  font-size: 46rpx;
+}
+.level-detail {
+  display: inline-block;
+  vertical-align: top;
+  width: 410rpx;
+}
+.level-name {
+  font-size: 36rpx;
+  color: #000;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+}
+.level-rules {
+  color: #999;
+  font-size: 26rpx;
+}
+.level-menu {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 50rpx 0 50rpx 46rpx;
+  margin-bottom: 20rpx;
+  margin-top: 10rpx;
+  position: relative;
+}
+.now-level {
+  position: absolute;
+  font-size: 24rpx;
+  background: linear-gradient(0deg,rgba(74,143,254,1),rgba(75,125,252,1));
+  color: #fff;
+  width: 60rpx;
+  text-align: center;
+  padding-top: 50rpx;
+  top: 0;
+  right: 70rpx;
+  border-radius: 0 0 30rpx 30rpx;
+  padding: 26rpx 0 20rpx 0;
+}

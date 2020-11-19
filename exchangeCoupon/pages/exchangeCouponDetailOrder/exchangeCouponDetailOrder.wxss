@@ -1,0 +1,183 @@
+page {
+  padding-bottom: 125rpx;
+  background-color: #f3f3f3;
+}
+.preview-goods-wrap{
+  padding: 22rpx 23rpx 0;
+}
+.exchange-coupon-wrapper {
+  border-radius: 12rpx;
+  position: relative;
+  overflow: hidden;
+  background: #ffffff
+}
+.exchange-coupon-top {
+  display: flex;
+  padding: 31rpx 31rpx 35rpx 40rpx;
+  position: relative;
+  overflow: hidden;
+}
+.exchange-coupon-left{
+  color: #FF5500;
+  width: 104rpx;
+  position: relative;
+}
+.exchange-coupon-center{
+  padding-left: 40rpx;
+}
+.exchange-coupon-title{
+  font-size: 30rpx;
+  color: #333333;
+  width: 360rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 5rpx;
+}
+.exchange-coupon-des{
+  font-size: 30rpx;
+  width: 360rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.exchange-coupon-image{
+  width: 104rpx;
+  height:112rpx;
+  margin-top: 5rpx;
+}
+.exchange-coupon-number{
+  font-size: 34rpx;
+  position: absolute;
+  left: 0;
+  top: 25rpx;
+  width: 100%;
+  text-align: center;
+}
+.exchange-coupon-number-unit{
+  font-size: 22rpx;
+}
+.exchange-coupon-content{
+  background: #ffffff;
+  border-radius: 12rpx;
+  margin-top: 20rpx;
+}
+.exchange-coupon-content-item{
+  height: 88rpx;
+  line-height: 88rpx;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 30rpx;
+  align-items: center;
+}
+.exchange-coupon-content-remark{
+  text-align: right;
+  padding-right: 30rpx;
+  color: #FF1500;
+  font-size: 26rpx;
+  position: relative;
+  top: -19rpx;
+  padding-bottom: 11rpx;
+}
+.content-item-title{
+  color: #333333;
+  font-size: 28rpx;
+}
+.content-item-title-remark{
+  color:#999999;
+}
+.content-item-counter{
+  width:170rpx;
+  border:2rpx solid rgba(240,240,240,1);
+  border-radius:28rpx;
+  padding: 4rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.counter-symbol{
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 50%;
+  background: #F5F5F5;
+  color: #BFBFBF;
+  font-size: 48rpx;
+  font-weight: bold;
+  line-height: 43rpx;
+  text-align: center;
+}
+.counter-input{
+  width: 60rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+  text-align: center;
+  color: #333;
+  background: #ffffff;
+}
+.exchange-coupon-subtotal{
+  font-size:26rpx;
+  font-weight:bold;
+  color:rgba(51,51,51,1);
+}
+.exchange-coupon-type{
+  color: #333333;
+  font-size: 26rpx;
+}
+.exchange-coupon-content-item .icon-rightarrow{
+  color:#D2D2D2;
+  font-size: 22rpx;
+  margin-left: 10rpx;
+}
+.exchange-coupon-switch switch{
+  transform: scale(0.7);
+  position: relative;
+  right: -25rpx;
+}
+.bottom-nav {
+  line-height: 94rpx;
+  border-top: 1px solid #EBEBEB;
+  font-size: 0;
+  background-color: #fff;
+}
+.preview-goods-total-price {
+  display: inline-block;
+  width: calc(100% - 234rpx);
+  font-size: 30rpx;
+  vertical-align:middle;
+  color: #333;
+  text-align: left;
+  text-indent: 36rpx;
+}
+.price-count {
+  color: #ff7100;
+}
+.bottom-nav form {
+  float: right;
+  width: 234rpx;
+}
+.bottom-nav button {
+  float: right;
+  width: 100%;
+  font-size: 30rpx;
+  border-radius: 0;
+  color: #fff;
+  background:linear-gradient(90deg,rgba(255,150,0,1) 0%,rgba(255,114,0,1) 100%);
+  line-height: inherit;
+}
+.many-businesses-icon{
+  display: inline-block;
+  width:64rpx;
+  height:32rpx;
+  line-height: 32rpx;
+  background:rgba(255,77,100,0.1);
+  text-align: center;
+  color: #FF4D64;
+  font-size: 24rpx;
+  vertical-align: middle;
+  margin-right: 8rpx;
+  position: relative;
+  top: -3rpx;
+}
+.maTop6{
+  margin-top: 6rpx;
+}

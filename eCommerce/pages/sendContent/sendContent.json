@@ -1,0 +1,6 @@
+{
+    "navigationBarTitleText": "编辑赠送内容",
+    "usingComponents": {
+        "component-behavior-track": "/components/behaviorTrack/behaviorTrack"
+    }
+}

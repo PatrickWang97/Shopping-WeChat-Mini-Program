@@ -1,0 +1,150 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="shoppingCart-wrap page" id="shoppingCart">
+<view class="shoppingCart-top-nav">
+  <text>退款商品</text>
+</view>
+<view class="shoppingCart-list-wrap">
+  <view class="shoppingCart-goods-list">
+    <block wx:for="{{ goodsList }}" wx:for-item="goods" wx:key="index">
+      <view wx:if="{{ goods.preview_refund_num > 0 && goods.is_benefit_goods != 1 }}">
+        <label style="{{'color:' + storeStyle.theme }}" data-index="{{ index }}" class="shoppingCart-check-box {{ goods.selected ? 'checked ico-moon icon-success-tip' : '' }}" bindtap="clickSelectGoods"></label>
+        <view class="shoppingCart-goods-content">
+          <view class="shoppingCart-goods-cover">
+            <image src="{{ goods.cover }}"></image>
+          </view>
+          <view class="goods-content-box">
+            <view class="shoppingCart-goods-title"><text wx:if="{{ is_group_buy_order != 0 }}" class="is-seckill">拼团</text><text wx:if="{{goods.is_seckill == 1}}" class="is-seckill">秒杀</text><text wx:if="{{goods.is_vip_goods == 1}}" class="is-seckill">会员价</text>{{ goods.goods_name }}</view>
+            <view class="ellipsis shoppingCart-goods-model" wx:if="{{ goods.model_value_str }}">{{ goods.model_value_str }}</view>
+            <view class="shoppingCart-price-box">
+              <block wx:if="{{goods.use_integral == 0}}">
+                <text style="{{'color:' + storeStyle.theme }}" class="real-price">¥{{ goods.price }}</text>
+              </block>
+              <block wx:else>
+                <text style="{{'color:' + storeStyle.theme }}" class="real-price" wx:if="{{goods.price !='0.00' || !goods.use_integral || (goods.use_integral == 0)}}">¥{{ goods.price }}</text>
+                <text style="{{'color:' + storeStyle.theme }}" class="real-price" wx:if="{{goods.use_integral && goods.use_integral != 0 && goods.price !='0.00'}}">+</text>
+                <text style="{{'color:' + storeStyle.theme }}" class="real-price" wx:if="{{goods.use_integral}}">{{goods.use_integral}}积分</text>
+              </block>
+              <text class="seckill-price" wx:if="{{goods.is_seckill == 1}}">¥{{ goods.original_price }}</text>
+              <view class="goods-number-box pull-right">
+                <view class="goods-num-mius" bindtap="clickMinusButton" data-index="{{ index }}">-</view>
+                <input type="number" class="goods-num-box" value="{{ goods.preview_refund_num }}" data-index="{{ index }}" bindinput="inputGoodsCount" disabled="{{dining_partner_source ? 'false' : 'true'}}"/>
+                <view style="{{'color:' + storeStyle.theme }}" class="goods-num-plus" bindtap="clickPlusButton" data-index="{{ index }}">+</view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <!-- 餐饮3.0 新增商品属性 -->
+        <view class="goods-attributes-wrap" wx:if="{{goods.is_package_goods != 1 && goods.attributes_id &&goods.attributes_id != 0}}">
+          <view class="goods-attributes-item" wx:for="{{goods.attributes}}" wx:key="index" wx:for-item="attributes">
+            <view>
+              <text>{{attributes.name}}：</text>
+              <view wx:for="{{attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                <text>{{elem.name}}</text><text class="attributes-add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                <text wx:if="{{elem_index != attributes.elem.length -1}}">，</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <!-- 餐饮3.0 新增套餐 -->
+        <view class="package-info-wrap" wx:if="{{goods.is_package_goods == 1}}"  style="max-height:{{goods.showPackageInfo?'auto':''}};">
+          <view class="package-info-content" hidden='{{!goods.showPackageInfo}}'>
+            <view class="package-info-item" wx:for="{{goods.package_goods}}" wx:key="index" wx:for-item="package">
+              <view class="package-info-l">
+                <block wx:if="{{package.is_require == 1 && package.is_multi_select == 1 && package.selected_num >= package.min_sales_nums && package.selected_num > 1}}">
+                  <view class="package-info-title">
+                    <view style="display:flex;">
+                      <text class="package-info-require" wx:if="{{package.is_require == 1}}">必</text>
+                      <text class="package-info-require" wx:if="{{package.is_require == 1}}">标配</text>
+                      <text class="package-info-name">{{package.title}}</text>
+                    </view>
+                    <view>
+                      <text class="package-info-num">x{{package.min_sales_nums}}</text>
+                    </view>
+                  </view>
+                  <view class="package-info-model">
+                    <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                    <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                  </view>
+                  <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                    <text>{{_attributes.name}} : </text>
+                    <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                      <text>{{elem.name}}</text>
+                      <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                      <text wx:if="{{elem_index != _attributes.elem.length -1}}">，</text>
+                    </view>
+                  </view>
+                  <block wx:if="{{package.selected_num - package.min_sales_nums > 0}}">
+                    <view class="package-info-title">
+                      <view>
+                        <text class="package-info-name">{{package.title}}</text>
+                      </view>
+                      <view>
+                        <text class="package-info-add_price" wx:if="{{package.added_price > 0}}">+¥{{package.added_price}}</text>
+                        <text class="package-info-num">x{{package.selected_num - package.min_sales_nums}}</text>
+                      </view>
+                    </view>
+                    <view class="package-info-model">
+                      <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                      <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                    </view>
+                    <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                      <text>{{_attributes.name}} : </text>
+                      <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                        <text>{{elem.name}}</text>
+                        <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                        <text wx:if="{{elem_index != _attributes.elem.length -1}}">，</text>
+                      </view>
+                    </view>
+                  </block>
+                </block>
+                <block wx:else>
+                  <view class="package-info-title">
+                    <view style="display: flex;">
+                      <text class="package-info-require" wx:if="{{package.is_require == 1}}">必</text>
+                      <text class="package-info-require" wx:if="{{package.is_require == 1}}">标配</text>
+                      <text class="package-info-name">{{package.title}}</text>
+                    </view>
+                    <view>
+                      <text class="package-info-add_price" wx:if="{{package.added_price > 0}}">+¥{{package.added_price}}</text>
+                      <text class="package-info-num">x{{package.selected_num}}</text>
+                    </view>
+                  </view>
+                  <view class="package-info-model">
+                    <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                    <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                  </view>
+                  <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                    <text>{{_attributes.name}} : </text>
+                    <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                      <text>{{elem.name}}</text>
+                      <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥{{elem.price}}</text>
+                      <text wx:if="{{elem_index != _attributes.elem.length -1}}">，</text>
+                    </view>
+                  </view>
+                </block>
+              </view>
+            </view>
+          </view>
+          <view class='goods-showMore'>
+            <view class='package-info' hidden='{{goods.showPackageInfo}}' data-index='{{index}}' data-status='1' catchtap='showPackageInfoFn' style="{{ 'color:' + storeStyle.theme }}">
+              展开套餐明细
+              <text class='ico-moon icon-downarrow package-info-icon'></text>
+            </view>
+            <view class='package-info' hidden='{{!goods.showPackageInfo}}' data-index='{{index}}' data-status='0' catchtap='showPackageInfoFn' style="{{ 'padding-top:20rpx;color:' + storeStyle.theme }}">
+              收起
+              <text class='ico-moon icon-uparrow package-info-icon'></text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>
+</view>
+<view class="shoppingCart-bottom-nav">
+  <label style="{{'color:' + storeStyle.theme }}" class="shoppingCart-check-box {{ selectAll ? 'checked ico-moon icon-success-tip' : '' }}" bindtap="clickSelectAll"></label>
+  <text class="select-all">全选</text>
+  <text class="select-all" wx:if="{{dining_partner_source}}">（不可部分退款）</text>
+  <view style="{{'background:' + storeStyle.theme }}" class="pull-right sure-refund-btn" bindtap="sureRefund">确定</view>
+</view>

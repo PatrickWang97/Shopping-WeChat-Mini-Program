@@ -1,0 +1,11 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="screenShot"><image src="{{ screenShot }}" bindtap="previewImage" data-img="{{ screenShot }}"></image></view>
+<view class="screenTips" catchtap="showFeedbackDialog">存有异议？点此反馈</view>
+<view class='feedback-dialog' wx:if='{{feedbackDialog}}' catchtap='hideFeedbackDialog'>
+  <view class='feedback-content' catchtap='stopPropagation'>
+    <view class="feedback-title">我要反馈</view>
+    <textarea bindinput='feedbackText'></textarea>
+    <view class="submit-feedback" catchtap="feedback">提交</view>
+  </view>
+</view>

@@ -1,0 +1,23 @@
+<view>
+  <view class="page-contnet">
+    <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+      <view class="row-input">
+        <label class="input-title">地区</label>
+        <view class="input-content">+{{nationCode}}<text class="ico-moon icon-rightarrow"></text></view>
+      </view>
+    </picker>
+    <view class="row-input">
+      <label class="input-title">手机号</label>
+      <view class="input-content">
+        <input placeholder-class="phcolor" bindinput="inputPhone" placeholder="请输入手机号码" />
+      </view>
+    </view>
+  </view>
+  <view class="explain">
+    <text>更换新手机之前，请输入完整的原手机号进行认证</text>
+  </view>
+  <view class="bottom">
+    <button class="bottom-btn" catchtap="next">下一步</button>
+  </view>
+</view>
+

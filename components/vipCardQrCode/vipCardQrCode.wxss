@@ -1,0 +1,113 @@
+@import "/utils/font_icon.wxss";
+.qr-remark{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background:rgba(0,0,0,0.4);
+  z-index: 99;
+  padding-top: 152rpx;
+}
+.paid-vip-info{
+  width: 560rpx;
+  min-height: 580rpx;
+  position: relative;
+  border-radius: 10rpx;
+  background: #ffffff;
+  margin: 0 auto;
+  padding: 44rpx 0 0 0;
+}
+.refresh-none{
+  padding-bottom: 10rpx;
+}
+.paid-vip-info .user-info{
+  line-height: 1;
+  font-size: 30rpx;
+  text-align: center;
+  width: 440rpx;
+  margin: 0 auto;
+}
+.user-info-title{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+.paid-vip-info .card-num{
+  margin: 16rpx 0 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+.paid-vip-info .bottom-wrapper{
+  width: calc(100% - 80rpx);
+  display: flex;
+  justify-content: space-between;
+  margin: 0 40rpx;
+  border-top: 2rpx solid #F3F3F3;
+  padding: 32rpx 0 38rpx 0;
+}
+.paid-vip-info .valid-time{
+  font-size: 28rpx;
+  color: #FF7100;
+}
+.paid-vip-info .icon-closes{
+  position: absolute;
+  bottom: -120rpx;
+  left: 50%;
+  transform: translate(-50%, 0);
+  padding: 11rpx;
+  font-size: 32rpx;
+  color: #FFF;
+  border: 1rpx solid #FFF;
+  background: rgba(255,255,255,.15);
+  border-radius: 50%;
+}
+.paid-vip-info .refresh-btn{
+  font-weight: bold;
+  font-size: 28rpx;
+  color: #3091F2;
+}
+.paid-vip-title{
+  width: 100%;
+  text-align: center;
+  color: #000;
+  font-size: 32rpx;
+}
+.paid-vip-info .qr-code-wrapper{
+  width: 100%;
+  position: relative;
+  text-align: center;
+  margin-top: 6rpx;
+}
+.paid-vip-card-qr{
+  width: 480rpx;
+  height: 480rpx;
+  padding: 0 40rpx;
+}
+.valided::before{
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: rgba(255, 255, 255, .92);
+  text-align: center;
+}
+.valided-wrapper{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.valided-wrapper .text{
+  padding-bottom: 22rpx;
+  color: #333333;
+  font-size: 28rpx;
+}
+.valided-wrapper .refresh{
+  color: #3091F2;
+  font-size: 28rpx;
+  font-weight: bold;
+}

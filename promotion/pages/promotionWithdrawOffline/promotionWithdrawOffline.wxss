@@ -1,0 +1,145 @@
+page{
+  background-color: #F3F3F3;
+}
+.withdraw-by-other-dialog {
+  color: #999999;
+  font-size: 28rpx;
+  padding-left:30rpx;
+  background:#fff;
+}
+.withdraw-by-other-title {
+  background:#fff;
+  padding: 30rpx 60rpx;
+  margin-bottom: 18rpx;
+  margin-top: 1px;
+}
+.withdraw-by-other-title text {
+  margin-left: 50rpx;
+  color: #ff7100;
+}
+.widthdraw-form {
+  line-height: 70rpx;
+  height: auto;
+  padding: 10rpx 20rpx;
+  border-bottom: 1px solid #EBEBEB;
+}
+.widthdraw-form label {
+  width: 180rpx;
+  display: inline-block;
+  vertical-align: top;
+  text-align: left;
+  background: #fff;
+}
+.widthdraw-form input,
+.widthdraw-form picker{
+  display: inline-block;
+  width: 500rpx;
+  vertical-align: top;
+  height:70rpx;
+  text-align: left;
+  text-indent:5px;
+  position: relative;
+  color: #333333;
+}
+.widthdraw-form picker {
+  text-align: right;
+  color: #999;
+}
+.widthdraw-form picker .icon-rightarrow {
+  float: right;
+  margin-right: 20rpx;
+  font-size:20rpx;
+  margin-top: 4rpx;
+}
+.widthdraw-form textarea{
+  display: inline-block;
+  width: 500rpx;
+  height: 130rpx;
+  vertical-align: top;
+  text-align: left;
+  line-height: 42rpx;
+  margin-top: 14rpx;
+  color: #333;
+}
+.bank-tip {
+  color: red;
+  text-indent: 244rpx;
+}
+.withdraw-by-other-dialog .payattention {
+  color: #999;
+  font-size: 24rpx;
+  text-align: left;
+  width: 605rpx;
+  padding: 23rpx;
+  margin: 0 auto;
+}
+.withdraw-by-other-dialog button {
+  background-color: #ff7100;
+  color: #fff;
+  width: 610rpx;
+  font-size: 30rpx;
+  text-align: center;
+  margin-top: 30rpx;
+  padding: 0;
+  height: 80rpx;
+  line-height: 80rpx;
+}
+.withdrawSuccess {
+  width: 560rpx;
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -250rpx;
+  margin-left: -280rpx;
+  text-align: center;
+  font-size: 28rpx;
+  border-radius: 8rpx;
+  color: #666666;
+  z-index: 10;
+  padding-top: 100rpx;
+}
+.close-withdraw-btn {
+  border-top: 1px solid #EBEBEB;
+  padding: 20rpx 0;
+  color: #ff7100;
+  font-size: 30rpx;
+  margin-top: 52rpx;
+}
+.payattention {
+  font-size: 24rpx;
+  color: #999;
+  margin: 30rpx 60rpx 0 60rpx;
+  line-height: 40rpx;
+}
+.submitWidthdraw {
+  background: #ff7100;
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  width: 690rpx;
+  margin: 0 auto;
+  margin-top: 80rpx;
+  font-size: 36rpx;
+  color: #fff;
+  border-radius: 8rpx;
+}
+.withdraw-by-other-dialog view:last-child {
+  border-bottom: none;
+}
+.header-title {
+  color: #999999;
+  font-size: 26rpx;
+  margin-bottom: 20rpx;
+}
+.widthdraw-money {
+  color: #ff7100;
+  font-size: 52rpx;
+}
+.withdrawSuccess image {
+  width:337rpx;
+  height:259rpx;
+  position:absolute;
+  top:-170rpx;
+  left:110rpx;
+}

@@ -1,0 +1,8 @@
+{
+   "navigationBarTextStyle": "black",
+  "navigationBarBackgroundColor": "#ffffff",
+  "usingComponents": {
+    "component-behavior-track": "/components/behaviorTrack/behaviorTrack"
+  },
+  "enablePullDownRefresh": true
+}

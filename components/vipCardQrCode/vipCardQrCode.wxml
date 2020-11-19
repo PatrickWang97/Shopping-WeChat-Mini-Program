@@ -1,0 +1,28 @@
+<view class="qr-remark" wx:if="{{vipCardQrCodeShow}}">
+  <view class="paid-vip-info {{ refreshData.isValid == 0 ?'refresh-non':''}}">
+    <view class='user-info'>
+      <view class="user-info-title">{{qrData.data.user_info}}</view>
+      <view class="card-num" wx:if="{{ qrData.data.id }}">卡号：{{ qrData.data.id }}</view>
+    </view>
+    <view class="qr-code-wrapper {{ refreshData.isValid == 0 ? 'valided' : '' }}">
+      <image src="{{qrData.data.pic_url}}" class="paid-vip-card-qr"></image>
+      <!-- <view class="valided-wrapper" wx:if="{{ refreshData.isValid == 0 }}">
+        <view class="text">二维码已失效</view>
+        <view class="refresh" data-id="{{vipCardId}}" catchtap="showQRRemark">
+          刷新
+          <label class="ico-moon icon-refresh"></label>
+        </view>
+      </view> -->
+    </view>
+    <!-- <view class="bottom-wrapper" wx:if="{{ qrData.data.qr_code_config.auto_refresh == 1 && refreshData.isValid != 0 }}">
+      <view class="valid-time">
+        {{ qrData.data.qr_code_config.refresh_text }}内有效
+      </view>
+      <view class="refresh-btn" data-id="{{vipCardId}}" catchtap="showQRRemark">
+        刷新
+        <label class="ico-moon icon-refresh"></label>
+      </view>
+    </view> -->
+    <label class="ico-moon icon-closes" catchtap="closeWindow"></label>
+  </view>
+</view>

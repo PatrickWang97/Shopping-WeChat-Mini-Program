@@ -1,0 +1,138 @@
+page {
+  background: #f3f3f3;
+  height: 100%;
+}
+.address-list-title {
+  width: 100%;
+  height: 66rpx;
+  background-color: #f3f3f3;
+  color: #666;
+  font-size: 26rpx;
+  text-indent: 30rpx;
+  line-height: 66rpx;
+}
+.myAddress-bottom-nav text{
+  vertical-align: middle;
+  margin: 0 8rpx;
+}
+.myAddress-content-container {
+  background-color: #fff;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 30rpx;
+  border-radius: 12rpx;
+}
+.myAddress-address {
+  position: relative;
+  padding: 26rpx 0;
+  border-bottom: 1px solid #F3F3F3;
+}
+.address-label {
+  font-size: 22rpx;
+  width: 66rpx;
+  text-align: center;
+  margin-right: 10rpx;
+  border-radius: 4rpx;
+  vertical-align: middle;
+  line-height: 32rpx;
+  display: inline-block;
+}
+.home {
+  background: #FFEFE2;
+  color: #ff7100;
+}
+.default, .company {
+  background: #EAF4FE;
+  color: #3091f2;
+}
+.school {
+  background: #F1FBEA;
+  color: #79DC31;
+}
+.myAddress-address view {
+  position: relative;
+}
+.check-box-container {
+  position: relative;
+  padding: 10px;
+  margin: 0 5px;
+  z-index:1;
+  float: left;
+}
+.myAddress-edit {
+  display: inline-block;
+  color: #999999;
+  font-size: 32rpx;
+  padding: 20rpx 20rpx 20rpx 40rpx;
+  border-left:1px solid #F3F3F3;
+}
+.myAddress-address-top {
+  width: 528rpx;
+  display: inline-block;
+  vertical-align: middle;
+}
+.myAddress-address-top .address-detail {
+  font-size: 26rpx;
+  color: #666666;
+  display: block;
+  width: 528rpx;
+  line-height:44rpx;
+  margin-top: 10rpx;
+  word-break: break-all;
+}
+.myAddress-address-top .address-person{
+  font-size: 28rpx;
+  color: #333333;
+  line-height: 50rpx;
+  display:inline-block;
+  vertical-align:middle;
+  font-weight: 600;
+}
+.add-btn {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1px solid #ff7100;
+  position: relative;
+  vertical-align:middle;
+}
+.add-btn:before, 
+.add-btn:after{
+  position: absolute;
+  content: "";
+  display: block;
+  background-color: #ff7100;
+}
+.add-btn:before{
+  width: 7px;
+  height: 1px;
+  left:3px;
+  top:6px;
+}
+.add-btn:after {
+  width: 1px;
+  height: 7px;
+  left: 6px;
+  top: 3px;
+} 
+.sure-myAddress {
+  position: fixed;
+  bottom: 0;
+  color: #333;
+  background: #fff;
+  left: 0;
+  right: 0;
+  line-height: 94rpx;
+  font-size: 30rpx;
+  text-align: center;
+  display: flex;
+}
+.sure-myAddress view {
+  display: inline-block;
+  flex: 1;
+}
+.myAddress-bottom-wrap {
+  color: #fff;
+  background: #ff7100;
+}

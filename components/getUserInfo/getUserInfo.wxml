@@ -1,0 +1,35 @@
+<view class="getUserInfo" wx:if="{{showGetUserInfoNormal}}">
+  <view class="getUserInfo-bg"></view>
+  <view class="getUserInfo-inner">
+    <view class="getUserInfo-title">请先登录再进行操作</view>
+    <view class="getUserInfo-view">
+      <image class="getUserInfo-logo" src="{{appLogo}}" mode="aspectFit"></image>
+    </view>
+    <view>
+      <view class="getUserInfo-tip">小程序将获取以下授权</view>
+      <view class="getUserInfo-desc"><label class="getUserInfo-circle"></label>获得您的公开信息（昵称、头像等）</view>
+    </view>
+    <view class="getUserInfo-btn-wrap">
+      <view class="getUserInfo-btn" bindtap="refuseGetInfo">暂不登录</view>
+      <button class="getUserInfo-btn getUserInfo-confirm" lang="zh_CN" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">立即登录</button>
+    </view>
+  </view>
+</view>
+<!-- <view class="getUserInfo getUserInfo-full" wx:if="{{showGetUserInfoFull}}">
+  <view class="getUserInfo-full-head" style="margin-top:{{topNavBarHeight}}px">
+    <image class="getUserInfo-full-bg" src="https://cdn.jisuapp.cn/static/webapp/images/xcx-login/login-full-bg.png" mode="aspectFill"></image>
+    <view class="getUserInfo-full-head-content">
+      <view class="getUserInfo-full-title">会员注册</view>
+      <view class="getUserInfo-full-logo-wrap">
+        <image class="getUserInfo-full-logo" src="{{appLogo}}" mode="aspectFit"></image>
+      </view>
+    </view>
+  </view>
+  <view>
+    <view class="getUserInfo-full-treaty" bindtap="checkboxChange"><checkbox class="getUserInfo-full-checkbox" checked="{{consentAgreement}}"/>已阅读并同意以下《服务协议》</view>
+    <view class="getUserInfo-full-desc"><label class="getUserInfo-circle"></label><text class="getUserInfo-full-desc-text">当前小程序仅限会员使用，请点击下方按钮注册成为会员</text></view>
+    <view class="getUserInfo-full-desc"><label class="getUserInfo-circle"></label><text class="getUserInfo-full-desc-text">注册需要获得您的公开信息（昵称、头像等）</text></view>
+  </view>
+  <button class="getUserInfo-full-confirm {{!consentAgreement ? 'disabled' : ''}}" lang="zh_CN" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" disabled="{{!consentAgreement}}">注册会员</button>
+  <view class="getUserInfo-btn" bindtap="refuseGetInfo">暂不注册</view>
+</view> -->

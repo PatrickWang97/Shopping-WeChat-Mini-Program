@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "交易成功",
+  "usingComponents": {
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+    "component-recommend": "/components/recommend/recommend",
+    "component-payFinishGift": "/components/payFinishGift/payFinishGift"
+  }
+}

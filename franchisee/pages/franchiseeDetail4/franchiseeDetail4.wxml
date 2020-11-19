@@ -1,0 +1,288 @@
+<view class="app">
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-topNavBar topNavBarData="{{topNavBarData}}"></component-topNavBar>
+<franchiseeTabbar  franchiseeInfo="{{franchiseeIdInfo}}"></franchiseeTabbar>
+<component-customer-service-modal id="customer-service-modal"></component-customer-service-modal>
+
+  <view class="franchisee-incomplete clearfix" wx:if="{{incompleteCrossband}}" style="{{topNavBarData.topNavBarHeight ? 'top:' + topNavBarData.topNavBarHeight + 'px' : ''}}">
+    <view class="franchisee-incomplete-close" bindtap="closeIncomplete"><label class="ico-moon icon-closes"></label></view>
+    <view class="franchisee-incomplete-text">
+      <text>完善门店信息体验更多功能</text>
+    </view>
+    <view class="franchisee-incomplete-btn" bindtap="turnToFranchiseePerfect">立即完善</view>
+  </view>
+  <view class="page {{incompleteCrossband ? 'has-incomplete' : ''}}">
+    <view wx:if="{{elements.carousel === undefined || elements.carousel.isShow}}" class="franchisee-cover-container">
+      <block wx:if="{{ carousel.length }}">
+        <swiper wx:if="{{elements.carousel === undefined || elements.carousel.autoplay}}" class="franchisee-swiper" indicator-dots="true" autoplay="{{elements.carousel === undefined || elements.carousel.autoplay}}" circular="true" interval="{{elements.carousel === undefined ? '5000' :  (elements.carousel.interval * 1000)}}" duration="1000" indicator-active-color="#eee">
+          <block wx:for="{{ carousel }}" wx:key="index">
+            <swiper-item class="franchisee-swiper-item" wx:if="{{item.form_data.action == 'share'}}">
+              <image src="{{ item.form_data.pic }}" mode="aspectFill"></image>
+              <button class="share-btn" open-type="share" data-form="{{item.form_data}}"></button>
+            </swiper-item>
+            <swiper-item wx:else bindtap="clickEventHandler" data-form="{{item.form_data}}">
+              <image src="{{ item.form_data.pic }}" mode="aspectFill"></image>
+              <view wx:if="{{item.form_data.action == 'video-play'}}" class="carousel-video-play icon-play ico-moon"></view>
+            </swiper-item>
+          </block>
+        </swiper>
+        <swiper wx:else class="franchisee-swiper" indicator-dots="true" autoplay="{{false}}" circular="true" interval="5000" duration="1000" indicator-active-color="#eee">
+          <block wx:for="{{ carousel }}" wx:key="index">
+            <swiper-item class="franchisee-swiper-item" wx:if="{{item.form_data.action == 'share'}}">
+              <image src="{{ item.form_data.pic }}" mode="aspectFill"></image>
+              <button class="share-btn" open-type="share" data-form="{{item.form_data}}"></button>
+            </swiper-item>
+            <swiper-item wx:else bindtap="clickEventHandler" data-form="{{item.form_data}}">
+              <image src="{{ item.form_data.pic }}" mode="aspectFill"></image>
+              <view wx:if="{{item.form_data.action == 'video-play'}}" class="carousel-video-play icon-play ico-moon"></view>
+            </swiper-item>
+          </block>
+        </swiper>
+      </block>
+      <block wx:elif="{{carouselPic}}">
+        <image class="franchisee-picture" src="{{ franchiseeInfo.picture }}" mode="aspectFill"></image>
+      </block>
+    </view>
+    <view class="franchisee-info">
+      <view class="franchisee-title">{{franchiseeInfo.name}}</view>
+      <view class="franchisee-phone" data-phone="{{franchiseeInfo.phone}}" bindtap="makePhoneCall"><label class="ico-moon icon-takeout-cellphone-left"></label></view>
+    </view>
+
+    <view wx:if="{{elements.product && elements.product.isShow}}" class="franchisee-env-intro">
+      <view class="top-border"></view>
+      <view class="intro-container">
+        <view wx:for="{{previewImages}}" wx:key="index" class="intro-item" catchtap="previewVideo" data-index="{{index}}">
+          <image src="{{item.imageUrl}}" mode="aspectFill" />
+          <block wx:if="{{item.type === 'video'}}">
+            <view class="play-icon"><image src="https://cdn.jisuapp.cn/static/webapp/images/franchisee/video_play.png" /></view>
+          </block>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{elements.cateGroup === undefined || elements.cateGroup.isShow}}" class="franchisee-div franchisee-fun">
+      <view class="franchisee-fun-list">
+        <block wx:for="{{appShopConfig.cate_group}}" wx:key="index">
+          <block wx:if="{{item.is_show == 1}}">
+            <view class="franchisee-fun-item" wx:if="{{item.form_data.action == 'share'}}" >
+              <view class="franchisee-fun-logo"><image src="{{item.photo}}" mode="aspectFill"></image></view>
+              <view class="franchisee-fun-text">{{item.name}}</view>
+              <button class="share-btn" open-type="share"  data-form="{{item.form_data}}"></button>
+            </view>
+            <view class="franchisee-fun-item" wx:else bindtap="clickEventHandler" data-form="{{item.form_data}}">
+              <view class="franchisee-fun-logo"><image src="{{item.photo}}" mode="aspectFill"></image></view>
+              <view class="franchisee-fun-text">{{item.name}}</view>
+            </view>
+          </block>
+        </block>
+      </view>
+    </view>
+
+    <view class="franchisee-div franchisee-vip-wrapper" wx:if="{{vipCardInfo}}">
+      <view class="franchisee-vip" data-id="{{vipCardInfo.id}}" data-is-paid-vip="{{vipCardInfo.is_paid_vip}}" data-is-league="{{vipCardInfo.is_app_shop}}" bindtap="turnToVipCard">
+        <view class="franchisee-vip-cover">
+          <image src="{{ vipCardInfo.logo }}" mode="aspectFill"></image>
+        </view>
+        <view class="franchisee-vip-info">
+          <view class="franchisee-vip-title">{{vipCardInfo.app_name}} 会员卡</view>
+          <view wx:if="{{ vipCardInfo.discount != 0 }}" class="franchisee-vip-rights">免费开卡 享{{ vipCardInfo.discount }}折</view>
+          <view wx:elif="{{ vipCardInfo.coupon_list.length > 0 }}" class="franchisee-vip-rights">免费开卡 赠送优惠券</view>
+          <view wx:elif="{{ vipCardInfo.integral != 0 }}" class="franchisee-vip-rights">免费开卡 赠送{{ vipCardInfo.integral }}积分</view>
+        </view>
+        <view wx:if="{{vipCardInfo.is_owner != 1}}" class="franchisee-vip-btn" catchtap="getVIPCardForUser">开通会员卡</view>
+        <view wx:else class="franchisee-vip-btn">已开卡</view>
+      </view>
+      <view class="franchisee-vip-more" bindtap="turnTopVipBenefits">
+        <text>查看更多</text>
+        <text class="ico-moon icon-downarrow"></text>
+      </view>
+    </view>
+
+    <view wx:if="{{elements.coupon === undefined || elements.coupon.isShow}}" class="franchisee-div franchisee-coupon">
+      <view class="franchisee-div-head clearfix" bindtap="turnToCouponList"><label class="franchisee-div-icon ico-moon icon-franchisee-coupon"></label><text>优惠券</text><label class="right-icon ico-moon icon-rightarrow"></label></view>
+      <view class="franchisee-coupon-no" wx:if="{{hasSetCoupon === 0}}">暂无优惠券</view>
+      <view class="franchisee-coupon-list" wx:if="{{hasSetCoupon === 1}}">
+        <view class="franchisee-coupon-item" wx:for="{{couponList}}" wx:key="index" hidden="{{couponMore && index > 1}}">
+          <view class="coupon-info">
+            <view class="coupon-title">{{item.title}}</view>
+            <!-- <view>使用限制</view> -->
+            <block wx:if="{{item.type == 0}}">
+              <view>使用限制: 满{{item.condition}}可用</view>
+            </block>
+            <block wx:elif="{{item.extra_goods && item.extra_goods != 'null'}}">
+              <view>使用限制: 部分商品可用</view>
+            </block>
+            <block wx:else>
+              <view>使用限制: 全部商品可用</view>
+            </block>
+            <view>到期时间： {{item.expire == '-1' ?  (item.end_use_date + ' ' + item.end_use_time) : item.expire == '0' ? '领取当天生效,有效期1天' : ('领取'+ (item.react > 0 ? item.react + '天后' : '当天') + '生效，有效期'+ item.expire +'天')}} {{ item.exclude_holiday == 1 ? '除去法定节假日':''}} {{item.exclude_weekend == 1 ? '除去周末':''}}</view>
+          </view>
+          <view class="coupon-receive">
+            <block wx:if="{{item.type == 0}}">
+              <view class="coupon-rights">{{item.value}}元</view>
+            </block>
+            <block wx:elif="{{item.type == 1}}">
+              <view class="coupon-rights">{{item.value}}折</view>
+            </block>
+            <block wx:elif="{{item.type == 2}}">
+              <view class="coupon-rights">{{item.value}}元</view>
+            </block>
+            <block wx:elif="{{item.type == 3}}">
+              <view class="coupon-rights">兑换券</view>
+            </block>
+            <view class="coupon-btn" wx:if="{{item.recv_status == 1}}" data-id="{{item.id}}" data-category="{{item.category}}" data-index="{{index}}" bindtap="receiveCoupon">立即领取</view>
+            <view class="coupon-btn" wx:else>已领取</view>
+          </view>
+        </view>
+      </view>
+      <block wx:if="{{couponList.length > 2}}">
+        <view class="franchisee-coupon-more" bindtap="lookCouponMore" wx:if="{{couponMore}}"><text>查看更多</text><label class="ico-moon icon-downarrow"></label></view>
+        <view class="franchisee-coupon-more" bindtap="lookCouponMore" wx:else="{{!couponMore}}"><text>收起更多</text><label class="ico-moon icon-uparrow"></label></view>
+      </block>
+    </view>
+
+    <view class="franchisee-div recommend-div {{appShopConfig.recom_place_type == 1 ? '' : 'padding30'}} recommend-style-{{appShopConfig.recom_place_type}}" wx:if="{{(elements.recommend === undefined || elements.recommend.isShow) && recomPlaceShow}}">
+      <view class="recommend-inner">
+        <block wx:for="{{appShopConfig.recom_place}}" wx:key="index">
+          <view wx:if="{{item.is_show == 1}}" class="franchisee-recommend recommend-{{index}}" bindtap="clickEventHandler" data-form="{{item.form_data}}">
+            <image src="{{item.photo}}" mode="{{appShopConfig.recom_place_type == 1 ? 'widthFix' : 'scaleToFill'}}"></image>
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <view class="franchisee-goods" wx:if="{{!(appShopConfig.goods_cate[0].is_show == 0) && (elements.goodsShow === undefined || elements.goodsShow.isShow)}}">
+      <view class="franchisee-div-head clearfix" bindtap="turnToGoodsMore"><text>新品推荐</text><label class="right-icon" data-form="goods" data-type='0'>更多<label class="ico-moon icon-rightarrow" ></label></label></view>
+      <view class="franchisee-goods-list">
+        <block wx:for="{{goodsList}}" wx:key="index">
+  <view class="franchisee-goods-item" data-id="{{item.form_data.id}}" data-type="{{item.form_data.goods_type}}"
+    data-group="{{item.form_data.is_group_buy}}" data-group-id="{{item.form_data.group_buy_activity_id}}" catchtap="turnToGoodsDetail">
+            <image class="franchisee-goods-img" src="{{ item.form_data.cover }}" mode="aspectFit"></image>
+            <image class="goods-subscript" wx:if="{{item.form_data.corner_mark > 0 && (item.form_data.corner_position == 0 || item.form_data.corner_position === undefined)}}" src="{{item.form_data.corner_url}}"></image>
+            <view class="franchisee-goods-info">
+              <view class="franchisee-goods-title"><image class="title-subscript" wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 1}}" src="{{item.form_data.corner_url}}"></image>{{item.form_data.title}}</view>
+              <view class="franchisee-goods-other">
+                <view wx:if="{{item.form_data.is_vip_goods == 1}}">
+                  <text class="real-price">¥{{item.form_data.vip_min_price}}</text>
+                  <text class="vip-logo">会员价</text>
+                  <text class="sales">{{item.form_data.sales}}人付款</text>
+                </view>
+                <view wx:else>
+                  <label class="franchisee-goods-price"><label class="goods-price-icon">¥</label>{{item.form_data.price}}</label><label class="franchisee-goods-sales">{{item.form_data.sales}}人付款</label>
+                </view>
+              </view>
+            </view>
+          </view>
+        </block>
+      </view>
+      <view class="franchisee-goods-all" bindtap="turnToGoodsMore">全部商品</view>
+    </view>
+  </view>
+
+  <block wx:if="{{shopId}}">
+    <view  class="franchisee-change-tpl" bindtap="showChangeTpl">换模板</view>
+    <view class="franchisee-change-confirm" bindtap="changeTplConfirm">使用此模板</view>
+  </block>
+  <!-- <view wx:else class="sidebar">
+    <view class="ico-moon icon-telephone" data-phone="{{franchiseeInfo.phone}}" bindtap="makePhoneCall"></view>
+  </view> -->
+  <block wx:else>
+    <!-- 悬浮窗 -->
+    <view class="franchisee-suspension" wx:if="{{elements.suspension === undefined || elements.suspension.isShow}}">
+      <view class="franchisee-suspen-box">
+        <block wx:for="{{appShopConfig.float_window.content}}" wx:key="index">
+          <block wx:if="{{item.customFeature.action == 'contact'}}">
+            <view class="franchisee-suspen-item">
+              <button open-type="contact" session-from="{{franchiseeId}}"></button>
+              <image src="{{item.pic}}" mode="aspectFill" />
+            </view>
+          </block>
+          <block wx:elif="{{item.customFeature.action == 'turn-to-xcx'}}">
+            <view class="franchisee-suspen-item">
+              <navigator target="miniProgram" open-type="navigate" app-id="{{item.customFeature['xcx-appid']}}" path="{{item.customFeature['xcx-page-url'] || ''}}" version="release">
+                <image src="{{item.pic}}" mode="aspectFill" />
+              </navigator>
+            </view>
+          </block>
+          <block wx:else>
+            <view class="franchisee-suspen-item" data-form="{{item.customFeature}}" catchtap="{{item.customFeature.action && item.customFeature.action != 'none' ? 'clickEventHandler' : ''}}">
+              <image src="{{item.pic}}" mode="aspectFill" />
+            </view>
+          </block>
+        </block>
+      </view>
+    </view>
+  </block>
+
+  <view class="franchisee-tpl" wx:if="{{franchiseeTplPop}}" bindtap="hiddenChangeTpl" >
+    <view class="franchisee-tpl-content">
+      <view class="franchisee-tpl-list franchisee-tpl-store" data-id="0" catchtap="changeTpl">
+        <view class="franchisee-tpl-icon ico-moon icon-franchisee-store"></view>
+        <view class="franchisee-tpl-name">门店</view>
+      </view>
+      <view class="franchisee-tpl-list franchisee-tpl-waimai" data-id="1" catchtap="changeTpl">
+        <view class="franchisee-tpl-icon ico-moon icon-franchisee-waimai"></view>
+        <view class="franchisee-tpl-name">外卖</view>
+      </view>
+      <view class="franchisee-tpl-list franchisee-tpl-shop" data-id="2" catchtap="changeTpl">
+        <view class="franchisee-tpl-icon ico-moon icon-franchisee-shop"></view>
+        <view class="franchisee-tpl-name">商城</view>
+      </view>
+      <view class="franchisee-tpl-list franchisee-tpl-tostore" data-id="3" catchtap="changeTpl">
+        <view class="franchisee-tpl-icon ico-moon icon-franchisee-tostore"></view>
+        <view class="franchisee-tpl-name">到店</view>
+      </view>
+    </view>
+  </view>
+  <component-share pageQRCodeData="{{pageQRCodeData}}"></component-share>
+
+  <!-- 轮播视频弹窗 -->
+  <template name="carouselVideoPlay">
+    <view class="carouselVideoPlay" hidden="{{!data.videoUrl}}" catchtouchmove>
+      <view class="carouselVideoPlay-inner">
+        <view class="carouselVideoPlay-close icon-closes ico-moon" bindtouchend="carouselVideoClose" ></view>
+        <video wx:if="{{data.videoUrl}}" src="{{data.videoUrl}}" controls autoplay='autoplay'></video>
+      </view>
+    </view>
+  </template>
+  <template is="carouselVideoPlay" data="{{data: carouselVideo}}"></template>
+
+  <!--分销分享弹窗-->
+  <view wx:if="{{promoModalShow || promoFriShareShow}}" class="promotion-poster-modal" catchtouchmove=" " catchtap="tapClosePromoModal">
+    <view wx:if="{{!promoFriShareShow}}" class="promotion-poster" catchtap=" ">
+      <image src="{{franchiseeInfo.picture}}" />
+      <view class="poster-title">
+        <text class="industry-tag">{{franchiseeInfo.industry_type_short_name || franchiseeInfo.industry_type_name || '其他'}}</text>
+        <text class="franchisee-name">{{franchiseeInfo.name}}</text>
+      </view>
+      <view class="poster-desc">
+        <view class="profit-stratification">
+          <view class="level level-1">
+            一级：<text>{{distributionInfo.first_commission}}</text>%
+          </view>
+          <block wx:if="{{distributionInfo.distribution_type > 1}}">
+            <view class="center-border"></view>
+            <view class="level level-2">
+              二级：<text>{{distributionInfo.second_commission}}</text>%
+            </view>
+          </block>
+        </view>
+      </view>
+      <view class="poster-bottom">
+        <view class="weixin-btn btn">
+          <image src="https://cdn.jisuapp.cn/static/webapp/images/promotion/weixin.png" mode="aspectFit" />
+          <button open-type="share" data-from-where="distribution"></button></view>
+        <view wx:if="{{isOnline}}" class="wx-friends-btn btn" catchtap="tapShowPromoFriShare">
+          <image src="https://cdn.jisuapp.cn/static/webapp/images/promotion/wx_friends.png" mode="aspectFit" /></view>
+      </view>
+    </view>
+    <view wx:else class="promotion-share-poster" catchtap=" ">
+      <canvas canvas-id="promotion-canvas"></canvas>
+      <view wx:if="{{promoIsDrawing}}" class="save-picture-btn btn is-drawing" catchtap="">正在生成图片</view>
+      <view wx:else class="save-picture-btn btn" catchtap="savePosterIntoAlbum">保存图片</view>
+    </view>
+  </view>
+  <!-- 商家特色二维码 -->
+  <canvas class="subshop-qrcode" style="width: 220px; height: 220px;" canvas-id="franchisee-qrcode" ></canvas>
+</view>

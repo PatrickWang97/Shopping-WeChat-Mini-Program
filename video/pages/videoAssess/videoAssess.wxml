@@ -1,0 +1,24 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<scroll-view class="video-scroll" scroll-y bindscrolltolower="scrolltolower">
+  <view class="video-assess-list">
+    <view class="video-assess-li" wx:for="{{assessList}}" wx:key="index">
+      <view class="video-assess-info">
+        <view class="video-assess-head">
+          <image mode="aspectFill" src="{{item.assess_info.assess.cover_thumb || '0'}}" data-index="{{index}}" binderror="imageError"></image>
+        </view><view class="video-assess-center">
+          <view class="video-assess-nickname">{{item.assess_info.assess.nickname}}</view>
+          <view class="numeric"><label wx:for="{{[2,4,6,8,10]}}" wx:for-item="starItem" wx:key="index" class="star {{ starItem <= item.score ? 'full-star' : ''}} ico-moon icon-star"></label></view>
+        </view><view class="video-assess-right">
+            <view class="video-assess-time">{{item.add_time}}</view>
+            <view class="video-assess-like" data-index="{{index}}" bindtap="assessLiked">{{item.like_num}}<label class="ico-moon icon-news-like {{item.like_status == 1 ? 'active' : ''}}"></label></view>
+          </view>
+      </view>
+      <view class="video-assess-content"><text>{{item.assess_info.assess.content}}</text></view>
+      <view class="video-assess-reply" wx:if="{{item.assess_info.reply}}">
+        <view class="video-assess-reply-nickname"><label class="video-assess-reply-line"></label>{{item.assess_info.reply.name}}</view>
+        <view class="video-assess-reply-content"><text>{{item.assess_info.reply.content}}</text></view>
+      </view>
+    </view>
+  </view>
+</scroll-view>

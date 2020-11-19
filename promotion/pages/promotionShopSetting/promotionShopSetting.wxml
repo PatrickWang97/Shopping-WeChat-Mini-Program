@@ -1,0 +1,20 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="shopping-setting">
+  <view class="shopping-setting-header">
+    <image mode="scaleToFill" src="{{ hasShopCover}}"></image>
+    <view class="upload-view" bindtap="uploadImage">更换头像</view>
+  </view>
+  <view class="shopping-setting-content">
+    <view class="shopping-name">
+      <text class="shopping-label">店铺名称</text><input placeholder="店铺名称" bindinput="inputShopName" value="{{ shopName }}"></input>
+    </view>
+    <view class="shopping-des">
+      <text class="shopping-label">店铺介绍</text><textarea placeholder="请输入您的店铺的简介" bindinput="inputShopIntroduce" value="{{ shopIntroduce }}"></textarea>
+  </view> 
+  </view>
+</view>
+<view class="tip-text">注：系统会为你的店铺分配商品</view>
+<view class="form-section save-button-section">
+  <view class="save-button" bindtap="submitInfo">保存</view>
+</view>

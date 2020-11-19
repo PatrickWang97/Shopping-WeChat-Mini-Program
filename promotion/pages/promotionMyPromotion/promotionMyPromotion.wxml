@@ -1,0 +1,29 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<view>
+<canvas type="2d" id="shareCanvas" canvas-id="shareCanvas"></canvas>
+	<view class="page-bg">
+		<view class="page-bg-circle">
+		</view>
+	</view>
+	<view class="top-section">
+	  <view>通过推广链接进入店铺的顾客累计有 (名)</view>
+	  <view class="customer-num">{{ customer.invited || 0 }}</view>
+	</view>
+	<view class="bottom-section">
+	  <view class="user-info">
+		  <image class="user-cover"  mode="widthFix" src="{{userInfo.cover_thumb}}" />
+		  <view class="user-name">
+			  {{ userInfo.nickname }}
+		  </view>
+		  <view class="share-text">
+			  {{ shareText }}
+		  </view>
+		  <view class="comma">”</view>
+	  </view>
+	  <image class="code-image" src="{{ customer.shop_qrcode }}" mode="widthFix" bindtap="previewImage" data-src="{{ customer.shop_qrcode }}"></image>
+    <view class="my-promotion-tips">{{ scanText }}</view>
+	</view>
+	<view class="bottom-button" catchtap="savePic">
+		保存图片
+	</view>
+</view>

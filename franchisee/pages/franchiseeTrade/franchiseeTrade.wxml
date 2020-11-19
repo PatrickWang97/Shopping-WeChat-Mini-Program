@@ -1,0 +1,79 @@
+<view class="franchisee-circle">
+  <view class="franchisee-search" id="franchisee-search">
+    <view class="franchisee-search-ipt">
+      <view class="ico-moon icon-search"></view>
+      <input class="search-ipt" bindfocus="bindSearchFocus" bindblur="bindSearchBlur" placeholder="商圈名称" value="{{searchValue}}"></input>
+      <view class="ico-moon icon-close-btn" catchtap="clearValue"></view>
+    </view>
+    <view class="franchisee-search-cancel" catchtap="toCloseResult">取消</view>
+  </view>
+  <view class="search-result" hidden="{{!showSearchWrap}}">
+    <block wx:for="{{searchResult}}" wx:key="index" wx:for-item="list">
+      <view class="result-item bor-bottom" data-id="{{list.id}}" data-p-id="{{list.p_id}}" data-type="0" data-app-id="{{list.app_id}}" data-level="{{list.level}}" data-name="{{list.m_name}}" data-his-id="{{list.s_his_data.his_id}}" data-online-his-id="{{list.s_his_data.online_his_id}}" catchtap="chooseScrollTrade" wx:if="{{HisId == list.s_his_data.online_his_id}}">{{list.m_name}}</view>
+    </block>
+  </view>
+
+  <view hidden="{{showSearchWrap}}">
+    <view class="franchisee-circle-list">
+      <view class="circle-current {{hideTrade ? 'bor-bottom' : ''}}">
+        <view class="circle-current-left"> 当前：<text class="current-text limit-line1">{{tradeValue[2].m_name || tradeValue[1].m_name || tradeValue[0].m_name || '全部'}}</text></view>
+        <view class="circle-current-right" wx:if="{{secondeList.length > 0}}" catchtap="hideTradeWrap">切换商圈<view class="ico-moon icon-style icon-{{hideTrade ? 'downarrow' : 'uparrow'}}"></view></view>
+      </view>
+      <view class="circle-wrap" hidden="{{hideTrade}}">
+        <view class="circle-wrap-head">
+          <block wx:for="{{navBars}}" wx:key="index">
+            <view class="tab-bar" data-id="{{index}}" wx:if="{{index > 0}}">{{item.name}}</view>
+          </block>
+        </view>
+        <view class="circle-scroll">
+          <scroll-view scroll-y="true" class="circle-scroll-two">
+            <view class="circle-scroll-item {{!tradeValue[1].m_name ? 'orange' : ''}}" data-id="{{tradeValue[0].id}}" data-p-id="{{tradeValue[0].p_id}}" data-app-id="{{tradeValue[0].app_id}}" data-level="{{tradeValue[0].level}}" data-name="{{tradeValue[0].m_name}}" data-type="0" data-his-id="{{tradeValue[0].s_his_data.his_id || tradeValue[0].his_id}}" data-online-his-id="{{tradeValue[0].s_his_data.online_his_id || tradeValue[0].online_his_id}}" catchtap="chooseScrollTrade" wx:if="{{secondeList.length > 0}}">全部</view>
+            <block wx:for="{{secondeList}}" wx:key="index" wx:for-item="list">
+              <view class="circle-scroll-item limit-line1 {{tradeValue[1].m_name == list.m_name ? 'orange' : ''}}" data-id="{{list.id}}" data-p-id="{{list.p_id}}" data-app-id="{{list.app_id}}" data-level="{{list.level}}" data-name="{{list.m_name}}" data-type="1" data-his-id="{{list.s_his_data.his_id}}" data-online-his-id="{{list.s_his_data.online_his_id}}" catchtap="chooseScrollTrade" wx:if="{{HisId == list.s_his_data.online_his_id}}">{{list.m_name}}</view>
+            </block>    
+          </scroll-view>
+          <scroll-view scroll-y="true" class="circle-scroll-three">
+            <view class="circle-scroll-item {{tradeValue[1].m_name && !tradeValue[2].m_name ? 'orange' : ''}}" data-id="{{tradeValue[1].id}}" data-p-id="{{tradeValue[1].p_id}}" data-app-id="{{tradeValue[1].app_id}}" data-level="{{tradeValue[1].level}}" data-name="{{tradeValue[1].m_name}}" data-type="0" data-his-id="{{tradeValue[1].s_his_data.his_id || tradeValue[1].his_id}}" data-online-his-id="{{tradeValue[1].s_his_data.online_his_id || tradeValue[1].online_his_id}}" catchtap="chooseScrollTrade" wx:if="{{tradeValue[1].m_name}}">全部</view>
+            <view class="circle-scroll-item orange" wx:else>全部</view>
+            <block wx:for="{{thirdList}}" wx:key="index" wx:for-item="list">
+              <view class="circle-scroll-item limit-line1 {{tradeValue[2].m_name == list.m_name ? 'orange' : ''}}" data-id="{{list.id}}" data-p-id="{{list.p_id}}" data-app-id="{{list.app_id}}" data-level="{{list.level}}" data-name="{{list.m_name}}" data-type="2" data-his-id="{{list.s_his_data.his_id}}" data-online-his-id="{{list.s_his_data.online_his_id}}" catchtap="chooseScrollTrade" wx:if="{{HisId == list.s_his_data.online_his_id}}">{{list.m_name}}</view>
+            </block>
+          </scroll-view>
+        </view>
+      </view>
+    </view>
+
+    <view class="circle-div" wx:if="{{hotTradeList.length > 0}}">
+      <view class="circle-hot-title">热门商圈</view>
+      <view class="circle-div-wrap pad-bot">
+        <block wx:for="{{hotTradeList}}" wx:key="index" wx:for-item="list">
+          <view class="circle-div-item limit-line1" data-id="{{list.id}}" data-p-id="{{list.p_id}}" data-app-id="{{list.app_id}}" data-level="{{list.level}}" data-name="{{list.m_name}}" data-type="0" data-his-id="{{list.s_his_data.his_id}}" data-online-his-id="{{list.s_his_data.online_his_id}}" wx:if="{{index < 9}}" catchtap="chooseScrollTrade"  wx:if="{{HisId == list.s_his_data.online_his_id}}">
+            {{list.m_name}}
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <view class="one-circle">
+      <view class="circle-div-title">所有城市</view>
+      <view class="circle-list-wrap" id="circle-list-wrap">
+        <block wx:for="{{tradeList}}" wx:key="index">
+          <view class="circle-group" id="{{item.strtoupper == '#' ? 'other' : item.strtoupper}}" wx:if="{{item.hasNewHisId}}">
+            <view class="circle-list-item strtoupper-title {{tabType == item.strtoupper ? 'fixTitle' : ''}}">{{item.strtoupper}}</view>
+            <view class="circle-list-item"></view>
+            <block wx:for="{{item.biz_shop_list}}" wx:key="index" wx:for-item="list" wx:for-index="i">
+              <view class="circle-list-item limit-line1 {{item.biz_shop_list.length - 1 == i ? '' : 'bor-bottom'}}" data-id="{{list.id}}" data-p-id="{{list.p_id}}" data-type="0" data-app-id="{{list.app_id}}" data-level="{{list.level}}" data-name="{{list.m_name}}" data-his-id="{{list.s_his_data.his_id}}" data-online-his-id="{{list.s_his_data.online_his_id}}" catchtap="chooseScrollTrade"  wx:if="{{HisId == list.s_his_data.online_his_id}}">{{list.m_name}}</view>
+            </block>
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <view class="slide">
+      <view class="slide-title">定位热门</view>
+      <block wx:for="{{allStrtoupper}}" wx:key="index">
+        <view class="slide-item" data-type="{{item == '#' ? 'other' : item}}" catchtap="scrollToTrade">{{item}}</view>
+      </block>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,48 @@
+<view class="page-dialog-wrap tostorePay-component" hidden="{{ !addTostoreShoppingCartShow }}" bindtap="hideAddShoppingcart">
+  <view class="page-bottom-dialog" style="padding-bottom: {{isShowBottom ? '200' : '45'}}rpx;" catchtap="stopPropagation">
+    <view class="page-bottom-content">
+      <view class="pay-close-dialog page-dialog-close" bindtap="hideAddShoppingcart">×</view>
+      <view class="dialog-block-item">
+        <view class="pay-goods-baseinfo">
+          <view class="pay-goods-title ellipsis">{{ goodsInfo.title }}</view>
+        </view>
+      </view>
+      <view class="dialog-block-item" hidden="{{ !goodsInfo.model_items.length }}" style="margin-bottom: 0;">
+        <view class="pay-goods-models" scroll-y="true">
+          <view class="models-item" wx:for="{{ goodsInfo.model }}" wx:key="index" wx:for-item="model" wx:for-index="modelIndex">
+            <text style="vertical-align:top;float: left;margin-top: 5px;width:120rpx;display:inline-block;text-align:right;font-size:24rpx;">{{ model.name }}：</text>
+            <label class="pills-list" style="text-align:center;max-width:528rpx;">
+              <label wx:for="{{ model.subModelName }}"
+                     wx:for-item="name"
+                     wx:key="index"
+                     data-model-index="{{ modelIndex }}"
+                     data-submodel-index="{{ index }}"
+                     class="subModel {{ selectGoodsModelInfo.models[modelIndex] == model.subModelId[index] ? 'select' : '' }}"
+                     data-submodel-id="{{ model.subModelId[index] }}" bindtap="selectGoodsSubModel">{{ name }}</label>
+            </label>
+          </view>
+        </view>
+      </view>
+      <view class="dialog-block-item">
+          <view class="pay-goods-price clearfix">
+            <view class="pay-current-price pull-left" style="font-size: 16px;">¥{{ selectGoodsModelInfo.price }}</view>
+          <view class="pull-right">
+            <label wx:if="{{ goodsInfo.goods_type != 3 }}">库存 <text class="pay-goods-stock">{{ selectGoodsModelInfo.stock }}</text></label>
+            <view class="quantity">
+              <label class="minus {{ selectGoodsModelInfo.buyTostoreCount <= 0 ? 'disabled' : '' }}"></label>
+              <text class="pay-buy-count" style="margin:auto 10px;">{{ selectGoodsModelInfo.buyTostoreCount }}</text>
+              <label class="plus {{ selectGoodsModelInfo.buyTostoreCount >= selectGoodsModelInfo.stock ? 'disabled' : '' }}"></label>
+              <view class="response-area response-area-minus" bindtap="clickTostoreMinusButton"></view>
+              <view class="response-area response-area-plus" bindtap="clickTostorePlusButton"></view>
+            </view>
+          </view>
+        </view>
+        <view style="font-size:12px;margin-top:10px;color:#c9c9c9;text-align: center;">{{businesssTimeString}}</view>
+      </view>
+      <view class="toStore-bottom-nav" style="bottom: {{isShowBottom ? '100' : '0'}}rpx;">
+        <view class="bottom-nav-detail" catchtap="goToShoppingCart"><label class="icon-shoppingcart ico-moon"><label wx:if="{{ cartGoodsNum != 0 }}" class="toStore-cart-tip">{{ cartGoodsNum }}</label></label><text>¥{{ cartGoodsTotalPrice }}</text></view>
+        <view class="bottom-nav-ready {{ cartGoodsNum == 0 ? 'disabled': '' }} {{tostoreTypeFlag ? '' :'disabled'}}" bindtap="getValidateTostore">选好了</view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "确认支付",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "usingComponents": {
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+    "component-memberDiscount": "/components/memberDiscount/memberDiscount",
+    "component-paySettlementGift": "/components/paySettlementGift/paySettlementGift",
+    "component-behavior-track": "/components/behaviorTrack/behaviorTrack"
+  }
+}

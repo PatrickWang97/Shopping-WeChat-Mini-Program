@@ -1,0 +1,36 @@
+.recurit-box , .bottom-button {
+  background-color: #fff;
+}
+.recurit-box {
+  padding-bottom: 122rpx;
+}
+.recurit-all-box {
+  padding-bottom: 0rpx;
+}
+.recurit-list {
+  padding: 30rpx;
+}
+.recurit-list image {
+  width: 100%;
+  height: 380rpx;
+  border-radius: 12rpx;
+  display: block;
+}
+.bottom-button {
+  height: 124rpx;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+.apply-btn {
+  width: 710rpx;
+  margin: 18rpx auto;
+  height: 88rpx;
+  line-height: 88rpx;
+  font-size: 30rpx;
+  border-radius: 6rpx;
+  color: #fff;
+  background-color: #ff7100;
+  text-align: center;
+}

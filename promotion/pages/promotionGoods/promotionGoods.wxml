@@ -1,0 +1,72 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<view class="container">
+  <view class="goods-search">
+    <view class="goods-search-contain">
+      <text class="ico-moon icon-search"></text>
+      <input type="text" confirm-type="search" bindinput="inputSearch" bindconfirm="searchGoods" value="{{ goodsName }}" placeholder="商品搜索：请输入名称" />
+      <view class="search-button button" catchtap="searchGoods">搜索</view>
+    </view>
+  </view>
+  <!-- 2020/08/12 需求：不展示这块 -->
+  <!-- <view class="rate">
+    <view class="rate-title">
+      <text class="ico-moon bg-gradient-orange icon-order-rechargecard"></text>
+      <text>佣金比例</text>
+    </view>
+    <view class="rate-body">
+      <view class="rate-body-item">
+        <view>一级</view>
+        <view>{{ commissionObj.first_commission }}%</view>
+      </view>
+      <view wx:if="{{ commissionObj.second_commission != '' }}" class="rate-body-item">
+        <view>二级</view>
+        <view>{{ commissionObj.second_commission }}%</view>
+      </view>
+    </view>
+  </view> -->
+  <view class="order-type">
+    <view class="type-title" catchtap="changeToisShowTypeItems">
+      参与订单类型
+      <text class="right-icon ico-moon icon-{{ isShowTypeItems ? 'up' : 'down' }}arrow"></text>
+    </view>
+    <view hidden="{{ !isShowTypeItems }}" class="type-items">
+      <view class="type-item" wx:for="{{typeItems}}" wx:key="index" wx:if="{{ item.isShow }}">
+        <text class="ico-moon bg-gradient-{{item.bgColor}} icon-{{item.icon}}"></text>
+        <text>{{ item.name }}</text>
+      </view>
+    </view>
+  </view>
+  <view class="menu-list {{ currentType == 10 ? 'active-long-text' : '' }}">
+    <view data-type="0" class="{{ currentType == 0 ? 'active' : ''}}" bindtap="changeMenu">电商</view>
+    <view data-type="3" class="{{ currentType == 3 ? 'active' : ''}}" bindtap="changeMenu">到店</view>
+    <view data-type="10" class="{{ currentType == 10 ? 'active' : ''}}" bindtap="changeMenu">行业预约</view>
+    <view data-type="evoucher" class="{{ currentType == 'evoucher' ? 'active' : ''}}" bindtap="changeMenu">电子卡券</view>
+  </view>
+  <view class="goods-contain">
+    <view class="goods-content" wx:for="{{ goodsArr }}" wx:key="index">
+      <view class="goods-click" data-current-type="{{ currentType }}" data-id="{{item.id}}" catchtap="turnToGoodsDetail">
+        <image class="goods-image" src="{{ currentType == 4 ? 'http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/promotion/czx.png' : ( currentType == 5 ? 'http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/promotion/dmf.png' : item.cover) }}"></image>
+        <view class="goods-detail">
+          <view class="goods-title">{{ item.title }}</view>
+          <view class="people-number"><text>{{ item.sales }}</text> 人已推广</view>
+          <view class="price-share">
+            <text class="goods-price" wx:if="{{ currentType != 4 && currentType != 5 }}">¥{{ item.price }}</text>
+            <button data-info="{{item}}" class="share-btn button" catchtap="doNothing" open-type="share">分享</button>
+          </view>
+        </view>
+        <view class="withdraw-proportion">
+            <text>
+              一级佣金 <text class="proportion-value">{{ item.first_data }}</text>
+            </text>
+            <text wx:if="{{ item.second_commission }}" class="withdraw-proportion-line"></text>
+            <text wx:if="{{ item.second_commission }}">
+              二级佣金 <text class="proportion-value">{{ item.second_data }}</text>
+            </text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view hidden="{{ goodsArr.length <= 0 }}" class="is-more-text">{{isMore ? '上拉加载更多' : '没有更多啦~' }}</view>
+  <image hidden="{{ goodsArr.length > 0 }}" class="no-data-img"  mode="widthFix" src="https://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/promotion/no-data.png" />
+</view>
+<view class="container-bg"></view>

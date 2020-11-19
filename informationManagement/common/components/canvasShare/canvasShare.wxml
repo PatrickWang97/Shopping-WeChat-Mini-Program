@@ -1,0 +1,20 @@
+<!--components/canvasShare/canvasShare.wxml-->
+<block wx:if="{{canvasData.show}}">
+  <view class="canvas-share-panel-mask" catchtap="closePanel"></view>
+  <view class="canvas-share-panel">
+    <view class="canvas-icon-box" catchtap="closePanel">
+      <icon class="canvas-share-close ico-moon icon-closes"></icon>
+    </view>
+    <view class="canvas-share-canvas-box">
+      <canvas 
+        class="canvas-share-canvas" 
+        canvas-id="mycanvas" 
+        style="width: 650rpx; height: 896rpx;"  
+        disable-scroll="{{true}}"
+        bindtouchstart="nothing" 
+        bindtouchmove="nothing" 
+        bindtouchend="nothing"></canvas>
+    </view>
+    <view class="canvas-share-btn" catchtap="canvasToImage">保存图片</view>
+  </view>
+</block>

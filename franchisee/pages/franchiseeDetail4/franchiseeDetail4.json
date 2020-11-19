@@ -1,0 +1,13 @@
+{
+  "navigationBarTitleText":"门店详情",
+  "navigationBarTextStyle":"black",
+  "navigationStyle":"custom",
+  "usingComponents": {
+    "component-share": "/components/pageQRCode/pageQRCode",
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+    "component-topNavBar": "/components/topNavBar/topNavBar",
+    "franchiseeTabbar": "/components/franchiseeTabbar/franchiseeTabbar",
+    "component-customer-service-modal": "\/components\/customerServiceModal\/customerServiceModal"
+  }
+}

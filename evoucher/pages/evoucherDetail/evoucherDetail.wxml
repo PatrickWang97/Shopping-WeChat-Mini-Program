@@ -1,0 +1,63 @@
+<component-reward-point rewardPointObj="{{rewardPointObj}}" shareGiftsObj="{{shareGiftsObj}}" collectGiftsObj="{{collectGiftsObj}}" collectGetObj="{{collectGetObj}}"></component-reward-point>
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view class="evoucher-detail-container">
+  <!-- 商品信息 start -->
+  <view class="evoucher-item flex">
+    <view class="item-img">
+      <image src="{{goodsInfo.cover}}" mode="aspectFit"></image>
+    </view>
+    <view class="item-content flex-column">
+      <text class="item-name">{{goodsInfo.goods_name}}</text>
+      <text class="item-species gray">{{goodsInfo.model_value_str}}</text>
+      <view class="row-between">
+        <text class="gray">有效期 {{goodsInfo.valid_date_str}}</text>
+        <text>×{{receiveNum}}</text>
+      </view>
+    </view>
+  </view>
+  <!-- 商品信息 end -->
+  <!-- 卡券使用情况 start -->
+  <view class="evoucher-code-list">
+    <view class="evoucher-code-item row-between">
+      <view class="row-center">
+        <text class="item-status">待使用</text>
+        <text class="item-num">{{unusedNum}}</text>
+      </view>
+      <view class="row-center" bindtap="showQRCode" wx:if="{{unusedNum > 0}}">
+        <text class="item-code">{{codeNum}}</text>
+        <text class="ico-moon icon-qr-code"></text>
+        <text class="ico-moon icon-rightarrow"></text>
+      </view>
+    </view>
+    <view class="evoucher-code-item row-between">
+      <view class="row-center">
+        <text class="item-status">已使用</text>
+        <text class="item-num">{{usedNum}}</text>
+      </view>
+    </view>
+    <view class="evoucher-code-item row-between">
+      <view class="row-center">
+        <text class="item-status">已过期</text>
+        <text class="item-num">{{expiredNum}}</text>
+      </view>
+    </view>
+  </view>
+  <!-- 卡券使用情况 end -->
+</view>
+
+<!-- 核销码 start -->
+<view class="qr-code-dialog column-center" wx:if="{{isShowQRCode}}">
+  <view class="qr-code column-center">
+    <text class="code-title">请向商家出示核销码</text>
+    <image class="code-img" src="{{codeImgUrl}}" mode="aspectFit"></image>
+    <view class="column-center">
+      <text class="code-num">{{codeNum}}</text>
+      <text class="code-copy" catchtap="copyCodeNum" data-code="{{codeNum}}">复制</text>
+    </view>
+  </view>
+  <view class="qr-code-close" catchtap="hideQRCode">
+    <text class="ico-moon icon-closes"></text>
+  </view>
+</view>
+<!-- 核销码 end -->

@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "navigationBarTitleText": "拉新用户",
+  "navigationBarTextStyle": "black",
+  "navigationBarBackgroundColor": "#ffffff",
+  "usingComponents": {}
+}

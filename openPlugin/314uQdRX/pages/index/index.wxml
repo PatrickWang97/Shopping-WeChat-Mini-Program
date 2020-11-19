@@ -1,0 +1,36 @@
+<view class='page' disable-scroll="true">
+  <view class='background'>
+    <view class='scoring'>
+
+      <view class='start'>
+        <view class='restart' bindtap='newgame'>
+        <text class='restart_text'>新游戏</text>
+        </view>
+      </view>
+
+      <view class='top'>
+        <view class='scor'>
+          <view class='score'>
+            <text class='score_title'>当前分数</text>
+            <view class='score_num'>{{score}}</view>
+          </view>
+
+          <view class='score'>
+            <text class='score_title'>最高纪录</text>
+            <view class='score_num'>{{best}}</view>
+          </view>
+        </view>
+
+      </view>
+
+    </view>
+    <!-- 游戏 -->
+    <view class='array' bindtouchstart='touchstart' bindtouchmove='touchmove' bindtouchend='touchend'>
+      <view wx:for="{{row}}" class='row' wx:for-item="clum" wx:key='row'>
+        <view wx:for="{{clum}}" class='clum' wx:for-item="num" wx:key='clum'>
+          <view class="cell cell-{{num}} {{ttt==1 ? 'flipInX':'flipInY'}}">{{num}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

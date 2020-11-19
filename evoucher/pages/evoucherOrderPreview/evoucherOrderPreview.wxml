@@ -1,0 +1,510 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-memberDiscount wx:if="{{isFranchisee || isLeagueBenefit}}" id="component-memberDiscount" discountType="{{ isLeagueBenefit ? leagueBenefitData.benefitList : mulShopsInfo[selectedAppId].discountList}}" bind:afterSelectedDiscount="afterSelectedBenefit"></component-memberDiscount>
+<component-memberDiscount wx:if="{{!(isFranchisee || isLeagueBenefit)}}" id="component-memberDiscount" discountType="{{ discountList }}" bind:afterSelectedDiscount="afterSelectedBenefit"></component-memberDiscount>
+<component-behavior-track></component-behavior-track>
+<view class="preview-goods-wrap">
+  <!-- 电子卡券 联系人 -->
+  <view class="preview-box evoucher-contact">
+    <view class="single-box" catchtap="showContactDialog">
+      联系人信息
+      <view>
+        <text class="{{evoucherContactSelected.name && evoucherContactSelected.phone ? '' : 'gray'}}">选择联系人</text>
+        <text class="ico-moon icon-rightarrow"></text>
+      </view>
+    </view>
+    <view class="single-box">
+      姓名
+      <input type="text" maxlength="10" value="{{evoucherContactSelected.name}}" placeholder="请填写联系人姓名" bindinput="contactInput" data-type="name" />
+    </view>
+    <view class="single-box">
+      手机号
+      <input type="number" maxlength="11" value="{{evoucherContactSelected.phone}}" placeholder="请填写手机号" bindinput="contactInput" data-type="phone" />
+    </view>
+  </view>
+  <view class="preview-goods-order-list" wx:for="{{ goodsList }}" wx:for-item="goods" wx:for-index="goodsIndex"
+    wx:key="index" wx:if='{{pickUpType != 4}}'>
+    <view class="preview-goods-order-item">
+      <image class="preview-goods-cover" src="{{ goods.cover }}" mode="aspectFill"></image>
+      <view class="preview-goods-content">
+        <view class="preview-goods-title"><text wx:if="{{ is_group }}" class="exchange-tip">拼团</text><text wx:if="{{ goods.cart_vip_goods == 1 }}" class="exchange-tip" style="width:75rpx;">会员价</text><text
+            wx:if="{{ goods.is_seckill == 1 }}" class="exchange-tip">秒杀</text>{{ goods.title }}</view>
+        <view class="preview-goods-model">{{ goods.model_value_str || '' }}</view>
+        <view class="goods-date">
+          <text>有效期：{{goods.valid_date_str}}</text>
+        </view>
+        <view class="goods-price-box">
+          <block wx:if="{{goods.integral != '2'}}">
+            <text class="preview-goods-price" style="{{ !is_group ? 'color:' + storeStyle.theme : '' }}">¥{{ cardtype == 1 ?goods.goods_price : goods.price  }}</text>
+          </block>
+          <block wx:else>
+            <text class="preview-goods-price" style="{{ !is_group ? 'color:' + storeStyle.theme : '' }}" wx:if="{{goods.price != '0.00'}}">¥{{ goods.price }}</text>
+            <text class="preview-goods-price" style="{{ !is_group ? 'color:' + storeStyle.theme : '' }}" wx:if="{{goods.price != '0.00' && goods.use_integral != 0}}">+</text>
+            <text class="preview-goods-price" wx:if="{{goods.use_integral != 0}}" style="{{ !is_group ? 'color:' + storeStyle.theme : '' }}">{{ goods.max_can_use_integral }}积分</text>
+          </block>
+          <view class="good-number-box pull-right">
+            <view class="goods-minus" catchtap="clickMinusButton">-</view>
+            <input class="goods-count" type="number" value="{{ evoucherBuyInfo.num }}" bindinput="inputGoodsCount" bindblur="blurGoodsCount" />
+            <view class="goods-plus" catchtap="clickPlusButton">+</view>
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{goods.is_refundable == 0}}" class="goods-not-refund"><text>不可申请退款</text></view>
+      <!-- 餐饮3.0 新增商品属性 -->
+      <view class="goods-attributes-wrap" wx:if="{{goods.is_package_goods != 1 && goods.attributes_id &&goods.attributes_id != 0}}">
+        <view class="goods-attributes-item" wx:for="{{goods.attributes}}" wx:key="index" wx:for-item="attributes">
+          <view>
+            <text>{{attributes.name}}：</text>
+            <view wx:for="{{attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+              <text>{{elem.name}}</text><text class="attributes-add_price" wx:if="{{elem.price > 0}}">+¥ {{elem.price}}</text><text wx:if="{{elem_index != attributes.elem.length -1}}">，</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <!-- 餐饮3.0 新增套餐 -->
+      <view class="package-info-wrap" wx:if="{{goods.is_package_goods == 1}}"  style="max-height:{{goods.showPackageInfo?'auto':''}};">
+        <view class="package-info-content" hidden='{{!goods.showPackageInfo}}'>
+          <view class="package-info-item" wx:for="{{goods.package_goods}}" wx:key="index" wx:for-item="package">
+            <view class="package-info-l">
+              <block wx:if="{{package.is_require == 1 && package.is_multi_select == 1 && package.selected_num >= package.min_sales_nums && package.selected_num > 1}}">
+                <view class="package-info-title">
+                  <view style="display:flex;">
+                    <text class="package-info-require" wx:if="{{package.is_require == 1}}">必</text>
+                    <text class="package-info-require" wx:if="{{package.is_require == 1}}">标配</text>
+                    <text class="package-info-name">{{package.title}}</text>
+                  </view>
+                  <view>
+                    <text class="package-info-num">x{{package.min_sales_nums}}</text>
+                  </view>
+                </view>
+                <view class="package-info-model">
+                  <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                  <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥ {{elem.price}}</text>
+                </view>
+                <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                  <text>{{_attributes.name}} : </text>
+                  <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                    <text>{{elem.name}}</text>
+                    <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥ {{elem.price}}</text>
+                    <text wx:if="{{elem_index != _attributes.elem.length - 1}}">，</text>
+                  </view>
+                </view>
+                <block wx:if="{{package.selected_num - package.min_sales_nums > 0}}">
+                  <view class="package-info-title">
+                    <view>
+                      <text class="package-info-name">{{package.title}}</text>
+                    </view>
+                    <view>
+                      <text class="package-info-add_price" wx:if="{{package.added_price > 0}}">+¥ {{package.added_price}}</text>
+                      <text class="package-info-num">x{{package.selected_num - package.min_sales_nums}}</text>
+                    </view>
+                  </view>
+                  <view class="package-info-model">
+                    <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                    <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥ {{elem.price}}</text>
+                  </view>
+                  <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                    <text>{{_attributes.name}} : </text>
+                    <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                      <text>{{elem.name}}</text>
+                      <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥ {{elem.price}}</text>
+                      <text wx:if="{{elem_index != _attributes.elem.length - 1}}">，</text>
+                    </view>
+                  </view>
+                </block>
+              </block>
+              <block wx:else>
+                <view class="package-info-title">
+                  <view style="display: flex;">
+                    <text class="package-info-require" wx:if="{{package.is_require == 1}}">必</text>
+                    <text class="package-info-require" wx:if="{{package.is_require == 1}}">标配</text>
+                    <text class="package-info-name">{{package.title}}</text>
+                  </view>
+                  <view>
+                    <text class="package-info-add_price" wx:if="{{package.added_price > 0}}">+¥ {{package.added_price}}</text>
+                    <text class="package-info-num">x{{package.selected_num}}</text>
+                  </view>
+                </view>
+                <view class="package-info-model">
+                  <text wx:if="{{package.model_name}}">{{package.model_name}}</text>
+                  <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥ {{elem.price}}</text>
+                </view>
+                <view class="package-info-attr" wx:for="{{package._attributes}}" wx:key="index" wx:for-item="_attributes">
+                  <text>{{_attributes.name}} : </text>
+                  <view wx:for="{{_attributes.elem}}" wx:key="index" wx:for-item="elem" wx:for-index="elem_index" style="display:inline-block;">
+                    <text>{{elem.name}}</text>
+                    <text class="package-info-model_add_price" wx:if="{{elem.price > 0}}">+¥ {{elem.price}}</text>
+                    <text wx:if="{{elem_index != _attributes.elem.length - 1}}">，</text>
+                  </view>
+                </view>
+              </block>
+            </view>
+          </view>
+        </view>
+        <view class='goods-showMore'>
+          <view class='package-info' hidden='{{goods.showPackageInfo}}' data-index='{{goodsIndex}}' data-status='1' catchtap='showPackageInfoFn' style="{{ 'color:' + storeStyle.theme }}">
+            展开套餐明细
+            <text class='ico-moon icon-downarrow package-info-icon'></text>
+          </view>
+          <view class='package-info' hidden='{{!goods.showPackageInfo}}' data-index='{{goodsIndex}}' data-status='0' catchtap='showPackageInfoFn' style="{{ 'padding-top:20rpx;color:' + storeStyle.theme }}">
+            收起
+            <text class='ico-moon icon-uparrow package-info-icon'></text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <block wx:if="{{selectDiscountInfo.discount_type == 'vip' && goods.benefit_config.not_use_common_vip == 1}}">
+      <view style="text-align: center;height:64rpx;{{ !is_group ? 'color:' + storeStyle.theme : '' }}">
+        <text class="ico-moon icon-for-notice" style="margin-right:10rpx;"></text>
+        <text>该商品不可用当前店铺优惠</text>
+      </view>
+    </block>
+    <block wx:elif="{{selectDiscountInfo.discount_type == 'coupon' && goods.benefit_config.not_use_coupon == 1}}">
+      <view style="text-align: center;height:64rpx;{{ !is_group ? 'color:' + storeStyle.theme : '' }}">
+        <text class="ico-moon icon-for-notice" style="margin-right:10rpx;"></text>
+        <text>该商品不可用当前店铺优惠</text>
+      </view>
+    </block>
+    <block wx:elif="{{selectDiscountInfo.discount_type == 'paid_vip' && goods.benefit_config.not_use_paid_vip == 1}}">
+      <view style="text-align: center;height:64rpx;{{ !is_group ? 'color:' + storeStyle.theme : '' }}">
+        <text class="ico-moon icon-for-notice" style="margin-right:10rpx;"></text>
+        <text>该商品不可用当前店铺优惠</text>
+      </view>
+    </block>
+    <block wx:elif="{{selectDiscountInfo.discount_type == 'coupon' && goods.can_use_this_coupon == false}}">
+      <view style="text-align: center;height:64rpx;{{ !is_group ? 'color:' + storeStyle.theme : '' }}">
+        <text class="ico-moon icon-for-notice" style="margin-right:10rpx;"></text>
+        <text>该商品不可用当前店铺优惠</text>
+      </view>
+    </block>
+    <block wx:elif="{{selectDiscountInfo.discount_type == 'integral' && goods.is_integral == '-1'}}">
+      <view style="text-align: center;height:64rpx;{{ !is_group ? 'color:' + storeStyle.theme : '' }}">
+        <text class="ico-moon icon-for-notice" style="margin-right:10rpx;"></text>
+        <text>该商品不可用当前店铺优惠</text>
+      </view>
+    </block>
+  </view>
+  <view class="preview-goods-order-list" wx:if="{{ exchangeCouponData.hasSelectGoods }}">
+    <view class="preview-goods-order-item">
+      <image class="preview-goods-cover" src="{{ exchangeCouponData.goodsInfo.cover }}"></image>
+      <view class="preview-goods-content">
+        <view class="preview-goods-title">
+          <text class="exchange-tip">赠品</text>{{ exchangeCouponData.goodsInfo.title }}</view>
+        <view wx:if="{{ exchangeCouponData.goodsInfo.model_value_str }}" class="preview-goods-model">
+          {{ exchangeCouponData.goodsInfo.model_value_str }}</view>
+        <view class="goods-number-contain">
+          <view class="exchange-num pull-right">x1</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="buyer-message-box" hidden="{{isShowContactDialog}}">
+    <view class="buyer-message">买家留言</view>
+    <textarea hidden="{{isShowPickMask || isShowServiceTime || showNoneAddress || isShowSameJourneyTime || cardDialog || expressAddressNull}}" class="goods-remark" value="{{orderRemark}}" bindinput="remarkInput" placeholder="建议留言前先与商家沟通"></textarea>
+  </view>
+  <view class="preview-box" style="border-radius: 14rpx;">
+    <view class="single-box" wx:if='{{!is_addDishing}}'>商品金额
+    <!-- <view class="single-box">商品金额 -->
+      <text class="pull-right weight-bold">¥ {{cardtype == 1 ? total_original_price : original_price }}</text>
+    </view>
+    <view bindtap="showMemberDiscount" wx:if="{{ discountList.length }}">
+      <view class="balance-switch">
+        <text>优惠方式</text>
+        <view class="ico-moon icon-rightarrow pull-right"></view>
+        <text class="pull-right select-discount">{{ selectDiscountInfo.name }}</text>
+      </view>
+      <view hidden="{{ selectDiscountIndex == 0 }}" class="balance-price">
+        <text class="pull-right weight-bold">- ¥{{ discount_cut_price }}</text>
+      </view>
+    </view>
+    <view class="single-box" wx:if="{{is_vip_order == 1 && vip_cut_price != '0.00' && !is_addDishing}}">
+      <view class="balance-switch" catchtap="showVipGoodsList" wx:if="{{pickUpType == 4}}">
+        <text>会员价优惠</text>
+        <view class="ico-moon icon-rightarrow pull-right"></view>
+        <text class="pull-right select-discount">查看详情</text>
+      </view>
+      <view class="balance-switch" wx:if="{{pickUpType != 4}}">
+        <text>会员价优惠</text>
+        <text class="pull-right" style="{{ 'color:' + storeStyle.theme }};" wx:if="{{pickUpType != 4}}">- ¥{{ vip_cut_price }}</text>
+      </view>
+      <view class="balance-price" wx:if="{{pickUpType == 4}}" catchtap="showVipGoodsList">
+        <text class="pull-right" style="{{ 'color:' + storeStyle.theme }};line-height:24rpx;">- ¥{{ vip_cut_price }}</text>
+      </view>
+    </view>
+    <!-- 使用礼品卡start -->
+    <view wx:if="{{cardtype == 1}}">
+      <view class="balance-switch" >
+        <text>礼品卡</text>
+        <view class="pull-right">
+          <view class="shopping-card-title">{{user_gift_card_info.name}}</view>
+        </view>
+      </view>
+      <view class="balance-price">
+        <text class="pull-right" style="color: #FF7100">- ¥{{user_gift_card_info.gift_card_cut_price}}</text>
+      </view>
+    </view>
+    <!-- 使用礼品卡end -->
+    <!-- 使用购物卡start -->
+    <view wx:if="{{(can_use_shopping_cards.length > 0 || cant_use_shopping_cards.length > 0) && cardtype != 1}}">
+      <view class="balance-switch">
+        <text>购物卡</text>
+        <view class="pull-right" catchtap="openCardDialog">
+          <view class="shopping-card-title">{{selectCardList[0].title || '请选择购物卡'}}</view>
+          <view class="shopping-card-num" wx:if="{{selectCardList.length > 0}}">({{selectCardList.length}}张)</view>
+          <view class="ico-moon icon-rightarrow"></view>
+        </view>
+      </view>
+      <view class="balance-price" wx:if="{{selectCardList.length > 0}}">
+        <text class="pull-right" style="color: #FF7100">- ¥{{total_discount_cut_price}}</text>
+      </view>
+    </view>
+    <!-- 使用购物卡end -->
+    <view hidden='{{ pickUpType == 4 && account_type == 2 || (deduction == 0 && useBalance) || selectCardList.length > 0  }}'>
+      <view class="balance-switch">
+        <text>使用储值金</text>
+        <switch color="{{ storeStyle.theme }}" style="transform:scale(0.7);" class="pull-right" checked="true" bindchange="useBalanceChange" />
+      </view>
+      <view hidden="{{ !useBalance }}" class="balance-price">
+        <text class="pull-right">- ¥{{ deduction }}</text>
+      </view>
+    </view>
+    <view wx:if="{{totalPayment > 0 && ((pickUpType == 1 && canCashDelivery == 1) || (pickUpType == 3 && selfPayOnDelivery == 1)) && !payGiftOptions.id && cardtype != 1 && selectCardList.length == 0}}">
+      <view class="balance-switch">
+        <text>货到付款（先下单，验货后支付）</text>
+        <switch color="{{ storeStyle.theme }}" class="pull-right" bindchange="useCashDelivery" checked="{{ cashOnDelivery }}" />
+      </view>
+    </view>
+  </view>
+  <!-- 补充信息、发票 -->
+  <view class="preview-box" style="border-radius: 14rpx;">
+    <view class="border-top1 single-box" bindtap="goToAdditionalInfo"
+      wx:if="{{ !noAdditionalInfo && !aloneDeliveryShow }}">
+      补充信息
+      <view class="ico-moon icon-rightarrow pull-right"></view>
+      <text style="{{'color:' + ((hasRequiredSuppInfo && !deliverydWrite) ? storeStyle.theme : '#666')}}"
+        class="additional-tip pull-right">{{ deliverydWrite ? '已填写' : '未填写'}}</text>
+    </view>
+    <view class="border-top1 single-box" wx:if="{{totalPayment != 0 && isOpenInvoice && account_type != 2 && !cashOnDelivery}}" bindtap="goInvoicePage">
+      发票
+      <view class="ico-moon icon-rightarrow pull-right"></view>
+      <text wx:if="{{!invoiceInfo}}" class="pull-right">不开发票</text>
+      <text wx:else class="pull-right">电子发票（{{invoiceInfo.invoice_type == 1 ? '个人' : '公司'}}）</text>
+    </view>
+  </view>
+  <!-- 单件商品展示补充信息 -->
+  <view class="additional-list" wx:if="{{ aloneDeliveryShow }}"
+    wx:for="{{ additional_info[additional_goodsid_arr[0]] }}" wx:key="index">
+    <view class="additional-text" wx:if="{{ item.type == 'text' }}">
+      <text class="additional-name {{ item.is_required == 0 ? 'is-required' : '' }}">{{ item.title }}</text>
+      <view class="additional-info">
+        <input type="text" bindinput="inputFormControl" value="{{ item.value }}"></input>
+      </view>
+    </view>
+    <view class="additional-textarea" wx:if="{{ item.type == 'mul-text' }}">
+      <text class="additional-name {{ item.is_required == 0 ? 'is-required' : '' }}">{{ item.title }}</text>
+      <view class="additional-info">
+        <textarea maxlength="-1" bindinput="inputFormControl" value="{{ item.value }}"></textarea>
+      </view>
+    </view>
+    <view class="additional-picture" wx:if="{{ item.type == 'picture' }}">
+      <text class="additional-name {{ item.is_required == 0 ? 'is-required' : '' }}">{{ item.title }}</text>
+      <view class="additional-info">
+        <view class="image-list" wx:for="{{ item.value }}" wx:key="index" wx:for-item="imgSrc" wx:for-index="imageIndex">
+          <image src="{{ imgSrc }}"></image>
+          <label class="delete-image ico-moon icon-closes" bindtap="deleteImage"
+            data-image-index="{{ imageIndex }}">-</label>
+        </view>
+        <view wx:if="{{ item.value.length < 9 }}" class="add-images" bindtap="addDeliveryImg">
+          <text class="ico-moon icon-fn-camera"></text>
+          <view>添加图片</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 联盟优惠 -->
+  <view class="league-coupon" data-is-league="1" bindtap="showMemberDiscount" wx:if="{{leagueBenefitData.benefitList.length}}" hidden="{{pickUpType == 4 && account_type == 2}}">
+    <view class="balance-switch">
+      <text><text class="league-mark">联盟</text>联盟优惠券</text>
+      <view class="ico-moon icon-rightarrow pull-right"></view>
+      <text class="pull-right select-discount">{{leagueBenefitData.selectedBenefitInfo.name}}</text>
+    </view>
+    <view class="balance-price" hidden="{{leagueBenefitData.selectedBenefitIndex == 0}}">
+      <text class="pull-right price-txt" style="{{'color:' + storeStyle.theme}}">- ¥{{leagueBenefitData.benefitPrice}}</text>
+    </view>
+  </view>
+  <view class="bottom-nav">
+    <view class="preview-goods-total-price">合计:
+      <text class="price-count" style="{{ 'color:' + storeStyle.theme }}">¥ {{ totalPayment }}</text>
+    </view>
+    <form report-submit="true" bindsubmit="confirmPayment">
+      <button formType="submit"
+        style="{{ 'background:' + storeStyle.theme }}">{{ cashOnDelivery ? '货到付款' : '立即付款' }}</button>
+    </form>
+  </view>
+  <template name="exchangeCouponUseDialog">
+    <view class="page-dialog-wrap" hidden="{{ dialogHidden }}">
+      <view class="page-bottom-dialog">
+        <view class="page-bottom-content">
+          <view class="pay-close-dialog page-dialog-close" bindtap="exchangeCouponHideDialog">×</view>
+          <view class="dialog-block-item" style="padding-bottom: {{mulShopsInfo[selectedAppId].exchangeCouponData.goodsInfo.model_items.length ? '10rpx' : '50rpx'}};">
+            <view class="thumb">
+              <view class="thumb-wrap">
+                <image class="pay-goods-cover" src="{{ selectModelInfo.imgurl || goodsInfo.cover }}"></image>
+              </view>
+            </view>
+            <view class="pay-goods-baseinfo">
+              <view class="pay-goods-title ellipsis">
+                <text class="gift-text">赠品</text>
+                <text class="gift-title">{{ goodsInfo.title }}</text>
+              </view>
+              <view wx:if="{{selectModelInfo.models_text}}" class="pay-checked-text clearfix ellipsis">
+                已选：{{ selectModelInfo.models_text }}</view>
+              <text class="gift-price">¥{{ selectModelInfo.price }}</text>
+            </view>
+          </view>
+          <view class="exchange-rules-box">
+            <view class="pay-goods-models">
+              <view wx:for="{{ goodsInfo.model }}" wx:key="index" wx:for-item="model" wx:for-index="modelIndex">
+                <text class="model-title">{{ model.name }}</text>
+                <label class="pills-list">
+                  <label wx:for="{{ model.subModelName }}" wx:for-item="name" wx:key="index"
+                    data-model-index="{{ modelIndex }}" data-submodel-index="{{ index }}"
+                    class="subModel {{ selectModelInfo.models[modelIndex] == model.subModelId[index] ? 'select' : '' }}"
+                    data-submodel-id="{{ model.subModelId[index] }}"
+                    bindtap="exchangeCouponSelectSubModel">{{ name }}</label>
+                </label>
+              </view>
+            </view>
+          </view>
+          <view class="confirm-goods" bindtap="exchangeCouponConfirmGoods">确认</view>
+        </view>
+      </view>
+    </view>
+  </template>
+  <template is="exchangeCouponUseDialog" data="{{ ...exchangeCouponData }}"></template>
+</view>
+<!-- 会员商品列表 start -->
+<view class="vip_goods_mask" wx:if="{{showVipGoodsList}}" catchtap="hideVipGoodsList">
+  <view class="vipGoodsWarp">
+    <view class='custom-info-wrapper flex-between' wx:if='{{vip_cart_info}}'>
+      <view class='flex-between'>
+        <view class='custom-info'>
+          <image src='{{vip_cart_info.cover_thumb}}'></image>
+        </view>
+        <text class='custom-name'>{{vip_cart_info.title }}</text>
+      </view>
+      <view class="pull-right">
+        <text class="cut_price_tip">优惠</text>
+        <text class="vip_cut_price">-¥{{vip_cut_price}}</text>
+      </view>
+    </view>
+    <view class="preview-goods-order-list">
+      <view class="preview-goods-order-item" wx:for="{{ vip_goods_list }}" wx:for-item="goods" wx:for-index="goodsIndex"  wx:key="index">
+        <image class="preview-goods-cover" src="{{ goods.cover }}" mode="aspectFill"></image>
+        <view class="preview-goods-content">
+          <view class="preview-goods-title"> {{ goods.goods_name }} </view>
+          <view class='goods-type'>
+            <view class='type-taste' style="max-width:400rpx;">{{goods.model_value_str}}</view>
+          </view>
+          <view class="goods-price-box">
+            <block>
+              <text class="preview-goods-price"
+                style="{{ !is_group ? 'color:' + storeStyle.theme : '' }}">¥{{goods.vip_price}}</text>
+                <text class='dinning_vip_tips' style="{{'color:' + storeStyle.theme + ';border-color:' + storeStyle.theme}}">会员价</text>
+              <text class="preview-goods-price" style="margin-left:10rpx;color:#999;">¥ {{ goods.price }}</text>
+            </block>
+            <view class="pull-right">
+              <view class="group-count"> ×{{ goods.num }}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<!-- 会员商品列表 end -->
+<!-- 选择购物卡start -->
+<view class="perfect-address-mask" wx:if="{{cardDialog}}">
+  <view class="goods-pick-box shoppingcard">
+    <view class="select-top">
+      <view class="select-title">请选择购物卡</view>
+      <view class="ico-moon icon-closed" catchtap="closeCardDialog"></view>
+    </view>
+    <view class="select-middle">
+      <view class="useful {{uselessCard?'':'active'}}" catchtap="selsctUseful">可用卡（{{can_use_shopping_cards.length}})
+        <view class="tabLine" wx:if="{{!uselessCard}}"></view>
+      </view>
+      <view class="useless {{uselessCard?'active':''}}" catchtap="selectUseless">不可用卡（{{cant_use_shopping_cards.length}})
+        <view class="tabLine" wx:if="{{uselessCard}}"></view>
+      </view>
+    </view>
+    <view class="select-content">
+      <view wx:for="{{uselessCard? cant_use_shopping_cards : can_use_shopping_cards}}" wx:key="index">
+        <view class="backgroundOne" style="{{uselessCard? 'background: #D5D5DE;' : ''}}"></view>
+        <view class="cards {{uselessCard ? 'uselesscards' : ''}}" 
+              catchtap="{{uselessCard ? '' : 'selectThisOne'}}"  
+              data-id="{{item.id}}"
+              data-index="{{index}}">
+          <view class="card {{uselessCard ? 'uselesscards' : ''}}">
+            <view class="content">
+              <view class="cover" style="{{uselessCard? 'background:rgba(147,147,153,.08);' : ''}}">
+                <view class="img">
+                  <image src="{{item.covers[0]}}"></image>
+                </view>
+              </view>
+              <view class="title" style="{{uselessCard? 'color:#999;margin-top:25rpx;' : ''}}">{{item.title}}</view>
+              <view class="hasGoods" style="{{uselessCard? 'color:#999' : ''}}">余额：
+                <view style="{{uselessCard? 'color:#999;' : 'color:#FF7100;font-weight:bold;'}}">¥{{item.balance}}</view>
+              </view>
+              <view class="useful-time" wx:if="{{uselessCard}}" >不可用原因：{{item.reason}}</view>
+              <view class="useful-time">有效期：{{item.effect_start_time}} 至 {{item.effect_end_time}}</view>
+              <view></view>
+            </view>
+          </view>
+        </view>
+        <view class="selectButton {{item.selected ? 'ico-moon icon-success-tip' : ''}}" 
+              wx:if="{{!uselessCard && ( item.selected || !shopping_cards_deduct_all)}}" 
+              style="{{item.selected ? 'border:none;' : ''}}"
+              catchtap="selectThisOne"
+              data-id="{{item.id}}"
+              data-index="{{index}}"></view>
+      </view>
+    </view>
+    <view class="select-bottom">
+      <view class="close-card-dialog" catchtap="nonuseCard">不使用购物卡</view>
+      <view class="confirm-card-select" catchtap="confirmCard">确定</view>
+    </view>
+  </view>
+</view>
+<!-- 选择购物卡end -->
+<!-- 电子卡券 选择联系人 start -->
+<view class="choose-contact-dialog" catchtap="hideContactDialog" wx:if="{{isShowContactDialog}}">
+  <view class="contact-content">
+    <view class="contact-title">
+      <text>选择联系人</text>
+      <text class="ico-moon icon-closes" catchtap="hideContactDialog"></text>
+    </view>
+    <scroll-view scroll-y class="contact-list" bindscrolltolower="getEvoucherContactsList">
+      <block wx:if="{{evoucherContactsData.list.length}}">
+        <view class="contact-item" wx:for="{{evoucherContactsData.list}}" wx:key="index" data-id="{{item.id}}" catchtap="selectEvoucherContact">
+          <view class="item-left">
+          <label class="contact-check-box {{ item.id == evoucherContactSelected.id ? 'checked ico-moon icon-success-tip' : '' }}" style="{{item.id == evoucherContactSelected.id ? ('color:' + storeStyle.theme) : '' }}"></label>
+            <view class="item-name"><text wx:if="{{item.is_default == 1}}" style="{{ 'color:' + storeStyle.theme + ';background-color:' + storeStyle.theme + '33;' }}">默认</text>{{item.name}}</view>
+            <text class="item-phone">{{item.phone}}</text>
+          </view>
+          <view class="item-right">
+            <text class="contact-edit ico-moon icon-community-edit" data-id="{{item.id}}" catchtap="turnToEvoucherContacts"></text>
+          </view>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="contact-null">
+          <image src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-goods/list_null.png"></image>
+          <text>暂无联系人，赶紧去添加吧！</text>
+        </view>
+      </block>
+    </scroll-view>
+    <view class="contact-btn" catchtap="turnToEvoucherContacts" style="background: linear-gradient(90deg,{{storeStyle.secondary}},{{storeStyle.theme}});">新建联系人</view>
+  </view>
+</view>
+<!-- 电子卡券 选择联系人 end -->

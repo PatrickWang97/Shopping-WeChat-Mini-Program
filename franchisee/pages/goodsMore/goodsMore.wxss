@@ -1,0 +1,178 @@
+page{
+  background: #F3F3F3;
+  height: 100%;
+}
+.goods-more_content {
+  position: fixed;
+  width: 100%;
+  height: 94rpx;
+  background: #F3F3F3;
+  z-index: 10;
+}
+.goods_more_search {
+  width: 690rpx;
+  height: 66rpx;
+  margin: 14rpx auto;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 4rpx;
+  overflow: hidden;
+}
+.search-wrap {
+  display: flex;
+  width: 624rpx;
+  background: #fff;
+  align-items: center;
+}
+.search-wrap > label {
+  margin: 0 20rpx;
+  color: #999;
+}
+.search-wrap > input {
+  width: 500rpx;
+}
+.search-btn {
+  width: 94rpx;
+  background: #D5D6DB;
+  color: #333;
+  font-size: 26rpx;
+  line-height: 66rpx;
+  text-align: center;
+}
+.goods-more_pst {
+  width: 100%;
+  height: 94rpx;
+}
+.goods_more_wrap {
+  height: 100%;
+}
+.franchisee-goods-list-title {
+  border-bottom: 1px solid #f8f8f8;
+  background-color: #fff;
+}
+.franchisee-goods-empty-tip {
+  padding: 10px;
+  color: #999;
+  text-align: center;
+}
+.franchisee-goods{
+  padding: 0 20rpx;
+}
+.franchisee-goods-item{
+  position: relative;
+  display: inline-block;
+  width: 345rpx;
+  margin-top: 20rpx;
+  vertical-align: top;
+  background-color: #fff;
+}
+.franchisee-goods-item:nth-child(even){
+  margin-left: 20rpx;
+}
+.franchisee-goods-item .goods-subscript {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 70rpx;
+  height: 35rpx;
+  z-index: 2;
+}
+.franchisee-goods-item .list-img {
+  display: block;
+  width: 345rpx;
+  height: 345rpx;
+}
+.franchisee-goods-item .title-container {
+  width: 100%;
+  margin-top: 15rpx;
+  padding: 0 10rpx;
+  box-sizing: border-box;
+}
+.franchisee-goods-item .title-container .title {
+  height: 64rpx;
+  color: #333;
+  font-size: 28rpx;
+  margin-bottom: 15rpx;
+  line-height: 32rpx;
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.franchisee-goods-item .title-subscript {
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: -6rpx;
+  margin-right: 10rpx;
+  width: 62rpx;
+  height: 30rpx;
+}
+.franchisee-goods-item .title-container .price {
+  color: #FF3B49;
+  font-size: 32rpx;
+}
+.franchisee-goods-item .title-container .sales {
+  float: right;
+  color: #999;
+  font-size: 22rpx;
+  line-height: 32rpx;
+  margin-top: 8rpx;
+}
+.goods-other{
+  margin-bottom: 15rpx;
+}
+.franchisee-tip-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  line-height: 50px;
+  font-size: 16px;
+  background-color: rgba(0,0,0,.6);
+  color: #fff;
+  text-align: center;
+}
+.franchisee-cate{
+  width: 100%;
+  white-space: nowrap;
+  height: 40px;
+}
+.franchisee-cate .scroll-view-item{
+  display: inline-block;
+  width: 75px;
+  line-height:39px;
+  text-align:center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.franchisee-cate .scroll-view-item.active{
+  border-bottom: 1px solid #ff7100;
+  color: #ff7100;
+}
+.franchisee-goods-empty{
+  font-size: 30rpx;
+  height: 100%;
+  text-align: center;
+  padding-top: 20rpx;
+}
+.franchisee-goods-item .title-container .vip-logo {
+  display: inline-block;
+  height: 30rpx;
+  line-height: 30rpx;
+  font-size: 18rpx;
+  border-radius: 15rpx;
+  padding: 0 10rpx;
+  color: #FF4D4F;
+  background: rgba(255, 77, 79, .16);
+  vertical-align: middle;
+}
+.franchisee-goods-item .title-container .real-price {
+  font-size: 32rpx;
+  margin-right: 14rpx;
+  color: #ff7100;
+  display: inline-block;
+  vertical-align: middle;
+}

@@ -1,0 +1,304 @@
+@charset 'utf-8';
+@import "/utils/font_icon.wxss";
+.page-wrap {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+}
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.newcomer-mask {
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, .5);
+  z-index: 998;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+.newcomer-modal-content {
+  position: fixed;
+  top: 50%;
+  left: 70rpx;
+  transform: translateY(-50%);
+  z-index: 999;
+  width: 612rpx;
+  background-image: linear-gradient(#fff,#ffeae5);
+  border-radius: 30rpx 30rpx 10rpx 10rpx;
+}
+.newcomer-banner {
+  position: absolute;
+  top: -128rpx;
+  left: 0;
+  width: calc(100% - 80rpx);
+  height: 170rpx;
+  padding: 0 42rpx;
+}
+.newcomer-head {
+  padding: 54rpx 0 30rpx;
+  text-align: center;
+  border-radius: 30rpx 30rpx 0 0;
+}
+.newcomer-head-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.image-common {
+  width: 100%;
+  height: 100%;
+}
+.newcomer-head-image{
+  height: 16rpx;
+  width: 60rpx;
+}
+.newcomer-title {
+  font-size:36rpx;
+  font-family:Microsoft YaHei;
+  font-weight:bold;
+  color:rgba(132,88,35,1);
+  line-height:30rpx;
+  margin: 0 16rpx;
+}
+.newcomer-tips {
+  font-size:24rpx;
+  font-family:Microsoft YaHei;
+  font-weight:400;
+  color:rgba(132,88,35,1);
+  line-height:30rpx;
+  opacity:0.7;
+  margin-top: 16rpx;
+}
+.newcomer-gift-content {
+  padding-bottom: 62rpx;
+  min-height: 240rpx;
+  overflow: hidden;
+}
+.newcomer-gift-item {
+  background: url('https://develop.zhichiwangluo.com/zhichi_frontend/static/webapp/images/xcx-newcomer/newcomer-item.png') no-repeat;
+  background-size: contain;
+  height: 150rpx;
+  margin: 0 30rpx 20rpx;
+  position: relative;
+}
+.newcomer-gift-item.numType {
+  background: url('https://develop.zhichiwangluo.com/zhichi_frontend/static/webapp/images/xcx-inviteNew/border-bg.png') no-repeat;
+  background-size: contain;
+}
+.newcomer-gift-item:last-child {
+  margin-bottom: 0;
+}
+.newcomer-gift {
+  position: absolute;
+  left: 40rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  width: calc( 100% - 40rpx);
+}
+.newcomer-gift-pic {
+  width: 80rpx;
+  height: 80rpx;
+  position: absolute;
+  left: 0;
+  top: 4rpx;
+}
+.newcomer-gift-detail {
+  display: inline-block;
+  max-width: 220rpx;
+  margin-left: 100rpx;
+}
+.newcomer-gift-title {
+  font-size: 26rpx;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+.newcomer-gift-tips {
+  font-size: 24rpx;
+  color: #999;
+}
+.newcomer-button {
+  width: 100rpx;
+  height: 114rpx;
+  position: absolute;
+  right: 30rpx;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.newcomer-button-text {
+  position: absolute;
+  width: 100%;
+  color: #ED3A19;
+  font-size: 24rpx;
+  font-weight: bold;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  text-align: center;
+}
+.newcomer-gift-close {
+  color: #fff;
+  border-radius: 50%;
+  border: 2rpx solid #fff;
+  background: rgba(255, 255, 255, .16);
+  width: 54rpx;
+  height: 54rpx;
+  position: absolute;
+  bottom: -150rpx;
+  left: 280rpx;
+  text-align: center;
+  line-height: 54rpx;
+}
+.arrowIcon {
+  font-size: 40rpx;
+  color: #fff;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 40rpx 20rpx;
+}
+.leftArrow {
+  left: -70rpx;
+}
+.rightArrow {
+  right: -70rpx;
+}
+.inviter-rewards-wrap {
+  width: 2448rpx;
+  display: flex;
+}
+.inviter-gift-box {
+  width: 610rpx;
+  position: relative;
+  margin: 0 auto;
+  max-height: 430rpx;
+}
+.inviter-bottom-wrap {
+  background: url('https://develop.zhichiwangluo.com/zhichi_frontend/static/webapp/images/xcx-inviteNew/bg.png') no-repeat;
+  background-size: cover;
+  width: 632rpx;
+  height: 223rpx;
+  position: absolute;
+  bottom: -30rpx;
+  left: -10rpx;
+}
+.inviter-bottom-wrap.numType {
+  background: url('https://develop.zhichiwangluo.com/zhichi_frontend/static/webapp/images/xcx-inviteNew/bg2.png') no-repeat;
+  background-size: cover;
+  height: 182rpx;
+}
+.inviter-friends {
+  height: 70rpx;
+  width: 448rpx;
+  border-radius: 35rpx;
+  color: #664012;
+  font-size: 28rpx;
+  text-align: center;
+  line-height: 70rpx;
+  background:linear-gradient(-3deg,rgba(251,252,78,1),rgba(253,206,31,1));
+  margin: 70rpx auto 20rpx;
+}
+.inviter-check-more {
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, .8);
+  text-align: center;
+}
+.bread-wrap {
+  background: transparent;
+  padding: 0rpx 80rpx 30rpx;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.bread-type {
+  font-size: 30rpx;
+  color: #666;
+  position: relative;
+  margin-right: 40rpx;
+}
+.bread-type.active {
+  font-weight: bold;
+  color: #333;
+}
+.bread-border {   
+  position: absolute;   
+  bottom: -4rpx;   
+  left: 0;   
+  width: 100%;   
+  height: 10rpx;   
+  background:linear-gradient(90deg,#FF4C29,#FFFFFF); 
+}
+.inviter-rewards-wrap.rewardsWrap1 {
+  width: 612rpx;
+}
+.inviter-rewards-wrap.rewardsWrap2 {
+  width: 1224rpx;
+}
+.inviter-rewards-wrap.rewardsWrap3 {
+  width: 1836rpx;
+}
+.inviter-rewards-wrap.rewardsWrap4 {
+  width: 2448rpx;
+}
+.inviter-calc-wrap {
+  width: 170rpx;
+  height: 58rpx;
+  border: 2rpx solid rgba(255, 238, 235, 1);
+  border-radius: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4rpx 5rpx;
+  position: absolute;
+  right: 30rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  box-sizing: border-box;
+}
+.calc-button {
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 50rpx;
+  font-size: 24rpx;
+}
+.inviter-rewards-sub {
+  background-color: #FFEEEB;
+  color: #FF4C29;
+}
+.inviter-rewards-num {
+  color: #333;
+  font-size: 24rpx;
+}
+.inviter-rewards-add {
+  background: #FF4C29;
+  color: #fff;
+}
+.inviter-rewards-add.limit {
+  background: #ddd;
+}
+.inviter-rewards-sub.limit {
+  background: #ddd;
+  color: #fff;
+}
+.inviter-nums-tips {
+  font-size: 24rpx;
+  color: #845823;
+  text-align: center; 
+}
+.inviter-scroll-wrap {
+  max-height: 410rpx;
+  overflow-y: scroll;
+}
+.inviter-scroll-wrap.flex {
+  display: flex;
+}

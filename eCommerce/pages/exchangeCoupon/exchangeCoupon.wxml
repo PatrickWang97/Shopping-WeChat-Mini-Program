@@ -1,0 +1,87 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-topNavBar topNavBarData="{{topNavBarData}}"></component-topNavBar>
+<view id="coupon-receive-list-page" class="coupon-receive-list-page">
+  <view class="ticket-list">
+    <block wx:for="{{couponList}}" wx:for-item="coupon" wx:key="id">
+      <view class="ticket franchisee-ticket" catchtap="gotoCouponDetail" data-compose-id="{{coupon.compose_id}}">
+        <view class="top-section" style="{{ 'border-color: ' + coupon.list_color }}">
+          <view class="coupon-franchisee">
+            <image class="coupon-franchisee-logo" mode="aspectFill" src="{{coupon.logo}}"></image>
+            <view class="coupon-franchisee-name" catchtap="gotoShop" data-mode="{{coupon.mode_id}}" data-appid="{{coupon.app_id}}">
+              <view wx:if="{{ coupon.category == 1 }}" class="coupon-league-mark">
+                <view style="{{ 'background-color: ' + coupon.list_color }}"></view>
+                <text style="{{ 'color: ' + coupon.list_color }}">联盟</text>
+              </view>
+              <text>{{coupon.shop_name || coupon.app_name}}</text>
+              <label class="ico-moon icon-rightarrow"></label>
+            </view>
+            <view class="coupon-franchisee-distance">附近{{coupon.distance}}</view>
+          </view>
+          <block wx:if="{{ coupon.type == 0 }}">
+            <view class="detail-info-franchisee">
+              <view class="coupon-value" style="{{ 'color:' + coupon.list_color }}"><label>¥</label>{{ coupon.value }}</view>
+              <view class="coupon-condition">满{{ coupon.condition }}可用</view>
+            </view>
+          </block>
+          <block wx:elif="{{ coupon.type == 1 }}">
+            <view class="detail-info-franchisee">
+              <view class="coupon-value" style="{{ 'color:' + coupon.list_color }}">{{ coupon.value }}<label>折</label></view>
+              <view class="coupon-condition" wx:if="{{coupon.extra_goods == 'null'}}">全部商品可享优惠</view>
+              <view class="coupon-condition" wx:else>部分商品可享优惠</view>
+            </view>
+          </block>
+          <block wx:elif="{{ coupon.type == 2 }}">
+            <view class="detail-info-franchisee">
+              <view class="coupon-value" style="{{ 'color:' + coupon.list_color }}"><label>¥</label>{{ coupon.value }}</view>
+              <view class="coupon-condition">商品代金券</view>
+            </view>
+          </block>
+          <block wx:elif="{{ coupon.type == 3 }}">
+            <view class="detail-info-franchisee">
+              <view class="coupon-value" style="{{ 'color:' + coupon.list_color }}">兑换券</view>
+              <view class="coupon-condition" wx:if="{{ coupon.extra_condition == '' }}" >直接兑换{{ coupon.coupon_goods_info.title }} </view>
+              <view class="coupon-condition" wx:elif="{{ coupon.extra_condition.price }}" >消费满{{ coupon.extra_condition.price }}元可兑换{{ coupon.coupon_goods_info.title }}</view>
+              <view class="coupon-condition" wx:elif="{{ coupon.extra_condition.goods_id }}" >购买{{ coupon.condition_goods_info.title }}可兑换{{ coupon.coupon_goods_info.title }}</view>
+            </view>
+          </block>
+          <block wx:elif="{{ coupon.type == 4 }}">
+            <view class="detail-info-franchisee">
+              <view class="coupon-value" style="{{ 'color:' + coupon.list_color }}"><label>¥</label>{{ coupon.value }}</view>
+              <view class="coupon-condition">商品储值金</view>
+            </view>
+          </block>
+          <block wx:elif="{{ coupon.type == 5 }}">
+            <view class="detail-info-franchisee">
+              <view class="coupon-value" style="{{ 'color:' + coupon.list_color }}">通用券</view>
+              <view class="coupon-condition">{{ coupon.extra_condition }}</view>
+            </view>
+          </block>
+          <block wx:elif="{{ coupon.type == 6 }}">
+            <view class="detail-info-franchisee">
+              <view class="coupon-value" style="{{ 'color:' + coupon.list_color }}">次数券</view>
+              <view class="coupon-condition">可兑换{{coupon.limit_num}}次</view>
+            </view>
+          </block>
+          <form data-index="{{index}}" data-category="{{coupon.category}}">
+            <button 
+              wx:if="{{ coupon.stock != 0 }}" 
+              class="receive-btn"
+              data-compose-id="{{coupon.compose_id}}"
+              catchtap="getExchangeCoupon" 
+              style="{{ 'background-color: ' + coupon.list_color }}">
+            {{coupon.user_recv_num == 0 ? '立即' : '再次'}}兑换
+            </button>
+          </form>
+        </view>
+        <view class="bottom-section">
+          <view>有效期 {{coupon.expire == '-1' ?  (coupon.start_use_date + '至' + coupon.end_use_date) : coupon.expire == '0' ? '领取当天生效,有效期1天' : ('领取'+ (coupon.react > 0 ? coupon.react + '天后' : '当天') + '生效，有效期'+ coupon.expire +'天')}} {{ coupon.exclude_holiday == 0 ? '':'除去法定节假日'}} {{coupon.exclude_weekend == 0 ? '':'周一至周五'}} {{ coupon.start_use_time }}-{{ coupon.end_use_time }}</view>
+        </view>
+      </view>
+    </block>
+    <view class="coupon-no-more" wx:if="{{couponStatus.noMore && !!couponList.length}}">没有更多了</view>
+    <view class="coupon-no-more" wx:if="{{couponStatus.noMore && !couponList.length}}">暂无积分兑换券</view>
+    <view class="coupon-no-more" wx:if="{{couponStatus.loadingFail}}" catchtap="getIntegralExchangeCoupons">获取积分兑换券失败，点击重新获取</view>
+  </view>
+  <view class="coupon-no-more" wx:if="{{couponNoMore}}">没有更多了</view>
+</view>

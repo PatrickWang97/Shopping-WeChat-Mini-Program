@@ -1,0 +1,183 @@
+<!--informationManagement/pages/commentDetail/commentDetail.wxml-->
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-sinkingModal></component-sinkingModal>
+<!-- 主体 -->
+<view class="commentStretch-body-box">
+  <view class="commentStretch-body-left">
+    <image class="commentStretch-body-avatar" src="{{mainComment.content.headimgurl}}" catchtap="turnToUsercenter" data-usertoken="{{mainComment.user_token}}" data-sourcetype="{{mainComment.source_type}}" lazy-load="{{true}}"></image>
+  </view>
+  <view class="commentStretch-body-right">
+    <view class="commentStretch-body-right-top">
+      <text class="commentStretch-body-nickname">{{mainComment.content.nickname}}</text>
+      <view class="commentStretch-body-operation">
+        <icon
+          class="ico-moon icon-news-comment"
+          catchtap="turnComment"
+          data-comment-id="{{commentId}}"
+          data-parent-comment-id="{{commentId}}"
+          data-section-id="{{mainComment.section_id}}"
+          data-replyto="{{mainComment.content.nickname}}"
+          data-article-id="{{articleId}}"></icon>
+        <icon
+          class="ico-moon icon-news-{{mainComment.is_liked == 1 ? '' : 'un'}}like"
+          style="{{mainComment.is_liked == 1 ? 'color:#F85959;': ''}}"
+          catchtap="addCommentLike"
+          data-id="{{commentId}}"
+          data-like-count="{{mainComment.like_count}}"
+          data-is-liked="{{mainComment.is_liked}}"
+          data-path="mainComment"></icon>
+        <text
+          catchtap="addCommentLike"
+          data-id="{{commentId}}"
+          data-index="body">{{mainComment.like_count}}</text>
+      </view>
+    </view>
+    <text class="commentStretch-body-time">{{mainComment.content.add_time}}</text>
+    <text class="commentStretch-body-content">{{mainComment.content.text}}</text>
+    <view
+      class="commentStretch-body-image"
+      style="{{mainComment.content.comment_img_style}}"
+      wx:if="{{mainComment.content.comment_img_url}}"
+      catchtap="previewOneImage"
+      data-image="{{mainComment.content.comment_img_url}}">
+      <image
+        src="{{mainComment.content.comment_img_url}}"
+        bindload="commentImageLoad"
+        data-cache="mainComment[{{mainComment.id}}]"
+        data-path="mainComment.content.comment_img_style"
+        lazy-load="{{true}}"></image>
+      <view>
+        <text>查看原图</text>
+      </view>
+    </view>
+    <view wx:if="{{mainComment.content.address}}" class="commentStretch-body-location">
+      <icon class="ico-moon icon-community-location"></icon>
+      <text>{{mainComment.content.address}}</text>
+    </view>
+  </view>
+</view>
+<!-- 回复列表 -->
+<view class="commentStretch-comment-list">
+  <view class="commentStretch-comment-list-item" wx:for="{{subComments}}" wx:key="index">
+    <view class="commentStretch-comment-list-left">
+      <image class="commentStretch-comment-list-avatar" src="{{item.content.headimgurl}}" catchtap="turnToUsercenter" data-usertoken="{{item.user_token}}" data-sourcetype="{{item.source_type}}" lazy-load="{{true}}"></image>
+    </view>
+    <view class="commentStretch-comment-list-right">
+      <view class="commentStretch-comment-list-right-top">
+        <text class="commentStretch-comment-list-nickname">{{item.content.nickname}}{{(item.content.reply_to.nickname != mainComment.content.nickname && item.content.reply_to.nickname != item.content.nickname) ? ' 回复 ' + item.content.reply_to.nickname : ''}}</text>
+        <view class="commentStretch-comment-list-operation">
+          <icon
+            class="ico-moon icon-news-{{item.is_liked == 1 ? '' : 'un'}}like"
+            style="color:{{item.is_liked == 1 ? '#F85959': ''}};"
+            catchtap="addCommentLike"
+            data-id="{{item.id}}"
+            data-like-count="{{item.like_count}}"
+            data-is-liked="{{item.is_liked}}"
+            data-path="subComments[{{index}}]"></icon>
+          <text>{{item.like_count}}</text>
+        </view>
+      </view>
+      <text class="commentStretch-comment-list-time">{{item.content.add_time}}</text>
+      <text
+        class="commentStretch-comment-list-content"
+        catchtap="turnComment"
+        data-comment-id="{{item.id}}"
+        data-parent-comment-id="{{item.parent_comment_id}}"
+        data-section-id="{{item.section_id}}"
+        data-replyto="{{item.content.nickname}}"
+        data-article-id="{{articleId}}">{{item.content.text}}</text>
+      <view
+        class="commentStretch-comment-list-image"
+        style="{{subComments[index].content.comment_img_style}}"
+        wx:if="{{item.content.comment_img_url}}"
+        catchtap="previewOneImage"
+        data-image="{{item.content.comment_img_url}}">
+        <image
+          src="{{item.content.comment_img_url}}"
+          bindload="commentImageLoad"
+          data-cache="subComments[{{item.id}}]"
+          data-path="subComments[{{index}}].content.comment_img_style"
+          lazy-load="{{true}}"></image>
+        <view>
+          <text>查看原图</text>
+        </view>
+      </view>
+      <view  wx:if="{{item.content.address}}" class="commentStretch-comment-list-location">
+        <icon class="ico-moon icon-community-location"></icon>
+        <text>{{item.content.address}}</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 底部评论框 -->
+<view class="commentStretch-comment-input-blank" wx:if="{{!showReplyBox}}"></view>
+<view class="commentStretch-comment-input-box" wx:if="{{!showReplyBox}}">
+  <input
+    class="commentStretch-comment-input"
+    placeholder="评论回复..."
+    placeholder-class="commentStretch-comment-input-placeholder"
+    value="{{replyParam.content}}"
+    catchtap="turnComment"
+    data-comment-id="{{commentId}}"
+    data-parent-comment-id="{{commentId}}"
+    data-section-id="{{mainComment.section_id}}"
+    data-replyto="{{mainComment.content.nickname}}"
+    data-article-id="{{articleId}}"></input>
+</view>
+
+
+<!-- 新版评论框 -->
+<view class="communityDetail-comment-mask" wx:if="{{showReplyBox}}" bindtap="cancelReply">
+</view>
+<view class="communityDetail-comment-box" id="comment-box" wx:if="{{showReplyBox}}" style="bottom: {{ replyBoxFocus ? keyboardHeight : 0 }};">
+  <view class="communityDetail-comment-top">
+    <textarea
+      class="communityDetail-comment-input"
+      id=""
+      placeholder="{{replyPlaceholder}}"
+      placeholder-style="color: #d8d8d8; font-size: 28rpx;"
+      maxlength="-1"
+      value="{{replyParam.text}}"
+      auto-focus="{{showReplyBox}}"
+      show-confirm-bar="{{false}}"
+      fixed="{{true}}"
+      adjust-position="{{false}}"
+      bindinput="replyInput"
+      bindfocus="replyFocus"
+      bindblur="replyBlur"
+      bindlinechange="replyLineChange"
+      style="height: {{commentContentHeight + 20}}rpx"></textarea>
+    <!-- 放置图片、位置 -->
+    <view class="communityDetail-comment-others" wx:if="{{replyParam.comment_img_url || replyParam.address}}">
+      <view class="communityDetail-comment-others-image" wx:if="{{replyParam.comment_img_url}}" style="margin-bottom: {{replyParam.address ? '36' : '0'}}rpx;">
+        <image src="{{replyParam.comment_img_url}}" mode="aspectFill" catchtap="replyImagePreview" lazy-load="{{true}}"></image>
+        <view class="image-close-icon-box" catchtap="replyImageDelete">
+          <icon class="image-close-icon ico-moon icon-closes"></icon>
+        </view>
+      </view>
+      <view class="communityDetail-comment-others-location" wx:if="{{replyParam.address}}" catchtap="replyLocationDelete">
+        <text>{{replyParam.address}}</text>
+        <icon class="location-close-icon ico-moon icon-closes"></icon>
+      </view>
+    </view>
+  </view>
+  <!-- 上传图片按钮、选择位置按钮、发布按钮 -->
+  <view class="communityDetail-comment-bottom">
+    <view class="communityDetail-comment-bottom-left">
+      <icon class="communityDetail-comment-bottom-icon ico-moon icon-news-input-image" catchtap="replyImageChoose"></icon>
+      <icon class="communityDetail-comment-bottom-icon ico-moon icon-community-location" catchtap="replyLocationChoose"></icon>
+    </view>
+    <view class="communityDetail-comment-bottom-right">
+      <view class="communityDetail-comment-bottom-right-cancel" catchtap="cancelReply">
+        <text>取消</text>
+      </view>
+      <view class="communityDetail-comment-bottom-right-send" catchtap="submitReply">
+        <text>发布</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+

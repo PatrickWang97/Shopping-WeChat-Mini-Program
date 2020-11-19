@@ -1,0 +1,336 @@
+<import src="../../../components/wxParse/wxParse.wxml" />
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-behavior-track></component-behavior-track>
+<view style="padding-bottom: 104rpx;">
+  <view class="good-header-dialog">
+    <!-- 图片上的点击视频按钮 -->
+    <view class="button" wx:if="{{communityGoodsList.form_data.video_img && showPlayButton}}" data-type="video" catchtap="changeImageOrVideo">
+      <view class="icon">
+        <text class="ico-moon icon-play"></text>
+      </view>
+      <text class="text">{{video_duration}}</text>
+    </view>
+    <!-- 关闭视频按钮 -->
+    <view class="image-carousel-container">
+      <block wx:if="{{ imageOrVideo == 'image' }}">
+        <view class="slick-carousel-container">
+          <swiper autoplay="true" duration="1000" interval="5000">
+            <swiper-item>
+              <image class="slide-image" mode="aspectFill" src="{{communityGoodsList.cover}}" lazy-load="true"></image>
+            </swiper-item>
+            <swiper-item wx:for="{{communityGoodsList.form_data.img_urls}}" wx:key="index">
+              <image class="slide-image" mode="aspectFill" src="{{item}}" lazy-load="true"></image>
+            </swiper-item>
+          </swiper>
+        </view>
+      </block>
+      <view class="video-carousel-container" wx:if="{{ communityGoodsList.form_data.video_img && imageOrVideo == 'video'}}">
+        <video src="{{ communityGoodsList.form_data.video_url }}" show-fullscreen-btn="{{false}}" autoplay="true" id="carousel-video">
+          <cover-view class="video-close-button" data-type="image" catchtap="changeImageOrVideo">
+            <cover-image class="close-image" src="http://cdn.jisuapp.cn/static/webapp/images/community-group/closes.png"></cover-image>
+          </cover-view>
+        </video>
+      </view>
+      <cover-view  wx:if="{{communityGoodsList.form_data.video_img &&  (showCark && showModel && !pageQRCodeShow && !pageQRCodeData.shareMenuShow)}}" class="image-video-menu"></cover-view>
+      <view class="goods-price-box">
+        <view class="goods-price">
+          <view class="origin-price"><text  wx:if="{{communityGoodsList.virtual_price != 0}}">¥{{communityGoodsList.virtual_price}}</text></view>
+          <view class="group-price">
+            <text class="price-icon">¥</text>
+            <text class="now-price">{{communityGoodsList.price}}</text>
+            <view class="pingou-icon"><text> 拼购价</text></view>
+          </view>
+        </view>
+        <view class="goods-remain-time" wx:if="{{status == 2 || communityInfo.downCount}}">
+          <label wx:if="{{status == 1}}">距活动结束还有:</label>
+          <label wx:if="{{status == 2}}" class="activity-end">活动已结束</label>
+          <label wx:if="{{status != 2 && status != 1}}">距活动开始还有：</label>
+          <view wx:if="{{status != 2}}">
+            <block><text class="countdown-text">{{communityInfo.downCount.days}}</text><text class="countdown-days">天</text></block>
+            <text class="hours countdown-text" style="{{'color:' + storeStyle.theme }}">{{communityInfo.downCount.hours}}</text>:<text class="minutes countdown-text" style="{{'color:' + storeStyle.theme }}">{{communityInfo.downCount.minutes}}</text>:<text class="seconds countdown-text" style="{{'color:' + storeStyle.theme }}">{{communityInfo.downCount.seconds}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="good-info clearfix">
+      <view class="good-info-title">{{communityGoodsList.title}}</view>
+      <view class="good-info-model-box">
+        <view class="good-info-model">
+          <label><icon class="ico-moon icon-community-group-fire"></icon> 已售{{communityGoodsList.sales || 0}}件</label>
+          <label><icon class="ico-moon icon-community-group-stock"></icon> 仅剩{{communityGoodsList.stock || 0}}件</label>
+        </view>
+      </view>
+    </view>
+    <view class="activity-member" wx:if="{{userLogList.count > 0}}">
+      <view class="member-section">
+        <view class="member-image" wx:for="{{userLogList.sliceData}}" wx:key="index">
+          <image src="{{item.buyer_info.logo}}"></image>
+        </view>
+        <view class="member-image" wx:if="{{userLogList.count > 8}}">
+          <icon class="ico-moon icon-more"></icon>
+        </view>
+      </view>
+      <view class="member-section">
+        {{userLogList.count}}人已下单
+      </view>
+    </view>
+  </view>
+  <view class="goods-related-box">
+    <view class="promotion-tab">
+      <view class="tab-item {{tabIndex == 0 ? 'tab-active' : ''}}" data-index="0" bindtap="changeTab">
+        <view>商品详情</view>
+        <label></label>
+      </view>
+      <view wx:if="{{isShowEvaluate == 1}}" class="tab-item {{tabIndex == 1 ? 'tab-active' : ''}}" data-index="1" bindtap="changeTab">
+        <view>评论<view class="evaluate-count">{{evaluateList.totalCount}}</view></view>
+        <label></label>
+      </view>
+      <view class="tab-item {{tabIndex == 2 ? 'tab-active' : ''}}" data-index="2" bindtap="changeTab">
+        <view>购买记录</view>
+        <label></label>
+      </view>
+    </view>
+    <view class="good-evaluate-dialog" wx:if="{{tabIndex == 1}}">
+      <view class="comPage-top-section">
+        <label bindtap="clickCommentLabel" data-type="0" class="comPage-comment-label {{ commnetType == 0 ? 'active' : '' }}"> 全部 </label>
+        <label bindtap="clickCommentLabel" data-type="1" class="comPage-comment-label {{ commnetType == 1 ? 'active' : '' }}">好评 ({{ evaluateList.num[1] }})</label>
+        <label bindtap="clickCommentLabel" data-type="2"  class="comPage-comment-label {{ commnetType == 2 ? 'active' : '' }}">中评 ({{ evaluateList.num[2] }})</label>
+        <label bindtap="clickCommentLabel" data-type="3" class="comPage-comment-label {{ commnetType == 3 ? 'active' : '' }}">差评 ({{ evaluateList.num[3] }})</label>
+        <label bindtap="clickCommentLabel" data-type="4" class="comPage-comment-label {{ commnetType == 4 ? 'active' : '' }}">有图 ({{ evaluateList.num[4] }})</label>
+      </view>
+      <view class="evaluate-content">
+        <block wx:if="{{evaluateList.data.length > 0}}">
+          <view class="evaluate-list" wx:for="{{evaluateList.data}}" wx:key="id">
+            <view class="evaluate-list-score clearfix">
+              <image src="{{item.buyer_headimgurl}}"></image>
+              <text>{{item.buyer_nickname}}</text>
+              <text>
+                <text class="ico-moon icon-star" style="{{item.assess_info.score >= 1 ? 'color:#ff7100':'#d5d5d5'}}"></text>
+                <text class="ico-moon icon-star" style="{{item.assess_info.score >= 2 ? 'color:#ff7100':'#d5d5d5'}}"></text>
+                <text class="ico-moon icon-star" style="{{item.assess_info.score >= 3 ? 'color:#ff7100':'#d5d5d5'}}"></text>
+                <text class="ico-moon icon-star" style="{{item.assess_info.score >= 4 ? 'color:#ff7100':'#d5d5d5'}}"></text>
+                <text class="ico-moon icon-star" style="{{item.assess_info.score >= 5 ? 'color:#ff7100':'#d5d5d5'}}"></text>
+              </text>
+            </view>
+            <view class="good-info">{{item.assess_info.content}}</view>
+            <scroll-view scroll-x="true" class="img-scroll" wx:if="{{ item.assess_info.has_img }}">
+              <view class="img-content" wx:for="{{item.assess_info.img_arr}}" wx:for-item="imgSrc" wx:key="index" data-src="{{ imgSrc }}" data-srcarr="{{ item.assess_info.img_arr }}" catchtap="clickPlusImages">
+                <image src="{{ imgSrc }}"></image>
+              </view>
+            </scroll-view>
+            <view class="evaluate-list-time">
+              <label>{{item.add_time}}</label>
+            </view>
+          </view>
+          <view class="evaluate-list-more" bindtap="addMore" wx:if="{{evaluateList.is_more == 1}}">
+            查看更多
+            <text class="icon-downarrow ico-moon"></text>
+          </view>
+        </block>
+        <block wx:else>
+          <view class="no-content">
+            暂无评论
+          </view>
+        </block>
+      </view>
+    </view>
+    <view class="good-describe-img" wx:if="{{tabIndex == 0}}">
+      <block wx:if="{{communityGoodsList.form_data.description}}">
+        <view style="padding-bottom:20rpx;">
+          <template is="wxParse" data="{{ wxParseData: wxParseDescription.nodes }}" />
+        </view>
+      </block>
+      <block  wx:else>
+        <view class="no-content">
+          暂无商品描述
+        </view>
+      </block>
+    </view>
+    <view class="good-buy-record" wx:if="{{tabIndex == 2}}">
+      <block wx:if="{{userLogList.data.length}}">
+        <view wx:for="{{userLogList.data}}" class="buyer-info" wx:key="index">
+          <view>
+            <image src="{{item.buyer_info.logo}}"></image>
+            <text class="buyer-name">{{item.buyer_info.nickname}}</text>
+            <text class="buyer-count"> ({{item.goods_num}} 份)</text>
+          </view>
+          <view class="buyer-count">{{item.create_time}}</view>
+        </view>
+        <view class="evaluate-list-more" bindtap="addLogMore" wx:if="{{userLogList.is_more == 1}}">
+           查看更多
+           <text class="icon-downarrow ico-moon"></text>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="no-content">
+          暂无下单记录
+        </view>
+      </block>
+    </view>
+  </view>
+</view>
+<view class="goods-share" bindtap="showQRCodeComponent">
+  <icon  class="ico-moon icon-goods-four-share"></icon>
+  <view>分享</view>
+</view>
+<view class="bottom-button-box">
+  <view>
+    <view class="opt-icon" bindtap="goToHomepage">
+      <text class="icon-community-group-goods-home ico-moon"></text>
+      <view>首页</view>
+    </view>
+    <view class="opt-icon"  bindtap="isShowCark">
+      <text class="ico-moon icon-select-good"></text>
+      <view>购物车</view>
+      <text class="{{shopCarkNumber >= 10 ? 'shopCarkCount' : 'shopCarkCountOne'}}" wx:if="{{shopCarkNumber != 0}}">{{shopCarkNumber}}</text>
+    </view>
+    <view class="button-group-box">
+      <block wx:if="{{!isGoodsLimit && !isVipLimit}}">
+        <view class="car-button" bindtap="plus">加入购物车</view>
+        <view class="buy-button" bindtap="goToPreviewPay" data-type="1">去结算</view>
+      </block>
+      <block wx:else>
+        <view class="goods-limit-btn">{{isVipLimit ? '指定会员限购' : '已达最大限购数量'}}</view>
+      </block>
+    </view>
+  </view>
+
+</view>
+<!-- 购物车 -->
+<view class="community-shopcark" catchtouchmove="stopMove" bindtap="isShowCark" hidden="{{showCark}}">
+  <view class="shopcark-view" catchtap="stopPropagation">
+    <view class="chosen-title">
+      <view class="chosen-title-title">已选商品</view>
+      <view class="clear-goods" catchtap="clearShopCark">
+        <label class="ico-moon icon-delete"></label><text>清空</text>
+      </view>
+    </view>
+    <scroll-view class="scroll-content" scroll-y="true">
+      <view class="shoppingCart-null" wx:if="{{cartList.length == 0}}">
+        <image src="https://cdn.jisuapp.cn/static/webapp/images/xcx-goods/shopping-cart-null.png"></image>
+        <view class="shoppingCart-null-label">购物车空空哒</view>
+      </view>
+      <view class="shopcark-view-list" wx:for="{{cartList}}" wx:key="index">
+        <view class="cart-info">
+          <view class="info-title ellipsis">{{item.title}}</view>
+          <view class="info-model ellipsis" wx:if="{{item.modelId !== 0}}">{{item.models_text}}</view>
+        </view>
+        <view class="cart-price">¥{{item.price}}</view>
+        <view class="goods-add">
+          <view class="goods-minus" data-param="{{item}}" data-index="{{index}}" data-type="minus" bindtap="addGoods">
+            <text class="ico-moon icon-cart-sub"></text>
+          </view>
+          <input class="goods-count" type="number" disabled="true" value="{{item.num}}"></input>
+          <view class="goods-plus" data-param="{{item}}" data-index="{{index}}" data-type="plus" bindtap="addGoods">
+            <text class="ico-moon icon-news-add"></text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+    <view class="community-shopcark-btn {{cartList.length ? '' : 'none-goods'}}" bindtap="_previewPay" data-type="0">
+      <view>去结算</view>
+    </view>
+  </view>
+</view>
+<!-- 多规格选择 -->
+<view class="page-dialog-wrap" id="communityBuyDialog"  bindtap="closeGoodModel" hidden="{{showModel}}">
+  <view class="page-bottom-dialog" catchtap="stopPropagation">
+    <view class="pay-close-dialog page-dialog-close" bindtap="closeGoodModel">
+      <text class="ico-moon icon-closes"></text>
+    </view>
+    <view class="dialog-goods-header">
+      <view class="thumb">
+        <view class="thumb-wrap">
+          <image src="{{selectGoodsModelInfo.imgurl}}" class="pay-goods-cover"></image>
+        </view>
+      </view>
+      <view class="pay-goods-baseinfo">
+        <view class="pay-goods-price">
+          <view class="pay-current-price">
+            <view class="goods-describe-price" data-virtual="{{selectGoodsModelInfo.virtualPrice == 0.00 ? '' : '¥' + selectGoodsModelInfo.virtualPrice}}">
+              ¥{{selectGoodsModelInfo.price}}<text class="goods-limit-num" wx:if="{{goodsInfo.limit.num}}">限购{{goodsInfo.limit.num}}件</text>
+            </view>
+          </view>
+          <view class="pay-goods-stock">库存 {{selectGoodsModelInfo.stock}}</view>
+          <view class="pay-checked-text clearfix">已选：{{selectGoodsModelInfo.models_text}}</view>
+        </view>
+      </view>
+    </view>
+    <view class="communityBuyDialog-content">
+      <view class="pay-goods-models">
+        <view wx:for="{{ goodsInfo.model }}" wx:key="modelIndex" wx:for-item="model" wx:for-index="modelIndex">
+          <text class="model-title">{{model.name}}</text>
+          <label class="pills-list">
+            <label wx:for="{{ model.subModelName }}" wx:key="id" data-model-index="{{ modelIndex }}" data-submodel-index="{{ index }}" data-submodel-id="{{ model.subModelId[index] }}" class="subModel {{ selectGoodsModelInfo.models[modelIndex] == model.subModelId[index] ? 'select' : '' }}" bindtap="selectGoodsSubModel">
+              {{item}}
+            </label>
+          </label>
+        </view>
+      </view>
+      <view class="communityBuyDialog-buy-num" style="padding-left:10px;padding-right:10px;position:relative;">
+        <view class="clearfix">
+          <text>购买数量</text>
+          <text class="pay-goods-number-title" wx:if="{{selectGoodsModelInfo.min_sales_nums > 1}}">（起卖数 {{selectGoodsModelInfo.min_sales_nums}}）</text>
+          <view class="pull-right">
+            <view class="goods-add">
+              <view class="goods-minus" catchtap="clickGoodsMinusButton"> - </view>
+              <input class="goods-count" type="number" value="{{selectGoodsModelInfo.num}}" bindinput="inputBuyCount"></input>
+              <view class="goods-plus" catchtap="clickGoodsPlusButton"> + </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="dialog-bottom" catchtap="addCark" data-param="{{selectGoodsModelInfo}}">
+      <view class="btn-orange pay-buy-next">确定</view>
+    </view>
+  </view>
+</view>
+
+<!-- 选择团长 -->
+<view class="leaderInfo-dialog" catchtouchmove="stopMove" bindtap="hideLeaderDialog" hidden="{{!isshowLeaderDialog}}">
+  <scroll-view class="leaderInfo-dialog-view" catchtap="stopPropagation" scroll-y="true">
+    <view class="l-header">请选择团长下单</view>
+    <view class="community-list-content" data-index="{{index}}" data-parm="{{item}}" wx:for="{{leader_list}}" wx:key="id" wx:if="{{leader_list.length}}">
+      <view class="list-content-item">
+        <image class="avatar" src="{{item.logo}}"></image>
+        <text class="nick-name ellipsis">{{item.nick_name}}</text>
+        <text class="distance-name">距离你{{item.distance}}</text>
+      </view>
+      <view style="position: relative;">
+        <view class="list-address-item">
+          <text class="icon-comRoom ico-moon"></text>
+          <view class="flex330">
+            <view style="word-break:break-all;color:#303445;"><label style="color: #666666;">小区名称：</label>{{item.housing_estate}}</view>
+          </view>
+        </view>
+        <view class="list-address-item">
+          <text class="icon-goods-location ico-moon"></text>
+          <view class="flex330">
+            <view style="word-break:break-all;color:#303445;"><label style="color: #666666;">提货地点：</label>{{item.address_detail}}</view>
+          </view>
+        </view>
+        <view class="select-leader" bindtap="selectLeader" data-item="{{item}}">选择</view>
+      </view>
+    </view>
+    <view class="no-leader" wx:if="{{!leader_list.length}}">当前无团长代理该商品</view>
+  </scroll-view>
+</view>
+
+<!-- 组件引用路径path  基于引用页面的当前文件夹 -->
+<view class="page-qr-code-dialog" catchtap="hideShareDialog" catchtouchmove="stopPropagation" style='top:{{pageQRCodeData.shareDialogShow}}'>
+  <view class="page-qr-code" hidden="{{ !pageQRCodeShow }}" wx:if="{{pageQRCodeData.drawType == 1}}" catchtap='stopPropagation'>
+    <canvas canvas-id="goodsImage" class="goods-share-canvas"></canvas>
+    <view class="save-radius-btn" catchtap="savePageCode">保存图片</view>
+  </view>
+  <view class="page-qr-code" hidden="{{ !pageQRCodeShow }}" wx:if="{{pageQRCodeData.drawType > 1}}" catchtap='stopPropagation'>
+    <canvas type="2d" id="canvas2d" class="canvas2d" style="width:{{pageQRCodeData.canvasStyle.width}}rpx;height:{{pageQRCodeData.canvasStyle.height}}rpx;"></canvas>
+    <view class="save-btn" catchtap="saveCanvas2DCode">保存图片</view>
+  </view>
+  <view class="page-bottom-dialog" style='position: absolute;  bottom: -320rpx;  left: 0;  width: 750rpx;  background-color: rgba(238, 238, 238, 1);'
+    animation="{{pageQRCodeData.animation}}" hidde="{{ !pageQRCodeData.shareMenuShow }}">
+    <button class="button" open-type="share">转发至好友</button>
+    <button class="button shareToMoments" catchtap="showPageCode" wx:if="{{showShare}}">转发至朋友圈</button>
+    <button class="button cancelShare" catchtap="hideShareDialog">取消</button>
+  </view>
+</view>

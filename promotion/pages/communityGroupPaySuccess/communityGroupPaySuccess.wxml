@@ -1,0 +1,121 @@
+<component-reward-point rewardPointObj="{{rewardPointObj}}" shareGiftsObj="{{shareGiftsObj}}" collectGiftsObj="{{collectGiftsObj}}" collectGetObj="{{collectGetObj}}"></component-reward-point>
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view>
+  <view class="normal-area">
+    <image src="http://cdn.jisuapp.cn/static/webapp/images/xcx-goods/goods-success-bg.png"></image>
+    <!-- <view class="buyer-information">
+      <text class="ico-moon icon-goods-location"></text>
+      <view class="buyer-box">
+        <view class="buyer-name-box">
+          <text class="cash-delivery come-on">自提</text>
+          <text class="buyer-name ellipsis">{{ orderInfo.address_info.name }}</text>
+          <text>{{ orderInfo.address_info.contact }}</text>
+        </view>
+        <view class="buyer-address">{{ orderInfo.address_info.province.text + orderInfo.address_info.city.text + orderInfo.address_info.district.text + orderInfo.address_info.housing_estate + orderInfo.address_info.detailAddress }}</view>
+      </view>
+    </view> -->
+    <view class="order-price-box">
+      <view class="order-price">¥{{ orderInfo.order_total_price }}</view>
+      <view class="order-success">支付成功</view>
+    </view>
+    <view class="btn-area">
+      <view bindtap="goToHomepage">继续购物</view>
+      <button open-type="share" class="check-order-btn">转发到群，通知团长接单</button>
+    </view>
+  </view>
+  <view class='group-captain-tips'>{{disNotice.ship_type == 1 ? '到货后团长将配送到以下地址，请保持手机畅通：' : '到货后请到以下地址自提：'}}</view>
+  <view class='group-captain-box' wx:if="{{disNotice.ship_type == 1}}">
+    <text class='ico-moon icon-goods-location'></text>
+    <view class='group-captain-content group-express'>
+      <view class='group-captain-Community'>{{disNotice.nick_name}} {{disNotice.phone}}</view>
+      <view class='group-captain-address'>{{disNotice.address_info}}</view>
+    </view>
+  </view>
+  <view class='group-captain-box' wx:else>
+    <image class='group-captain-avatar' src='{{leaderInfo.logo}}' />
+    <view class='group-captain-content'>
+      <view class='group-captain-Community'>{{leaderInfo.nick_name}}-{{leaderInfo.housing_estate}}</view>
+      <view class='group-captain-address'>自提地址：{{ leaderInfo.region_address + leaderInfo.housing_estate + leaderInfo.address_detail }}</view>
+    </view>
+    <view class='group-captain-line'></view>
+    <view class='group-captain-phone' data-phone="{{ leaderInfo.phone }}" catchtap='callPhone'><text class='ico-moon icon-takeout-cellphone'></text></view>
+  </view>
+  <view wx:if="{{ status == 1 }}" class="collect-benefit-area">
+    <view class="activity-box">
+      <view class="line"></view>
+      <view class="activity-title">活动</view>
+      <view class="line"></view>
+    </view>
+    <view class="collect-item">
+      <view class="star-num">集集乐个数: {{ collectBenefitData.star_num }}</view>
+      <view class="star-list">
+        <block wx:for="{{ starData }}" wx:key="index">
+          <image class="star-item" wx:if="{{ item == 'light' }}" src="{{ collectBenefitData.light_img }}"></image>
+          <image class="star-item" wx:elif="{{ item== 'dark' }}" src="{{ collectBenefitData.dark_img }}"></image>
+        </block>
+      </view>
+      <view class="star-full" wx:if="{{ collectBenefitData.star_num == collectBenefitData.collect_num }}">
+        <view class="star-full-text">满</view>
+      </view>
+    </view>
+    <view class="tip-item">
+      <view wx:if="{{ collectBenefitData.star_num == collectBenefitData.collect_num }}">
+        获得一张{{ collectBenefitData.coupon_title }}
+      </view>
+      <view wx:elif="{{ collectBenefitData.star_num != collectBenefitData.collect_num }}">
+        消费{{collectBenefitData.play_type == 0 ? '每满':'超过'}}{{ collectBenefitData.value }}元，累计一颗星，集满可获得{{ collectBenefitData.coupon_title }}一张
+      </view>
+    </view>
+  </view>
+  <!-- 刮刮乐 -->
+  <view class="scratchWhole" hidden='{{isWhole}}' wx:if="{{canShow}}">
+    <view class="activity-box scratch-activity">
+      <view class="line"></view>
+      <view class="activity-title">活动</view>
+      <view class="line"></view>
+    </view>
+    <view class="scratchArea">
+      <!-- 未中奖 -->
+      <view class="scratchFail" hidden='{{isFail}}'>
+        <image src="http://cdn.jisuapp.cn/static/webapp/images/scratchFail.png"></image>
+        <view class="failTitle">
+          <button class='failShare' open-type="share">分享</button>
+          <view class="failText">很遗憾没有中奖哦</view>
+        </view>
+      </view>
+      <!-- 中奖 -->
+      <view class="scratchWinning" hidden='{{isWinning}}'>
+        <image src="http://cdn.jisuapp.cn/static/webapp/images/scratchPrize.png"></image>
+        <view class="winningTitle">
+          <button class='winningShare' open-type="share">分享</button>
+          <view class="winningText">恭喜你获得了</view>
+          <view class="winningText winningValue">{{winingTitle}}</view>
+        </view>
+      </view>
+      <!-- 安慰奖 -->
+      <view class="scratchComfort" hidden='{{isComfort}}'>
+        <image src="http://cdn.jisuapp.cn/static/webapp/images/scratchComfort.png"></image>
+        <view class="comfortTitle">
+          <button class='comfortShare' open-type="share">分享</button>
+          <view wx:if="{{ifGetComfort}}" class="comfortText">已领取，在微信卡包中查看哦~</view>
+          <view wx:else class="comfortText" class="comfortText">又没中奖，送你一个小礼品</view>
+          <view wx:if="{{!ifWxCoupon && !ifGetComfort}}" class="comfortText">>在优惠券卡包进行查收哦~</view>
+        </view>
+      </view>
+      <view class="scratch_wp" hidden='{{hideCanvas}}' style="width: {{scratch.width}}px; height: {{scratch.height}}px;">
+        <canvas class="scratch-canvas" style="width: {{scratch.width}}px;height: {{scratch.height}}px;" canvas-id="scratch" bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd" disable-scroll="{{!isScroll}}">
+          <cover-view class="showArea" wx:if='{{isShowteam}}'>
+            <cover-view class="showTitle">赢取优惠大奖</cover-view>
+            <cover-view class="showBtn" bindtap='showAreaClick'>点我刮奖</cover-view>
+          </cover-view>
+        </canvas>
+      </view>
+    </view>
+  </view>
+  <view style="text-align:center;color:#999;margin-top:30rpx;font-size:24rpx;padding-bottom: 30rpx;">请耐心等待商家发货，您还可以
+    <label style="color:#ff7100;" bindtap="goToOrderDetail">查看订单</label>
+  </view>
+  <component-payFinishGift orderId="{{ orderId }}" franchisee="{{ franchiseeId }}"></component-payFinishGift>
+</view>
+<canvas style="width: 422px; height: 338px;position: absolute;top: -2000px;" canvas-id='shareCanvas'></canvas>

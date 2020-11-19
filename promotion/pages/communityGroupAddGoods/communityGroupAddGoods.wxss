@@ -1,0 +1,197 @@
+page {
+  background-color: rgb(243, 243, 243);
+  font-size: 24rpx;
+}
+.community-content {
+  padding-bottom: 88rpx;
+}
+.community-banner {
+  max-height:300rpx;
+  background-color: #fff;
+  overflow: hidden;
+}
+.community-banner image {
+  display: block;
+  width: 100%;
+}
+.community-describe {
+  padding: 20rpx 30rpx 37rpx;
+  background-color: #fff;
+  margin-bottom: 10rpx;
+  font-size: 26rpx;
+}
+.describe-title {
+  color: #333;
+  font-weight: bold;
+  line-height: 44rpx;
+  margin-bottom: 12rpx;
+  font-size: 34rpx;
+}
+.describe-time {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  margin-bottom: 20rpx;
+  color: #999;
+}
+.describe-time .icon-comTime {
+  color: #ff7100;
+  margin-right: 9rpx;
+  font-size: 26rpx;
+}
+.describe-intro {
+  position: relative;
+  overflow: hidden;
+  color: #666;
+  line-height: 42rpx;
+  word-break: break-all;
+  font-size: 28rpx;
+}
+.describe-auto {
+  height: auto !important;
+}
+.describe-intro > view {
+  position: absolute;
+  right: 14rpx;
+  bottom: 0;
+  width: 150rpx;
+  text-align: right;
+  color: #ff7100;
+  background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0.5) 5%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 1) 100%);
+  background: -o-linear-gradient(right, rgba(255, 255, 255, 0.5) 5%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 1) 100%);
+  background: -moz-linear-gradient(right, rgba(255, 255, 255, 0.5) 5%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 1) 100%);
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.5) 5%, rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 1) 100%);
+}
+.community-good-title {
+  height: 70rpx;
+  line-height: 70rpx;
+  padding: 0 20rpx;
+  color: #ff7100;
+  background-color: #fef3ea;
+  position: relative;
+}
+.community-good-title .icon-communityPage-news {
+  margin-right: 19rpx;
+}
+.community-good-content {
+  background-color: #fff;
+  padding: 0 30rpx;
+}
+.community-good-content .community-good-number {
+  line-height: 80rpx;
+  color: #303445;
+  font-size: 26rpx;
+}
+.community-good-content .community-good-number label {
+  color: #ff7100;
+  margin-left: 6rpx;
+}
+.community-good-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 0 26rpx;
+  border-top: 1rpx solid #f3f3f3;
+}
+.community-check-box {
+  width: 38rpx;
+  height: 38rpx;
+  border: 1rpx solid #ebebeb;
+  border-radius: 50%;
+  background: #fff;
+  margin-right: 20rpx;
+  font-size: 38rpx;
+}
+.community-check-box.checked {
+  width: 38rpx;
+  height: 38rpx;
+  color: #ff7100;
+  background: #fff;
+  border-color: #fff;
+}
+.community-good-info {
+  width: calc(100% - 60rpx);
+}
+.community-good-info .good-info-img {
+  display: inline-block;
+  width: 200rpx;
+  height: 200rpx;
+  margin-right: 20rpx;
+  overflow: hidden;
+  position: relative;
+}
+.community-good-info .good-info-img image {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.community-good-info .community-good-text {
+  display: inline-block;
+  width: calc(100% - 220rpx);
+  vertical-align: top;
+  margin-top: 15rpx;
+}
+.community-good-text .good-title {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: #333;
+  line-height: 34rpx;
+  margin-bottom: 10rpx;
+  font-size: 26rpx;
+}
+.community-good-text .good-commission {
+  display: inline-block;
+  height: 26rpx;
+  color: #f60;
+  padding: 0 11rpx;
+  line-height: 26rpx;
+  border-radius: 2rpx;
+  border: 1rpx solid #f60;
+  font-size: 22rpx;
+}
+.goods-describe-price {
+  color: #ff7100;
+  margin: 10rpx 0;
+  font-size: 28rpx;
+}
+.goods-describe-price::after {
+  content: attr(data-virtual);
+  color: #999;
+  text-decoration: line-through;
+  margin-left: 12rpx;
+  font-size: 26rpx;
+}
+.goods-describe-stock {
+  color: #999;
+  font-size: 22rpx;
+}
+.community-btn {
+  position: fixed;
+  left: 0;
+  bottom: -6rpx;
+  width: 100%;
+}
+.community-btn > button {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 50%;
+  font-size: 30rpx;
+  line-height:88rpx;
+  border-radius:0;
+}
+.community-btn > button:nth-child(1) {
+  color: #f60;
+  background-color: #fff;
+}
+.community-btn > button {
+  background-color: #f60;
+  color: #fff;
+}
+.group-no-stock {
+  background: rgba(48, 52, 69, 0.4);
+  position: absolute;
+  top: 0;
+  left: 0;
+}

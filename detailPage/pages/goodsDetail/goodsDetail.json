@@ -1,0 +1,15 @@
+{
+  "navigationBarTitleText":"商品详情",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "usingComponents":{
+    "component-share-new": "/components/pageQRCodeGood/pageQRCodeGood",
+    "component-reward-point": "/components/rewardPointModal/rewardPointModal",
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift",
+    "component-sinkingModal": "/components/sinkingModal/sinkingModal",
+    "component-behavior-track": "/components/behaviorTrack/behaviorTrack",
+    "component-share-timeline": "/components/shareTimeline/shareTimeline"
+  },
+  "enablePullDownRefresh": true
+}

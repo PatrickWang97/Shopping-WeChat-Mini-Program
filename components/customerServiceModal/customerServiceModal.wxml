@@ -1,0 +1,16 @@
+<!--components/customerServiceModal/customerServiceModal.wxml-->
+<!-- 智能客服弹窗 start -->
+<view class="cs-dialog-mask" hidden="{{hideModal}}" bindtap="closeDialog"></view>
+<view class="cs-dialog-container" hidden="{{hideModal}}">
+  <view class="cs-dialog-info">
+    <text class="cs-dialog-close ico-moon icon-closes" bindtap="closeDialog"></text>
+    <view class="cs-dialog-img">
+      <image wx:if="{{replyType != 3 && replyType != 5}}" class="img-gif" mode="aspectFill" src="https://cdn.jisuapp.cn/static/jisuapp_editor/images/kefu-code.gif" alt=""></image>
+      <image wx:if="{{replyType == 3}}" class="img-gif" mode="aspectFill" src="https://cdn.jisuapp.cn/static/jisuapp_editor/images/kefu-poster.gif" alt=""></image>
+      <image wx:if="{{replyType == 5}}" class="img-gif" mode="aspectFill" src="https://cdn.jisuapp.cn/static/jisuapp_editor/images/kefu-link.gif" alt=""></image>
+    </view>
+    <button class="cs-dialog-button" open-type="contact" send-message-title="{{btnText}}" send-message-img="https://cdn.jisuapp.cn/static/jisuapp_editor/images/reply_content.png" show-message-card="true" send-message-path="{{pagePath}}" session-from="{{sessionFrom}}" bindtap="closeDialog">{{btnText}}</button>
+    <view class="cs-dialog-tips">点击按钮，如图操作马上添加</view>
+  </view>
+</view>
+<!-- 智能客服弹窗 start -->

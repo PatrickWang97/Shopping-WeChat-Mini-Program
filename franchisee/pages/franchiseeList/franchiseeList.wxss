@@ -1,0 +1,51 @@
+page {
+  background-color: #f3f3f3;
+}
+.franchisee-item{
+  padding: 30rpx;
+  background-color: #fff;
+  margin-bottom: 10rpx;
+}
+.franchisee-item-picture{
+  display: inline-block;
+  width: 120rpx;
+  height: 120rpx;
+  vertical-align: top;
+}
+.franchisee-item-info{
+  display: inline-block;
+  width: 350rpx;
+  margin-left: 20rpx;
+  vertical-align: top;
+}
+.franchisee-item-title{
+  color: #333;
+  font-size: 28rpx;
+  margin-top: 10rpx;
+}
+.franchisee-item-cate{
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 25rpx;
+}
+.franchisee-item-status{
+  float: right;
+  vertical-align: top;
+  color: #666;
+  font-size: 24rpx;
+  margin-top: 45rpx;
+}
+.franchisee-item-status label{
+  margin-left: 20rpx;
+}
+.franchisee-add{
+  width: 690rpx;
+  height: 80rpx;
+  margin: 40rpx auto;
+  color: #fff;
+  font-size: 30rpx;
+  text-align: center;
+  line-height: 80rpx;
+  border-radius: 4rpx;
+  background-color: #FF7100;
+}

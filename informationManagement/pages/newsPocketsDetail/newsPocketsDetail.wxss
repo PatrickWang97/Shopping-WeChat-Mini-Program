@@ -1,0 +1,121 @@
+.newsPocketsDetail-wrap {
+  height: 100vh;
+}
+.newsPocketsDetail-top {
+  position: relative;
+  height: 346rpx;
+  background-color: #ff4b4c;
+  overflow: hidden;
+}
+.top-title {
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: 300;
+  line-height: 1;
+  color: #FFE661;
+}
+.own-money {
+  margin-top: 50rpx;
+  font-size: 66rpx;
+  line-height: 66rpx;
+  text-align: center;
+  color: #FCCB31;
+}
+.money-unit {
+  margin-left: 10rpx;
+  font-size: 36rpx;
+}
+.newsPocketsDetail-top::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 120%;
+  height: 340rpx;
+  background: #fff;
+  border-top-left-radius: 100%;
+  border-top-right-radius: 100%;
+  transform: translateX(-50%) translateY(240rpx);
+}
+.newsPocketsDetail-top .userlogo {
+  position: absolute;
+  left: 50%;
+  bottom: -45rpx;
+  width: 151rpx;
+  height: 151rpx;
+  transform: translateX(-50%) translateY(-50%);
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 2;
+}
+.newsPocketsDetail-top .userlogo image {
+  width: 151rpx;
+  height: 151rpx;
+}
+.username {
+  text-align: center;
+  font-size: 30rpx;
+  color: #353535;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pockets-list-title {
+  padding: 0 32rpx;
+  line-height: 77rpx;
+}
+.pockets-list-title .title-left {
+  font-size: 24rpx;
+  color: #6e6e6e;
+}
+.pockets-list-title .title-right {
+  float: right;
+  font-size: 24rpx;
+  color: #1665b4;
+}
+.pockets-list .pocket-item {
+  display: flex;
+  margin: 0 30rpx;
+  padding: 20rpx 0;
+  border-bottom: 1px solid #E3E3E3;
+}
+.pocket-item .item-left {
+  margin-right: 20rpx;
+  width: 80rpx;
+  height: 80rpx;
+}
+.pocket-item .item-userlogo {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+}
+.pocket-item .item-center {
+  flex: 1;
+  align-self: center;
+  overflow: hidden;
+}
+.pocket-item .item-username {
+  font-size: 30rpx;
+  color: #353535;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pocket-item .item-receivetime {
+  font-size: 24rpx;
+  color: #6e6e6e;
+}
+.pocket-item .item-right {
+  font-size: 30rpx;
+  color: #353535;
+}
+.pockets-list .more-btn,
+.pockets-list .no-more {
+  text-align: center;
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  color: #1665b4;
+}
+.pockets-list .no-more {
+  color: #6e6e6e;
+}

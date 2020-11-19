@@ -1,0 +1,72 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift" inviter="{{inviter}}"></component-newcomer-gift>
+<view class="audit-form-container" wx:if="{{requestFinish}}">
+  <!-- 审核状态 start -->
+  <view class="audit-status" >
+    <view class="status-check" wx:if="{{auditStatus == 1}}">审核中...</view>
+    <view class="status-success" wx:elif="{{auditStatus == 2}}">
+      <image src="http://cdn.jisuapp.cn/zhichi_frontend/static/webapp/images/xcx-shoppingGuide/audit_sucess.png" mode="aspectFit" />
+      <text>审核成功</text>
+    </view>
+    <view class="status-fail" wx:elif="{{auditStatus == 3}}">
+      <text class="fail-title">审核失败</text>
+      <view class="fail-reason">
+        <text>审核失败原因</text>
+        <view class="reason-list">
+          <text class="reson-item">{{auditReason}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 审核状态 end -->
+  <!-- 表单 start -->
+  <view class="form-list" wx:if="{{auditStatus != 2}}">
+    <block wx:for="{{formDataKey}}" wx:key="form" wx:for-item="form">
+      <view class="form-item thin-bd-b {{form.type == 1 ? 'input' : form.type == 2 ? 'picker' : 'photos'}}">
+        <label class="item-title {{form.required == 1 ? 'required' : ''}}">{{form.name}}</label>
+        <view class="item-content">
+          <!-- 输入框 -->
+          <block wx:if="{{form.type == 1}}">
+            <input wx:if="{{auditStatus != 1}}" type="text" placeholder="请输入{{form.name}}" placeholder-class="placeholder" value="{{formDataValue[form.uuid]}}" bindinput="bindInput" data-uuid="{{form.uuid}}" maxlength="20"/>
+            <text class="disabled" wx:if="{{auditStatus == 1}}">{{formDataValue[form.uuid]}}</text>
+          </block>
+          <!-- 下拉选项 -->
+          <block wx:if="{{form.type == 2}}">
+            <picker bindchange="bindPickerChange" data-index="{{index}}" data-uuid="{{form.uuid}}" value="{{formDataValue[form.uuid]}}" range="{{form.selectArr}}" disabled="{{auditStatus == 1 ? true : false}}">
+              <view class="picker-select">
+                <text wx:if="{{formDataValue[form.uuid]}}" class="selected">{{formDataValue[form.uuid]}}</text>
+                <text wx:else>去选择</text>
+                <text class="ico-moon icon-rightarrow"></text>
+              </view>
+            </picker>
+          </block>
+          <!-- 图片上传 -->
+          <block wx:if="{{form.type == 3}}">
+            <view class="photos-list">
+              <view class="photos-item" wx:for="{{formDataValue[form.uuid]}}" wx:for-index="imgIndex" wx:key="index" wx:for-item="imgUrl">
+                <image src="{{imgUrl}}" mode="aspectFill" data-uuid="{{form.uuid}}" data-img-index="{{imgIndex}}" bindtap="previewImage" />
+                <label class="photos-remove ico-moon icon-closes" bindtap="removeImage" data-uuid="{{form.uuid}}" data-img-index="{{imgIndex}}" wx:if="{{auditStatus != 1 }}"></label>
+              </view>
+              <view class="photos-upload" wx:if="{{(!formDataValue[form.uuid] || (formDataValue[form.uuid] && formDataValue[form.uuid].length < 3)) && auditStatus != 1}}" bindtap="chooseImage" data-uuid="{{form.uuid}}">
+                <text class="ico-moon icon-goods-add-image"></text>
+                <text>上传照片</text>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </block>
+  </view>
+  <!-- 表单 end -->
+  <view class="submit-btn" wx:if="{{auditStatus == 3 || auditStatus == ''}}">
+    <button bindtap="submitFormData">{{auditStatus == 3 ? '重新提交' : '提交'}}</button>
+  </view>
+</view>
+<!-- 加载loading start-->
+<view class="loading-wrap" wx:if="{{!requestFinish}}">
+  <view class="loading-view">
+    <view class="loading-dot1"></view>
+    <view class="loading-dot2"></view>
+  </view>
+</view>
+<!-- 加载loading end-->

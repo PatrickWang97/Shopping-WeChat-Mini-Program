@@ -1,0 +1,35 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-behavior-track></component-behavior-track>
+<view class="comPage-wrap page" id="commentPage">
+  <view class="comPage-top-section">
+    <view style="border-bottom:1px solid #f4f4f4;">
+      <label style="{{'background:' + (item.check == 1 ? storeStyle.theme : storeStyle.theme + '33') + ';color:' + (item.check == 1 ? '#fff' : storeStyle.theme)}}" bindtap="clickCommentLabel" data-type="{{index}}" class="comPage-comment-label {{ item.check == 1 ? 'active' : '' }}" wx:for="{{topTab}}" wx:key="index">{{item.title}} <label class="comPage-positive-comment">({{ commentNums[index] }})</label></label>
+    </view>
+  </view>
+  <view class="comPage-bottom-section">
+    <view class="comPage-comment-list">
+      <view wx:for="{{ comments }}" class="comPage-comment-item" wx:key="index">
+        <view style="position:relative;">
+          <image class="comPage-comment-photo" src="{{ item.buyer_headimgurl }}"></image>
+          <view class="comPage-comment-name">
+            <text>{{ item.buyer_nickname }}</text>
+            <text class="ico-moon icon-tostoreGoodComment" wx:if="{{item.assess_info.level == 1}}"></text>
+            <text style="font-size:26rpx;color:#EAAE41;font-weight:400;" wx:if="{{item.assess_info.level == 1}}">好评</text>
+            <text class="ico-moon icon-tostoreMiddleComment" wx:if="{{item.assess_info.level == 2}}"></text>
+            <text style="font-size:26rpx;color:#EAAE41;font-weight:400;" wx:if="{{item.assess_info.level == 2}}">中评</text>
+            <text class="ico-moon icon-tostoreBadComment" wx:if="{{item.assess_info.level == 3}}"></text>
+            <text style="font-size:26rpx;color:#EAAE41;font-weight:400;" wx:if="{{item.assess_info.level == 3}}">差评</text>
+          </view>
+          <view class="comPage-comment-date">{{ item.add_time }}</view>
+        </view>
+        <view class="comPage-comment-content">{{ item.assess_info.content || '此用户没有填写评论'}}</view>
+        <view wx:if="{{ item.assess_info.has_img }}" class="comPage-comment-pics">
+          <image wx:for="{{ item.assess_info.img_arr }}" wx:key="index" wx:for-item="imgSrc" src="{{ imgSrc }}" data-src="{{ imgSrc }}" data-srcarr="{{ item.assess_info.img_arr }}" catchtap="clickPlusImages"></image>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<!-- 下拉加载完，底部出现提示 -->
+<view class="noMore" wx:if="{{is_more == 0}}">-没有其他啦-</view>

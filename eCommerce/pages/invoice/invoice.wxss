@@ -1,0 +1,80 @@
+page {
+  background: #f3f3f3;
+}
+.invoice-container {
+  padding: 0 30rpx;
+  background: #fff;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 16rpx;
+}
+.invoice-container .sub-view {
+  line-height: 94rpx;
+  height: 94rpx;
+  border-bottom: 2rpx solid #EBEBEB;
+}
+.invoice-container .title {
+  font-size: 30rpx;
+  font-weight: 600;
+  line-height: 94rpx;
+  height: 94rpx;
+  border-bottom: 2rpx solid #EBEBEB;
+}
+.invoice-tips {
+  color: #666;
+  padding: 26rpx 0;
+  line-height: 44rpx;
+}
+.type-radio {
+  float: right;
+  margin-left: 50rpx;
+}
+.type-radio label {
+  display: inline-block;
+  width: 30rpx;
+  height: 30rpx;
+  border: 2rpx solid #E5E5E5;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 14rpx;
+}
+.type-radio label.checked {
+  border-color: #ff7100;
+  position: relative;
+}
+.type-radio label.checked::before {
+  content: '';
+  display: inline-block;
+  width: 19rpx;
+  height: 19rpx;
+  border-radius: 50%;
+  position: absolute;
+  left: 6rpx;
+  top: 6rpx;
+  background: #ff7100;
+}
+.sub-view input {
+  float: right;
+  line-height: 94prx;
+  height: 94rpx;
+  text-align: right;
+  padding-right: 10rpx;
+}
+.select-invoice-head {
+  float: right;
+  color: #ff7100;
+  padding: 0 10rpx 0 20rpx;
+  margin-left: 20rpx;
+}
+.save {
+  position: fixed;
+  height: 94rpx;
+  line-height: 94rpx;
+  text-align: center;
+  color: #fff;
+  font-size: 30rpx;
+  background: #ff7100;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}

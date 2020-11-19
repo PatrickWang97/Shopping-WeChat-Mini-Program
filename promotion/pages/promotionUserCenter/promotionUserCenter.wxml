@@ -1,0 +1,77 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-behavior-track></component-behavior-track>
+<view class="top-content">
+  <view class="top-section">
+    <view>
+      <view>
+        <image src="{{ distributorInfo.shop_img || userInfo.cover_thumb}}"></image>
+      </view>
+      <view class="top-section-detail">
+        <view style="font-size: 32rpx;color:#fff;display:inline-block;">
+          {{ distributorInfo.shop_name || userInfo.nickname }}
+        </view>
+      </view>
+    </view>
+    <view class="detail-level" catchtap="checkLevelRules" wx:if="{{ distributionInfo.enable_level_commission == 1 && userLevel}}">
+      <view>
+        <text class='ico-moon icon-vip'></text>
+        <text>{{userLevel}}</text>
+      </view>
+    </view>
+    <view class="top-commission clearfix">
+      <view class="withdraw-title">现有佣金（元）</view>
+      <view class="withdraw-total">¥{{nowCommission || 0.00}}</view>
+      <view class="withdraw-btn" bindtap="withdraw">
+        提现
+        <label class="ico-moon icon-rightarrow"></label>
+      </view>
+    </view>
+  </view>
+  <view class="middle-section">
+    <view class="withdraw-item" wx:for="{{commissionArr}}" wx:key="index">
+      <view class="item-title">{{item.title}}</view>
+      <view class="item-price">{{item.price}}元</view>
+    </view>
+  </view>
+</view>
+<view class="bottom-section">
+  <view class="bottom-section-item">
+    <view class="bottom-sub-item" bindtap="checkCommission">
+      <label class="ico-moon icon-promotion-commission"></label>
+      <view>佣金明细</view>
+    </view>
+    <view class="bottom-sub-item" bindtap="checkWithdrawRecord">
+      <label class="ico-moon icon-promotion-record"></label>
+      <view>提现记录</view>
+    </view>
+    <view class="bottom-sub-item" bindtap="checkGoods">
+      <label class="ico-moon icon-promotion-goods"></label>
+      <view>推广商品</view>
+    </view>
+  </view>
+  <view class="bottom-section-item">
+    <view class="bottom-sub-item" bindtap="checkShopSetting">
+      <label class="ico-moon icon-promotion-shop-setting"></label>
+      <view>店铺设置</view>
+    </view>
+    <view class="bottom-sub-item" bindtap="checkMyPromotion">
+      <label class="ico-moon icon-my-promotion"></label>
+      <view>我的推广</view>
+    </view>
+    <view class="bottom-sub-item" bindtap="checkIdentity">
+      <label class="ico-moon icon-promotion-identity"></label>
+      <view>我的身份</view>
+    </view>
+    <view class="bottom-sub-item" bindtap="checkTeam">
+      <label class="ico-moon icon-promotion-my-team"></label>
+      <view>我的粉丝</view>
+    </view>
+    <!-- shopTypeData.is_parent_shop == 1 总店的情况下才展示 -->
+    <view wx:if="{{!!shopTypeData && shopTypeData.is_parent_shop == 1 && distributionInfo.sub_shop_config.is_open > 0 && (distributionInfo.sub_shop_config.show_sub_distribution === undefined || distributionInfo.sub_shop_config.show_sub_distribution > 0)}}" class="bottom-sub-item" bindtap="turnToSubShop">
+      <label class="ico-moon icon-subshop"></label>
+      <view>可分销子店</view>
+    </view>
+  </view>
+</view>
+<view class="promotion-btn" bindtap="goMyShop">开始推广</view>

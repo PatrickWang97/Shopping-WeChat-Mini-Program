@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText":"详情",
+  "navigationBarBackgroundColor": "#ff4b4c",
+  "usingComponents":{
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift"
+  }
+}

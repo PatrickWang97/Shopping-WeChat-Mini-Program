@@ -1,0 +1,120 @@
+.search-form {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 110rpx;
+  background-color: #fff;
+  border-bottom: 10rpx solid #F3F3F3;
+  z-index: 1;
+}
+.search-form .input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20rpx 30rpx;
+  padding-left: 30rpx;
+  height: 60rpx;
+  background-color: #F0F0F0;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+.search-form .input-container icon {
+  display: block;
+  margin-right: 20rpx;
+  font-size: 26rpx;
+  line-height: 65rpx;
+  color: #B3B3B3;
+}
+.search-form .input-container .icon-close-btn {
+  font-size: 36rpx;
+}
+.search-form .input-container input {
+  flex: 1;
+  font-size: 26rpx;
+}
+.search-placeholder {
+  color: #CCCCCC;
+}
+.subShop-goods-list {
+  padding-top: 120rpx;
+  height: 100%;
+  box-sizing: border-box;
+}
+.subShop-goods-list .list-container {
+  height: 100%;
+}
+.subShop-goods-list .goods-item {
+  display: flex;
+  padding: 30rpx;
+  border-bottom: 1px solid #F3F3F3;
+}
+.subShop-goods-list .goods-item-logo {
+  padding-right: 20rpx;
+}
+.subShop-goods-list .goods-item-logo image {
+  width: 140rpx;
+  height: 140rpx;
+}
+.subShop-goods-list .goods-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 25rpx;
+}
+.subShop-goods-list .goods-tag {
+  margin-right: 12rpx;
+  padding: 6rpx 10rpx;
+  font-size: 20rpx;
+  color: #FF3600;
+  background-color: rgba(255, 54, 0, 0.06);
+}
+.subShop-goods-list .goods-name {
+  flex: 1;
+  max-width: 390rpx;
+  line-height: 32rpx;
+  font-size: 32rpx;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.subShop-goods-list .goods-order {
+  margin-bottom: 25rpx;
+  line-height: 26rpx;
+  font-size: 26rpx;
+  color: #999999;
+}
+.subShop-goods-list .goods-order .order-num {
+  color: #FF7100;
+}
+.subShop-goods-list .profit-stratification {
+  line-height: 24rpx;
+  font-size: 24rpx;
+  color: #999;
+}
+.subShop-goods-list .profit-stratification .level {
+  display: inline-block;
+  margin-right: 30rpx;
+}
+.subShop-goods-list .profit-stratification .center-border {
+  display: inline-block;
+  width: 0;
+  height: 18rpx;
+  border-left: 1px solid #CCCCCC;
+}
+.subShop-goods-list .profit-stratification .level-2 {
+  margin-left: 30rpx;
+}
+.subShop-goods-list .no-result-image {
+  display: block;
+  margin: 190rpx auto 50rpx;
+  width: 186rpx;
+  height: 123rpx;
+}
+.subShop-goods-list .no-result-text {
+  text-align: center;
+  font-size: 26rpx;
+  line-height: 26rpx;
+  color: #C5C5C5;
+}

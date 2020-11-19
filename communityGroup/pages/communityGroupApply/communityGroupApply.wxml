@@ -1,0 +1,118 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-behavior-track></component-behavior-track>
+<view class="preview-title" wx:if="{{notice}}">
+  <text class="ico-moon icon-communityPage-news"></text>团长信息用于社区商品配送，请填写真实信息。
+  <text class="ico-moon icon-closes pull-right" bindtap="closeNotice"></text>
+</view>
+<view class="content">
+  <view class="apply-content">
+    <view class="apply-list">
+      <view class="apply-list-item" bindtap="modifyLogo" style="line-height:109rpx;">
+        <view class="list-item-label">团长头像</view>
+        <view class="list-item-img">
+          <image mode="aspectFill" src="{{colonelInfo.logo}}"></image>
+        </view>
+        <view class="list-item-icon">
+          <label class="ico-moon icon-rightarrow"></label>
+        </view>
+      </view>
+  
+      <view class="apply-list-item">
+        <view class="list-item-label">团长名称</view>
+        <view class="list-item-input">
+          <input type="text" placeholder="请填写团长姓名或昵称" value="{{colonelInfo.nick_name}}" data-id="nick_name"   bindinput="changeTagValue"></input>
+        </view>
+      </view>
+  
+      <view class="apply-list-item">
+        <view class="list-item-label">联系电话</view>
+        <view class="list-item-input">
+          <input type="number" placeholder="请填写团长手机号码" value="{{colonelInfo.phone}}" data-id="phone"   bindinput="changeTagValue"></input>
+        </view>
+      </view>
+  
+      <view class="apply-list-item" bindtap="chooseLocation">
+        <view class="list-item-label">地区</view>
+        <view class="list-item-input ellipsis {{ colonelInfo.region_address =='请选择所在的地区' ? 'input-placeholder' : ''}}">
+        {{colonelInfo.region_address}}</view>
+        <view class="list-item-icon">
+          <label class="ico-moon icon-rightarrow"></label>
+        </view>
+      </view>
+  
+      <view class="apply-list-item">
+        <view class="list-item-label">代理小区</view>
+        <view class="list-item-input">
+          <input type="text" placeholder="请输入要代理的小区" value="{{colonelInfo.housing_estate}}" data-id="housing_estate"   bindinput="changeTagValue"></input>
+        </view>
+      </view>
+  
+      <view class="apply-list-item">
+        <view class="list-item-label">提货地址</view>
+        <view class="list-item-input">
+          <input type="text" placeholder="请输入详细地址" value="{{colonelInfo.address_detail}}" data-id="address_detail"   bindinput="changeTagValue"></input>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="delivery-box">
+    <view>
+      <text>配送方式</text>
+      <view class='pull-right pick-up-box'>
+        <view wx:if="{{expressObj.selfDelivery}}" catchtap='selectedPickUp' data-type="0" class="pick-up-type {{pickUpObj[0] ? 'selected'   : ''}}">
+          <text class='icon-gou ico-moon'></text>
+          自提点自提
+        </view>
+        <view wx:if="{{expressObj.express}}" catchtap='selectedPickUp' data-type="1" class="pick-up-type {{pickUpObj[1] ? 'selected' : ''}}  ">
+          <text class='icon-gou ico-moon'></text>
+          团长配送
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{pickUpObj[1]}}">
+      <text>配送费(团长收取配送费)</text>
+      <input bindinput='changeTagValue' data-id="express_fee" class='pull-right' type='digit' placeholder='单位：元' value='{{colonelInfo.express_fee}}' />
+    </view>
+  </view>
+  <view class='extra-info-box'  wx:if="{{extraInfo.length > 0}}">
+    <text>附加信息</text>
+      <view class='apply-content'>
+        <view class="apply-list">
+          <view class="apply-list-item" wx:for="{{extraInfo}}">
+            <view class="list-item-label">{{item.txt}}</view>
+            <view class="list-item-input">
+              <input type="text" placeholder="请填写" value="{{item.value}}"  data-index="{{index}}"      bindinput="changeExtraValue"></input>
+            </view>
+          </view>
+        </view>
+      </view>
+  </view>
+  <view class="apply-explain" wx:if="{{explain !== ''}}">
+    <text bindtap="showLeader">查看社区团长说明</text>
+  </view>
+</view>
+<form class="origin-btn" report-submit="true" bindsubmit="saveFormId">
+  <button type="default" formType="submit">{{btnTitle}}</button>
+</form>
+<view class="apply-info" wx:if="{{showLeader}}">
+  <view class="apply-info-message">
+    <view class="message-title">团长说明</view>
+    <view class="message-text">
+      <view wx:for="{{explain}}" wx:key="index">{{item}}</view>
+    </view>
+    <view class="message-btn" bindtap="showLeader">知道了</view>
+  </view>
+</view>
+<view class="apply-info success-modal" wx:if="{{showSuccessModal}}">
+  <view class="apply-info-message">
+    <view class="message-text">
+      <view class="success-icon">
+        <text class="ico-moon icon-success-tip"></text>
+      </view>
+      <view>信息提交成功！</view>
+      <view>{{successModal}}</view>
+    </view>
+    <view class="message-btn" bindtap="backToStatus">知道了</view>
+  </view>
+</view>

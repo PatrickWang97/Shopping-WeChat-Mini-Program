@@ -1,0 +1,68 @@
+<template name="rewardDetailTemplate">
+  <view class="reward-wrapper">
+    <view class="item" wx:for="{{ payGiftInfo.rewards }}" wx:key="index">
+      <view class="left">
+        <image src="{{'//develop.zhichiwangluo.com/zhichi_frontend/static/management/assets/img/marketing/pay-gift/icons/' + item.rewardType + '.png'}}"></image>
+        <text class="title">{{ item.title }}</text>
+      </view>
+      <view class="select-btn {{ item.status == 4 ? 'btn-disabled' : '' }}" wx:if="{{ item.status == 1 || item.status == 4 }}" bindtap="receiveReward" data-index="{{ index }}">选我</view>
+      <view class="select-tip" wx:elif="{{ item.status == 2 }}">暂未到账</view>
+      <view class="select-btn" wx:else data-index="{{ index }}" catchtap="checkReward">查看</view>
+    </view>
+  </view>
+</template>
+<view class="pay-gift" wx:if="{{ orderType == 1 && payGiftInfo.rewards.length }}">
+  <view class="title">支付有礼</view>
+  <view class="receive-tip" style="margin-bottom: {{ payGiftInfo.type == 2 ? '12rpx' : '30rpx'}};">
+    <text wx:if="{{ payGiftInfo.type == 1 }}">以下奖励选一个</text>
+    <text wx:if="{{ payGiftInfo.type == 2 }}">恭喜你获得以下奖励！</text>
+    <text wx:if="{{ payGiftInfo.type == 3 }}">奖励领取成功！</text>
+  </view>
+  <view class="not-receive-tip" wx:if="{{ payGiftInfo.type == 2 }}">(订单完成后奖励即可到账)</view>
+  <template is="rewardDetailTemplate" data="{{ payGiftInfo }}"></template>
+  <view class="rule-btn" wx:if="{{ payGiftInfo.activity.show_description == 1 }}" catchtap="handleRuleDialog">
+    活动规则
+    <label class="ico-moon icon-rightarrow"></label>
+  </view>
+</view>
+<!-- 活动规则弹窗 -->
+<view class="dialog" wx:if="{{ isShowRuleDialog }}">
+  <view class="dialog-wrapper">
+    <view class="main-wrapper">
+      <view class="title">支付有礼</view>
+      <view class="activity-time">
+        活动时间：{{ payGiftInfo.activity.long_term == 1 ? '长期' : payGiftInfo.activity.start_time + '至' + payGiftInfo.activity.end_time }}
+      </view>
+      <view wx:if="{{ payGiftInfo.activity.condition == 0 }}" class="condition-1">
+        <view class="title">无门槛</view>
+        <view><text>奖励：</text>{{ payGiftInfo.activity.rewards_config[0].rewardText }}</view>
+        <view><text>领取限制：</text>{{ payGiftInfo.activity.rewards_config[0].receive_limit == 1 ? '一次仅能领取一种' : '不限制' }}</view>
+      </view>
+      <view wx:if="{{ payGiftInfo.activity.condition == 1 }}" class="condition-2">
+        <view class="timeline-item" wx:for="{{ payGiftInfo.activity.rewards_config }}" wx:key="index">
+          <view class="timeline-item-tail"></view>
+          <view class="timeline-item-head" style="{{ 'background-image: url(//develop.zhichiwangluo.com/zhichi_frontend/static/webapp/images/pay-gift/' + (index + 1) + '.png)' }}"></view>
+          <view class="timeline-item-content">
+            <view><text>阶梯{{ index + 1 }}：</text>{{ item.stairText}}</view>
+            <view><text>奖励：</text>{{ item.rewardText }}</view>
+            <view><text>领取限制：</text>{{ item.receive_limit == 1 ? '一次仅能领取一种' : '不限制' }}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view catchtap="handleRuleDialog" class="ico-moon icon-closes"></view>
+  </view>
+</view>
+<!-- 奖励领取弹窗 -->
+<view class="dialog" wx:if="{{ isShowRewardDialog && payGiftInfo.activity.send_type == 2 }}">
+  <view class="dialog-wrapper">
+    <view class="main-wrapper">
+      <view class="title">支付有礼</view>
+      <view class="success-tip">
+        恭喜你获得以下奖励！
+      </view>
+      <template is="rewardDetailTemplate" data="{{ payGiftInfo }}"></template>
+    </view>
+    <view catchtap="closeRewardDialog" class="ico-moon icon-closes"></view>
+  </view>
+</view>

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "社区团长门槛",
+  "usingComponents": {
+    "component-getUserInfo": "/components/getUserInfo/getUserInfo",
+    "component-newcomer-gift": "/components/newcomerGift/newcomerGift"
+  }
+}

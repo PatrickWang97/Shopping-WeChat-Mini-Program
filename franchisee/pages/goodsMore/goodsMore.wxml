@@ -1,0 +1,45 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<component-behavior-track></component-behavior-track>
+<!-- 商品搜索栏 -->
+<view class="goods-more_content" wx:if="{{isOpenSearch}}">
+  <view class="goods_more_search">
+    <view class="search-wrap">
+      <label class="ico-moon icon-search"></label>
+      <input placeholder="请输入搜索内容" bindblur="inputbBlur"></input>
+    </view>
+    <view class="search-btn" catchtap="goodsSearch">搜索</view>
+  </view>
+</view>
+<view class="goods-more_pst" wx:if="{{isOpenSearch}}"></view>
+
+<scroll-view class="goods_more_wrap page" id="goods_more" scroll-y="true" enable-back-to-top="true" bindscrolltolower="scrollfunc">
+ <view class="franchisee-goods-list-container" data-form='goods'>
+    <view  class="franchisee-goods-list-title" wx:if="{{!hasCategroy}}">
+      <scroll-view  scroll-x="true" class="franchisee-cate">
+        <view class="scroll-view-item {{categoryActive==item.id?'active':''}}" wx:for="{{categroyList}}" wx:key="index" data-id='{{item.id}}' bindtap="clickOrderTab" >{{item.name}}</view>
+      </scroll-view>
+    </view>
+    <view class="franchisee-goods">
+      <view class="franchisee-goods-item" wx:for="{{ goodsList }}" wx:key="index" data-id="{{item.form_data.id}}" data-type='{{item.form_data.goods_type}}' data-group="{{item.form_data.is_group_buy}}" data-presell="{{item.form_data.is_presell_goods}}" data-group-id="{{item.form_data.group_buy_activity_id}}" catchtap="turnToGoodsDetail">
+        <image class="list-img" src="{{item.form_data.cover}}" mode="aspectFit"></image>
+        <image class="goods-subscript" wx:if="{{item.form_data.corner_mark > 0 && (item.form_data.corner_position == 0 || item.form_data.corner_position === undefined)}}" src="{{item.form_data.corner_url}}"></image>
+        <view class="title-container">
+          <view class="title"><image class="title-subscript" wx:if="{{item.form_data.corner_mark > 0 && item.form_data.corner_position == 1}}" src="{{item.form_data.corner_url}}"></image>{{item.form_data.title}}</view>
+          <view class="goods-other">
+            <view wx:if="{{item.form_data.is_vip_goods == 1}}">
+              <text class="real-price">¥{{item.form_data.vip_min_price}}</text>
+              <text class="vip-logo">会员价</text>
+              <text class="sales">销量：{{item.form_data.sales}}</text>
+            </view>
+            <view wx:else>
+              <text class="price">¥{{item.form_data.price}}</text>
+              <text class="sales">销量：{{item.form_data.sales}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{goodsList.length == 0 && hasCategroy}}" class='franchisee-goods-empty'>暂无数据</view>
+    </view>
+  </view>
+</scroll-view>

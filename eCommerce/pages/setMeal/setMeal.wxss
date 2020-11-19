@@ -1,0 +1,437 @@
+.setMeal-warp {
+  padding-bottom: 98rpx;
+}
+.setMeal-warp .setMeal-cover{
+  width: 698rpx;
+  height: 398rpx;
+  border-radius: 20rpx;
+  overflow: hidden;
+  margin: 0 auto;
+}
+.setMeal-warp .setMeal-cover image {
+  width: 100%;
+  height: 100%;
+}
+.setMeal-warp .setMeal-info {
+  margin: 32rpx 34rpx 62rpx 42rpx;
+  overflow: hidden;
+}
+.setMeal-warp .setMeal-info .goods-title {
+  font-size: 36rpx;
+  color: #333333;
+  margin-bottom: 12rpx;
+  font-weight: bold;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.setMeal-warp .setMeal-info .goods-info {
+  height: 36rpx;
+  line-height: 36rpx;
+}
+.setMeal-warp .setMeal-info .sale {
+  color: #999999;
+  font-size: 26rpx;
+  float: left;
+}
+.setMeal-warp .setMeal-info .price {
+  font-size: 26rpx;
+  color: #333333;
+  float: right;
+}
+.setMeal-warp .setMeal-info .price text {
+  color: #FF6500;
+  font-weight: bold;
+  font-size: 28rpx;
+}
+.setMeal-warp .setMeal-info .price text text {
+  font-size: 42rpx;
+}
+.setMeal-warp .container {
+  margin: 0 32rpx 0 40rpx;
+}
+.setMeal-warp .container .meal-info {
+  margin-bottom: 20rpx;
+  overflow: hidden;
+}
+.setMeal-warp .container .meal-info .groupName {
+  font-size: 28rpx;
+  color: #333333;
+  float: left;
+  font-weight: bold;
+}
+.setMeal-warp .container .meal-info .selectedNum {
+  float: right;
+  font-size: 26rpx;
+  color: #999999;
+}
+.setMeal-warp .goodsItem {
+  font-size: 0;
+  position: relative;
+  margin-bottom: 30rpx;
+}
+.setMeal-warp .goodsItem .item-pic {
+  display: inline-block;
+}
+.setMeal-warp .goodsItem .item-pic image {
+  border-radius: 6rpx;
+  width: 116rpx;
+  height: 114rpx;
+}
+.setMeal-warp .goodsItem .item-info {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 10rpx;
+  max-width: 440rpx;
+}
+.setMeal-warp .goodsItem .item-info .item-title{
+  color: #333333;
+  font-size: 28rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 380rpx;
+}
+.attr-goods .goodsItem .item-info .item-title{
+  max-width: 300rpx;
+}
+.setMeal-warp .goodsItem .item-info .item-sale {
+  margin: 8rpx 0;
+}
+.setMeal-warp .goodsItem .item-info .item-sale .item-price {
+  color: #999999;
+  font-size: 22rpx;
+  margin-right: 20rpx;
+}
+.setMeal-warp .goodsItem .item-info .item-sale .item-addPrice {
+  color: #FC4D43;
+  font-size: 22rpx;
+}
+.setMeal-warp .goodsItem .item-info .item-modle {
+  color: #999999;
+  font-size: 22rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 400rpx;
+}
+.attr-goods .goodsItem .item-info .item-modle {
+  max-width: 300rpx;
+}
+.attr-goods .goodsItem .item-info .item-modle text{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 300rpx;
+}
+.number-change {
+  position: absolute;
+  right: 0;
+  top: 28rpx;
+}
+.number-change .item-count-plus, .number-change .item-count-minus {
+  display: inline-block;
+  border: 2rpx solid #FF6500;
+  width: 44rpx;
+  height: 44rpx;
+  background: #ffffff;
+  border-radius: 50%;
+  position: relative;
+}
+.number-change .item-count-minus::before, .number-change .item-count-plus::before {
+  content:'';
+  display:inline-block;
+  width:22rpx;
+  height:4rpx;
+  background-color:rgb(255, 88, 0);
+  position:absolute;
+  top:20rpx;
+  left:12rpx;
+}
+.number-change .item-count-plus::after {
+  content:'';
+  display:inline-block;
+  height:24rpx;
+  width:4rpx;
+  position:absolute;
+  left:20rpx;
+  top:11rpx;
+  background-color:rgb(255, 88, 0);
+  border-radius: 2rpx;
+}
+.number-change .item-count-num {
+  display: inline-block;
+  width: 44rpx;
+  height: 44rpx;
+  position: relative;
+  line-height: 44rpx;
+  font-size: 22rpx;
+  color: #333333;
+  vertical-align: top;
+  text-align: center;
+}
+.number-change .item-select-modle, .number-change .item-set-meal {
+  display: inline-block;
+  vertical-align: top;
+  width: 92rpx;
+  height: 44rpx;
+  font-size: 22rpx;
+  border: 2rpx solid #FF6500;
+  border-radius: 22rpx;
+  background: #ffffff;
+  color: #FF6500;
+  line-height: 44rpx;
+  text-align: center;
+}
+.setMeal-warp .cart-warp {
+  position: fixed;
+  bottom: 0;
+  background: #ffffff;
+  box-shadow:0px -3px 16px 0px rgba(10,10,10,0.09);
+  height: 98rpx;
+  width: 100%;
+  line-height: 98rpx;
+}
+.setMeal-warp .cart-warp .meal-price {
+  color: #666666;
+  font-size: 24rpx;
+  padding-left: 40rpx;
+}
+.setMeal-warp .cart-warp .meal-price text {
+  color: #FF6500;
+  font-size: 26rpx;
+  font-weight: bold;
+}
+.setMeal-warp .cart-warp .meal-price text text {
+  font-size: 42rpx;
+  font-weight: bold;
+}
+.setMeal-warp .cart-warp .addCart {
+  position: absolute;
+  width: 218rpx;
+  height: 66rpx;
+  line-height: 66rpx;
+  background:linear-gradient(-45deg,rgba(255,101,0,1) 0%,rgba(254,143,2,1) 100%);
+  box-shadow:6px 7px 16px 0px rgba(255,101,0,0.46);
+  border-radius: 32rpx;
+  color: #ffffff;
+  top: 18rpx;
+  right: 30rpx;
+  text-align: center;
+  font-size: 28rpx;
+}
+.setMeal-mask {
+  position: fixed;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background:rgba(0,0,0,.5);
+}
+.setMeal-mask .modle-choose {
+  width: 628rpx;
+  border-radius: 20rpx;
+  background: #ffffff;
+  margin: 0 auto;
+  transform: translateY(30%);
+  padding-top: 30rpx;
+}
+.setMeal-mask .modle-choose .goods-title {
+  color: #333333;
+  font-size: 30rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+  padding: 0 30rpx;
+}
+.setMeal-mask .modle-choose .item-warp {
+  height: 446rpx;
+  overflow-y: auto;
+  padding: 0 30rpx;
+  padding-bottom: 30rpx;
+}
+.setMeal-mask .modle-choose .modle-item .modle-title {
+  color: #333333;
+  font-size: 24rpx;
+}
+.setMeal-mask .modle-choose .modle-item .modle-option {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.setMeal-mask .modle-choose .modle-item .modle-option .option {
+  height: 62rpx;
+  line-height: 62rpx;
+  font-size: 24rpx;
+  background: #F6F5F5;
+  margin-top: 20rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-radius: 6rpx;
+}
+.setMeal-mask .modle-choose .modle-item .modle-option .option .pullLeft{
+  float: left;
+  margin-left: 18rpx;
+}
+.setMeal-mask .modle-choose .modle-item .modle-option .option .pullRight{
+  float: right;
+  color: #FC4D43;
+  margin-right: 18rpx;
+}
+.setMeal-mask .modle-choose .bot {
+  padding: 0 30rpx;
+  height: 90rpx;
+  line-height: 90rpx;
+  background: #fdfdfd;
+  position: relative;
+  border-radius: 0 0 20rpx 20rpx;
+}
+.setMeal-mask .modle-choose .model-price {
+  float: left;
+  color: #FF6500;
+  font-size: 36rpx;
+}
+.setMeal-mask .modle-choose .addCartBtn {
+  float: right;
+  height: 58rpx;
+  border-radius: 28rpx;
+  width: 180rpx;
+  background:linear-gradient(-45deg,rgba(255,101,0,1) 0%,rgba(254,143,2,1) 100%);
+  text-align: center;
+  line-height: 58rpx;
+  color: #ffffff;
+  font-size: 24rpx;
+  margin-top: 16rpx;
+}
+.setMeal-mask .model-close {
+  width: 80rpx;
+  height: 80rpx;
+  position: absolute;
+  background: rgba(0,0,0,.5);
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 30rpx;
+  transform: translateX(-50%);
+  bottom: -98rpx;
+  line-height: 80rpx;
+  text-align: center;
+  left: 50%;
+}
+.setMeal-mask .modle-choose .modle-item .modle-option .option.select {
+  background: #FFEFE5;
+  color: #FF6500;
+}
+.setMeal-mask .modle-choose .modle-item {
+  margin-top: 30rpx;
+}
+.number-change .item-count-plus.disable {
+  border-color: #999999;
+}
+.number-change .item-count-plus.disable::after, .number-change .item-count-plus.disable::before{
+  background-color: #999999;
+}
+.number-change .item-select-modle.disable {
+  color: #999999;
+  border-color: #999999;
+}
+.bot .number-change {
+  top: 0rpx;
+  right: 20rpx;
+}
+.bot .number-change .item-count-plus, .bot .number-change .item-count-minus {
+  vertical-align: middle;
+}
+.bot .number-change .item-count-num {
+  height: 90rpx;
+  line-height: 90rpx;
+}
+.attr-goods .goods-warp {
+  padding: 0 30rpx;
+  overflow: hidden;
+}
+.attr-goods .goods-warp .goodsItem{
+  margin-bottom: 40rpx;
+}
+.attr-goods .modle-choose .goods-title {
+  margin-bottom: 32rpx;
+}
+.attr-goods .attr {
+  margin-top: 10rpx;
+}
+.attr-goods .attr .attrItem {
+  font-size: 24rpx;
+  color: #999999;
+}
+.attr-goods  .modle-warp {
+  max-height: 800rpx;
+  overflow-y: auto;
+}
+.attr-goods .modle-choose {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  left: 60rpx;
+}
+.setMeal-warp .goodsItem .item-info .item-title .require {
+  font-size: 22rpx;
+  display: inline-block;
+  color: #F2303E;
+  vertical-align: middle;
+  width: 30rpx;
+  height: 32rpx;
+  line-height: 32rpx;
+  text-align: center;
+  background: rgba(242,48,62,.1);
+  margin-right: 6rpx;
+  border-radius: 2rpx;
+}
+.drink-wrap .setMeal-info .price text {
+  color: #FA5A47;
+  font-weight: bold;
+  font-size: 28rpx;
+}
+.drink-wrap .number-change .item-count-plus, .drink-wrap .number-change .item-count-minus {
+  display: inline-block;
+  border: 2rpx solid #FA5A47;
+  width: 44rpx;
+  height: 44rpx;
+  background: #ffffff;
+  border-radius: 50%;
+  position: relative;
+}
+.drink-wrap .number-change .item-select-modle, .drink-wrap .number-change .item-set-meal {
+  display: inline-block;
+  vertical-align: top;
+  width: 92rpx;
+  height: 44rpx;
+  font-size: 22rpx;
+  border: 2rpx solid #FA5A47;
+  border-radius: 22rpx;
+  background: #ffffff;
+  color: #FA5A47;
+  line-height: 44rpx;
+  text-align: center;
+}
+.drink-wrap .cart-warp .addCart {
+  background: #FA5A47;
+  box-shadow:none;
+}
+.drink-wrap .cart-warp .meal-price text {
+  color: #FA5A47;
+  font-size: 26rpx;
+  font-weight: bold;
+}
+.drink-mask .modle-choose .model-price {
+  float: left;
+  color: #FA5A47;
+  font-size: 36rpx;
+}
+.drink-mask .modle-choose .modle-item .modle-option .option.select {
+  background: #FA5A47;
+  color: #FFF;
+}
+.drink-mask .modle-choose .modle-item .modle-option .option.select .pullRight{
+  color: #FFF;
+}
+.drink-mask .modle-choose .addCartBtn {
+  background:#FA5A47;
+}

@@ -1,0 +1,39 @@
+<component-getUserInfo showGetUserInfo="{{showGetUserInfo}}"></component-getUserInfo>
+<component-newcomer-gift bindmyevent="inviterEvent" id="newcomer-gift"></component-newcomer-gift>
+<view>
+  <view class="table-header">
+    <view bindtap="toggleStatusList">{{ selectStatus.statusName }}<text class="triangle"></text>订单状态
+    </view>
+  </view>
+  <view class="record-content">
+    <view class="record-list" wx:for="{{ withdrawArr }}" wx:key="index">
+      <view class="record-content-top">
+        <text class="record-to">提现至-{{ item.withdraw_type == 0 ? '微信零钱' : '线下' }}</text>
+        <text class="record-money pull-right">{{ item.withdraw }}</text>
+      </view>
+      <view>
+        <text class="record-time">{{item.create_time}}</text>
+        <text wx:if="{{ ((item.withdraw_type == 1 || item.withdraw_type == 0) && item.status == '申请失败') || (item.withdraw_type == 1 && item.status == '转账成功') }}" class="ico-moon icon-rightarrow pull-right {{(item.status == '申请中' || item.status == '申请失败') ? 'can-click' : '' }}" ></text>
+        <text class="record-status pull-right {{ (item.status == '申请中' || item.status == '申请失败') ? 'can-click' : '' }}" bindtap="{{((item.withdraw_type == 1 || item.withdraw_type == 0) && item.status == '申请失败') ? 'singleDetail' :  (item.withdraw_type == 1 && item.status == '转账成功') ? 'withdrawScreenshot' : '' }}" data-info="{{item}}">{{ item.status }}
+        </text>
+      </view>
+    </view>
+  </view>
+</view>
+<view hidden="{{hidefaildialog}}" class='record-dialog' catchtap="hideFailDialog">
+  <view class="record-reason" catchtap='stopPropagation'>
+    <view class="reason-title">拒绝理由</view>
+    <view class="reason-content">{{singleRecord.reason}}</view>
+    <view class="record-fail-btn" catchtap="hideFailDialog">确定</view>
+  </view>
+</view>
+<view class="order-status-box" wx:if="{{ showStatusList }}" catchtap="hideOrderBox">
+  <view class="order-status" catchtap="stopPropagation">
+    <view class="{{ selectStatus == -1 ? 'selected' : '' }}" data-index="-1" catchtap="clickStatus">全部</view>
+    <view class="{{ selectStatus == 0 ? 'selected' : '' }}" data-index="0" catchtap="clickStatus">申请中</view>
+    <view class="{{ selectStatus == 1 ? 'selected' : '' }}" data-index="1" catchtap="clickStatus">申请失败</view>
+    <view class="{{ selectStatus == 2 ? 'selected' : '' }}" data-index="2" catchtap="clickStatus">待转账</view>
+    <view class="{{ selectStatus == 3 ? 'selected' : '' }}" data-index="3" catchtap="clickStatus">转账失败</view>
+    <view class="{{ selectStatus == 4 ? 'selected' : '' }}" data-index="4" catchtap="clickStatus">转账成功</view>
+  </view>
+</view>

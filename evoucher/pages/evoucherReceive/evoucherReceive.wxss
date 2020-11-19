@@ -1,0 +1,165 @@
+page {
+  color: #333;
+  background-color: #f3f3f3;
+}
+.gray {
+  color: #999;
+}
+.flex {
+  display: flex;
+  align-items: center;
+}
+.self-start {
+  align-self: flex-start;
+}
+.self-end {
+  align-self: flex-end;
+}
+.row-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.row-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.column-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.evoucher-list {
+  padding: 20rpx 24rpx;
+}
+.evoucher-tip {
+  width: 620rpx;
+  height: 60rpx;
+  padding: 0 20rpx;
+  margin-bottom: 18rpx;
+  font-size: 24rpx;
+  line-height: 60rpx;
+  color: #ff7100;
+  background-color: #FFF9ED;
+  border-radius: 30rpx;
+}
+.evoucher-tip .icon-notify {
+  font-size: 26rpx;
+  padding-right: 20rpx;
+}
+.evoucher-tip .tip-txt {
+  max-width: 560rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.evoucher-item {
+  position: relative;
+  width: 654rpx;
+  padding: 20rpx 24rpx 32rpx;
+  border-radius: 12rpx;
+  margin-bottom: 20rpx;
+  font-size: 26rpx;
+  line-height: 26rpx;
+  color: #999;
+  background-color: #fff;
+}
+.evoucher-item .item-img {
+  position: relative;
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+.evoucher-item .item-img image {
+  max-width: 100%;
+  max-height: 100%;
+}
+.evoucher-item .item-num {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 34rpx;
+  font-size: 24rpx;
+  line-height: 34rpx;
+  text-align: center;
+  color: #fff;
+  background-color: rgba(0, 0, 0, .6);
+}
+.evoucher-item .item-content {
+  width: 462rpx;
+  height: 140rpx;
+  margin-left: 20rpx;
+}
+.evoucher-item .item-name {
+  max-width: 455rpx;
+  font-size: 28rpx;
+  line-height: 28rpx;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.evoucher-item .item-species {
+  padding: 12rpx 0 40rpx;
+}
+.receive-btn {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 122rpx;
+  background-color: #fff;
+}
+.receive-btn button {
+  width: 690rpx;
+  height: 88rpx;
+  border-radius: 44rpx;
+  margin-top: 18rpx;
+  font-size: 30rpx;
+  line-height: 88rpx;
+  color: #fff;
+  background:linear-gradient(90deg,rgba(255,150,0,1) 0%,rgba(255,114,0,1) 100%);
+}
+.receive-btn button[disabled] {
+  color: #fff;
+}
+.receive-dialog {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  font-size: 26rpx;
+  background-color: rgba(0, 0, 0, .4);
+  z-index: 11;
+}
+.receive-dialog .receive {
+  width: 480rpx;
+  height: 190rpx;
+  padding: 80rpx 40rpx 50rpx;
+  border-radius: 10rpx;
+  margin: 264rpx auto;
+  font-size: 28rpx;
+  text-align: center;
+  background-color: #fff;
+}
+.receive button {
+  width: 196rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+  text-align: center;
+  border-radius: 36rpx;
+  margin-top: 54rpx;
+  font-size: 26rpx;
+  color: #fff;
+  background:linear-gradient(125deg,rgba(255,150,0,1) 0%,rgba(255,113,0,1) 100%);
+}
